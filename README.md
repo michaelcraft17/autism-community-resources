@@ -3,7 +3,7 @@
 A comprehensive directory and interactive map of community resources for autism and special needs support services.
 
 ## 🌐 Live Website
-Visit the directory: [https://yourusername.github.io/autism-community-resources/](https://yourusername.github.io/autism-community-resources/)
+Visit the directory: (https://michaelcraft17.github.io/autism-community-resources/)
 
 ## 📋 Features
 
@@ -104,5 +104,6 @@ Always verify services and information directly with providers. This directory i
 This project is open source and available under the [MIT License](LICENSE).
 
 ---
+
 
 **Made with ❤️ for the autism and special needs community**
