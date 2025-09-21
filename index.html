@@ -53,7 +53,7 @@
 
         .search-container {
             display: grid;
-            grid-template-columns: 1fr auto auto auto;
+            grid-template-columns: 1fr auto auto auto auto;
             gap: 1rem;
             align-items: center;
         }
@@ -360,6 +360,7 @@
                     <option value="18+">Adults (18+)</option>
                 </select>
                 <button id="clearBtn" class="clear-btn" aria-label="Clear all filters">Clear</button>
+                <button id="findNearbyBtn" class="clear-btn" style="background: #28a745;" aria-label="Find nearby resources">📍 Find Nearby</button>
             </div>
         </section>
 
@@ -387,6 +388,7 @@
         // Load and display the scraped data
         let allResources = [];
         let filteredResources = [];
+        let userLocation = null;
 
         // Load data from the JSON file
         async function loadResources() {
@@ -585,11 +587,206 @@
             updateStats();
         }
 
+        // Calculate distance between two coordinates (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Earth's radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // Get user's location and find nearby resources
+        function findNearbyResources() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by this browser.');
+                return;
+            }
+
+            const findBtn = document.getElementById('findNearbyBtn');
+            findBtn.textContent = '🔄 Finding...';
+            findBtn.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    // Calculate distances and sort by proximity
+                    const resourcesWithDistance = allResources.map(resource => {
+                        if (resource.coordinates) {
+                            const distance = calculateDistance(
+                                userLocation.lat, userLocation.lng,
+                                resource.coordinates.lat, resource.coordinates.lng
+                            );
+                            return {...resource, distance: distance};
+                        }
+                        return {...resource, distance: 999}; // Resources without coordinates go to end
+                    }).sort((a, b) => a.distance - b.distance);
+
+                    // Show closest 10 resources
+                    filteredResources = resourcesWithDistance.slice(0, 10);
+                    displayResources();
+                    updateStats();
+
+                    // Create Google Maps URL with closest resources
+                    showResourcesOnMap();
+
+                    findBtn.textContent = '📍 Find Nearby';
+                    findBtn.disabled = false;
+                },
+                function(error) {
+                    let errorMsg = 'Unable to get your location. ';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg += 'Please allow location access to find nearby resources.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg += 'Location information is unavailable.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg += 'Location request timed out.';
+                            break;
+                    }
+                    alert(errorMsg);
+                    findBtn.textContent = '📍 Find Nearby';
+                    findBtn.disabled = false;
+                }
+            );
+        }
+
+        // Show resources on Google Maps
+        function showResourcesOnMap() {
+            if (!userLocation || filteredResources.length === 0) return;
+
+            // Create waypoints for the closest resources (max 10 for URL length)
+            const nearbyResources = filteredResources.slice(0, 8).filter(r => r.coordinates);
+
+            let mapUrl = `https://www.google.com/maps/dir/${userLocation.lat},${userLocation.lng}`;
+
+            nearbyResources.forEach(resource => {
+                mapUrl += `/${resource.coordinates.lat},${resource.coordinates.lng}`;
+            });
+
+            // Add parameters for better display
+            mapUrl += '?travelmode=driving&dir_action=navigate';
+
+            // Create a modal or new window to show the map
+            const mapWindow = window.open(mapUrl, '_blank');
+            if (!mapWindow) {
+                // If popup blocked, show URL in alert
+                prompt('Copy this Google Maps URL to see nearby resources:', mapUrl);
+            }
+        }
+
+        // Enhanced display function to show distance
+        function displayResourcesWithDistance() {
+            const container = document.getElementById('resourceContainer');
+            const noResults = document.getElementById('noResults');
+
+            if (filteredResources.length === 0) {
+                container.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            container.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            container.innerHTML = filteredResources.map(resource => `
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <h3 class="resource-name">${resource.name}</h3>
+                        <span class="resource-type type-${resource.type}">${formatType(resource.type)}</span>
+                        ${resource.distance && resource.distance < 999 ? `
+                        <div style="font-size: 0.9rem; color: #28a745; font-weight: 600; margin-top: 0.5rem;">
+                            📍 ${resource.distance.toFixed(1)} miles away
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="resource-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span>${resource.address}</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-icon">📞</span>
+                            <span>${resource.phone}</span>
+                        </div>
+
+                        ${resource.website ? `
+                        <div class="detail-item">
+                            <span class="detail-icon">🌐</span>
+                            <a href="${resource.website}" target="_blank" style="color: #667eea; text-decoration: none;">
+                                ${resource.website.replace('https://', '').replace('http://', '')}
+                            </a>
+                        </div>
+                        ` : ''}
+
+                        ${resource.ageGroups ? `
+                        <div class="detail-item">
+                            <span class="detail-icon">👥</span>
+                            <span><strong>Ages:</strong> ${resource.ageGroups.join(', ')}</span>
+                        </div>
+                        ` : ''}
+
+                        ${resource.languages ? `
+                        <div class="detail-item">
+                            <span class="detail-icon">🗣️</span>
+                            <span><strong>Languages:</strong> ${resource.languages.join(', ')}</span>
+                        </div>
+                        ` : ''}
+
+                        ${resource.services ? `
+                        <div class="detail-item">
+                            <span class="detail-icon">🛠️</span>
+                            <span><strong>Services:</strong> ${resource.services.join(', ')}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    ${resource.description ? `
+                    <div class="resource-description">
+                        ${resource.description}
+                    </div>
+                    ` : ''}
+
+                    <div class="resource-actions">
+                        <a href="tel:${resource.phone}" class="action-btn btn-primary">Call Now</a>
+                        ${resource.website ? `
+                        <a href="${resource.website}" target="_blank" class="action-btn btn-secondary">Visit Website</a>
+                        ` : ''}
+                        ${resource.coordinates ? `
+                        <a href="https://www.google.com/maps/dir//${resource.coordinates.lat},${resource.coordinates.lng}" target="_blank" class="action-btn btn-secondary">📍 Directions</a>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Override the original displayResources function when distance is calculated
+        let originalDisplayResources = displayResources;
+        function displayResources() {
+            if (filteredResources.some(r => r.distance !== undefined)) {
+                displayResourcesWithDistance();
+            } else {
+                originalDisplayResources();
+            }
+        }
+
         // Event listeners
         document.getElementById('searchInput').addEventListener('input', filterResources);
         document.getElementById('typeFilter').addEventListener('change', filterResources);
         document.getElementById('ageFilter').addEventListener('change', filterResources);
         document.getElementById('clearBtn').addEventListener('click', clearFilters);
+        document.getElementById('findNearbyBtn').addEventListener('click', findNearbyResources);
 
         // Load resources when page loads
         document.addEventListener('DOMContentLoaded', loadResources);
