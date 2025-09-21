@@ -1,0 +1,118 @@
+[
+  {
+    "name": "Autism Society of America - National Office",
+    "address": "4340 East-West Hwy, Suite 350, Bethesda, MD 20814",
+    "phone": "(301) 657-0881",
+    "website": "https://www.autism-society.org",
+    "type": "advocacy",
+    "source": "Sample Data",
+    "services": [
+      "Advocacy",
+      "Information",
+      "Referrals"
+    ],
+    "description": "National advocacy organization for autism awareness and support",
+    "coordinates": {
+      "lat": 40.6128,
+      "lng": -74.056
+    }
+  },
+  {
+    "name": "Autism Speaks Resource Center",
+    "address": "1060 State Road 2nd Floor, Princeton, NJ 08540",
+    "phone": "(609) 228-7313",
+    "website": "https://www.autismspeaks.org",
+    "type": "advocacy",
+    "source": "Sample Data",
+    "services": [
+      "Resource Guide",
+      "Toolkits",
+      "Research"
+    ],
+    "description": "Leading autism advocacy organization providing resources and support",
+    "coordinates": {
+      "lat": 40.6628,
+      "lng": -74.026
+    }
+  },
+  {
+    "name": "Applied Behavior Analysis Center",
+    "address": "123 Therapy Lane, Your City, ST 12345",
+    "phone": "(555) 123-4567",
+    "website": "https://example-aba.com",
+    "type": "therapy",
+    "source": "Sample Data",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Intervention",
+      "Parent Training"
+    ],
+    "description": "Specialized ABA therapy services for children with autism",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -73.996
+    }
+  },
+  {
+    "name": "Special Needs Educational Support",
+    "address": "456 Learning St, Your City, ST 12345",
+    "phone": "(555) 987-6543",
+    "website": "https://example-education.com",
+    "type": "education",
+    "source": "Sample Data",
+    "services": [
+      "IEP Support",
+      "Special Education",
+      "Tutoring"
+    ],
+    "description": "Educational advocacy and support for special needs students",
+    "coordinates": {
+      "lat": 40.7628,
+      "lng": -73.966
+    }
+  },
+  {
+    "name": "Community Autism Support Group",
+    "address": "789 Community Center Dr, Your City, ST 12345",
+    "phone": "(555) 456-7890",
+    "website": "https://example-support.com",
+    "type": "social",
+    "source": "Sample Data",
+    "services": [
+      "Support Groups",
+      "Social Skills",
+      "Family Events"
+    ],
+    "description": "Local support group for families affected by autism",
+    "coordinates": {
+      "lat": 40.8128,
+      "lng": -73.93599999999999
+    }
+  },
+  {
+    "name": "Pediatric Development Clinic",
+    "address": "321 Medical Plaza, Your City, ST 12345",
+    "phone": "(555) 234-5678",
+    "website": "https://example-medical.com",
+    "type": "medical",
+    "source": "Sample Data",
+    "services": [
+      "Diagnosis",
+      "Developmental Assessment",
+      "Treatment"
+    ],
+    "description": "Medical clinic specializing in autism diagnosis and treatment",
+    "coordinates": {
+      "lat": 40.8628,
+      "lng": -73.90599999999999
+    }
+  },
+  {
+    "name": "Community Resource",
+    "address": "Address available on website",
+    "phone": "Phone not available",
+    "website": "https://www.autism-society.org",
+    "type": "general_support",
+    "source": "Web Extraction"
+  }
+]

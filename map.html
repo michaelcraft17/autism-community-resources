@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Support Mapper - Autism & Special Needs Resources</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header-title">
+                <span class="icon">🧩</span>
+                Community Support Mapper
+            </h1>
+            <p class="header-subtitle">Finding autism and special needs resources in your community</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="search-section">
+                <div class="search-container">
+                    <div class="search-group">
+                        <label for="location-search" class="search-label">Search by Location</label>
+                        <input type="text" id="location-search" placeholder="Enter city, zip code, or address" class="search-input">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="service-type" class="search-label">Service Type</label>
+                        <select id="service-type" class="filter-select">
+                            <option value="">All Services</option>
+                            <option value="therapy">Therapy Services</option>
+                            <option value="education">Educational Support</option>
+                            <option value="medical">Medical Services</option>
+                            <option value="social">Social Programs</option>
+                            <option value="respite">Respite Care</option>
+                            <option value="advocacy">Advocacy & Legal</option>
+                            <option value="employment">Employment Support</option>
+                        </select>
+                    </div>
+
+                    <button id="search-btn" class="search-btn">Search Resources</button>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <div class="content-grid">
+                    <div class="map-container">
+                        <div id="map" class="map"></div>
+                        <div class="map-controls">
+                            <button id="locate-btn" class="control-btn">📍 Find Me</button>
+                            <button id="reset-btn" class="control-btn">🔄 Reset View</button>
+                        </div>
+                    </div>
+
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h2>Resources Found</h2>
+                            <span id="results-count" class="results-count">0 resources</span>
+                        </div>
+
+                        <div class="filters-mobile">
+                            <select id="sort-by" class="filter-select">
+                                <option value="distance">Sort by Distance</option>
+                                <option value="name">Sort by Name</option>
+                                <option value="rating">Sort by Rating</option>
+                            </select>
+                        </div>
+
+                        <div id="results-list" class="results-list">
+                            <div class="no-results">
+                                <p>Enter a location to find community resources</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="info-section">
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3>🔍 How to Use</h3>
+                        <p>Search by location to find autism and special needs resources near you. Filter by service type to narrow your results.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📞 Emergency Resources</h3>
+                        <p>Crisis helplines: Autism Society (1-800-328-8476), National Suicide Prevention (988)</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>💡 Add a Resource</h3>
+                        <p>Know of a resource that should be included? <a href="#contact">Contact us</a> to have it added to our database.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Community Support Mapper. Connecting families with resources.</p>
+            <p class="disclaimer">Always verify services directly with providers. Information is updated regularly but may change.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="community_data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
