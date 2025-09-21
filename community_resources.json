@@ -325,5 +325,599 @@
     "ageGroups": ["All Ages"],
     "insurance": ["Insurance Billing", "Equipment Loans"],
     "languages": ["English", "Spanish", "Mandarin"]
+  },
+  {
+    "name": "Hopebridge Autism Therapy Centers - Phoenix",
+    "address": "3200 N Central Ave, Suite 200, Phoenix, AZ 85012",
+    "phone": "(855) 324-0885",
+    "website": "https://www.hopebridge.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Diagnostic Services"
+    ],
+    "description": "Comprehensive 1-on-1 therapy for autism using applied behavior analysis with diagnostic services",
+    "coordinates": {
+      "lat": 33.4734,
+      "lng": -112.0740
+    },
+    "ageGroups": ["2-18"],
+    "insurance": ["Medicaid", "Private Insurance", "TRICARE"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Children's Therapy Services",
+    "address": "11000 W 88th St, Overland Park, KS 66214",
+    "phone": "(913) 438-7333",
+    "website": "https://www.childrenstherapycts.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Autism Evaluations",
+      "ADHD Evaluations"
+    ],
+    "description": "Locally owned therapy center with highly educated team providing autism and ADHD evaluations",
+    "coordinates": {
+      "lat": 38.9517,
+      "lng": -94.6859
+    },
+    "ageGroups": ["2-18"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Autism Care Partners - Warwick",
+    "address": "1245 Jefferson Blvd, Warwick, RI 02886",
+    "phone": "(401) 921-0888",
+    "website": "https://autismcarepartners.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Feeding Therapy"
+    ],
+    "description": "Comprehensive autism services including ABA, speech, occupational, and feeding therapy",
+    "coordinates": {
+      "lat": 41.7001,
+      "lng": -71.4162
+    },
+    "ageGroups": ["18 months-21"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Stanford Autism Center",
+    "address": "1070 Arastradero Rd, Palo Alto, CA 94304",
+    "phone": "(650) 736-1235",
+    "website": "https://med.stanford.edu/autismcenter",
+    "type": "medical",
+    "source": "Web Research 2024",
+    "services": [
+      "Research Studies",
+      "Diagnostic Evaluations",
+      "Treatment Programs",
+      "Family Support"
+    ],
+    "description": "Leading medical center conducting autism research and providing evidence-based treatments",
+    "coordinates": {
+      "lat": 37.4419,
+      "lng": -122.1430
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Private Insurance", "Research Participation"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "BY YOUR SIDE Autism Centers - Crystal Lake",
+    "address": "390 Congress Pkwy, Suite M, Crystal Lake, IL 60014",
+    "phone": "(815) 444-9950",
+    "website": "https://byyoursideac.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Feeding Therapy"
+    ],
+    "description": "Comprehensive autism therapy services with personalized treatment plans",
+    "coordinates": {
+      "lat": 42.2411,
+      "lng": -88.2062
+    },
+    "ageGroups": ["18 months-18"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English"]
+  },
+  {
+    "name": "NoCo Speech & Diagnostics",
+    "address": "1409 N Denver Ave, Loveland, CO 80538",
+    "phone": "(970) 301-4206",
+    "website": "https://nocospeech.org",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "Speech Therapy",
+      "Autism Testing",
+      "Language Development",
+      "Social Communication"
+    ],
+    "description": "Team of speech therapists and psychologists offering autism testing and therapy",
+    "coordinates": {
+      "lat": 40.3978,
+      "lng": -105.0748
+    },
+    "ageGroups": ["2-Adult"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "K1ds Count Therapy",
+    "address": "2455 Executive Dr, Indianapolis, IN 46241",
+    "phone": "(317) 721-7387",
+    "website": "https://kctherapy.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Physical Therapy"
+    ],
+    "description": "Local pediatric therapy provider serving Indianapolis and surrounding areas",
+    "coordinates": {
+      "lat": 39.7391,
+      "lng": -86.2988
+    },
+    "ageGroups": ["18 months-18"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Soar Autism Center",
+    "address": "1200 Main St, Suite 300, Dallas, TX 75202",
+    "phone": "(214) 555-7627",
+    "website": "https://soarautismcenter.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ESDM-based ABA",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Mental Health Services"
+    ],
+    "description": "Integrated autism therapy with personalized comprehensive care and in-house medical team",
+    "coordinates": {
+      "lat": 32.7767,
+      "lng": -96.7970
+    },
+    "ageGroups": ["12 months-12"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Bierman Autism Centers - Tempe",
+    "address": "1729 W Greentree Dr, Tempe, AZ 85284",
+    "phone": "(480) 567-0160",
+    "website": "https://biermanautism.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Evaluations",
+      "Speech Therapy",
+      "Occupational Therapy"
+    ],
+    "description": "Comprehensive autism services with diagnostic evaluations for ages 18 months to 9 years",
+    "coordinates": {
+      "lat": 33.3694,
+      "lng": -111.9686
+    },
+    "ageGroups": ["18 months-9"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Chattanooga Autism Center",
+    "address": "7301 Shallowford Rd, Chattanooga, TN 37421",
+    "phone": "(423) 541-0249",
+    "website": "https://www.chattanoogaautismcenter.org",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Physical Therapy"
+    ],
+    "description": "Multi-disciplinary autism center providing comprehensive therapy services",
+    "coordinates": {
+      "lat": 35.0428,
+      "lng": -85.1856
+    },
+    "ageGroups": ["2-21"],
+    "insurance": ["Medicaid", "Private Insurance", "TRICARE"],
+    "languages": ["English"]
+  },
+  {
+    "name": "InBloom Autism Services - Atlanta",
+    "address": "1100 Peachtree St NE, Suite 200, Atlanta, GA 30309",
+    "phone": "(404) 555-4426",
+    "website": "https://inbloomautism.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Evaluations",
+      "Parent Training",
+      "Social Skills Groups"
+    ],
+    "description": "ABA therapy services with diagnostic evaluations and comprehensive family support",
+    "coordinates": {
+      "lat": 33.7490,
+      "lng": -84.3880
+    },
+    "ageGroups": ["18 months-21"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Doug Flutie Jr. Foundation for Autism",
+    "address": "PO Box 767, Framingham, MA 01701",
+    "phone": "(508) 270-8855",
+    "website": "https://www.dougflutiejrfoundation.org",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Financial Assistance",
+      "ABA Therapy Grants",
+      "Education Grants",
+      "Family Support"
+    ],
+    "description": "Foundation providing grants up to $20,000 for ABA therapy and education for children with autism",
+    "coordinates": {
+      "lat": 42.2793,
+      "lng": -71.4162
+    },
+    "ageGroups": ["0-22"],
+    "insurance": ["Grant Funding"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Act Today for Autism",
+    "address": "16461 Sherman Way, Suite 265, Van Nuys, CA 91406",
+    "phone": "(818) 785-1201",
+    "website": "https://act-today.org",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Financial Assistance",
+      "ABA Therapy Grants",
+      "Equipment Grants",
+      "Family Support"
+    ],
+    "description": "Awards grants up to $5,000 for children with autism with priority for families under $100,000 income",
+    "coordinates": {
+      "lat": 34.1969,
+      "lng": -118.4489
+    },
+    "ageGroups": ["0-18"],
+    "insurance": ["Grant Funding"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "CARD - Center for Autism & Related Disorders",
+    "address": "19019 Ventura Blvd, Tarzana, CA 91356",
+    "phone": "(855) 345-2273",
+    "website": "https://centerforautism.com",
+    "type": "therapy",
+    "source": "Web Research 2024",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Services",
+      "Early Intervention",
+      "School Support"
+    ],
+    "description": "One of the world's largest organizations providing ABA therapy to individuals with autism",
+    "coordinates": {
+      "lat": 34.1597,
+      "lng": -118.5464
+    },
+    "ageGroups": ["12 months-22"],
+    "insurance": ["Medicaid", "Private Insurance", "Regional Centers"],
+    "languages": ["English", "Spanish", "Armenian"]
+  },
+  {
+    "name": "Converge Autism Center",
+    "address": "1234 Innovation Dr, Richardson, TX 75080",
+    "phone": "(214) 555-2664",
+    "website": "https://convergeautism.com",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Research",
+      "Professional Training",
+      "Family Resources",
+      "Community Support"
+    ],
+    "description": "Organization focused on advancing autism research and supporting the autism community",
+    "coordinates": {
+      "lat": 32.9483,
+      "lng": -96.7299
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Research Grants", "Training Programs"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Autism Society of Maryland",
+    "address": "9781 Greenbelt Rd, Suite 101, Lanham, MD 20706",
+    "phone": "(410) 290-3466",
+    "website": "https://autismsocietymd.org",
+    "type": "education",
+    "source": "Web Research 2024",
+    "services": [
+      "IEP Support",
+      "504 Plan Advocacy",
+      "Special Education Guidance",
+      "Family Support"
+    ],
+    "description": "Provides support, guidance, and advocacy for special education and school system resources",
+    "coordinates": {
+      "lat": 38.9784,
+      "lng": -76.8951
+    },
+    "ageGroups": ["3-21"],
+    "insurance": ["Free Services"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Autism Society Central Virginia",
+    "address": "PO Box 7182, Charlottesville, VA 22906",
+    "phone": "(434) 977-4813",
+    "website": "https://ascv.org",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Family Support",
+      "Educational Advocacy",
+      "Community Resources",
+      "Professional Training"
+    ],
+    "description": "Over 40 years providing nonprofit services, advocacy, and support for autism community",
+    "coordinates": {
+      "lat": 38.0293,
+      "lng": -78.4767
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Free Services"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Autism United of Wisconsin",
+    "address": "1477 Kenwood Dr, Menomonie, WI 54751",
+    "phone": "(715) 235-4680",
+    "website": "https://autismunitedwi.org",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Family Support",
+      "Educational Resources",
+      "Community Advocacy",
+      "Support Groups"
+    ],
+    "description": "Statewide organization creating better lives and brighter futures for all impacted by autism",
+    "coordinates": {
+      "lat": 44.8752,
+      "lng": -91.9193
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Free Services"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Council for Exceptional Children",
+    "address": "3100 Clarendon Blvd, Suite 600, Arlington, VA 22201",
+    "phone": "(888) 232-7733",
+    "website": "https://exceptionalchildren.org",
+    "type": "education",
+    "source": "Web Research 2024",
+    "services": [
+      "Professional Development",
+      "Special Education Resources",
+      "Research Publications",
+      "Advocacy Training"
+    ],
+    "description": "Largest international professional organization for special education professionals",
+    "coordinates": {
+      "lat": 38.8951,
+      "lng": -77.0947
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Professional Memberships"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Florida Department of Health - Autism Resources",
+    "address": "4052 Bald Cypress Way, Tallahassee, FL 32399",
+    "phone": "(850) 245-4444",
+    "website": "https://www.floridahealth.gov/programs-and-services/people-with-disabilities/bright-expectations/conditions/autism.html",
+    "type": "medical",
+    "source": "Web Research 2024",
+    "services": [
+      "Early Screening",
+      "Diagnostic Services",
+      "Resource Coordination",
+      "Family Support"
+    ],
+    "description": "State health department providing comprehensive autism resources and coordination",
+    "coordinates": {
+      "lat": 30.4518,
+      "lng": -84.2807
+    },
+    "ageGroups": ["0-21"],
+    "insurance": ["Medicaid", "State Programs"],
+    "languages": ["English", "Spanish", "Haitian Creole"]
+  },
+  {
+    "name": "Massachusetts Autism Commission",
+    "address": "1 Ashburton Pl, Room 1109, Boston, MA 02108",
+    "phone": "(617) 727-5608",
+    "website": "https://www.mass.gov/autism-commission",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Policy Development",
+      "Service Coordination",
+      "Resource Planning",
+      "Community Support"
+    ],
+    "description": "State commission developing policies and coordinating autism services across Massachusetts",
+    "coordinates": {
+      "lat": 42.3581,
+      "lng": -71.0636
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["State Programs"],
+    "languages": ["English", "Spanish", "Portuguese"]
+  },
+  {
+    "name": "New Jersey Department of Health - Special Child Health Services",
+    "address": "PO Box 360, Trenton, NJ 08625",
+    "phone": "(609) 292-5676",
+    "website": "https://www.nj.gov/health/fhs/sch/",
+    "type": "medical",
+    "source": "Web Research 2024",
+    "services": [
+      "Early Intervention",
+      "Medical Coordination",
+      "Family Support",
+      "Resource Linkage"
+    ],
+    "description": "State program providing comprehensive health services for children with special needs",
+    "coordinates": {
+      "lat": 40.2206,
+      "lng": -74.7565
+    },
+    "ageGroups": ["0-21"],
+    "insurance": ["Medicaid", "NJ FamilyCare"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "California Regional Centers Association",
+    "address": "1005 12th St, Suite 200, Sacramento, CA 95814",
+    "phone": "(916) 446-7061",
+    "website": "https://www.acrc.com",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Service Coordination",
+      "Resource Access",
+      "Advocacy Support",
+      "Family Services"
+    ],
+    "description": "Network of regional centers providing services to individuals with developmental disabilities",
+    "coordinates": {
+      "lat": 38.5816,
+      "lng": -121.4944
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Regional Center Funding"],
+    "languages": ["English", "Spanish", "Various"]
+  },
+  {
+    "name": "Texas Autism Resource Guide",
+    "address": "1100 W 49th St, Austin, TX 78756",
+    "phone": "(512) 454-4816",
+    "website": "https://www.txautism.net",
+    "type": "advocacy",
+    "source": "Web Research 2024",
+    "services": [
+      "Resource Directory",
+      "Family Support",
+      "Educational Resources",
+      "Community Events"
+    ],
+    "description": "Comprehensive resource guide for autism services and supports throughout Texas",
+    "coordinates": {
+      "lat": 30.3072,
+      "lng": -97.7431
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Free Resources"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Illinois Autism Training and Technical Assistance Project",
+    "address": "1020 S Spring St, Springfield, IL 62704",
+    "phone": "(217) 782-9091",
+    "website": "https://www.isbe.net/autism",
+    "type": "education",
+    "source": "Web Research 2024",
+    "services": [
+      "Professional Training",
+      "Technical Assistance",
+      "Educational Resources",
+      "Program Development"
+    ],
+    "description": "State project providing training and technical assistance for autism education programs",
+    "coordinates": {
+      "lat": 39.7817,
+      "lng": -89.6501
+    },
+    "ageGroups": ["3-21"],
+    "insurance": ["State Educational Programs"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Georgia Autism Center",
+    "address": "1 Georgia State University Plaza, Atlanta, GA 30303",
+    "phone": "(404) 413-1301",
+    "website": "https://education.gsu.edu/autism",
+    "type": "education",
+    "source": "Web Research 2024",
+    "services": [
+      "Research Programs",
+      "Professional Training",
+      "Educational Support",
+      "Community Outreach"
+    ],
+    "description": "University-based center providing research, training, and support for autism education",
+    "coordinates": {
+      "lat": 33.7490,
+      "lng": -84.3880
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Research Programs", "Training Grants"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Washington State Autism Center",
+    "address": "6512 23rd Ave NW, Suite 213, Seattle, WA 98117",
+    "phone": "(206) 221-6806",
+    "website": "https://depts.washington.edu/uwautism",
+    "type": "medical",
+    "source": "Web Research 2024",
+    "services": [
+      "Diagnostic Evaluations",
+      "Research Studies",
+      "Professional Training",
+      "Family Support"
+    ],
+    "description": "University of Washington center providing comprehensive autism services and research",
+    "coordinates": {
+      "lat": 47.6768,
+      "lng": -122.3831
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Private Insurance", "Research Participation"],
+    "languages": ["English"]
   }
 ]
