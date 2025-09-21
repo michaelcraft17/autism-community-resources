@@ -1,0 +1,329 @@
+[
+  {
+    "name": "Autism Society of America - National Office",
+    "address": "4340 East-West Hwy, Suite 350, Bethesda, MD 20814",
+    "phone": "(301) 657-0881",
+    "website": "https://www.autism-society.org",
+    "type": "advocacy",
+    "source": "Sample Data",
+    "services": [
+      "Advocacy",
+      "Information",
+      "Referrals"
+    ],
+    "description": "National advocacy organization for autism awareness and support",
+    "coordinates": {
+      "lat": 40.6128,
+      "lng": -74.056
+    }
+  },
+  {
+    "name": "Autism Speaks Resource Center",
+    "address": "1060 State Road 2nd Floor, Princeton, NJ 08540",
+    "phone": "(609) 228-7313",
+    "website": "https://www.autismspeaks.org",
+    "type": "advocacy",
+    "source": "Sample Data",
+    "services": [
+      "Resource Guide",
+      "Toolkits",
+      "Research"
+    ],
+    "description": "Leading autism advocacy organization providing resources and support",
+    "coordinates": {
+      "lat": 40.6628,
+      "lng": -74.026
+    }
+  },
+  {
+    "name": "Applied Behavior Analysis Center",
+    "address": "123 Therapy Lane, Your City, ST 12345",
+    "phone": "(555) 123-4567",
+    "website": "https://example-aba.com",
+    "type": "therapy",
+    "source": "Sample Data",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Intervention",
+      "Parent Training"
+    ],
+    "description": "Specialized ABA therapy services for children with autism",
+    "coordinates": {
+      "lat": 40.7128,
+      "lng": -73.996
+    }
+  },
+  {
+    "name": "Special Needs Educational Support",
+    "address": "456 Learning St, Your City, ST 12345",
+    "phone": "(555) 987-6543",
+    "website": "https://example-education.com",
+    "type": "education",
+    "source": "Sample Data",
+    "services": [
+      "IEP Support",
+      "Special Education",
+      "Tutoring"
+    ],
+    "description": "Educational advocacy and support for special needs students",
+    "coordinates": {
+      "lat": 40.7628,
+      "lng": -73.966
+    }
+  },
+  {
+    "name": "Community Autism Support Group",
+    "address": "789 Community Center Dr, Your City, ST 12345",
+    "phone": "(555) 456-7890",
+    "website": "https://example-support.com",
+    "type": "social",
+    "source": "Sample Data",
+    "services": [
+      "Support Groups",
+      "Social Skills",
+      "Family Events"
+    ],
+    "description": "Local support group for families affected by autism",
+    "coordinates": {
+      "lat": 40.8128,
+      "lng": -73.93599999999999
+    }
+  },
+  {
+    "name": "Pediatric Development Clinic",
+    "address": "321 Medical Plaza, Your City, ST 12345",
+    "phone": "(555) 234-5678",
+    "website": "https://example-medical.com",
+    "type": "medical",
+    "source": "Sample Data",
+    "services": [
+      "Diagnosis",
+      "Developmental Assessment",
+      "Treatment"
+    ],
+    "description": "Medical clinic specializing in autism diagnosis and treatment",
+    "coordinates": {
+      "lat": 40.8628,
+      "lng": -73.90599999999999
+    }
+  },
+  {
+    "name": "Early Intervention Services",
+    "address": "555 Development Way, Springfield, IL 62701",
+    "phone": "(217) 555-0123",
+    "website": "https://example-earlyintervention.org",
+    "type": "early_intervention",
+    "source": "Directory",
+    "services": [
+      "Early Intervention",
+      "Developmental Screening",
+      "Family Support"
+    ],
+    "description": "Comprehensive early intervention services for children ages 0-3 with developmental delays",
+    "coordinates": {
+      "lat": 39.7817,
+      "lng": -89.6501
+    },
+    "ageGroups": ["0-3"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Autism Resource Center of Greater Chicago",
+    "address": "1234 Michigan Ave, Chicago, IL 60601",
+    "phone": "(312) 555-0456",
+    "website": "https://example-arcchicago.org",
+    "type": "advocacy",
+    "source": "Directory",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Educational Workshops",
+      "Resource Library"
+    ],
+    "description": "Comprehensive autism resource center serving families throughout the Chicago metropolitan area",
+    "coordinates": {
+      "lat": 41.8781,
+      "lng": -87.6298
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["All"],
+    "languages": ["English", "Spanish", "Polish"]
+  },
+  {
+    "name": "Sensory Integration Therapy Center",
+    "address": "789 Wellness Blvd, Austin, TX 78701",
+    "phone": "(512) 555-0789",
+    "website": "https://example-sensory.com",
+    "type": "therapy",
+    "source": "Directory",
+    "services": [
+      "Occupational Therapy",
+      "Sensory Integration",
+      "Fine Motor Skills",
+      "Adaptive Equipment"
+    ],
+    "description": "Specialized occupational therapy focusing on sensory processing and integration",
+    "coordinates": {
+      "lat": 30.2672,
+      "lng": -97.7431
+    },
+    "ageGroups": ["3-18"],
+    "insurance": ["Private Insurance", "HSA/FSA"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Speech & Language Development Institute",
+    "address": "456 Communication St, Portland, OR 97201",
+    "phone": "(503) 555-0234",
+    "website": "https://example-speech.org",
+    "type": "therapy",
+    "source": "Directory",
+    "services": [
+      "Speech Therapy",
+      "Language Development",
+      "AAC Training",
+      "Social Communication"
+    ],
+    "description": "Comprehensive speech and language services for individuals with autism and communication challenges",
+    "coordinates": {
+      "lat": 45.5152,
+      "lng": -122.6784
+    },
+    "ageGroups": ["2-Adult"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Inclusive Education Advocacy Network",
+    "address": "321 Learning Lane, Denver, CO 80202",
+    "phone": "(303) 555-0567",
+    "website": "https://example-inclusion.edu",
+    "type": "education",
+    "source": "Directory",
+    "services": [
+      "IEP Advocacy",
+      "504 Plan Support",
+      "Transition Planning",
+      "Educational Rights"
+    ],
+    "description": "Advocacy and support for inclusive education and special needs students' rights",
+    "coordinates": {
+      "lat": 39.7392,
+      "lng": -104.9903
+    },
+    "ageGroups": ["5-21"],
+    "insurance": ["Free Services"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Autism Spectrum Family Support Network",
+    "address": "987 Community Circle, Seattle, WA 98101",
+    "phone": "(206) 555-0890",
+    "website": "https://example-familysupport.org",
+    "type": "social",
+    "source": "Directory",
+    "services": [
+      "Parent Support Groups",
+      "Sibling Groups",
+      "Social Skills Groups",
+      "Family Events"
+    ],
+    "description": "Peer support network connecting families affected by autism spectrum disorders",
+    "coordinates": {
+      "lat": 47.6062,
+      "lng": -122.3321
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Free Services"],
+    "languages": ["English"]
+  },
+  {
+    "name": "Developmental Pediatrics Clinic",
+    "address": "654 Medical Center Dr, Atlanta, GA 30309",
+    "phone": "(404) 555-0345",
+    "website": "https://example-devpeds.com",
+    "type": "medical",
+    "source": "Directory",
+    "services": [
+      "Autism Diagnosis",
+      "ADHD Evaluation",
+      "Genetic Testing",
+      "Medication Management"
+    ],
+    "description": "Specialized medical clinic for developmental and behavioral pediatrics",
+    "coordinates": {
+      "lat": 33.7490,
+      "lng": -84.3880
+    },
+    "ageGroups": ["0-18"],
+    "insurance": ["Medicaid", "Private Insurance"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Adult Autism Services & Employment Center",
+    "address": "111 Independence Ave, Phoenix, AZ 85001",
+    "phone": "(602) 555-0678",
+    "website": "https://example-adultservices.org",
+    "type": "employment",
+    "source": "Directory",
+    "services": [
+      "Job Training",
+      "Employment Support",
+      "Life Skills",
+      "Independent Living"
+    ],
+    "description": "Comprehensive services for adults with autism including employment and independent living support",
+    "coordinates": {
+      "lat": 33.4484,
+      "lng": -112.0740
+    },
+    "ageGroups": ["18+"],
+    "insurance": ["Vocational Rehabilitation", "Private Pay"],
+    "languages": ["English", "Spanish"]
+  },
+  {
+    "name": "Respite Care Services Network",
+    "address": "222 Relief Road, Miami, FL 33101",
+    "phone": "(305) 555-0912",
+    "website": "https://example-respite.org",
+    "type": "respite",
+    "source": "Directory",
+    "services": [
+      "In-Home Respite",
+      "Day Programs",
+      "Weekend Care",
+      "Emergency Respite"
+    ],
+    "description": "Temporary relief care services for families of individuals with special needs",
+    "coordinates": {
+      "lat": 25.7617,
+      "lng": -80.1918
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Medicaid Waiver", "Private Pay"],
+    "languages": ["English", "Spanish", "Haitian Creole"]
+  },
+  {
+    "name": "Assistive Technology Resource Center",
+    "address": "444 Tech Plaza, San Francisco, CA 94102",
+    "phone": "(415) 555-0134",
+    "website": "https://example-assistivetech.org",
+    "type": "technology",
+    "source": "Directory",
+    "services": [
+      "AAC Devices",
+      "Sensory Tools",
+      "Learning Apps",
+      "Equipment Loans"
+    ],
+    "description": "Assistive technology resources and training for individuals with disabilities",
+    "coordinates": {
+      "lat": 37.7749,
+      "lng": -122.4194
+    },
+    "ageGroups": ["All Ages"],
+    "insurance": ["Insurance Billing", "Equipment Loans"],
+    "languages": ["English", "Spanish", "Mandarin"]
+  }
+]

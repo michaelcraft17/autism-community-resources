@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Autism & Special Needs Community Directory</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .faq-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .faq-item {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .faq-answer {
+            color: #555;
+            line-height: 1.7;
+            display: block;
+        }
+
+        .faq-answer ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .faq-answer li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            margin: 0 1rem;
+            padding: 0.8rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #5a6fd8;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about our directory and autism resources</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="nav-links">
+            <a href="index.html">← Back to Directory</a>
+            <a href="about.html">About</a>
+            <a href="submit.html">Submit Resource</a>
+        </div>
+
+        <div class="faq-content">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How do I find resources in my area?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Use the search bar to enter your city, state, or zip code. You can also search for specific services like "speech therapy" or "support groups." Our filters help you narrow down results by resource type and age group.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What types of resources are included in the directory?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Our directory includes:
+                    <ul>
+                        <li>Advocacy organizations and support groups</li>
+                        <li>Therapy services (speech, occupational, behavioral)</li>
+                        <li>Educational support and special education resources</li>
+                        <li>Medical and diagnostic services</li>
+                        <li>Early intervention programs</li>
+                        <li>Employment and vocational training</li>
+                        <li>Respite care services</li>
+                        <li>Assistive technology resources</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How often is the directory updated?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    We regularly review and update our listings to ensure accuracy. However, we recommend verifying contact information and services directly with providers, as details can change frequently.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How can I add a resource to the directory?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Use our <a href="submit.html" style="color: #667eea;">resource submission form</a> to suggest new organizations or services. We review all submissions before adding them to the directory.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Are all resources free?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    No, our directory includes both free and fee-based services. Each listing includes information about insurance accepted and payment options where available. Many services accept Medicaid or private insurance.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What should I do if I find incorrect information?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Please let us know about any inaccuracies through our submission form. Include the resource name and the correct information, and we'll update our records.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Can I use this directory on my mobile phone?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! Our directory is designed to work on all devices - smartphones, tablets, and computers. The layout automatically adjusts to your screen size for easy browsing.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Do you provide services directly?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    No, we are a directory service that connects families with resources. We do not provide direct services like therapy or support groups. You'll need to contact the organizations listed for their services.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What if I can't find what I'm looking for?
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Try broadening your search terms or contact us with your specific needs. We may be able to suggest resources not yet in our directory or help you find alternatives in nearby areas.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Community Resource Directory. Always verify information directly with service providers.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const answer = element.nextElementSibling;
+
+            // Toggle the expanded class
+            faqItem.classList.toggle('expanded');
+
+            // Toggle the answer display
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
+            }
+        }
+
+        // Initially hide all answers
+        document.addEventListener('DOMContentLoaded', function() {
+            const answers = document.querySelectorAll('.faq-answer');
+            answers.forEach(answer => {
+                answer.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
