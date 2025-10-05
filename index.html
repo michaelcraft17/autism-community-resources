@@ -3,6 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find autism and special needs support services, therapy centers, advocacy organizations, and community resources near you. Comprehensive directory with interactive map.">
+    <meta name="keywords" content="autism resources, special needs support, therapy services, autism advocacy, ABA therapy, special education, autism support groups">
+    <meta name="author" content="Autism Community Resources">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://michaelcraft17.github.io/autism-community-resources/">
+    <meta property="og:title" content="Autism & Special Needs Community Directory">
+    <meta property="og:description" content="Find autism and special needs support services near you. Interactive directory with map.">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Autism & Special Needs Community Directory">
+    <meta property="twitter:description" content="Find autism and special needs support services near you.">
+
     <title>Autism & Special Needs Community Directory</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -293,21 +308,194 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        }
+
+        body.dark-mode .controls,
+        body.dark-mode .stats,
+        body.dark-mode .map-container,
+        body.dark-mode .resource-card {
+            background: #2d3748;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .search-input,
+        body.dark-mode .filter-select {
+            background: #1a202c;
+            color: #e0e0e0;
+            border-color: #4a5568;
+        }
+
+        body.dark-mode .resource-card {
+            border-left-color: #4a5568;
+        }
+
+        body.dark-mode .footer {
+            background: #1a202c;
+        }
+
+        /* Accessibility Improvements */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        /* Action Buttons */
+        .action-toolbar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .toolbar-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .toolbar-btn.secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+        }
+
+        body.dark-mode .toolbar-btn.secondary {
+            background: #4a5568;
+            color: #e0e0e0;
+            border-color: #2d3748;
+        }
+
+        /* Favorites */
+        .favorite-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .favorite-btn.active {
+            color: #ff4444;
+        }
+
+        .favorite-btn:hover {
+            color: #ff6666;
+        }
+
+        /* Print Styles */
+        @media print {
+            .controls, .action-toolbar, .footer, .map-container {
+                display: none;
+            }
+
+            .resource-card {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Enhanced Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus visible for better keyboard navigation */
+        *:focus-visible {
+            outline: 3px solid #667eea;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
-    <header class="header">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header class="header" role="banner">
         <div class="container">
             <h1>Autism & Special Needs Directory</h1>
             <p>Connecting families with community resources and support services</p>
+            <button id="darkModeToggle" class="toolbar-btn secondary" style="position: absolute; top: 20px; right: 20px;" aria-label="Toggle dark mode">
+                🌙 Dark Mode
+            </button>
         </div>
     </header>
 
-    <main class="container">
-        <section class="controls">
+    <main class="container" id="main-content" role="main">
+        <!-- Action Toolbar -->
+        <section class="action-toolbar">
+            <button id="exportBtn" class="toolbar-btn secondary" aria-label="Export results">
+                📥 Export Results
+            </button>
+            <button id="printBtn" class="toolbar-btn secondary" aria-label="Print results">
+                🖨️ Print
+            </button>
+            <button id="showFavoritesBtn" class="toolbar-btn secondary" aria-label="Show favorites">
+                ⭐ Favorites (<span id="favCount">0</span>)
+            </button>
+        </section>
+
+        <section class="controls" aria-label="Search and filter controls">
             <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search resources by name, location, or services...">
-                <select id="typeFilter" class="filter-select">
+                <label for="searchInput" class="sr-only">Search resources</label>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search resources by name, location, or services..." aria-label="Search resources by name, location, or services">
+                <label for="typeFilter" class="sr-only">Filter by resource type</label>
+                <select id="typeFilter" class="filter-select" aria-label="Filter by resource type">
                     <option value="">All Types</option>
                     <option value="advocacy">Advocacy</option>
                     <option value="therapy">Therapy</option>
@@ -316,41 +504,50 @@
                     <option value="social">Social</option>
                     <option value="general_support">General Support</option>
                 </select>
-                <button id="clearBtn" class="clear-btn">Clear</button>
+                <button id="clearBtn" class="clear-btn" aria-label="Clear filters">Clear</button>
             </div>
         </section>
 
-        <section class="controls" style="margin-top: 1rem;">
+        <section class="controls" style="margin-top: 1rem;" aria-label="Location search">
             <div class="search-container" style="grid-template-columns: auto 1fr auto;">
-                <button id="useLocationBtn" class="clear-btn" style="background: #28a745; white-space: nowrap;">📍 Use My Location</button>
-                <input type="text" id="locationInput" class="search-input" placeholder="Or enter zip code, address, or city...">
-                <button id="searchLocationBtn" class="clear-btn" style="background: #28a745;">Search Location</button>
+                <button id="useLocationBtn" class="clear-btn" style="background: #28a745; white-space: nowrap;" aria-label="Use my current location">📍 Use My Location</button>
+                <label for="locationInput" class="sr-only">Enter location</label>
+                <input type="text" id="locationInput" class="search-input" placeholder="Or enter zip code, address, or city..." aria-label="Enter zip code, address, or city">
+                <button id="searchLocationBtn" class="clear-btn" style="background: #28a745;" aria-label="Search location">Search Location</button>
             </div>
         </section>
 
-        <section class="stats">
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="loading-spinner" role="status" aria-live="polite">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+        <section class="stats" role="status" aria-live="polite">
             <h3 id="statsText">Click "Use My Location" or enter a location to find nearby resources</h3>
         </section>
 
         <!-- Map Section - Always Visible -->
-        <section id="mapContainer" class="map-container" style="display: block; margin-bottom: 2rem;">
-            <div id="map"></div>
+        <section id="mapContainer" class="map-container" style="display: block; margin-bottom: 2rem;" aria-label="Interactive resource map">
+            <div id="map" role="application" aria-label="Map showing resource locations"></div>
         </section>
 
         <!-- Resources Section - Shows after location is set -->
-        <section id="resourceContainer" class="resource-grid" style="display: none;">
+        <section id="resourceContainer" class="resource-grid" style="display: none;" aria-label="Resource listings">
             <!-- Resources will be loaded here -->
         </section>
 
-        <div id="noResults" class="no-results" style="display: none;">
+        <div id="noResults" class="no-results" style="display: none;" role="status" aria-live="polite">
             <h3>No resources found</h3>
             <p>Try adjusting your search criteria or filters.</p>
         </div>
     </main>
 
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
-            <p>&copy; 2024 Community Resource Directory. Always verify information directly with service providers.</p>
+            <p>&copy; 2025 Community Resource Directory. Always verify information directly with service providers.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                <a href="https://github.com/michaelcraft17/autism-community-resources" style="color: white; text-decoration: underline;" target="_blank" rel="noopener noreferrer">Contribute on GitHub</a>
+            </p>
         </div>
     </footer>
 
@@ -360,6 +557,8 @@
         let allResources = [];
         let filteredResources = [];
         let userLocation = null;
+        let favorites = JSON.parse(localStorage.getItem('favoriteResources') || '[]');
+        let searchTimeout = null;
 
         // Load data from the JSON file
         async function loadResources() {
@@ -429,10 +628,22 @@
             container.style.display = 'grid';
             noResults.style.display = 'none';
 
-            container.innerHTML = filteredResources.map(resource => `
-                <div class="resource-card">
+            container.innerHTML = filteredResources.map((resource, index) => {
+                const resourceId = `${resource.name}-${index}`;
+                const isFavorite = favorites.includes(resourceId);
+
+                return `
+                <div class="resource-card" role="article" aria-label="${resource.name}">
                     <div class="resource-header">
-                        <h3 class="resource-name">${resource.name}</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <h3 class="resource-name">${resource.name}</h3>
+                            <button class="favorite-btn ${isFavorite ? 'active' : ''}"
+                                    onclick="toggleFavorite('${resourceId.replace(/'/g, "\\'")}', event)"
+                                    aria-label="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}"
+                                    aria-pressed="${isFavorite}">
+                                ${isFavorite ? '❤️' : '🤍'}
+                            </button>
+                        </div>
                         <span class="resource-type type-${resource.type}">${formatType(resource.type)}</span>
                         ${resource.distance && resource.distance < 999 ? `
                         <div style="margin-top: 0.5rem; color: #28a745; font-weight: 600; font-size: 0.95rem;">
@@ -443,19 +654,19 @@
 
                     <div class="resource-details">
                         <div class="detail-item">
-                            <span class="detail-icon">📍</span>
+                            <span class="detail-icon" aria-hidden="true">📍</span>
                             <span>${resource.address}</span>
                         </div>
 
                         <div class="detail-item">
-                            <span class="detail-icon">📞</span>
+                            <span class="detail-icon" aria-hidden="true">📞</span>
                             <span>${resource.phone}</span>
                         </div>
 
                         ${resource.website ? `
                         <div class="detail-item">
-                            <span class="detail-icon">🌐</span>
-                            <a href="${resource.website}" target="_blank" style="color: #667eea; text-decoration: none;">
+                            <span class="detail-icon" aria-hidden="true">🌐</span>
+                            <a href="${resource.website}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none;">
                                 ${resource.website.replace('https://', '').replace('http://', '')}
                             </a>
                         </div>
@@ -469,16 +680,16 @@
                     ` : ''}
 
                     <div class="resource-actions">
-                        <a href="tel:${resource.phone}" class="action-btn btn-primary">Call Now</a>
+                        <a href="tel:${resource.phone}" class="action-btn btn-primary" aria-label="Call ${resource.name}">Call Now</a>
                         ${resource.website ? `
-                        <a href="${resource.website}" target="_blank" class="action-btn btn-secondary">Visit Website</a>
+                        <a href="${resource.website}" target="_blank" rel="noopener noreferrer" class="action-btn btn-secondary" aria-label="Visit ${resource.name} website">Visit Website</a>
                         ` : ''}
                         ${resource.coordinates ? `
-                        <a href="https://www.google.com/maps/dir//${resource.coordinates.lat},${resource.coordinates.lng}" target="_blank" class="action-btn btn-secondary">Get Directions</a>
+                        <a href="https://www.google.com/maps/dir//${resource.coordinates.lat},${resource.coordinates.lng}" target="_blank" rel="noopener noreferrer" class="action-btn btn-secondary" aria-label="Get directions to ${resource.name}">Get Directions</a>
                         ` : ''}
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         // Format type for display
@@ -524,24 +735,136 @@
             `;
         }
 
-        // Search and filter functionality
+        // Search and filter functionality with debouncing
         function filterResources() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const typeFilter = document.getElementById('typeFilter').value;
+            // Debounce search
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const typeFilter = document.getElementById('typeFilter').value;
 
-            filteredResources = allResources.filter(resource => {
-                const matchesSearch = !searchTerm ||
-                    resource.name.toLowerCase().includes(searchTerm) ||
-                    resource.address.toLowerCase().includes(searchTerm) ||
-                    (resource.description && resource.description.toLowerCase().includes(searchTerm));
+                filteredResources = allResources.filter(resource => {
+                    const matchesSearch = !searchTerm ||
+                        resource.name.toLowerCase().includes(searchTerm) ||
+                        resource.address.toLowerCase().includes(searchTerm) ||
+                        (resource.description && resource.description.toLowerCase().includes(searchTerm));
 
-                const matchesType = !typeFilter || resource.type === typeFilter;
+                    const matchesType = !typeFilter || resource.type === typeFilter;
 
-                return matchesSearch && matchesType;
+                    return matchesSearch && matchesType;
+                });
+
+                displayResources();
+                updateStats();
+            }, 300);
+        }
+
+        // Favorites functionality
+        function toggleFavorite(resourceId, event) {
+            event.stopPropagation();
+            const index = favorites.indexOf(resourceId);
+
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(resourceId);
+            }
+
+            localStorage.setItem('favoriteResources', JSON.stringify(favorites));
+            updateFavoriteCount();
+            displayResources();
+        }
+
+        function updateFavoriteCount() {
+            document.getElementById('favCount').textContent = favorites.length;
+        }
+
+        function showFavorites() {
+            if (favorites.length === 0) {
+                alert('You have no favorites yet! Click the heart icon on any resource to save it.');
+                return;
+            }
+
+            filteredResources = allResources.filter((resource, index) => {
+                const resourceId = `${resource.name}-${index}`;
+                return favorites.includes(resourceId);
             });
 
+            document.getElementById('resourceContainer').style.display = 'grid';
             displayResources();
             updateStats();
+        }
+
+        // Dark mode functionality
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+
+            const btn = document.getElementById('darkModeToggle');
+            btn.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }
+
+        // Load dark mode preference
+        function loadDarkModePreference() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').textContent = '☀️ Light Mode';
+            }
+        }
+
+        // Export functionality
+        function exportResults() {
+            if (filteredResources.length === 0) {
+                alert('No resources to export. Please search for resources first.');
+                return;
+            }
+
+            const csvContent = generateCSV(filteredResources);
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            link.setAttribute('href', url);
+            link.setAttribute('download', `autism-resources-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function generateCSV(resources) {
+            const headers = ['Name', 'Type', 'Address', 'Phone', 'Website', 'Description', 'Distance (miles)'];
+            const rows = resources.map(r => [
+                r.name,
+                formatType(r.type),
+                r.address,
+                r.phone,
+                r.website || '',
+                (r.description || '').replace(/,/g, ';'),
+                r.distance ? r.distance.toFixed(1) : 'N/A'
+            ]);
+
+            return [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+        }
+
+        // Print functionality
+        function printResults() {
+            window.print();
+        }
+
+        // Loading state management
+        function showLoading() {
+            document.getElementById('loadingSpinner').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingSpinner').classList.remove('active');
         }
 
         // Clear filters
@@ -656,6 +979,7 @@
             const originalText = btn.textContent;
             btn.textContent = '🔄 Getting location...';
             btn.disabled = true;
+            showLoading();
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -674,6 +998,7 @@
                         updateMap();
                         btn.textContent = originalText;
                         btn.disabled = false;
+                        hideLoading();
                     }, 500);
                 },
                 (error) => {
@@ -692,6 +1017,7 @@
                     alert(errorMsg);
                     btn.textContent = originalText;
                     btn.disabled = false;
+                    hideLoading();
                 }
             );
         }
@@ -710,6 +1036,7 @@
             const originalText = searchBtn.textContent;
             searchBtn.textContent = '🔄 Searching...';
             searchBtn.disabled = true;
+            showLoading();
 
             try {
                 // Use Nominatim API for geocoding
@@ -732,17 +1059,20 @@
                         updateMap();
                         searchBtn.textContent = originalText;
                         searchBtn.disabled = false;
+                        hideLoading();
                     }, 500);
                 } else {
                     alert('Location not found. Please try a different search term.');
                     searchBtn.textContent = originalText;
                     searchBtn.disabled = false;
+                    hideLoading();
                 }
             } catch (error) {
                 console.error('Geocoding error:', error);
                 alert('Error searching for location. Please try again.');
                 searchBtn.textContent = originalText;
                 searchBtn.disabled = false;
+                hideLoading();
             }
         }
 
@@ -781,8 +1111,18 @@
             if (e.key === 'Enter') searchLocation();
         });
 
-        // Load resources when page loads
-        document.addEventListener('DOMContentLoaded', loadResources);
+        // New feature event listeners
+        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+        document.getElementById('exportBtn').addEventListener('click', exportResults);
+        document.getElementById('printBtn').addEventListener('click', printResults);
+        document.getElementById('showFavoritesBtn').addEventListener('click', showFavorites);
+
+        // Load resources and preferences when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadResources();
+            loadDarkModePreference();
+            updateFavoriteCount();
+        });
 
         // Listen for community data loaded event
         window.addEventListener('communityDataLoaded', function(e) {
