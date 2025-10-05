@@ -416,5 +416,499 @@
       "lat": 38.9072,
       "lng": -77.0369
     }
+  },
+  {
+    "name": "Texas Children's Hospital - Autism Program",
+    "address": "6701 Fannin Street, Houston, TX 77030",
+    "phone": "(832) 822-3700",
+    "website": "https://www.texaschildrens.org/departments/autism-program",
+    "type": "medical",
+    "source": "State Resources 2025 - Texas",
+    "services": [
+      "Diagnosis",
+      "Treatment",
+      "Family Support",
+      "Meyer Center for Developmental Pediatrics"
+    ],
+    "description": "Comprehensive autism program providing family-centered diagnosis and management at one of the nation's leading children's hospitals",
+    "coordinates": {
+      "lat": 29.7088,
+      "lng": -95.3979
+    }
+  },
+  {
+    "name": "Children's Health - Center for Autism Care (Dallas)",
+    "address": "1935 Medical District Drive, Dallas, TX 75235",
+    "phone": "(214) 456-7000",
+    "website": "https://www.childrens.com/specialties-services/specialty-centers-and-programs/autism-and-developmental-disabilities",
+    "type": "medical",
+    "source": "State Resources 2025 - Texas",
+    "services": [
+      "Autism Care",
+      "Developmental Disabilities",
+      "Multidisciplinary Team",
+      "Behavioral Support"
+    ],
+    "description": "Expert care for autism and developmental disabilities from specialists across different disciplines",
+    "coordinates": {
+      "lat": 32.8098,
+      "lng": -96.8352
+    }
+  },
+  {
+    "name": "Autism Society of Texas",
+    "address": "300 E. Highland Mall Blvd, Suite 205, Austin, TX 78752",
+    "phone": "(512) 479-4199",
+    "website": "https://www.texasautismsociety.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Texas",
+    "services": [
+      "Support Services",
+      "Spanish Language Support",
+      "Connection Groups",
+      "Resource Guide"
+    ],
+    "description": "Statewide advocacy organization providing support and resources throughout Texas",
+    "coordinates": {
+      "lat": 30.3222,
+      "lng": -97.7189
+    }
+  },
+  {
+    "name": "Autism Community Network - San Antonio",
+    "address": "535 Bandera Road, San Antonio, TX 78228",
+    "phone": "(210) 277-1800",
+    "website": "https://www.acn-sa.org",
+    "type": "medical",
+    "source": "State Resources 2025 - Texas",
+    "services": [
+      "Autism Screenings",
+      "Diagnostics",
+      "PACT Autism Therapy",
+      "Family Support"
+    ],
+    "description": "Autism diagnostics and therapy services for San Antonio families",
+    "coordinates": {
+      "lat": 29.4469,
+      "lng": -98.5275
+    }
+  },
+  {
+    "name": "InBloom Autism Services - Orlando",
+    "address": "Multiple locations across Orlando, FL",
+    "phone": "(888) 754-0398",
+    "website": "https://inbloomautism.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Florida",
+    "services": [
+      "ABA Therapy",
+      "Learning Centers",
+      "Family Support",
+      "Evidence-based Treatment"
+    ],
+    "description": "ABA therapy and learning centers with locations across Florida including Orlando, Tampa, Jacksonville, and Broward County",
+    "coordinates": {
+      "lat": 28.5383,
+      "lng": -81.3792
+    }
+  },
+  {
+    "name": "Autism Society of Greater Orlando",
+    "address": "P.O. Box 677055, Orlando, FL 32867",
+    "phone": "(407) 855-0235",
+    "website": "https://asgo.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Florida",
+    "services": [
+      "Family Support",
+      "Member Programs",
+      "Resources",
+      "Community Events"
+    ],
+    "description": "One of the largest and oldest local autism organizations in Florida serving hundreds of member families",
+    "coordinates": {
+      "lat": 28.5383,
+      "lng": -81.3792
+    }
+  },
+  {
+    "name": "NYU Child Study Center - Autism Spectrum Disorder Service",
+    "address": "1 Park Avenue, 7th Floor, New York, NY 10016",
+    "phone": "(646) 754-5098",
+    "website": "https://nyulangone.org/locations/child-study-center/autism-spectrum-disorder-service",
+    "type": "medical",
+    "source": "State Resources 2025 - New York",
+    "services": [
+      "Diagnosis",
+      "Treatment Programs",
+      "School-based Services",
+      "Research"
+    ],
+    "description": "Part of Hassenfeld Children's Hospital providing comprehensive autism services in Manhattan, NJ, and Long Island",
+    "coordinates": {
+      "lat": 40.7360,
+      "lng": -73.9875
+    }
+  },
+  {
+    "name": "Center for Autism & the Developing Brain (Weill Cornell)",
+    "address": "21 Bloomingdale Road, White Plains, NY 10605",
+    "phone": "(914) 997-5848",
+    "website": "https://www.nyp.org/psychiatry/center-for-autism-the-developing-brain",
+    "type": "medical",
+    "source": "State Resources 2025 - New York",
+    "services": [
+      "Diagnostic Evaluations",
+      "Treatment Programs",
+      "Research",
+      "Family Support"
+    ],
+    "description": "Collaborative program between NewYork-Presbyterian, Weill Cornell Medicine, and Columbia in partnership with NEXT for AUTISM",
+    "coordinates": {
+      "lat": 41.0351,
+      "lng": -73.7629
+    }
+  },
+  {
+    "name": "Rush University Medical Center - AARTS Center",
+    "address": "1645 W. Jackson Blvd., Suite 603, Chicago, IL 60612",
+    "phone": "(312) 942-0819",
+    "website": "https://www.rush.edu/locations/autism-assessment-research-treatment-services-aarts-center",
+    "type": "medical",
+    "source": "State Resources 2025 - Illinois",
+    "services": [
+      "Autism Assessment",
+      "Research",
+      "Treatment Services",
+      "Social Skills Training"
+    ],
+    "description": "Comprehensive autism assessment, research, treatment and services center in Chicago",
+    "coordinates": {
+      "lat": 41.8773,
+      "lng": -87.6690
+    }
+  },
+  {
+    "name": "Ann & Robert H. Lurie Children's Hospital - Autism Services",
+    "address": "225 E. Chicago Ave., Chicago, IL 60611",
+    "phone": "1-800-543-7362",
+    "website": "https://www.luriechildrens.org/en/specialties-conditions/autism",
+    "type": "medical",
+    "source": "State Resources 2025 - Illinois",
+    "services": [
+      "Developmental & Behavioral Pediatrics",
+      "Autism Diagnosis",
+      "Treatment Programs",
+      "Family Resources"
+    ],
+    "description": "Leading children's hospital providing comprehensive autism services and developmental pediatrics",
+    "coordinates": {
+      "lat": 41.8960,
+      "lng": -87.6231
+    }
+  },
+  {
+    "name": "Children's Hospital of Philadelphia (CHOP) - Autism Center",
+    "address": "3401 Civic Center Blvd., Philadelphia, PA 19104",
+    "phone": "(215) 590-7500",
+    "website": "https://www.chop.edu/centers-programs/autism-integrated-care-program",
+    "type": "medical",
+    "source": "State Resources 2025 - Pennsylvania",
+    "services": [
+      "Accurate Diagnosis",
+      "Integrated Care",
+      "Center for Autism Research",
+      "Follow-up Care"
+    ],
+    "description": "Leading autism experts providing accurate diagnosis and follow-up care through the Autism Integrated Care Program",
+    "coordinates": {
+      "lat": 39.9493,
+      "lng": -75.1920
+    }
+  },
+  {
+    "name": "Center for Autism Research at CHOP",
+    "address": "2716 South Street, Philadelphia, PA 19146",
+    "phone": "(267) 426-7540",
+    "website": "https://www.research.chop.edu/car",
+    "type": "medical",
+    "source": "State Resources 2025 - Pennsylvania",
+    "services": [
+      "Research",
+      "Clinical Services",
+      "Autism Roadmap",
+      "Community Resources"
+    ],
+    "description": "Research center dedicated to understanding autism and improving lives through innovative research and clinical care",
+    "coordinates": {
+      "lat": 39.9440,
+      "lng": -75.1867
+    }
+  },
+  {
+    "name": "Southwest Autism Research & Resource Center (SARRC)",
+    "address": "300 N 18th St, Phoenix, AZ 85006",
+    "phone": "(602) 340-8717",
+    "website": "https://autismcenter.org",
+    "type": "medical",
+    "source": "State Resources 2025 - Arizona",
+    "services": [
+      "Diagnostic Tests",
+      "ABA Therapy",
+      "Family Services",
+      "Research"
+    ],
+    "description": "Leading autism research and resource center serving ages 18 months - 21 years with multiple Phoenix area locations",
+    "coordinates": {
+      "lat": 33.4534,
+      "lng": -112.0455
+    }
+  },
+  {
+    "name": "Seattle Children's Autism Center",
+    "address": "4909 25th Avenue Northeast, Seattle, WA 98105",
+    "phone": "(206) 987-8080",
+    "website": "https://www.seattlechildrens.org",
+    "type": "medical",
+    "source": "State Resources 2025 - Washington",
+    "services": [
+      "Diagnostic Evaluation",
+      "Behavioral Interventions",
+      "Social Skills Groups",
+      "Parent Education"
+    ],
+    "description": "Comprehensive autism center serving Washington, Alaska, Idaho, and Montana with financial assistance available",
+    "coordinates": {
+      "lat": 47.6597,
+      "lng": -122.2850
+    }
+  },
+  {
+    "name": "Boston Children's Hospital - Autism Spectrum Center",
+    "address": "300 Longwood Ave., Boston, MA 02115",
+    "phone": "(617) 355-7493",
+    "website": "https://www.childrenshospital.org/programs/autism-spectrum-center",
+    "type": "medical",
+    "source": "State Resources 2025 - Massachusetts",
+    "services": [
+      "Comprehensive Diagnosis",
+      "Family-Centered Care",
+      "Multiple Locations",
+      "Treatment Programs"
+    ],
+    "description": "Comprehensive, family-centered diagnostic and care services with locations in Boston, Brookline, Peabody, and Waltham",
+    "coordinates": {
+      "lat": 42.3363,
+      "lng": -71.1045
+    }
+  },
+  {
+    "name": "Marcus Autism Center",
+    "address": "1920 Briarcliff Road, Atlanta, GA 30329",
+    "phone": "(404) 785-9400",
+    "website": "https://www.marcus.org",
+    "type": "medical",
+    "source": "State Resources 2025 - Georgia",
+    "services": [
+      "Comprehensive Testing",
+      "Science-based Treatments",
+      "Research",
+      "Feeding Program"
+    ],
+    "description": "One of the largest autism centers in the U.S., treating over 4,500 children annually with latest research and treatments",
+    "coordinates": {
+      "lat": 33.8096,
+      "lng": -84.3236
+    }
+  },
+  {
+    "name": "Children's Hospital Colorado - Autism Services",
+    "address": "13123 East 16th Ave, Aurora, CO 80045",
+    "phone": "1-800-624-6553",
+    "website": "https://www.childrenscolorado.org/conditions-and-advice/conditions-and-symptoms/conditions/autism-spectrum-disorders",
+    "type": "medical",
+    "source": "State Resources 2025 - Colorado",
+    "services": [
+      "Diagnostic Assessments",
+      "Therapies",
+      "Developmental Pediatrics",
+      "Specialized Programs"
+    ],
+    "description": "Comprehensive autism services through Developmental Pediatrics Program with 24/7 availability",
+    "coordinates": {
+      "lat": 39.7432,
+      "lng": -104.8358
+    }
+  },
+  {
+    "name": "Henry Ford Center for Autism and Developmental Disabilities",
+    "address": "1 Ford Place, Pediatric Admin, 4B, Detroit, MI 48202",
+    "phone": "(313) 972-9009",
+    "website": "https://www.henryford.com/services/autism",
+    "type": "medical",
+    "source": "State Resources 2025 - Michigan",
+    "services": [
+      "Diagnosis",
+      "Treatment",
+      "Support Services",
+      "Multidisciplinary Care"
+    ],
+    "description": "Comprehensive autism and developmental disabilities center serving the Detroit area",
+    "coordinates": {
+      "lat": 42.3595,
+      "lng": -83.0687
+    }
+  },
+  {
+    "name": "Autism Alliance of Michigan",
+    "address": "26913 Northwestern Hwy, Southfield, MI 48033",
+    "phone": "(877) 463-2266",
+    "website": "https://autismallianceofmichigan.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Michigan",
+    "services": [
+      "Resources",
+      "Advocacy",
+      "Family Support",
+      "Community Programs"
+    ],
+    "description": "Statewide advocacy organization providing resources and support for Michigan families",
+    "coordinates": {
+      "lat": 42.4760,
+      "lng": -83.2315
+    }
+  },
+  {
+    "name": "Grant a Gift Autism Foundation - Ackerman Center",
+    "address": "3790 Flora Street, Las Vegas, NV 89103",
+    "phone": "(702) 998-9505",
+    "website": "https://www.grantagift.com",
+    "type": "medical",
+    "source": "State Resources 2025 - Nevada",
+    "services": [
+      "Multidisciplinary Clinical Care",
+      "Family Services",
+      "Case Management",
+      "Community Support"
+    ],
+    "description": "Nevada's leading not-for-profit provider of multidisciplinary clinical care for families affected by autism",
+    "coordinates": {
+      "lat": 36.1447,
+      "lng": -115.1961
+    }
+  },
+  {
+    "name": "Charlotte TEACCH Center",
+    "address": "8401 University Executive Park Drive Suite 100, Charlotte, NC 28262",
+    "phone": "(704) 510-0561",
+    "website": "https://teacch.com/regional-centers/charlotte-teacch-center",
+    "type": "education",
+    "source": "State Resources 2025 - North Carolina",
+    "services": [
+      "Diagnostic Evaluations",
+      "Intervention/Therapy",
+      "Education",
+      "Consultation"
+    ],
+    "description": "TEACCH regional center providing evidence-based services for individuals with autism and their families",
+    "coordinates": {
+      "lat": 35.3081,
+      "lng": -80.7369
+    }
+  },
+  {
+    "name": "Autism Society of North Carolina - Charlotte Office",
+    "address": "8307 University Executive Park Drive, Suite 231, Charlotte, NC 28262",
+    "phone": "(704) 904-6933",
+    "website": "https://www.autismsociety-nc.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - North Carolina",
+    "services": [
+      "Support Services",
+      "Education",
+      "Advocacy",
+      "Resources"
+    ],
+    "description": "Statewide organization providing support, education, and advocacy for North Carolina families",
+    "coordinates": {
+      "lat": 35.3081,
+      "lng": -80.7369
+    }
+  },
+  {
+    "name": "Behavior Frontiers - Minneapolis",
+    "address": "3007 Harbor Lane North, Suite 1200, Plymouth, MN 55447",
+    "phone": "(651) 243-6556",
+    "website": "https://www.behaviorfrontiers.com/minneapolis-mn",
+    "type": "therapy",
+    "source": "State Resources 2025 - Minnesota",
+    "services": [
+      "ABA Therapy",
+      "Center-based Services",
+      "Home-based Services",
+      "Multiple Locations"
+    ],
+    "description": "ABA therapy services with multiple locations in the Minneapolis area including Plymouth, Fridley, and Woodbury",
+    "coordinates": {
+      "lat": 45.0180,
+      "lng": -93.4558
+    }
+  },
+  {
+    "name": "Center for Social Dynamics - Portland",
+    "address": "5847 NE 122nd Suite 200, Portland, OR 97230",
+    "phone": "(877) 910-6538",
+    "website": "https://csdautismservices.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Oregon",
+    "services": [
+      "Intensive Behavioral Unit",
+      "ABA Therapy",
+      "Social Skills",
+      "Family Support"
+    ],
+    "description": "Comprehensive autism services including intensive behavioral support in the Portland area",
+    "coordinates": {
+      "lat": 45.5428,
+      "lng": -122.5355
+    }
+  },
+  {
+    "name": "OHSU Doernbecher Children's Hospital - Autism Clinic",
+    "address": "700 S.W. Campus Drive, Portland, OR 97239",
+    "phone": "(503) 346-0640",
+    "website": "https://www.ohsu.edu/doernbecher/pediatric-autism",
+    "type": "medical",
+    "source": "State Resources 2025 - Oregon",
+    "services": [
+      "Evaluation",
+      "Testing",
+      "Treatment",
+      "Research"
+    ],
+    "description": "Comprehensive autism evaluation and testing services at Oregon's leading children's hospital",
+    "coordinates": {
+      "lat": 45.4985,
+      "lng": -122.6858
+    }
+  },
+  {
+    "name": "Vanderbilt TRIAD - Treatment and Research Institute for Autism",
+    "address": "1207 17th Ave. S, Nashville, TN 37212",
+    "phone": "(615) 322-8240",
+    "website": "https://triad.vumc.org",
+    "type": "medical",
+    "source": "State Resources 2025 - Tennessee",
+    "services": [
+      "Diagnostic Assessment",
+      "Parent Workshops",
+      "Research",
+      "Family Services"
+    ],
+    "description": "Leading autism research and treatment institute at Vanderbilt offering comprehensive family services",
+    "coordinates": {
+      "lat": 36.1403,
+      "lng": -86.8027
+    }
   }
 ]
