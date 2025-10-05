@@ -45,7 +45,16 @@ const sampleData = [
 document.addEventListener('DOMContentLoaded', function() {
     initializeMap();
     bindEventListeners();
-    loadSampleData();
+
+    // Check if community data is already loaded
+    if (window.communityData) {
+        loadCommunityData(window.communityData);
+    } else {
+        // Listen for community data to be loaded
+        window.addEventListener('communityDataLoaded', function(e) {
+            loadCommunityData(e.detail);
+        });
+    }
 });
 
 // Initialize Leaflet map
@@ -90,6 +99,36 @@ function bindEventListeners() {
 // Load sample data
 function loadSampleData() {
     currentData = [...sampleData];
+    displayResults(currentData);
+    addMarkersToMap(currentData);
+    updateResultsCount(currentData.length);
+}
+
+// Load community data from community_data.js
+function loadCommunityData(data) {
+    // Convert community data format to map format
+    currentData = data
+        .filter(item => item.coordinates && item.coordinates.lat && item.coordinates.lng)
+        .map((item, index) => ({
+            id: index + 1,
+            name: item.name,
+            type: item.type,
+            address: item.address,
+            phone: item.phone,
+            website: item.website,
+            lat: item.coordinates.lat,
+            lng: item.coordinates.lng,
+            services: item.services || [],
+            description: item.description || ''
+        }));
+
+    // If no valid data with coordinates, fall back to sample data
+    if (currentData.length === 0) {
+        console.warn('No resources with valid coordinates found. Loading sample data.');
+        loadSampleData();
+        return;
+    }
+
     displayResults(currentData);
     addMarkersToMap(currentData);
     updateResultsCount(currentData.length);
@@ -360,7 +399,13 @@ function resetView() {
     }
 
     userLocation = null;
-    loadSampleData();
+
+    // Reload data - check if community data exists, otherwise use sample data
+    if (window.communityData && window.communityData.length > 0) {
+        loadCommunityData(window.communityData);
+    } else {
+        loadSampleData();
+    }
 }
 
 // Update results count
