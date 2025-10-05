@@ -1,6 +1,6 @@
 // Community Resources Data
 // Generated on: 2025-10-05
-// Total resources: 327
+// Total resources: 344
 
 const communityResourcesData = [
   {
@@ -6180,10 +6180,321 @@ const communityResourcesData = [
       "lat": 61.1919,
       "lng": -149.8342
     }
+  },
+  {
+    "name": "ACES ABA - Autism Therapy Center",
+    "address": "1887 Monterey Rd, Ste 225, San Jose, CA 95112",
+    "phone": "(669) 235-3344",
+    "website": "https://www.acesaba.com/locations/san-jose",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "ABA Therapy",
+      "Center-Based Services",
+      "Behavioral Support"
+    ],
+    "description": "ABA therapy center established in 2012, providing comprehensive autism treatment services",
+    "coordinates": {
+      "lat": 37.3222,
+      "lng": -121.8619
+    }
+  },
+  {
+    "name": "Pacific Autism Center for Education (PACE) - Faces ABA",
+    "address": "897 Broadleaf Lane, San Jose, CA 95128",
+    "phone": "(408) 785-0102",
+    "website": "https://www.pacificautism.org",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "ABA Behavioral Services",
+      "Preschool Programs",
+      "Ages 18 months - 13 years"
+    ],
+    "description": "Comprehensive autism programs including elementary, high school, residential, and ABA therapy services",
+    "coordinates": {
+      "lat": 37.3107,
+      "lng": -121.9458
+    }
+  },
+  {
+    "name": "Parents Helping Parents (PHP)",
+    "address": "San Jose, CA",
+    "phone": "(408) 727-5775",
+    "website": "https://www.php.com",
+    "type": "advocacy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Parent Support",
+      "Resource Directory",
+      "Support Groups",
+      "1:1 Consultations",
+      "Webinars"
+    ],
+    "description": "Parent support organization for children and adults with disabilities in San Jose",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Kaiser Permanente San Jose Medical Center - Autism Spectrum Disorder Center",
+    "address": "San Jose Medical Center, San Jose, CA 95119",
+    "phone": "(408) 972-3000",
+    "website": "https://healthy.kaiserpermanente.org/northern-california/facilities/san-jose-medical-center-100322",
+    "type": "medical",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Psychiatric Services",
+      "Autism Diagnosis",
+      "Medical Support"
+    ],
+    "description": "Kaiser Permanente autism spectrum disorder center providing comprehensive medical and psychiatric care",
+    "coordinates": {
+      "lat": 37.2642,
+      "lng": -121.8346
+    }
+  },
+  {
+    "name": "Center for Autism and Related Disorders (CARD) - San Jose",
+    "address": "3610 Snell Ave, San Jose, CA 95136",
+    "phone": "(408) 979-9457",
+    "website": "https://www.centerforautism.com",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Services",
+      "Behavioral Treatment"
+    ],
+    "description": "Leading provider of autism treatment services with evidence-based ABA therapy",
+    "coordinates": {
+      "lat": 37.2524,
+      "lng": -121.8298
+    }
+  },
+  {
+    "name": "Relucent Psychology Group - San Jose",
+    "address": "San Jose, CA",
+    "phone": "(408) 680-1441",
+    "website": "https://relucentpg.com",
+    "type": "medical",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Autism Evaluations",
+      "Diagnostic Services",
+      "Psychological Assessment"
+    ],
+    "description": "Professional autism evaluations for children and adults with free consultation available",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "CHC (Community Health Center) - San Jose",
+    "address": "2280 Kenwood Avenue, San Jose, CA 95128",
+    "phone": "(408) 816-2018",
+    "website": "https://www.chconline.org/autism",
+    "type": "medical",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Expert Evaluations",
+      "Therapy Services",
+      "Comprehensive Autism Support"
+    ],
+    "description": "Personalized comprehensive approach to understanding and living with autism diagnosis",
+    "coordinates": {
+      "lat": 37.3166,
+      "lng": -121.9522
+    }
+  },
+  {
+    "name": "BlueSprig Autism - San Jose",
+    "address": "San Jose, CA",
+    "phone": "(888) 554-0310",
+    "website": "https://www.bluesprigautism.com/centers/california/san-jose",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "ABA Therapy",
+      "Evidence-Based Treatment",
+      "Insurance Accepted"
+    ],
+    "description": "Evidence-based ABA treatment strategies for children with Autism Spectrum Disorder",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Autism Behavior Services, Inc. (ABSI) - San Jose",
+    "address": "San Jose, CA (serving San Jose, Milpitas, Cupertino, Santa Clara)",
+    "phone": "(877) 248-2661",
+    "website": "https://autismbehaviorservices.com/offices/san-jose-office",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "1:1 ABA Therapy",
+      "Home-Based Services",
+      "School Support",
+      "Telehealth"
+    ],
+    "description": "Comprehensive ABA therapy at home, school, community, and online via telehealth",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "The Stepping Stones Group - San Jose Autism Learning Center",
+    "address": "San Jose, CA",
+    "phone": "(844) 577-7771",
+    "website": "https://thesteppingstonesgroup.com/california-autism-services/san-jose",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Center-Based ABA",
+      "At-Home Programs",
+      "Ages 18 months - 6 years",
+      "Diagnostic Evaluations"
+    ],
+    "description": "Center-based and at-home ABA programs with diagnostic evaluations",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Behavior Frontiers - San Jose",
+    "address": "San Jose, CA",
+    "phone": "(855) 462-8342",
+    "website": "https://www.behaviorfrontiers.com/san-jose-ca",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Home-Based ABA",
+      "Insurance Contracted",
+      "Medically Necessary Treatment"
+    ],
+    "description": "Applied behavior analysis care program with contracts with major health plans",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Kadiant - San Jose",
+    "address": "San Jose, CA",
+    "phone": "(866) 523-4268",
+    "website": "https://www.kadiant.com",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Support",
+      "Autism Services"
+    ],
+    "description": "Autism therapy services with locations throughout the Bay Area",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Evolibri Therapy - Santa Clara",
+    "address": "Santa Clara, CA",
+    "phone": "(408) 735-7990",
+    "website": "https://www.evolibri.com",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy"
+    ],
+    "description": "Multi-disciplinary therapy services for children with autism in Santa Clara",
+    "coordinates": {
+      "lat": 37.3541,
+      "lng": -121.9552
+    }
+  },
+  {
+    "name": "Little Spirits Bay Area Inc.",
+    "address": "San Jose, CA",
+    "phone": "(408) 320-4997",
+    "website": "https://www.littlespiritsbayarea.com",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "In-Home ABA",
+      "On-Site Therapy",
+      "Ages 0-12"
+    ],
+    "description": "In-home and on-site ABA therapy for young children with autism",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Center for Autism - San Jose",
+    "address": "San Jose, CA",
+    "phone": "(408) 618-5265",
+    "website": "https://www.centerforautism.com",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "ABA Services",
+      "Autism Support",
+      "Behavioral Therapy"
+    ],
+    "description": "Dedicated autism center providing comprehensive behavioral therapy services",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Bay Area Clinical Associates - San Jose",
+    "address": "San Jose, CA",
+    "phone": "(408) 356-3754",
+    "website": "https://www.baca.org/autism-and-social-skills-san-jose-peninsula",
+    "type": "therapy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Social Skills Training",
+      "Autism Support",
+      "Clinical Services"
+    ],
+    "description": "Autism and social skills services for children and adolescents in San Jose",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
+  },
+  {
+    "name": "Autism Society San Francisco Bay Area",
+    "address": "San Jose Chapter, CA",
+    "phone": "(415) 227-8979",
+    "website": "https://sfautismsociety.org",
+    "type": "advocacy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Community Support",
+      "Resources",
+      "Advocacy",
+      "Family Events"
+    ],
+    "description": "Bringing the Bay Area autism community together with support and resources",
+    "coordinates": {
+      "lat": 37.3382,
+      "lng": -121.8863
+    }
   }
 ];
 
 // Make available globally
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.communityData = communityResourcesData;
 }
