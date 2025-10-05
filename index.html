@@ -959,26 +959,26 @@
                 userInfoWindow.open(map, window.userMarker);
             }
 
-            // Fit map to show all markers including user location
-            if (userLocation && markers.length > 0) {
-                // Include user location marker in the bounds
-                const bounds = new google.maps.LatLngBounds();
-                markers.forEach(marker => bounds.extend(marker.getPosition()));
-                if (window.userMarker) {
-                    bounds.extend(window.userMarker.getPosition());
-                }
-                map.fitBounds(bounds);
-
-                // Don't zoom in too much
-                const listener = google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
-                    if (map.getZoom() > 14) {
-                        map.setZoom(14);
-                    }
-                });
-            } else if (userLocation) {
-                // Only user location, center on it with closer zoom (street level)
+            // Center map on user location with 2-mile radius view
+            if (userLocation) {
                 map.setCenter({ lat: userLocation.lat, lng: userLocation.lng });
-                map.setZoom(14);
+                // Zoom level 13 approximately shows a 2-mile radius
+                map.setZoom(13);
+
+                // Add a circle to show 2-mile radius
+                if (window.radiusCircle) {
+                    window.radiusCircle.setMap(null);
+                }
+                window.radiusCircle = new google.maps.Circle({
+                    map: map,
+                    center: { lat: userLocation.lat, lng: userLocation.lng },
+                    radius: 3218.69, // 2 miles in meters
+                    fillColor: '#667eea',
+                    fillOpacity: 0.1,
+                    strokeColor: '#667eea',
+                    strokeOpacity: 0.3,
+                    strokeWeight: 2
+                });
             } else if (markers.length > 0) {
                 // No user location, just fit to resource markers
                 const bounds = new google.maps.LatLngBounds();
