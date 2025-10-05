@@ -226,5 +226,195 @@
       "lat": 34.0689,
       "lng": -118.4452
     }
+  },
+  {
+    "name": "Autism Society National Helpline",
+    "address": "National Helpline - Call from anywhere in the US",
+    "phone": "800-328-8476",
+    "website": "https://autismsociety.org",
+    "type": "general_support",
+    "source": "National Resources 2025",
+    "services": [
+      "Information & Referral",
+      "Resource Connection",
+      "Family Support",
+      "Local Chapter Network (75 affiliates)"
+    ],
+    "description": "National helpline with trained specialists providing information and support to families nationwide",
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    }
+  },
+  {
+    "name": "Autism Speaks - National Headquarters",
+    "address": "1 East 33rd Street, 4th Floor, New York, NY 10016",
+    "phone": "(646) 385-8500",
+    "website": "https://www.autismspeaks.org",
+    "type": "advocacy",
+    "source": "National Resources 2025",
+    "services": [
+      "Autism Response Team (ART)",
+      "Resource Directory",
+      "Advocacy",
+      "Research Funding"
+    ],
+    "description": "Leading autism advocacy organization providing resources, support, and services nationwide",
+    "coordinates": {
+      "lat": 40.7452,
+      "lng": -73.9836
+    }
+  },
+  {
+    "name": "Autistic Self Advocacy Network (ASAN)",
+    "address": "P.O. Box 66122, Washington, D.C. 20035",
+    "phone": "Contact via email",
+    "website": "https://autisticadvocacy.org",
+    "type": "advocacy",
+    "source": "National Resources 2025",
+    "services": [
+      "Self-Advocacy",
+      "Policy Advocacy",
+      "Autistic-Led Programs",
+      "Community Support"
+    ],
+    "description": "National nonprofit advocacy organization run by and for autistic individuals",
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    }
+  },
+  {
+    "name": "National Autism Association",
+    "address": "310 Maple Ave., Suite E1, Barrington, RI 02806",
+    "phone": "(877) 622-2884",
+    "website": "https://nationalautismassociation.org",
+    "type": "advocacy",
+    "source": "National Resources 2025",
+    "services": [
+      "Safety Programs",
+      "Family Support",
+      "Education",
+      "Advocacy"
+    ],
+    "description": "National non-profit providing advocacy, education, and support for individuals with autism and families",
+    "coordinates": {
+      "lat": 41.7404,
+      "lng": -71.3087
+    }
+  },
+  {
+    "name": "Organization for Autism Research (OAR)",
+    "address": "2111 Wilson Boulevard, Suite 401, Arlington, VA 22201",
+    "phone": "(866) 366-9710",
+    "website": "https://researchautism.org",
+    "type": "advocacy",
+    "source": "National Resources 2025",
+    "services": [
+      "Applied Research",
+      "Scholarships",
+      "Family Resources",
+      "Education Programs"
+    ],
+    "description": "National organization promoting applied research to help families, educators, and individuals with autism",
+    "coordinates": {
+      "lat": 38.8951,
+      "lng": -77.0714
+    }
+  },
+  {
+    "name": "Autism Research Institute (ARI)",
+    "address": "4182 Adams Avenue, San Diego, CA 92116",
+    "phone": "(833) 281-7165",
+    "website": "https://autism.org",
+    "type": "medical",
+    "source": "National Resources 2025",
+    "services": [
+      "Research",
+      "Resources",
+      "Information Services",
+      "Family Support"
+    ],
+    "description": "Non-profit dedicated to conducting research and providing resources for individuals with autism and families",
+    "coordinates": {
+      "lat": 32.7631,
+      "lng": -117.1222
+    }
+  },
+  {
+    "name": "The Arc's Autism Now Center",
+    "address": "2000 Pennsylvania Avenue NW, Suite 500, Washington, DC 20006",
+    "phone": "1-855-828-8476",
+    "website": "https://autismnow.org",
+    "type": "general_support",
+    "source": "National Resources 2025",
+    "services": [
+      "Information & Referral Call Center",
+      "Advocacy",
+      "Community Resources",
+      "Family Support"
+    ],
+    "description": "National information and referral center for autism and developmental disabilities support",
+    "coordinates": {
+      "lat": 38.9010,
+      "lng": -77.0447
+    }
+  },
+  {
+    "name": "Easterseals - National Office",
+    "address": "National Network - Call for local services",
+    "phone": "1-800-757-3257",
+    "website": "https://www.easterseals.com",
+    "type": "therapy",
+    "source": "National Resources 2025",
+    "services": [
+      "Therapy Services",
+      "ABA Programs",
+      "Social Activities",
+      "Career Skills"
+    ],
+    "description": "National network providing autism therapy, social activities, and career skills programs nationwide",
+    "coordinates": {
+      "lat": 41.8781,
+      "lng": -87.6298
+    }
+  },
+  {
+    "name": "NAMI HelpLine - Autism Support",
+    "address": "National Mental Health Helpline",
+    "phone": "800-950-6264",
+    "website": "https://www.nami.org",
+    "type": "general_support",
+    "source": "National Resources 2025",
+    "services": [
+      "Mental Health Support",
+      "Autism Resources",
+      "Crisis Support",
+      "Information & Referrals"
+    ],
+    "description": "National helpline providing support and resources for autism spectrum disorder and mental health (M-F, 10am-10pm ET)",
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    }
+  },
+  {
+    "name": "988 Suicide & Crisis Lifeline",
+    "address": "National Crisis Support - 24/7",
+    "phone": "988",
+    "website": "https://988lifeline.org",
+    "type": "general_support",
+    "source": "National Resources 2025",
+    "services": [
+      "Crisis Support",
+      "Mental Health Emergency",
+      "24/7 Availability",
+      "Text & Chat Support"
+    ],
+    "description": "National crisis line providing 24/7 support for mental health emergencies (call or text 988)",
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    }
   }
 ]
