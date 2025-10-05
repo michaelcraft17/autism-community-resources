@@ -624,8 +624,8 @@
                 const group = new L.featureGroup(allMarkers);
                 map.fitBounds(group.getBounds().pad(0.1));
             } else if (userLocation) {
-                // Only user location, center on it
-                map.setView([userLocation.lat, userLocation.lng], 12);
+                // Only user location, center on it with closer zoom
+                map.setView([userLocation.lat, userLocation.lng], 13);
             } else if (markers.length > 0) {
                 // No user location, just fit to resource markers
                 const group = new L.featureGroup(markers);
