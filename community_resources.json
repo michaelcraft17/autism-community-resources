@@ -1100,5 +1100,309 @@
       "lat": 42.4430,
       "lng": -71.2245
     }
+  },
+  {
+    "name": "Riley Hospital for Children - Autism Spectrum Disorders Program",
+    "address": "1002 Wishard Blvd, Suite 2000, Indianapolis, IN 46202",
+    "phone": "(317) 944-4846",
+    "website": "https://www.rileychildrens.org/health-info/autism",
+    "type": "medical",
+    "source": "State Resources 2025 - Indiana",
+    "services": [
+      "Comprehensive Assessment",
+      "Treatment",
+      "Early Autism Evaluation Hub",
+      "Birth to Age 18"
+    ],
+    "description": "Comprehensive assessment and treatment for autism spectrum disorder and neurodevelopmental disorders from birth to age 18",
+    "coordinates": {
+      "lat": 39.7817,
+      "lng": -86.1611
+    }
+  },
+  {
+    "name": "Thompson Center for Autism & Neurodevelopment - Missouri",
+    "address": "205 Portland Street, Columbia, MO 65211",
+    "phone": "(573) 882-6888",
+    "website": "https://thompsoncenter.missouri.edu",
+    "type": "medical",
+    "source": "State Resources 2025 - Missouri",
+    "services": [
+      "Diagnosis",
+      "Research",
+      "Clinical Services",
+      "Community Programs"
+    ],
+    "description": "Comprehensive autism center serving Missouri families with diagnosis, research, and clinical services",
+    "coordinates": {
+      "lat": 38.9517,
+      "lng": -92.3341
+    }
+  },
+  {
+    "name": "VCU Autism Center for Excellence",
+    "address": "1314 West Main Street, P.O. Box 842011, Richmond, VA 23284",
+    "phone": "(855) 711-6987",
+    "website": "https://vcuautismcenter.org",
+    "type": "education",
+    "source": "State Resources 2025 - Virginia",
+    "services": [
+      "Virginia Autism Resource Center",
+      "Education",
+      "Training",
+      "Statewide Resources"
+    ],
+    "description": "Statewide resource center dedicated to improving lives of individuals with autism and their families",
+    "coordinates": {
+      "lat": 37.5407,
+      "lng": -77.4360
+    }
+  },
+  {
+    "name": "UAB Civitan-Sparks Autism Spectrum Disorders Clinic",
+    "address": "1720 2nd Avenue South, Birmingham, AL 35294",
+    "phone": "(205) 934-5471",
+    "website": "https://www.uab.edu/medicine/civitansparks/autism-spectrum-disorders",
+    "type": "medical",
+    "source": "State Resources 2025 - Alabama",
+    "services": [
+      "Diagnostic Evaluations",
+      "Social Skills Groups",
+      "Community Services",
+      "Consultation"
+    ],
+    "description": "Comprehensive autism services including diagnosis, social skills groups, and community support",
+    "coordinates": {
+      "lat": 33.5065,
+      "lng": -86.8025
+    }
+  },
+  {
+    "name": "Tulane Center for Autism & Related Disorders (TCARD)",
+    "address": "131 S. Robertson St., 14th Floor A, New Orleans, LA 70112",
+    "phone": "(504) 988-3533",
+    "website": "https://medicine.tulane.edu/tulane-doctors/tcard",
+    "type": "medical",
+    "source": "State Resources 2025 - Louisiana",
+    "services": [
+      "Diagnostic Evaluations",
+      "Treatment Programs",
+      "Research",
+      "Family Support"
+    ],
+    "description": "Comprehensive autism diagnostic and treatment center at Tulane School of Medicine",
+    "coordinates": {
+      "lat": 29.9511,
+      "lng": -90.0715
+    }
+  },
+  {
+    "name": "Yale Child Study Center",
+    "address": "350 George Street, New Haven, CT 06511",
+    "phone": "1-844-362-9272",
+    "website": "https://medicine.yale.edu/childstudy",
+    "type": "medical",
+    "source": "State Resources 2025 - Connecticut",
+    "services": [
+      "Developmental Disabilities Clinic",
+      "Autism Research",
+      "Clinical Services",
+      "Girls & Women Autism Program"
+    ],
+    "description": "Internationally recognized center for autism research and clinical services with decades of expertise",
+    "coordinates": {
+      "lat": 41.3083,
+      "lng": -72.9279
+    }
+  },
+  {
+    "name": "MUSC Children's Health - Autism Care Services",
+    "address": "67 President Street, Charleston, SC 29425",
+    "phone": "(843) 792-9888",
+    "website": "https://musckids.org/our-services/autism",
+    "type": "medical",
+    "source": "State Resources 2025 - South Carolina",
+    "services": [
+      "Developmental Evaluations",
+      "Behavioral Interventions",
+      "Family Support",
+      "Multidisciplinary Care"
+    ],
+    "description": "Comprehensive developmental and behavioral autism services for children and adolescents",
+    "coordinates": {
+      "lat": 32.7876,
+      "lng": -79.9403
+    }
+  },
+  {
+    "name": "University of Louisville Autism Center at Kosair Charities",
+    "address": "200 East Chestnut St, Louisville, KY 40202",
+    "phone": "(502) 852-6941",
+    "website": "https://www.uoflautism.org",
+    "type": "medical",
+    "source": "State Resources 2025 - Kentucky",
+    "services": [
+      "Diagnostic Evaluations",
+      "Bingham Clinic",
+      "ABA Therapy",
+      "Kentucky Autism Training Center"
+    ],
+    "description": "Comprehensive autism center incorporating diagnostic, therapy, and training services",
+    "coordinates": {
+      "lat": 38.2527,
+      "lng": -85.7585
+    }
+  },
+  {
+    "name": "University of Utah - Autism Spectrum Disorder Clinic",
+    "address": "240 E Morris Ave, Fourth Floor South, Salt Lake City, UT 84115",
+    "phone": "(801) 587-8020",
+    "website": "https://healthcare.utah.edu/hmhi/treatments/autism-clinic",
+    "type": "medical",
+    "source": "State Resources 2025 - Utah",
+    "services": [
+      "ASD Evaluations (All Ages)",
+      "Co-occurring Conditions Testing",
+      "Behavioral Support",
+      "Executive Functioning Assessment"
+    ],
+    "description": "Comprehensive autism evaluations for individuals of any age through Huntsman Mental Health Institute",
+    "coordinates": {
+      "lat": 40.7649,
+      "lng": -111.8421
+    }
+  },
+  {
+    "name": "UNM Center for Development & Disability - Autism Programs",
+    "address": "2300 Menaul Blvd NE, Albuquerque, NM 87107",
+    "phone": "(505) 272-1852",
+    "website": "https://unmhealth.org/services/development-disabilities/programs/autism-programs",
+    "type": "medical",
+    "source": "State Resources 2025 - New Mexico",
+    "services": [
+      "Autism Spectrum Evaluation",
+      "Education & Training",
+      "Consultation",
+      "Age 3 and Older"
+    ],
+    "description": "Comprehensive autism evaluation, education, training and consultation services for New Mexico families",
+    "coordinates": {
+      "lat": 35.1107,
+      "lng": -106.6100
+    }
+  },
+  {
+    "name": "University of Iowa Stead Family Children's Hospital - Autism Center",
+    "address": "500 Newton Rd, Iowa City, IA 52242",
+    "phone": "(319) 356-2229",
+    "website": "https://uihc.org/childrens/services/autism",
+    "type": "medical",
+    "source": "State Resources 2025 - Iowa",
+    "services": [
+      "Comprehensive Evaluations",
+      "Treatment Programs",
+      "Research",
+      "Family Support"
+    ],
+    "description": "Academic medical center providing comprehensive autism diagnosis and treatment services",
+    "coordinates": {
+      "lat": 41.6574,
+      "lng": -91.5507
+    }
+  },
+  {
+    "name": "UAMS Dennis Developmental Center",
+    "address": "1301 Wolfe St, Little Rock, AR 72202",
+    "phone": "(501) 364-1830",
+    "website": "https://uamshealth.com/location/dennis-developmental-center",
+    "type": "medical",
+    "source": "State Resources 2025 - Arkansas",
+    "services": [
+      "Developmental Assessments",
+      "Autism Diagnosis",
+      "Therapeutic Services",
+      "Specialist Coordination"
+    ],
+    "description": "Specialized center for autism assessment and coordinating expert clinical services",
+    "coordinates": {
+      "lat": 34.7465,
+      "lng": -92.2896
+    }
+  },
+  {
+    "name": "Oklahoma Autism Center",
+    "address": "3901 NW 63rd St., Suite 100, Oklahoma City, OK 73116",
+    "phone": "(405) 842-9995",
+    "website": "https://autismcenterok.org",
+    "type": "therapy",
+    "source": "State Resources 2025 - Oklahoma",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Services",
+      "Family Training",
+      "Community Resources"
+    ],
+    "description": "Comprehensive autism therapy and diagnostic services for Oklahoma families",
+    "coordinates": {
+      "lat": 35.5222,
+      "lng": -97.6154
+    }
+  },
+  {
+    "name": "Oklahoma Autism Network",
+    "address": "1200 N. Stonewall Ave, Oklahoma City, OK 73117",
+    "phone": "(405) 271-7476",
+    "website": "https://okautism.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Oklahoma",
+    "services": [
+      "Provider Directory",
+      "Training & Education",
+      "Resources",
+      "Community Support"
+    ],
+    "description": "Statewide network providing autism resources, training, and provider directory",
+    "coordinates": {
+      "lat": 35.4876,
+      "lng": -97.5164
+    }
+  },
+  {
+    "name": "Autism Society of Hawaii",
+    "address": "734 Hahaione Street, Honolulu, HI 96825",
+    "phone": "(808) 342-0364",
+    "website": "https://www.autismsocietyhi.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Hawaii",
+    "services": [
+      "Family Support",
+      "Resources",
+      "Education",
+      "Community Events"
+    ],
+    "description": "Statewide organization providing support, resources, and education for Hawaii families",
+    "coordinates": {
+      "lat": 21.2920,
+      "lng": -157.7155
+    }
+  },
+  {
+    "name": "Easterseals Hawaii - Honolulu ABA Program",
+    "address": "200 N. Vineyard Blvd., A-600, Honolulu, HI 96817",
+    "phone": "(808) 536-1015",
+    "website": "https://www.eastersealshawaii.org/autism-services",
+    "type": "therapy",
+    "source": "State Resources 2025 - Hawaii",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Family Training",
+      "Therapeutic Services"
+    ],
+    "description": "Comprehensive ABA therapy and autism services for Hawaii children and families",
+    "coordinates": {
+      "lat": 21.3099,
+      "lng": -157.8581
+    }
   }
 ]
