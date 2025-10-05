@@ -2639,5 +2639,347 @@
       "lat": 35.1495,
       "lng": -90.0490
     }
+  },
+  {
+    "name": "BlueSprig Autism - Multiple Locations",
+    "address": "Nationwide - Multiple States",
+    "phone": "Contact via website",
+    "website": "https://www.bluesprigautism.com",
+    "type": "therapy",
+    "source": "National ABA Providers 2025",
+    "services": [
+      "ABA Therapy",
+      "Virtual ABA",
+      "Center-based Services",
+      "Home-based Services"
+    ],
+    "description": "National ABA therapy provider with centers across multiple states offering in-person and virtual services",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Hopebridge Autism Therapy Centers",
+    "address": "Multiple locations nationwide",
+    "phone": "(855) 324-0885",
+    "website": "https://www.hopebridge.com",
+    "type": "therapy",
+    "source": "National ABA Providers 2025",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Online Therapy"
+    ],
+    "description": "National autism therapy provider with centers in multiple states offering comprehensive services",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Go Behavioral LLC - Fresno",
+    "address": "2900 Fresno Street, Sts. 106 and 107, Fresno, CA 93721",
+    "phone": "(888) 988-0520",
+    "website": "https://gobehavioral.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - California",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Services",
+      "Multiple Fresno Locations",
+      "Family Support"
+    ],
+    "description": "ABA therapy provider with multiple Fresno locations specializing in autism behavioral services",
+    "coordinates": {
+      "lat": 36.7378,
+      "lng": -119.7871
+    }
+  },
+  {
+    "name": "Arizona Autism United - East Valley Center",
+    "address": "East Valley, Phoenix Metro Area, AZ",
+    "phone": "Contact via website",
+    "website": "https://azaunited.org/locations/eastvalleycenter",
+    "type": "therapy",
+    "source": "State Resources 2025 - Arizona",
+    "services": [
+      "ABA Therapy",
+      "Education Programs",
+      "Family Support",
+      "Community Resources"
+    ],
+    "description": "Comprehensive autism services serving the East Valley region of Phoenix metro area",
+    "coordinates": {
+      "lat": 33.3062,
+      "lng": -111.8413
+    }
+  },
+  {
+    "name": "Step-In Autism Services - Fairbanks",
+    "address": "3568 Geraghty Ave, Fairbanks, AK 99709",
+    "phone": "(907) 374-7001",
+    "website": "https://stepinautism.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Alaska",
+    "services": [
+      "ABA Services",
+      "Behavioral Support",
+      "Family Training",
+      "Alaska & Colorado Services"
+    ],
+    "description": "ABA therapy and autism services serving Fairbanks and Alaska communities",
+    "coordinates": {
+      "lat": 64.8378,
+      "lng": -147.7164
+    }
+  },
+  {
+    "name": "Behavior Change Institute - Anchorage",
+    "address": "101 E 9th Ave Ste 12B, Anchorage, AK 99501",
+    "phone": "(866) 273-2451",
+    "website": "Contact via phone",
+    "type": "therapy",
+    "source": "State Resources 2025 - Alaska",
+    "services": [
+      "Behavioral Services",
+      "ABA Therapy",
+      "Assessment",
+      "Treatment Planning"
+    ],
+    "description": "Behavioral health center providing autism services in Anchorage",
+    "coordinates": {
+      "lat": 61.2181,
+      "lng": -149.9003
+    }
+  },
+  {
+    "name": "Stone Soup Group - Alaska",
+    "address": "Statewide Alaska",
+    "phone": "Contact via website",
+    "website": "https://www.stonesoupgroup.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Alaska",
+    "services": [
+      "Family Support",
+      "Special Needs Resources",
+      "Community Connection",
+      "Parent Support"
+    ],
+    "description": "Supporting Alaskan families who care for children with special needs including autism",
+    "coordinates": {
+      "lat": 61.2181,
+      "lng": -149.9003
+    }
+  },
+  {
+    "name": "Stride Autism Centers - Des Moines",
+    "address": "100 E Euclid Ave, Suite 29, Des Moines, IA 50313",
+    "phone": "(515) 481-5586",
+    "website": "https://stridecenters.com/locations/des-moines-ia",
+    "type": "therapy",
+    "source": "State Resources 2025 - Iowa",
+    "services": [
+      "ABA Therapy",
+      "Preschool Programs",
+      "Multiple Des Moines Locations",
+      "Family Support"
+    ],
+    "description": "Premier ABA therapy for preschool children with multiple Des Moines area locations",
+    "coordinates": {
+      "lat": 41.5868,
+      "lng": -93.6250
+    }
+  },
+  {
+    "name": "Blank Children's Hospital - Child Development Center",
+    "address": "1200 Pleasant St, Des Moines, IA 50309",
+    "phone": "(515) 241-5437",
+    "website": "https://www.blankchildrens.org",
+    "type": "medical",
+    "source": "State Resources 2025 - Iowa",
+    "services": [
+      "Developmental Assessments",
+      "Autism Evaluation",
+      "Therapy Services",
+      "Family Support"
+    ],
+    "description": "Child development center providing comprehensive autism evaluations and services",
+    "coordinates": {
+      "lat": 41.5868,
+      "lng": -93.6250
+    }
+  },
+  {
+    "name": "Autism Society Iowa",
+    "address": "P.O. Box 65311, West Des Moines, IA 50265",
+    "phone": "(515) 327-9075",
+    "website": "https://www.autismsocietyiowa.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Iowa",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Community Resources"
+    ],
+    "description": "Statewide advocacy organization providing support and resources for Iowa families",
+    "coordinates": {
+      "lat": 41.5868,
+      "lng": -93.6250
+    }
+  },
+  {
+    "name": "LifeScape - Sioux Falls",
+    "address": "2501 W 26th St, Sioux Falls, SD 57105",
+    "phone": "(605) 444-9700",
+    "website": "https://www.lifescapesd.org",
+    "type": "therapy",
+    "source": "State Resources 2025 - South Dakota",
+    "services": [
+      "Autism Services",
+      "Therapy Programs",
+      "Family Support",
+      "Community Integration"
+    ],
+    "description": "Comprehensive disability services including autism support and therapy programs",
+    "coordinates": {
+      "lat": 43.5460,
+      "lng": -96.7313
+    }
+  },
+  {
+    "name": "Catalyst Behavior - Sioux Falls",
+    "address": "Sioux Falls, SD",
+    "phone": "Contact via website",
+    "website": "https://catalystbehavior.com/sioux-falls-sd",
+    "type": "therapy",
+    "source": "State Resources 2025 - South Dakota",
+    "services": [
+      "ABA Therapy",
+      "Autism Treatment",
+      "Behavioral Services",
+      "Family Training"
+    ],
+    "description": "ABA therapy and autism treatment services in Sioux Falls",
+    "coordinates": {
+      "lat": 43.5460,
+      "lng": -96.7313
+    }
+  },
+  {
+    "name": "Anne Carlsen Center",
+    "address": "Multiple locations: Bismarck, Fargo, Grand Forks, Jamestown, Minot, Valley City",
+    "phone": "Contact via website",
+    "website": "https://annecarlsen.org",
+    "type": "medical",
+    "source": "State Resources 2025 - North Dakota",
+    "services": [
+      "Autism Spectrum Services",
+      "Behavioral Health",
+      "Therapy Programs",
+      "Statewide Locations"
+    ],
+    "description": "Statewide services for children and adults with autism and behavioral health needs",
+    "coordinates": {
+      "lat": 46.8772,
+      "lng": -96.7898
+    }
+  },
+  {
+    "name": "Buffalo Hearing & Speech Center",
+    "address": "50 E North St, Buffalo, NY 14203",
+    "phone": "(716) 885-8318",
+    "website": "https://askbhsc.org",
+    "type": "therapy",
+    "source": "State Resources 2025 - New York",
+    "services": [
+      "Autism Services",
+      "Speech Therapy",
+      "Early Childhood Education",
+      "Developmental Resources"
+    ],
+    "description": "Comprehensive speech, language, and autism services for children in Buffalo area",
+    "coordinates": {
+      "lat": 42.8864,
+      "lng": -78.8784
+    }
+  },
+  {
+    "name": "Aspire of WNY",
+    "address": "Western New York",
+    "phone": "(716) 324-2744",
+    "website": "https://www.aspirewny.org",
+    "type": "therapy",
+    "source": "State Resources 2025 - New York",
+    "services": [
+      "Autism Services",
+      "ABA Therapy",
+      "Support Programs",
+      "Community Resources"
+    ],
+    "description": "Comprehensive autism services provider serving Western New York communities",
+    "coordinates": {
+      "lat": 42.8864,
+      "lng": -78.8784
+    }
+  },
+  {
+    "name": "Autism Up! - Rochester",
+    "address": "Greater Rochester area, NY",
+    "phone": "(585) 248-9011",
+    "website": "https://autismup.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - New York",
+    "services": [
+      "Family Support",
+      "Advocacy",
+      "Resources",
+      "Community Programs"
+    ],
+    "description": "Supporting Greater Rochester families affected by autism with resources and advocacy",
+    "coordinates": {
+      "lat": 43.1566,
+      "lng": -77.6088
+    }
+  },
+  {
+    "name": "Chapel Haven Schleifer Center",
+    "address": "1040 Whalley Ave, New Haven, CT 06515",
+    "phone": "(203) 397-1714",
+    "website": "https://www.chapelhaven.org",
+    "type": "education",
+    "source": "State Resources 2025 - Connecticut",
+    "services": [
+      "Residential Programs",
+      "Transition Programs",
+      "Independent Living",
+      "Social Skills Training"
+    ],
+    "description": "Comprehensive residential and transition programs for adults with autism and learning differences",
+    "coordinates": {
+      "lat": 41.3083,
+      "lng": -72.9623
+    }
+  },
+  {
+    "name": "Madison House Autism Foundation",
+    "address": "National Housing Initiatives",
+    "phone": "Contact via website",
+    "website": "https://www.madisonhouseautism.org",
+    "type": "general_support",
+    "source": "National Housing Programs 2025",
+    "services": [
+      "Housing Initiatives",
+      "Independent Living",
+      "Community Support",
+      "National Reach"
+    ],
+    "description": "National foundation expanding housing choice and opportunity for autistic adults across the country",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
   }
 ]
