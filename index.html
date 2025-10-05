@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autism & Special Needs Community Directory</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * {
             margin: 0;
@@ -248,6 +249,55 @@
                 flex-direction: column;
             }
         }
+
+        /* Map styles */
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+
+        .view-btn {
+            padding: 12px 24px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .map-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .map-container.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -279,6 +329,15 @@
             <h3 id="statsText">Loading resources...</h3>
         </section>
 
+        <div class="view-toggle">
+            <button class="view-btn active" id="listViewBtn" onclick="switchView('list')">📋 List View</button>
+            <button class="view-btn" id="mapViewBtn" onclick="switchView('map')">🗺️ Map View</button>
+        </div>
+
+        <section id="mapContainer" class="map-container">
+            <div id="map"></div>
+        </section>
+
         <section id="resourceContainer" class="resource-grid">
             <!-- Resources will be loaded here -->
         </section>
@@ -302,6 +361,16 @@
 
         // Load data from the JSON file
         async function loadResources() {
+            // First check if community data was loaded by community_data.js
+            if (window.communityData && window.communityData.length > 0) {
+                allResources = window.communityData;
+                filteredResources = [...allResources];
+                displayResources();
+                updateStats();
+                return;
+            }
+
+            // Otherwise try to fetch from JSON
             try {
                 const response = await fetch('community_resources.json');
                 allResources = await response.json();
@@ -464,6 +533,85 @@
             updateStats();
         }
 
+        // Map variables
+        let map;
+        let markers = [];
+
+        // View switching
+        function switchView(view) {
+            const listViewBtn = document.getElementById('listViewBtn');
+            const mapViewBtn = document.getElementById('mapViewBtn');
+            const resourceContainer = document.getElementById('resourceContainer');
+            const mapContainer = document.getElementById('mapContainer');
+            const noResults = document.getElementById('noResults');
+
+            if (view === 'map') {
+                listViewBtn.classList.remove('active');
+                mapViewBtn.classList.add('active');
+                resourceContainer.style.display = 'none';
+                noResults.style.display = 'none';
+                mapContainer.classList.add('active');
+
+                // Initialize map if not already initialized
+                if (!map) {
+                    initializeMap();
+                }
+                updateMap();
+            } else {
+                mapViewBtn.classList.remove('active');
+                listViewBtn.classList.add('active');
+                mapContainer.classList.remove('active');
+                resourceContainer.style.display = 'grid';
+                displayResources();
+            }
+        }
+
+        // Initialize map
+        function initializeMap() {
+            map = L.map('map').setView([40.7128, -74.0060], 10);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+
+        // Update map with current filtered resources
+        function updateMap() {
+            if (!map) return;
+
+            // Clear existing markers
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+
+            // Add markers for resources with coordinates
+            filteredResources.forEach(resource => {
+                if (resource.coordinates && resource.coordinates.lat && resource.coordinates.lng) {
+                    const marker = L.marker([resource.coordinates.lat, resource.coordinates.lng])
+                        .addTo(map)
+                        .bindPopup(`
+                            <div style="min-width: 200px;">
+                                <h3 style="margin: 0 0 10px 0; color: #667eea;">${resource.name}</h3>
+                                <p style="margin: 0 0 5px 0; font-size: 12px; background: #667eea; color: white; padding: 2px 8px; border-radius: 10px; display: inline-block;">
+                                    ${formatType(resource.type)}
+                                </p>
+                                <p style="margin: 5px 0;">${resource.address}</p>
+                                <p style="margin: 5px 0;">
+                                    <a href="tel:${resource.phone}" style="color: #667eea; text-decoration: none;">📞 ${resource.phone}</a>
+                                </p>
+                                ${resource.description ? `<p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">${resource.description}</p>` : ''}
+                                ${resource.website ? `<p style="margin: 5px 0;"><a href="${resource.website}" target="_blank" style="color: #667eea;">🌐 Visit Website</a></p>` : ''}
+                            </div>
+                        `);
+                    markers.push(marker);
+                }
+            });
+
+            // Fit map to show all markers
+            if (markers.length > 0) {
+                const group = new L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
+        }
+
         // Event listeners
         document.getElementById('searchInput').addEventListener('input', filterResources);
         document.getElementById('typeFilter').addEventListener('change', filterResources);
@@ -471,6 +619,18 @@
 
         // Load resources when page loads
         document.addEventListener('DOMContentLoaded', loadResources);
+
+        // Listen for community data loaded event
+        window.addEventListener('communityDataLoaded', function(e) {
+            if (e.detail && e.detail.length > 0) {
+                allResources = e.detail;
+                filteredResources = [...allResources];
+                displayResources();
+                updateStats();
+            }
+        });
     </script>
+    <script src="community_data.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
