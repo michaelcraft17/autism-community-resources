@@ -945,10 +945,12 @@
                 // Include user location marker in the bounds
                 const allMarkers = window.userMarker ? [...markers, window.userMarker] : markers;
                 const group = new L.featureGroup(allMarkers);
-                map.fitBounds(group.getBounds().pad(0.1));
+                map.fitBounds(group.getBounds().pad(0.1), {
+                    maxZoom: 14  // Don't zoom out too far
+                });
             } else if (userLocation) {
-                // Only user location, center on it with closer zoom
-                map.setView([userLocation.lat, userLocation.lng], 13);
+                // Only user location, center on it with closer zoom (street level)
+                map.setView([userLocation.lat, userLocation.lng], 14);
             } else if (markers.length > 0) {
                 // No user location, just fit to resource markers
                 const group = new L.featureGroup(markers);
