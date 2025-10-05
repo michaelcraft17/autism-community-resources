@@ -624,12 +624,6 @@
                 }
             });
 
-            // Fit map to show all markers
-            if (markers.length > 0) {
-                const group = new L.featureGroup(markers);
-                map.fitBounds(group.getBounds().pad(0.1));
-            }
-
             // Add user location marker if available
             if (userLocation && window.userMarker) {
                 map.removeLayer(window.userMarker);
@@ -645,7 +639,22 @@
                         iconSize: [32, 32],
                         iconAnchor: [16, 16]
                     })
-                }).addTo(map).bindPopup('Your Location');
+                }).addTo(map).bindPopup('Your Location').openPopup();
+            }
+
+            // Fit map to show all markers including user location
+            if (userLocation && markers.length > 0) {
+                // Include user location marker in the bounds
+                const allMarkers = window.userMarker ? [...markers, window.userMarker] : markers;
+                const group = new L.featureGroup(allMarkers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            } else if (userLocation) {
+                // Only user location, center on it
+                map.setView([userLocation.lat, userLocation.lng], 12);
+            } else if (markers.length > 0) {
+                // No user location, just fit to resource markers
+                const group = new L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
             }
         }
 
@@ -682,10 +691,13 @@
 
                     sortByDistance();
                     btn.textContent = '✅ Location Found';
+
+                    // Auto-switch to map view to show user location
                     setTimeout(() => {
+                        switchView('map');
                         btn.textContent = originalText;
                         btn.disabled = false;
-                    }, 2000);
+                    }, 500);
                 },
                 (error) => {
                     let errorMsg = 'Unable to get your location. ';
@@ -735,10 +747,13 @@
 
                     sortByDistance();
                     searchBtn.textContent = '✅ Found';
+
+                    // Auto-switch to map view to show searched location
                     setTimeout(() => {
+                        switchView('map');
                         searchBtn.textContent = originalText;
                         searchBtn.disabled = false;
-                    }, 2000);
+                    }, 500);
                 } else {
                     alert('Location not found. Please try a different search term.');
                     searchBtn.textContent = originalText;
