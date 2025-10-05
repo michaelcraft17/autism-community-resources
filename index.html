@@ -292,11 +292,6 @@
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
-            display: none;
-        }
-
-        .map-container.active {
-            display: block;
         }
     </style>
 </head>
@@ -334,19 +329,16 @@
         </section>
 
         <section class="stats">
-            <h3 id="statsText">Loading resources...</h3>
+            <h3 id="statsText">Click "Use My Location" or enter a location to find nearby resources</h3>
         </section>
 
-        <div class="view-toggle">
-            <button class="view-btn active" id="listViewBtn" onclick="switchView('list')">📋 List View</button>
-            <button class="view-btn" id="mapViewBtn" onclick="switchView('map')">🗺️ Map View</button>
-        </div>
-
-        <section id="mapContainer" class="map-container">
+        <!-- Map Section - Always Visible -->
+        <section id="mapContainer" class="map-container" style="display: block; margin-bottom: 2rem;">
             <div id="map"></div>
         </section>
 
-        <section id="resourceContainer" class="resource-grid">
+        <!-- Resources Section - Shows after location is set -->
+        <section id="resourceContainer" class="resource-grid" style="display: none;">
             <!-- Resources will be loaded here -->
         </section>
 
@@ -375,8 +367,9 @@
             if (window.communityData && window.communityData.length > 0) {
                 allResources = window.communityData;
                 filteredResources = [...allResources];
-                displayResources();
+                // Don't display resources yet - wait for location
                 updateStats();
+                initializeMap(); // Initialize map on load
                 return;
             }
 
@@ -385,8 +378,9 @@
                 const response = await fetch('community_resources.json');
                 allResources = await response.json();
                 filteredResources = [...allResources];
-                displayResources();
+                // Don't display resources yet - wait for location
                 updateStats();
+                initializeMap(); // Initialize map on load
             } catch (error) {
                 console.error('Error loading resources:', error);
                 // Fallback to sample data if file not found
@@ -503,6 +497,14 @@
         // Update statistics
         function updateStats() {
             const total = allResources.length;
+
+            if (!userLocation) {
+                document.getElementById('statsText').innerHTML = `
+                    ${total} resources available - Click "Use My Location" or enter a location to find nearby resources
+                `;
+                return;
+            }
+
             const showing = filteredResources.length;
             const typeCount = {};
 
@@ -517,7 +519,7 @@
                 .join(' • ');
 
             document.getElementById('statsText').innerHTML = `
-                Showing ${showing} of ${total} resources<br>
+                Showing ${showing} of ${total} resources near you<br>
                 <small style="opacity: 0.8;">${topTypes}</small>
             `;
         }
@@ -555,34 +557,7 @@
         let map;
         let markers = [];
 
-        // View switching
-        function switchView(view) {
-            const listViewBtn = document.getElementById('listViewBtn');
-            const mapViewBtn = document.getElementById('mapViewBtn');
-            const resourceContainer = document.getElementById('resourceContainer');
-            const mapContainer = document.getElementById('mapContainer');
-            const noResults = document.getElementById('noResults');
-
-            if (view === 'map') {
-                listViewBtn.classList.remove('active');
-                mapViewBtn.classList.add('active');
-                resourceContainer.style.display = 'none';
-                noResults.style.display = 'none';
-                mapContainer.classList.add('active');
-
-                // Initialize map if not already initialized
-                if (!map) {
-                    initializeMap();
-                }
-                updateMap();
-            } else {
-                mapViewBtn.classList.remove('active');
-                listViewBtn.classList.add('active');
-                mapContainer.classList.remove('active');
-                resourceContainer.style.display = 'grid';
-                displayResources();
-            }
-        }
+        // Map is always visible - no view switching needed
 
         // Initialize map
         function initializeMap() {
@@ -692,9 +667,11 @@
                     sortByDistance();
                     btn.textContent = '✅ Location Found';
 
-                    // Auto-switch to map view to show user location
+                    // Show resources and update map
                     setTimeout(() => {
-                        switchView('map');
+                        document.getElementById('resourceContainer').style.display = 'grid';
+                        displayResources();
+                        updateMap();
                         btn.textContent = originalText;
                         btn.disabled = false;
                     }, 500);
@@ -748,9 +725,11 @@
                     sortByDistance();
                     searchBtn.textContent = '✅ Found';
 
-                    // Auto-switch to map view to show searched location
+                    // Show resources and update map
                     setTimeout(() => {
-                        switchView('map');
+                        document.getElementById('resourceContainer').style.display = 'grid';
+                        displayResources();
+                        updateMap();
                         searchBtn.textContent = originalText;
                         searchBtn.disabled = false;
                     }, 500);
