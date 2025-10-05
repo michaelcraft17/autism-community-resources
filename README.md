@@ -8,16 +8,28 @@ Visit the directory: (https://michaelcraft17.github.io/autism-community-resource
 ## 📋 Features
 
 ### Resource Directory
-- **Search & Filter**: Find resources by name, location, or service type
+- **Search & Filter**: Find resources by name, location, or service type with debounced search
 - **Contact Information**: Direct phone numbers and website links
 - **Service Categories**: Advocacy, Therapy, Education, Medical, Social Support
 - **Mobile Responsive**: Works on all devices
+- **Favorites**: Save and bookmark your preferred resources locally
+- **Export Data**: Download search results as CSV for offline use
+- **Print-Friendly**: Print resource listings with optimized layout
 
 ### Interactive Map
 - **Visual Mapping**: See resources plotted on an interactive map
 - **Location Search**: Find resources near specific addresses
 - **Click-to-Call**: Direct access to contact information
 - **Geolocation**: Find resources near your current location
+- **Distance Calculation**: See how far each resource is from your location
+
+### Accessibility & User Experience
+- **Dark Mode**: Toggle between light and dark themes (preference saved)
+- **Keyboard Navigation**: Full keyboard accessibility with visible focus indicators
+- **Screen Reader Support**: ARIA labels and semantic HTML for assistive technologies
+- **Skip Links**: Quick navigation to main content
+- **Loading States**: Visual feedback during data fetching
+- **Error Handling**: Clear, helpful error messages
 
 ## 🎯 Resource Types
 
@@ -30,26 +42,62 @@ Visit the directory: (https://michaelcraft17.github.io/autism-community-resource
 
 ## 📱 How to Use
 
-### Directory View (index.html)
-1. Browse all resources in an organized list format
-2. Use the search bar to find specific services
-3. Filter by resource type using the dropdown
-4. Click "Call Now" or "Visit Website" for direct contact
+### Finding Resources
+1. **Set Your Location**:
+   - Click "Use My Location" for GPS-based search
+   - Or enter a zip code, address, or city manually
 
-### Map View (map.html)
-1. Enter your location in the search box
-2. View nearby resources on the interactive map
-3. Click markers for detailed information
-4. Use filters to narrow down service types
+2. **Browse & Search**:
+   - View resources sorted by distance from your location
+   - Use the search bar to find specific services
+   - Filter by resource type using the dropdown
+
+3. **Save Favorites**:
+   - Click the heart icon (🤍) on any resource to save it
+   - Access saved resources with the "Favorites" button
+   - Favorites persist across browser sessions
+
+4. **Export & Share**:
+   - Click "Export Results" to download a CSV file
+   - Use "Print" for a printer-friendly view
+   - Share resource information with family and friends
+
+5. **Customize Experience**:
+   - Toggle dark mode with the 🌙 button
+   - Your preference is automatically saved
+   - Works great in low-light environments
+
+### Interactive Map
+1. View all resources on an interactive map
+2. Click markers for detailed popup information
+3. Resources are color-coded by type
+4. Map automatically fits to show all results
 
 ## 🛠️ Technical Details
 
 ### Built With
-- **HTML5** - Semantic markup and accessibility
-- **CSS3** - Responsive design and modern styling
-- **JavaScript** - Interactive functionality and data handling
+- **HTML5** - Semantic markup with ARIA accessibility attributes
+- **CSS3** - Responsive design, dark mode, print styles
+- **JavaScript** - Interactive functionality with performance optimizations
 - **Leaflet.js** - Interactive mapping capabilities
+- **OpenStreetMap** - Geocoding and map tiles
 - **Python** - Web scraping and data collection
+
+### Performance Optimizations
+- **Debounced Search**: 300ms debounce to reduce unnecessary filtering
+- **Lazy Map Loading**: Map initializes only when needed
+- **LocalStorage Caching**: Favorites and preferences stored locally
+- **Efficient Rendering**: DOM updates only when necessary
+
+### Accessibility Features (WCAG 2.1 Compliant)
+- Semantic HTML5 structure with proper heading hierarchy
+- ARIA labels and roles throughout
+- Keyboard navigation support
+- Focus visible indicators for all interactive elements
+- Screen reader announcements for dynamic content
+- Skip navigation links
+- High contrast mode support
+- Reduced motion support
 
 ### Data Sources
 Resources are collected through web scraping from:
@@ -88,6 +136,16 @@ Know of a resource that should be included? Resources can be added by:
 - Fork the repository
 - Make your improvements
 - Submit a pull request
+
+### Feature Roadmap
+Future enhancements being considered:
+- [ ] User reviews and ratings
+- [ ] Multi-language support
+- [ ] Advanced filtering (insurance accepted, age ranges)
+- [ ] Resource availability calendar
+- [ ] Mobile app version
+- [ ] Share individual resources via social media
+- [ ] Email resource lists
 
 ## 📞 Emergency Resources
 
