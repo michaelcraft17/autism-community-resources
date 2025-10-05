@@ -6487,5 +6487,783 @@
       "lat": 37.3382,
       "lng": -121.8863
     }
+  },
+  {
+    "name": "California Autism Center",
+    "address": "Fresno, Clovis, Merced, CA (Central Valley)",
+    "phone": "Contact via website",
+    "website": "https://caclg.org",
+    "type": "therapy",
+    "source": "Western States 2025 - California Central Valley",
+    "services": [
+      "Center-Based ABA Therapy"
+    ],
+    "description": "Center-based ABA company serving Fresno, Clovis, Merced and surrounding Central Valley areas",
+    "coordinates": {
+      "lat": 36.7378,
+      "lng": -119.7871
+    }
+  },
+  {
+    "name": "Behavior Frontiers - Sacramento",
+    "address": "Sacramento, CA",
+    "phone": "Contact via website",
+    "website": "https://www.behaviorfrontiers.com/sacramento-ca",
+    "type": "therapy",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Applied Behavior Analysis (ABA) Therapy"
+    ],
+    "description": "Expanded ABA therapy program to Sacramento area with professional clinicians",
+    "coordinates": {
+      "lat": 38.5816,
+      "lng": -121.4944
+    }
+  },
+  {
+    "name": "Sacramento ABA Therapy",
+    "address": "Sacramento, CA",
+    "phone": "Contact via website",
+    "website": "https://sacramentoabatherapy.com",
+    "type": "therapy",
+    "source": "Western States 2025 - California",
+    "services": [
+      "ABA Therapy",
+      "Autism Treatment"
+    ],
+    "description": "Provider of Applied Behavior Analysis therapy and autism treatment services in Sacramento",
+    "coordinates": {
+      "lat": 38.5816,
+      "lng": -121.4944
+    }
+  },
+  {
+    "name": "Autism Spectrum Therapies - Bakersfield",
+    "address": "Bakersfield, CA",
+    "phone": "Contact via website",
+    "website": "https://autismtherapies.com/locations/bakersfield",
+    "type": "therapy",
+    "source": "Western States 2025 - California",
+    "services": [
+      "ABA Therapy (In-Home, Center-Based, School)"
+    ],
+    "description": "Flexible ABA therapy approach to empower growth and development in Bakersfield",
+    "coordinates": {
+      "lat": 35.3733,
+      "lng": -119.0187
+    }
+  },
+  {
+    "name": "Behavior Frontiers - Bakersfield",
+    "address": "Bakersfield, CA",
+    "phone": "Contact via website",
+    "website": "https://www.behaviorfrontiers.com/bakersfield-ca",
+    "type": "therapy",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Applied Behavior Analysis (ABA) Treatment"
+    ],
+    "description": "Exceptional ABA treatment program serving Bakersfield area",
+    "coordinates": {
+      "lat": 35.3733,
+      "lng": -119.0187
+    }
+  },
+  {
+    "name": "Kyo - Riverside & San Bernardino",
+    "address": "3579 Arlington Avenue, Suite 500, Riverside, CA 92506",
+    "phone": "Contact via website",
+    "website": "https://kyocare.com/location/autism-aba-therapy-riverside-california",
+    "type": "therapy",
+    "source": "Western States 2025 - California Inland Empire",
+    "services": [
+      "In-Home and School-Based ABA Therapy"
+    ],
+    "description": "Personalized autism services in Riverside and San Bernardino counties",
+    "coordinates": {
+      "lat": 33.9533,
+      "lng": -117.3962
+    }
+  },
+  {
+    "name": "ABS Kids - Inland Empire",
+    "address": "1500 Iowa Ave #210, Riverside, CA 92507",
+    "phone": "Contact via website",
+    "website": "https://www.abskids.com/locations/inland-empire",
+    "type": "medical",
+    "source": "Western States 2025 - California Inland Empire",
+    "services": [
+      "In-Home and Center-Based ABA Therapy",
+      "Autism Diagnosis"
+    ],
+    "description": "Comprehensive ABA therapy and diagnostic services across Inland Empire",
+    "coordinates": {
+      "lat": 33.9806,
+      "lng": -117.3755
+    }
+  },
+  {
+    "name": "Autism Spectrum Therapies - Inland Empire",
+    "address": "Menifee, Ontario, Temecula, Corona, Riverside, Victorville, CA",
+    "phone": "Contact via website",
+    "website": "https://autismtherapies.com/locations/inland-empire",
+    "type": "therapy",
+    "source": "Western States 2025 - California Inland Empire",
+    "services": [
+      "ABA Therapy (Multiple Locations)"
+    ],
+    "description": "Multiple locations serving Inland Empire with evidence-based ABA therapy",
+    "coordinates": {
+      "lat": 33.9533,
+      "lng": -117.3962
+    }
+  },
+  {
+    "name": "Autism Learning Partners - Ontario",
+    "address": "Ontario, CA",
+    "phone": "Contact via website",
+    "website": "https://autismlearningpartners.com/locations/california/san-bernardino-county/inland-empire",
+    "type": "therapy",
+    "source": "Western States 2025 - California",
+    "services": [
+      "ABA Therapy (Accepts Medicaid)"
+    ],
+    "description": "ABA therapy for children in Ontario accepting most major insurance including Medicaid",
+    "coordinates": {
+      "lat": 34.0633,
+      "lng": -117.6509
+    }
+  },
+  {
+    "name": "Inland Regional Center",
+    "address": "San Bernardino and Riverside Counties, CA",
+    "phone": "Contact via website",
+    "website": "https://www.inlandrc.org",
+    "type": "general_support",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Developmental Disability Services",
+      "Resources"
+    ],
+    "description": "Serving individuals with developmental disabilities in San Bernardino and Riverside Counties",
+    "coordinates": {
+      "lat": 34.0633,
+      "lng": -117.6509
+    }
+  },
+  {
+    "name": "IEAACE - Inland Empire Autism Assessment Center",
+    "address": "San Bernardino and Riverside County, CA",
+    "phone": "Contact via website",
+    "website": "https://www.autismassessment4ie.org",
+    "type": "medical",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Autism Assessment",
+      "Diagnostic Evaluations"
+    ],
+    "description": "Two convenient centers serving San Bernardino and Riverside counties with autism assessments",
+    "coordinates": {
+      "lat": 34.0633,
+      "lng": -117.6509
+    }
+  },
+  {
+    "name": "UCI Health - Center for Autism and Neurodevelopmental Disorders",
+    "address": "Orange County, CA",
+    "phone": "(949) 267-0400",
+    "website": "https://www.ucihealth.org/medical-services/autism-neurodevelopmental-services",
+    "type": "medical",
+    "source": "Western States 2025 - California Orange County",
+    "services": [
+      "Expert Evaluation",
+      "Diagnosis",
+      "Transition Workshops"
+    ],
+    "description": "UCI Health offering expert autism evaluation, diagnosis and free monthly transition workshops",
+    "coordinates": {
+      "lat": 33.6846,
+      "lng": -117.8265
+    }
+  },
+  {
+    "name": "CHOC - Thompson Autism and Neurodevelopmental Center",
+    "address": "Orange County, CA",
+    "phone": "Contact via website",
+    "website": "https://choc.org/autism-neurodevelopmental",
+    "type": "medical",
+    "source": "Western States 2025 - California Orange County",
+    "services": [
+      "Early Diagnosis",
+      "Advanced Therapy"
+    ],
+    "description": "Centralized early diagnosis for autism and advanced therapy at CHOC",
+    "coordinates": {
+      "lat": 33.6846,
+      "lng": -117.8265
+    }
+  },
+  {
+    "name": "Valley Mountain Regional Center",
+    "address": "Central Valley, CA (serving Stockton area)",
+    "phone": "Contact via website",
+    "website": "https://www.vmrc.net",
+    "type": "general_support",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Disability Services",
+      "Support"
+    ],
+    "description": "Regional center providing disability services and support for Central Valley including Stockton",
+    "coordinates": {
+      "lat": 37.9577,
+      "lng": -121.2908
+    }
+  },
+  {
+    "name": "PACE School",
+    "address": "Pruneridge Campus (Santa Clara), Sunnyvale Campus, CA",
+    "phone": "Contact via website",
+    "website": "https://www.pacificautism.org/programs/pace-school",
+    "type": "education",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Specialized Education (Ages 6-22)",
+      "Non-Verbal Support"
+    ],
+    "description": "WASC-accredited school serving students with moderate to severe autism, emphasis on non-verbal students",
+    "coordinates": {
+      "lat": 37.3688,
+      "lng": -121.9844
+    }
+  },
+  {
+    "name": "ABC School - California Autism Foundation",
+    "address": "Richmond, CA",
+    "phone": "Contact via website",
+    "website": "https://www.calautism.org/programs/abc-school",
+    "type": "education",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Non-Public School (Ages 6-22)",
+      "Functional Skills Curriculum"
+    ],
+    "description": "Non-public school with vocational training, culinary, art, music, and self-help skills for ages 6-22",
+    "coordinates": {
+      "lat": 37.9358,
+      "lng": -122.3477
+    }
+  },
+  {
+    "name": "RCOE Reach Autism Program",
+    "address": "Riverside County, CA",
+    "phone": "Contact via website",
+    "website": "https://www.rcoe.us/departments/student-programs-and-services/special-education/reach-autism-programs",
+    "type": "education",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Educational Programs for Students and Families"
+    ],
+    "description": "Riverside County Office of Education autism programs for students and families",
+    "coordinates": {
+      "lat": 33.9533,
+      "lng": -117.3962
+    }
+  },
+  {
+    "name": "Nationwide Children's Hospital - Triple P Parent Training",
+    "address": "Nationwide (telehealth available)",
+    "phone": "Contact via website",
+    "website": "https://www.nationwidechildrens.org/specialties/center-for-autism-spectrum-disorders/parent-training",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Caregiver Training",
+      "Triple P Program (Office or Telehealth)"
+    ],
+    "description": "Parent training using Positive Parenting Program model, available in-office or via telehealth",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Marcus Autism Center - RUBI Parent Training",
+    "address": "Nationwide (telehealth available)",
+    "phone": "Contact via website",
+    "website": "https://www.marcus.org/care-and-services/complex-behavior-support-program/rubi-parent-training-program",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Parent Training for Challenging Behavior (Virtual Appointments)"
+    ],
+    "description": "Parent training strategies to manage and prevent challenging behavior via telehealth",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "National Autism Center - Pathways for Parents",
+    "address": "Nationwide (virtual)",
+    "phone": "Contact via website",
+    "website": "https://nationalautismcenter.org/resource-library/for-families",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Free Virtual Autism Training Series"
+    ],
+    "description": "Free virtual autism training series presented by clinical experts at May Institute",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Stanford Autism Center - Parent/Child Education & Training",
+    "address": "Stanford, CA (serves nationwide via resources)",
+    "phone": "Contact via website",
+    "website": "https://med.stanford.edu/autismcenter/EducationandTraining.html",
+    "type": "medical",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Parent Education",
+      "Training Resources"
+    ],
+    "description": "Comprehensive parent and child education and training programs from Stanford Medicine",
+    "coordinates": {
+      "lat": 37.4275,
+      "lng": -122.1697
+    }
+  },
+  {
+    "name": "Sibling Support Project",
+    "address": "Nationwide",
+    "phone": "Contact via website",
+    "website": "https://siblingsupport.org",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Sibshops",
+      "Online Support Groups (Ages 6-12+)"
+    ],
+    "description": "Offers online and in-person support groups for child, teen and adult siblings nationwide",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Sibling Leadership Network",
+    "address": "Nationwide",
+    "phone": "Contact via website",
+    "website": "https://siblingleadership.org",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Sibling Connections",
+      "Advocacy Support"
+    ],
+    "description": "Connecting siblings nationwide and advancing causes important to siblings of people with disabilities",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Organization for Autism Research - Sibling Support Initiative",
+    "address": "Nationwide",
+    "phone": "Contact via website",
+    "website": "https://researchautism.org/families/sibling-support",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Workbooks",
+      "Guides for Different Age Groups"
+    ],
+    "description": "Guidance for young children, teenagers and parents on sibling relationships with autism",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "UC Davis MIND Institute - Sibling Support Program",
+    "address": "Sacramento, CA (Hybrid: Virtual + In-Person)",
+    "phone": "Contact via website",
+    "website": "https://health.ucdavis.edu/mind-institute",
+    "type": "general_support",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Free Sibling Support (Ages 7-16)",
+      "Hybrid Format"
+    ],
+    "description": "Free hybrid sibling support for youth 7-16 with siblings who have autism, ADHD or other disabilities",
+    "coordinates": {
+      "lat": 38.5449,
+      "lng": -121.4298
+    }
+  },
+  {
+    "name": "CIP - College Internship Program",
+    "address": "5 Centers Nationwide (Ages 18-26)",
+    "phone": "Contact via website",
+    "website": "https://cipworldwide.org",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "College Academic",
+      "Social",
+      "Career and Life Skills Support"
+    ],
+    "description": "Comprehensive transition program with 5 US centers for young adults 18-26 with autism and learning differences",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Meristem",
+    "address": "Nationwide (serves students from all US states)",
+    "phone": "Contact via website",
+    "website": "https://meristem.pro",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Multi-Year Transitional Program (Ages 18-28)"
+    ],
+    "description": "Preparing young adults with autism for greater independence and fulfillment, ages 18-28",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Nationwide Children's - Adolescent Transition Program",
+    "address": "Columbus, OH (serves nationwide)",
+    "phone": "Contact via website",
+    "website": "https://www.nationwidechildrens.org/specialties/center-for-autism-spectrum-disorders/adolescent-transition-program",
+    "type": "medical",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Transition Services (Ages 12-22)",
+      "Independence Skills"
+    ],
+    "description": "Services for adolescents and young adults preparing for transition to adulthood",
+    "coordinates": {
+      "lat": 39.9612,
+      "lng": -82.9988
+    }
+  },
+  {
+    "name": "Hopebridge Telehealth",
+    "address": "Nationwide (virtual)",
+    "phone": "Contact via website",
+    "website": "https://www.hopebridge.com/autism-services/telehealth",
+    "type": "therapy",
+    "source": "Nationwide Telehealth 2025",
+    "services": [
+      "ABA",
+      "Occupational Therapy",
+      "Speech Therapy",
+      "Parent Training (Virtual)"
+    ],
+    "description": "Direct virtual therapy for ABA, OT, speech therapy and parent training nationwide",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Cortica Telehealth",
+    "address": "Nationwide (virtual)",
+    "phone": "Contact via website",
+    "website": "https://www.corticacare.com/telehealth",
+    "type": "therapy",
+    "source": "Nationwide Telehealth 2025",
+    "services": [
+      "Occupational",
+      "Physical",
+      "Speech",
+      "Music",
+      "ABA (Virtual)"
+    ],
+    "description": "Virtual therapy services with research showing same progress rate as in-person services",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Ascend Autism Telehealth",
+    "address": "Nationwide (virtual)",
+    "phone": "Contact via website",
+    "website": "https://ascendautism.com/autism-treatment-programs/telehealth-autism-treatment",
+    "type": "therapy",
+    "source": "Nationwide Telehealth 2025",
+    "services": [
+      "Telehealth Autism Treatment"
+    ],
+    "description": "Telehealth for autism treatment shortening waiting lists and providing schedule flexibility",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Presence Learning",
+    "address": "Nationwide (virtual school-based)",
+    "phone": "Contact via website",
+    "website": "https://presence.com",
+    "type": "therapy",
+    "source": "Nationwide Telehealth 2025",
+    "services": [
+      "Teletherapy for Schools"
+    ],
+    "description": "Transforming education with innovative teletherapy services for schools nationwide",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Harvard - Tan Yang Autism Center",
+    "address": "Boston, MA",
+    "phone": "Contact via website",
+    "website": "https://www.tanyangautismcenter.hms.harvard.edu",
+    "type": "medical",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Autism Research",
+      "Neurobiological Studies"
+    ],
+    "description": "Understanding neurobiological basis of autism spectrum disorder at Harvard Medical School",
+    "coordinates": {
+      "lat": 42.3601,
+      "lng": -71.0589
+    }
+  },
+  {
+    "name": "MIT - Yang Center for Autism Research",
+    "address": "Cambridge, MA",
+    "phone": "Contact via website",
+    "website": "https://yangtan.mit.edu/hock-e-tan-and-k-lisa-yang-center-for-autism-research",
+    "type": "medical",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Novel Autism Research Projects"
+    ],
+    "description": "McGovern Institute center focusing on novel autism research projects partnered with Harvard",
+    "coordinates": {
+      "lat": 42.3601,
+      "lng": -71.0942
+    }
+  },
+  {
+    "name": "Yale Child Study Center - Autism Research",
+    "address": "New Haven, CT",
+    "phone": "Contact via website",
+    "website": "https://medicine.yale.edu/childstudy/research/autism-and-neurodevelopment",
+    "type": "medical",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Autism Research",
+      "Clinical Care",
+      "Brain Modeling"
+    ],
+    "description": "$27.7M ARIA grant for non-invasive functional communication through brain modeling in ASD",
+    "coordinates": {
+      "lat": 41.3083,
+      "lng": -72.9279
+    }
+  },
+  {
+    "name": "Autism Society of America",
+    "address": "Nationwide (network of affiliates)",
+    "phone": "800-3-AUTISM (800-328-8476)",
+    "website": "https://autismsociety.org",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Advocacy",
+      "Education",
+      "Referrals",
+      "Support"
+    ],
+    "description": "Nationwide network of affiliates providing advocacy, education, referrals and support",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "The Arc of the United States",
+    "address": "Nationwide",
+    "phone": "Contact via website",
+    "website": "https://thearc.org",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Disability Rights Advocacy"
+    ],
+    "description": "National advocacy organization for people with intellectual and developmental disabilities",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Crisis Text Line",
+    "address": "Nationwide",
+    "phone": "Text HOME to 741741",
+    "website": "https://www.crisistextline.org",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "24/7 Crisis Text Support"
+    ],
+    "description": "Free 24/7 crisis support via text message for people in crisis nationwide",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Camp Royall",
+    "address": "Moncure, NC",
+    "phone": "Contact via website",
+    "website": "https://www.autismsociety-nc.org/camp-royall/programs",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Respite Care",
+      "Family Overnight Camping",
+      "Mini Camp"
+    ],
+    "description": "Autism Society of NC camp offering respite care during family camping and specialized programs",
+    "coordinates": {
+      "lat": 35.6299,
+      "lng": -79.0342
+    }
+  },
+  {
+    "name": "Camp Starfish",
+    "address": "Nationwide locations",
+    "phone": "Contact via website",
+    "website": "https://campstarfish.org/about-us/who-we-serve/autism",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Summer Camp",
+      "Specialty & Respite Programs"
+    ],
+    "description": "Safe, supported camp environment for participants with autism to build skills and friendships",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "VerySpecialCamps.com",
+    "address": "Nationwide (directory)",
+    "phone": "Contact via website",
+    "website": "https://www.veryspecialcamps.com",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Camp Directory",
+      "Special Needs Camp Database"
+    ],
+    "description": "Comprehensive directory since 2003 connecting families to inclusive camps with specialized support",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Autism Parenting Summit",
+    "address": "Nationwide (virtual event)",
+    "phone": "Contact via website",
+    "website": "https://autismparentingsummit.com",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Free Online Event October 10-13, 2025"
+    ],
+    "description": "Free virtual autism parenting event accessible from computer, phone or tablet",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Project ECHO - RUBI",
+    "address": "Columbus, OH (nationwide virtual)",
+    "phone": "Contact via website",
+    "website": "https://www.nationwidechildrens.org/for-medical-professionals/education-and-training/echo/series/rubi",
+    "type": "medical",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Clinician Training on Parent Training Program (Begins Oct 7, 2025)"
+    ],
+    "description": "Improves clinicians knowledge with manualized parent-training program for children with autism",
+    "coordinates": {
+      "lat": 39.9612,
+      "lng": -82.9988
+    }
+  },
+  {
+    "name": "Autism Science Foundation",
+    "address": "Nationwide",
+    "phone": "Contact via website",
+    "website": "https://autismsciencefoundation.org/support-for-parents-siblings",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "Parent & Sibling Support",
+      "Research Funding",
+      "Sam's Sibs Webinars"
+    ],
+    "description": "Supporting autism research and providing resources for parents and siblings nationwide",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "Autism Speaks",
+    "address": "Nationwide",
+    "phone": "Contact via website",
+    "website": "https://www.autismspeaks.org",
+    "type": "advocacy",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "100 Day Kit",
+      "Resource Guides",
+      "Tool Kits",
+      "Family Support"
+    ],
+    "description": "Comprehensive resources including 100 Day Kit, sibling guides and family support tools",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
+  },
+  {
+    "name": "211 Helpline",
+    "address": "Nationwide",
+    "phone": "211",
+    "website": "https://www.211.org",
+    "type": "general_support",
+    "source": "Nationwide Services 2025",
+    "services": [
+      "24/7 Social Service Hotline",
+      "Community Resource Referrals"
+    ],
+    "description": "Free anonymous social service hotline connecting to local autism and disability services 24/7",
+    "coordinates": {
+      "lat": 39.8283,
+      "lng": -98.5795
+    }
   }
 ]
