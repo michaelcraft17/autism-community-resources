@@ -461,14 +461,158 @@
             outline: 3px solid #667eea;
             outline-offset: 2px;
         }
+
+        /* Research Project Landing Page */
+        .research-section {
+            background: white;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .research-section {
+            background: #2d3748;
+        }
+
+        .research-section h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .research-section h3 {
+            color: #764ba2;
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .research-section h3 {
+            color: #a78bfa;
+        }
+
+        .research-section p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .research-section ul {
+            margin: 1rem 0 1rem 2rem;
+            line-height: 1.8;
+        }
+
+        .research-section li {
+            margin-bottom: 0.8rem;
+        }
+
+        .institution-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        body.dark-mode .search-hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+        }
+
+        .search-hero h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        body.dark-mode .search-hero h3 {
+            color: #a78bfa;
+        }
+
+        body.dark-mode .search-hero p {
+            color: #cbd5e0;
+        }
+
+        .unified-search {
+            display: flex;
+            gap: 1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+
+        .unified-search input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .unified-search input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        body.dark-mode .unified-search input {
+            background: #1a202c;
+            color: #e0e0e0;
+            border-color: #4a5568;
+        }
+
+        body.dark-mode .unified-search input:focus {
+            border-color: #a78bfa;
+        }
+
+        .unified-search button {
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .unified-search button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .unified-search {
+                flex-direction: column;
+            }
+
+            .research-section {
+                padding: 2rem 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <header class="header" role="banner">
         <div class="container">
-            <h1>Autism & Special Needs Directory</h1>
-            <p>Connecting families with community resources and support services</p>
+            <h1>AI-Powered Accessibility Mapper</h1>
+            <p>Evaluating Community Support for Spectrum and Special Needs Populations</p>
             <button id="darkModeToggle" class="toolbar-btn secondary" style="position: absolute; top: 20px; right: 20px;" aria-label="Toggle dark mode">
                 🌙 Dark Mode
             </button>
@@ -476,8 +620,76 @@
     </header>
 
     <main class="container" id="main-content" role="main">
-        <!-- Action Toolbar -->
-        <section class="action-toolbar">
+        <!-- Research Project Landing Page -->
+        <section class="research-section" id="researchSection">
+            <div style="text-align: center;">
+                <span class="institution-badge">Department of Computer Science - Cal Poly Pomona</span>
+            </div>
+
+            <h2>Project on Spectrum and Special Needs Support Mapping</h2>
+
+            <p>
+                On behalf of the Department of Computer Science at California State Polytechnic University, Pomona,
+                a research aimed at addressing a critical challenge in community accessibility for individuals with
+                special needs and those on the autism spectrum.
+            </p>
+
+            <h3>Project Title:</h3>
+            <p style="font-weight: 600; color: #667eea; font-size: 1.1rem;">
+                AI-Powered Accessibility Mapper: Evaluating Community Support for Spectrum and Special Needs Populations
+            </p>
+
+            <h3>Project Description:</h3>
+            <p>
+                Schools, libraries, parks, and other public services are essential parts of our communities, yet there is
+                often a lack of clear information on whether these spaces are inclusive and supportive of individuals with
+                sensory sensitivities or other spectrum-related needs. This research project seeks to build a solution to
+                this problem by developing an intelligent platform where users can input a location and receive a list of
+                nearby services—along with an assessment of whether those services provide appropriate spectrum support.
+            </p>
+
+            <h3>The website is responsible for:</h3>
+            <ul>
+                <li><strong>Defining Spectrum Support Criteria:</strong> Researching and establishing what constitutes effective
+                    spectrum accommodations in public service settings.</li>
+                <li><strong>Web Data Aggregation and Scripting:</strong> Using web scraping techniques, APIs, and data pipelines
+                    to gather location-specific service data.</li>
+                <li><strong>Generative AI Analysis:</strong> Applying large language models to analyze public reviews, web content,
+                    and unstructured data to infer levels of spectrum-friendliness.</li>
+                <li><strong>Web Development:</strong> Building a user-friendly, web-based interface that allows users to access
+                    this data and contribute community-driven updates.</li>
+            </ul>
+
+            <h3>Research Goals:</h3>
+            <ul>
+                <li>To increase visibility into how local services support individuals with special needs.</li>
+                <li>To demonstrate how AI and automation can enhance public access to inclusivity information.</li>
+                <li>To build a socially impactful tool while developing technical and research competencies.</li>
+            </ul>
+        </section>
+
+        <!-- Unified Search Hero Section -->
+        <section class="search-hero">
+            <h3>🔍 Find Spectrum-Friendly Resources Near You</h3>
+            <p style="margin-bottom: 1.5rem; color: #666;">
+                Enter your location or use your current location to discover nearby autism and special needs support services
+            </p>
+            <div class="unified-search">
+                <input type="text"
+                       id="unifiedSearchInput"
+                       placeholder="Enter location, zip code, or click 'Use My Location'..."
+                       aria-label="Enter your location or search term">
+                <button id="useLocationBtn" aria-label="Use my current location">
+                    📍 Use My Location
+                </button>
+                <button id="searchBtn" aria-label="Search for resources">
+                    Search
+                </button>
+            </div>
+        </section>
+
+        <!-- Advanced Controls - Hidden Initially -->
+        <section class="action-toolbar" id="actionToolbar" style="display: none;">
             <button id="exportBtn" class="toolbar-btn secondary" aria-label="Export results">
                 📥 Export Results
             </button>
@@ -492,7 +704,7 @@
             </button>
         </section>
 
-        <section class="controls" aria-label="Search and filter controls">
+        <section class="controls" id="filterControls" style="display: none;" aria-label="Search and filter controls">
             <div class="search-container">
                 <label for="searchInput" class="sr-only">Search resources</label>
                 <input type="text" id="searchInput" class="search-input" placeholder="Search resources by name, location, or services..." aria-label="Search resources by name, location, or services">
@@ -510,30 +722,21 @@
             </div>
         </section>
 
-        <section class="controls" style="margin-top: 1rem;" aria-label="Location search">
-            <div class="search-container" style="grid-template-columns: auto 1fr auto;">
-                <button id="useLocationBtn" class="clear-btn" style="background: #28a745; white-space: nowrap;" aria-label="Use my current location">📍 Use My Location</button>
-                <label for="locationInput" class="sr-only">Enter location</label>
-                <input type="text" id="locationInput" class="search-input" placeholder="Or enter zip code, address, or city..." aria-label="Enter zip code, address, or city">
-                <button id="searchLocationBtn" class="clear-btn" style="background: #28a745;" aria-label="Search location">Search Location</button>
-            </div>
-        </section>
-
         <!-- Loading Spinner -->
         <div id="loadingSpinner" class="loading-spinner" role="status" aria-live="polite">
             <span class="sr-only">Loading...</span>
         </div>
 
-        <section class="stats" role="status" aria-live="polite">
-            <h3 id="statsText">Click "Use My Location" or enter a location to find nearby resources</h3>
+        <section class="stats" id="statsSection" style="display: none;" role="status" aria-live="polite">
+            <h3 id="statsText">Finding resources near you...</h3>
         </section>
 
-        <!-- Map Section - Always Visible -->
-        <section id="mapContainer" class="map-container" style="display: block; margin-bottom: 2rem;" aria-label="Interactive resource map">
+        <!-- Map Section - Hidden Initially -->
+        <section id="mapContainer" class="map-container" style="display: none; margin-bottom: 2rem;" aria-label="Interactive resource map">
             <div id="map" role="application" aria-label="Map showing resource locations"></div>
         </section>
 
-        <!-- Resources Section - Shows after location is set -->
+        <!-- Resources Section - Hidden Initially -->
         <section id="resourceContainer" class="resource-grid" style="display: none;" aria-label="Resource listings">
             <!-- Resources will be loaded here -->
         </section>
@@ -710,14 +913,6 @@
         // Update statistics
         function updateStats() {
             const total = allResources.length;
-
-            if (!userLocation) {
-                document.getElementById('statsText').innerHTML = `
-                    ${total} resources available - Click "Use My Location" or enter a location to find nearby resources
-                `;
-                return;
-            }
-
             const showing = filteredResources.length;
             const typeCount = {};
 
@@ -732,7 +927,7 @@
                 .join(' • ');
 
             document.getElementById('statsText').innerHTML = `
-                Showing ${showing} of ${total} resources near you<br>
+                Showing ${showing} of ${total} resources ${userLocation ? 'near you' : 'available'}<br>
                 <small style="opacity: 0.8;">${topTypes}</small>
             `;
         }
@@ -1002,6 +1197,16 @@
             return R * c;
         }
 
+        // Show results interface
+        function showResultsInterface() {
+            document.getElementById('researchSection').style.display = 'none';
+            document.getElementById('actionToolbar').style.display = 'flex';
+            document.getElementById('filterControls').style.display = 'block';
+            document.getElementById('statsSection').style.display = 'block';
+            document.getElementById('mapContainer').style.display = 'block';
+            document.getElementById('resourceContainer').style.display = 'grid';
+        }
+
         // Use browser geolocation
         function useMyLocation() {
             if (!navigator.geolocation) {
@@ -1025,9 +1230,9 @@
                     sortByDistance();
                     btn.textContent = '✅ Location Found';
 
-                    // Show resources and update map
+                    // Show results interface and update map
                     setTimeout(() => {
-                        document.getElementById('resourceContainer').style.display = 'grid';
+                        showResultsInterface();
                         displayResources();
                         updateMap();
                         btn.textContent = originalText;
@@ -1056,11 +1261,11 @@
             );
         }
 
-        // Geocode address/zip code using Nominatim (OpenStreetMap)
-        async function searchLocation() {
-            const locationInput = document.getElementById('locationInput');
-            const searchBtn = document.getElementById('searchLocationBtn');
-            const query = locationInput.value.trim();
+        // Unified search handler
+        async function handleUnifiedSearch() {
+            const searchInput = document.getElementById('unifiedSearchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const query = searchInput.value.trim();
 
             if (!query) {
                 alert('Please enter a location, zip code, or address');
@@ -1086,9 +1291,9 @@
                     sortByDistance();
                     searchBtn.textContent = '✅ Found';
 
-                    // Show resources and update map
+                    // Show results interface and update map
                     setTimeout(() => {
-                        document.getElementById('resourceContainer').style.display = 'grid';
+                        showResultsInterface();
                         displayResources();
                         updateMap();
                         searchBtn.textContent = originalText;
@@ -1140,9 +1345,9 @@
         document.getElementById('typeFilter').addEventListener('change', filterResources);
         document.getElementById('clearBtn').addEventListener('click', clearFilters);
         document.getElementById('useLocationBtn').addEventListener('click', useMyLocation);
-        document.getElementById('searchLocationBtn').addEventListener('click', searchLocation);
-        document.getElementById('locationInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchLocation();
+        document.getElementById('searchBtn').addEventListener('click', handleUnifiedSearch);
+        document.getElementById('unifiedSearchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleUnifiedSearch();
         });
 
         // New feature event listeners
