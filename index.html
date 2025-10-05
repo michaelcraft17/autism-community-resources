@@ -487,6 +487,9 @@
             <button id="showFavoritesBtn" class="toolbar-btn secondary" aria-label="Show favorites">
                 ⭐ Favorites (<span id="favCount">0</span>)
             </button>
+            <button id="donateBtn" class="toolbar-btn secondary" aria-label="Donate">
+                💝 Donate
+            </button>
         </section>
 
         <section class="controls" aria-label="Search and filter controls">
@@ -1147,6 +1150,9 @@
         document.getElementById('exportBtn').addEventListener('click', exportResults);
         document.getElementById('printBtn').addEventListener('click', printResults);
         document.getElementById('showFavoritesBtn').addEventListener('click', showFavorites);
+        document.getElementById('donateBtn').addEventListener('click', function() {
+            alert('Donate functionality coming soon! Thank you for your support.');
+        });
 
         // Load resources and preferences when page loads
         document.addEventListener('DOMContentLoaded', function() {
