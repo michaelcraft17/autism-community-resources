@@ -910,5 +910,195 @@
       "lat": 36.1403,
       "lng": -86.8027
     }
+  },
+  {
+    "name": "Nationwide Children's Hospital - Center for Autism Spectrum Disorders",
+    "address": "700 Children's Drive, Columbus, OH 43205",
+    "phone": "(614) 355-7500",
+    "website": "https://www.nationwidechildrens.org/specialties/center-for-autism-spectrum-disorders",
+    "type": "medical",
+    "source": "State Resources 2025 - Ohio",
+    "services": [
+      "Early Screening",
+      "Diagnosis",
+      "Behavioral Health",
+      "Community Outreach"
+    ],
+    "description": "Comprehensive autism center providing early screening, diagnosis, and treatment for children across Ohio",
+    "coordinates": {
+      "lat": 39.9548,
+      "lng": -82.9988
+    }
+  },
+  {
+    "name": "University of Michigan Autism & Neurodevelopmental Clinic",
+    "address": "1540 E. Hospital Drive, Ann Arbor, MI 48109",
+    "phone": "(734) 232-7513",
+    "website": "https://www.mottchildren.org/conditions-treatments/autism-spectrum-disorders",
+    "type": "medical",
+    "source": "State Resources 2025 - Michigan",
+    "services": [
+      "Multidisciplinary Assessments",
+      "Diagnosis",
+      "Treatment Planning",
+      "Research"
+    ],
+    "description": "University of Michigan's comprehensive autism clinic providing multidisciplinary evaluations and care",
+    "coordinates": {
+      "lat": 42.2803,
+      "lng": -83.7277
+    }
+  },
+  {
+    "name": "Chapel Hill TEACCH Center",
+    "address": "100 Renee Lynne Court, Carrboro, NC 27510",
+    "phone": "(919) 966-5156",
+    "website": "https://teacch.com/regional-centers/chapel-hill-teacch-center",
+    "type": "education",
+    "source": "State Resources 2025 - North Carolina",
+    "services": [
+      "Diagnostic Evaluations",
+      "Intervention/Therapy Services",
+      "Education",
+      "Consultation"
+    ],
+    "description": "Original TEACCH autism program center at UNC offering evidence-based services across North Carolina",
+    "coordinates": {
+      "lat": 35.9101,
+      "lng": -79.0753
+    }
+  },
+  {
+    "name": "Kennedy Krieger Institute - Center for Autism Services",
+    "address": "3901 Greenspring Avenue, Baltimore, MD 21211",
+    "phone": "(443) 923-7630",
+    "website": "https://www.kennedykrieger.org/patient-care/centers-and-programs/center-for-autism-services-science-and-innovation",
+    "type": "medical",
+    "source": "State Resources 2025 - Maryland",
+    "services": [
+      "Diagnostic Services",
+      "Clinical Psychology",
+      "Research",
+      "Family Support"
+    ],
+    "description": "Internationally recognized center for autism research and treatment serving children, families and professionals",
+    "coordinates": {
+      "lat": 39.3498,
+      "lng": -76.6350
+    }
+  },
+  {
+    "name": "University of Minnesota - Autism & Neurodevelopment Clinic",
+    "address": "717 Delaware St. SE, Suite 371, Minneapolis, MN 55455",
+    "phone": "(612) 365-8400",
+    "website": "https://med.umn.edu/pediatrics/divisions/clinical-behavioral-neuroscience",
+    "type": "medical",
+    "source": "State Resources 2025 - Minnesota",
+    "services": [
+      "Diagnostic Evaluations",
+      "Medical Consultation",
+      "Social Skills Groups",
+      "Parent Consultation"
+    ],
+    "description": "University autism clinic providing comprehensive evaluations and support for children ages 1-18",
+    "coordinates": {
+      "lat": 44.9731,
+      "lng": -93.2323
+    }
+  },
+  {
+    "name": "Autism Society of Oregon",
+    "address": "PO Box 396, Marylhurst, OR 97036",
+    "phone": "(503) 636-1676",
+    "website": "https://autismsocietyoregon.org",
+    "type": "advocacy",
+    "source": "State Resources 2025 - Oregon",
+    "services": [
+      "Resources",
+      "Education",
+      "Advocacy",
+      "Support Groups"
+    ],
+    "description": "Statewide organization providing resources, education, advocacy and support for Oregon families",
+    "coordinates": {
+      "lat": 45.5152,
+      "lng": -122.6784
+    }
+  },
+  {
+    "name": "Wisconsin Early Autism Project (WEAP) - Milwaukee",
+    "address": "150 N. Sunnyslope Road, Suite 100, Brookfield, WI 53005",
+    "phone": "(262) 432-5660",
+    "website": "https://wiautism.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Wisconsin",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Parent Training",
+      "School Consultation"
+    ],
+    "description": "Comprehensive ABA therapy services for children with autism in the Milwaukee area",
+    "coordinates": {
+      "lat": 43.0389,
+      "lng": -88.1065
+    }
+  },
+  {
+    "name": "Autism Intervention Milwaukee",
+    "address": "6737 W Washington Street, Suite 3115, West Allis, WI 53214",
+    "phone": "(414) 256-0077",
+    "website": "https://www.autisminterventionmilwaukee.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Wisconsin",
+    "services": [
+      "ABA Therapy",
+      "Individualized Programs",
+      "Family Support",
+      "School Services"
+    ],
+    "description": "ABA therapy and autism intervention services for children and families in the Milwaukee area",
+    "coordinates": {
+      "lat": 43.0167,
+      "lng": -88.0167
+    }
+  },
+  {
+    "name": "Las Vegas Autism Center",
+    "address": "7390 W Sahara Ave, Suite 250-280, Las Vegas, NV 89117",
+    "phone": "(702) 685-0005",
+    "website": "https://www.lvautismcenter.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Nevada",
+    "services": [
+      "ABA Therapy",
+      "Center-based Programs",
+      "Early Intervention",
+      "Family Training"
+    ],
+    "description": "ABA therapy center serving Las Vegas and Henderson families",
+    "coordinates": {
+      "lat": 36.1447,
+      "lng": -115.2545
+    }
+  },
+  {
+    "name": "Lurie Center for Autism - Mass General Hospital",
+    "address": "1 Maguire Road, Lexington, MA 02421",
+    "phone": "(781) 860-1700",
+    "website": "https://www.massgeneral.org/children/autism/lurie-center",
+    "type": "medical",
+    "source": "State Resources 2025 - Massachusetts",
+    "services": [
+      "Comprehensive Evaluations",
+      "Treatment Programs",
+      "Research",
+      "Community Services"
+    ],
+    "description": "Nationally recognized autism center providing comprehensive diagnostic and treatment services",
+    "coordinates": {
+      "lat": 42.4430,
+      "lng": -71.2245
+    }
   }
 ]
