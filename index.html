@@ -19,7 +19,6 @@
     <meta property="twitter:description" content="Find autism and special needs support services near you.">
 
     <title>Autism & Special Needs Community Directory</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * {
             margin: 0;
@@ -885,10 +884,10 @@
         // Initialize map
         function initializeMap() {
             // Start with a view of the continental US
-            map = L.map('map').setView([39.8283, -98.5795], 4);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 39.8283, lng: -98.5795 },
+                zoom: 4
+            });
         }
 
         // Update map with current filtered resources
@@ -896,15 +895,20 @@
             if (!map) return;
 
             // Clear existing markers
-            markers.forEach(marker => map.removeLayer(marker));
+            markers.forEach(marker => marker.setMap(null));
             markers = [];
 
             // Add markers for resources with coordinates
             filteredResources.forEach(resource => {
                 if (resource.coordinates && resource.coordinates.lat && resource.coordinates.lng) {
-                    const marker = L.marker([resource.coordinates.lat, resource.coordinates.lng])
-                        .addTo(map)
-                        .bindPopup(`
+                    const marker = new google.maps.Marker({
+                        position: { lat: resource.coordinates.lat, lng: resource.coordinates.lng },
+                        map: map,
+                        title: resource.name
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
                             <div style="min-width: 200px;">
                                 <h3 style="margin: 0 0 10px 0; color: #667eea;">${resource.name}</h3>
                                 <p style="margin: 0 0 5px 0; font-size: 12px; background: #667eea; color: white; padding: 2px 8px; border-radius: 10px; display: inline-block;">
@@ -918,44 +922,68 @@
                                 ${resource.description ? `<p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">${resource.description}</p>` : ''}
                                 ${resource.website ? `<p style="margin: 5px 0;"><a href="${resource.website}" target="_blank" style="color: #667eea;">🌐 Visit Website</a></p>` : ''}
                             </div>
-                        `);
+                        `
+                    });
+
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+
                     markers.push(marker);
                 }
             });
 
             // Add user location marker if available
             if (userLocation && window.userMarker) {
-                map.removeLayer(window.userMarker);
+                window.userMarker.setMap(null);
             }
             if (userLocation) {
-                window.userMarker = L.marker([userLocation.lat, userLocation.lng], {
-                    icon: L.icon({
-                        iconUrl: 'data:image/svg+xml;base64,' + btoa(`
+                window.userMarker = new google.maps.Marker({
+                    position: { lat: userLocation.lat, lng: userLocation.lng },
+                    map: map,
+                    title: 'Your Location',
+                    icon: {
+                        url: 'data:image/svg+xml;base64,' + btoa(`
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ff4444" width="32" height="32">
                                 <circle cx="12" cy="12" r="8" fill="#ff4444" stroke="white" stroke-width="2"/>
                             </svg>
                         `),
-                        iconSize: [32, 32],
-                        iconAnchor: [16, 16]
-                    })
-                }).addTo(map).bindPopup('Your Location').openPopup();
+                        scaledSize: new google.maps.Size(32, 32),
+                        anchor: new google.maps.Point(16, 16)
+                    }
+                });
+
+                const userInfoWindow = new google.maps.InfoWindow({
+                    content: 'Your Location'
+                });
+                userInfoWindow.open(map, window.userMarker);
             }
 
             // Fit map to show all markers including user location
             if (userLocation && markers.length > 0) {
                 // Include user location marker in the bounds
-                const allMarkers = window.userMarker ? [...markers, window.userMarker] : markers;
-                const group = new L.featureGroup(allMarkers);
-                map.fitBounds(group.getBounds().pad(0.1), {
-                    maxZoom: 14  // Don't zoom out too far
+                const bounds = new google.maps.LatLngBounds();
+                markers.forEach(marker => bounds.extend(marker.getPosition()));
+                if (window.userMarker) {
+                    bounds.extend(window.userMarker.getPosition());
+                }
+                map.fitBounds(bounds);
+
+                // Don't zoom in too much
+                const listener = google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
+                    if (map.getZoom() > 14) {
+                        map.setZoom(14);
+                    }
                 });
             } else if (userLocation) {
                 // Only user location, center on it with closer zoom (street level)
-                map.setView([userLocation.lat, userLocation.lng], 14);
+                map.setCenter({ lat: userLocation.lat, lng: userLocation.lng });
+                map.setZoom(14);
             } else if (markers.length > 0) {
                 // No user location, just fit to resource markers
-                const group = new L.featureGroup(markers);
-                map.fitBounds(group.getBounds().pad(0.1));
+                const bounds = new google.maps.LatLngBounds();
+                markers.forEach(marker => bounds.extend(marker.getPosition()));
+                map.fitBounds(bounds);
             }
         }
 
@@ -1137,6 +1165,6 @@
             }
         });
     </script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></script>
 </body>
 </html>
