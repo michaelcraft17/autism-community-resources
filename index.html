@@ -29,12 +29,17 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background-color: #f5f7fa;
+            color: #3e352b;
+            background-color: #e8e0d0;
+            background-image: linear-gradient(rgba(62, 53, 43, 0.62), rgba(62, 53, 43, 0.72)), url('hero.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5e7a4e 0%, #c2912e 100%);
             color: white;
             padding: 2rem 0;
             text-align: center;
@@ -83,7 +88,7 @@
 
         .search-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #5e7a4e;
         }
 
         .filter-select {
@@ -97,7 +102,7 @@
 
         .clear-btn {
             padding: 12px 24px;
-            background: #667eea;
+            background: #5e7a4e;
             color: white;
             border: none;
             border-radius: 8px;
@@ -107,7 +112,7 @@
         }
 
         .clear-btn:hover {
-            background: #5a6fd8;
+            background: #4c6640;
         }
 
         .stats {
@@ -120,7 +125,7 @@
         }
 
         .stats h3 {
-            color: #667eea;
+            color: #5e7a4e;
             margin-bottom: 1rem;
         }
 
@@ -137,7 +142,7 @@
             padding: 2rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #5e7a4e;
         }
 
         .resource-card:hover {
@@ -217,7 +222,7 @@
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #5e7a4e;
             color: white;
         }
 
@@ -282,8 +287,8 @@
         .view-btn {
             padding: 12px 24px;
             background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
+            color: #5e7a4e;
+            border: 2px solid #5e7a4e;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
@@ -291,12 +296,12 @@
         }
 
         .view-btn.active {
-            background: #667eea;
+            background: #5e7a4e;
             color: white;
         }
 
         .view-btn:hover {
-            background: #667eea;
+            background: #5e7a4e;
             color: white;
         }
 
@@ -310,8 +315,9 @@
 
         /* Dark Mode Styles */
         body.dark-mode {
-            background-color: #1a1a1a;
-            color: #e0e0e0;
+            background-color: #2a241d;
+            background-image: linear-gradient(rgba(26, 22, 17, 0.85), rgba(26, 22, 17, 0.9)), url('hero.jpg');
+            color: #ece4d6;
         }
 
         body.dark-mode .header {
@@ -346,7 +352,7 @@
             position: absolute;
             top: -40px;
             left: 0;
-            background: #667eea;
+            background: #5e7a4e;
             color: white;
             padding: 8px;
             text-decoration: none;
@@ -361,7 +367,7 @@
         .loading-spinner {
             display: none;
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border-top: 4px solid #5e7a4e;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -388,7 +394,7 @@
 
         .toolbar-btn {
             padding: 10px 20px;
-            background: #667eea;
+            background: #5e7a4e;
             color: white;
             border: none;
             border-radius: 6px;
@@ -398,7 +404,7 @@
         }
 
         .toolbar-btn:hover {
-            background: #5a6fd8;
+            background: #4c6640;
             transform: translateY(-2px);
         }
 
@@ -458,7 +464,7 @@
 
         /* Focus visible for better keyboard navigation */
         *:focus-visible {
-            outline: 3px solid #667eea;
+            outline: 3px solid #5e7a4e;
             outline-offset: 2px;
         }
 
@@ -476,21 +482,21 @@
         }
 
         .research-section h2 {
-            color: #667eea;
+            color: #5e7a4e;
             font-size: 1.8rem;
             margin-bottom: 1rem;
             text-align: center;
         }
 
         .research-section h3 {
-            color: #764ba2;
+            color: #c2912e;
             font-size: 1.3rem;
             margin-top: 2rem;
             margin-bottom: 1rem;
         }
 
         body.dark-mode .research-section h3 {
-            color: #a78bfa;
+            color: #e6c260;
         }
 
         .research-section p {
@@ -509,7 +515,7 @@
         }
 
         .institution-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5e7a4e 0%, #c2912e 100%);
             color: white;
             padding: 0.5rem 1.5rem;
             border-radius: 25px;
@@ -520,25 +526,28 @@
         }
 
         .search-hero {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            padding: 2rem;
-            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(245, 239, 227, 0.97) 0%, rgba(236, 226, 205, 0.97) 100%);
+            padding: 2.5rem 2rem;
+            border-radius: 14px;
             margin: 2rem 0;
             text-align: center;
+            border-top: 5px solid #c2912e;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
         }
 
         body.dark-mode .search-hero {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(46, 40, 32, 0.97) 0%, rgba(36, 31, 24, 0.97) 100%);
+            border-top-color: #c2912e;
         }
 
         .search-hero h3 {
-            color: #667eea;
+            color: #5e7a4e;
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
 
         body.dark-mode .search-hero h3 {
-            color: #a78bfa;
+            color: #e6c260;
         }
 
         body.dark-mode .search-hero p {
@@ -556,15 +565,15 @@
         .unified-search input {
             flex: 1;
             padding: 15px 20px;
-            border: 2px solid #667eea;
+            border: 2px solid #5e7a4e;
             border-radius: 8px;
             font-size: 16px;
         }
 
         .unified-search input:focus {
             outline: none;
-            border-color: #764ba2;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            border-color: #c2912e;
+            box-shadow: 0 0 0 3px rgba(94, 122, 78, 0.2);
         }
 
         body.dark-mode .unified-search input {
@@ -574,12 +583,12 @@
         }
 
         body.dark-mode .unified-search input:focus {
-            border-color: #a78bfa;
+            border-color: #e6c260;
         }
 
         .unified-search button {
             padding: 15px 30px;
-            background: #667eea;
+            background: #5e7a4e;
             color: white;
             border: none;
             border-radius: 8px;
@@ -591,9 +600,9 @@
         }
 
         .unified-search button:hover {
-            background: #764ba2;
+            background: #c2912e;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(94, 122, 78, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -638,6 +647,11 @@
                     Search
                 </button>
             </div>
+            <p style="margin-top: 1rem;">
+                <button id="browseAllBtn" style="background: none; border: none; color: #5e7a4e; text-decoration: underline; cursor: pointer; font-size: 0.95rem;" aria-label="Browse all resources without sharing location">
+                    or browse all resources →
+                </button>
+            </p>
         </section>
 
         <!-- Research Project Landing Page -->
@@ -655,7 +669,7 @@
             </p>
 
             <h3>Project Title:</h3>
-            <p style="font-weight: 600; color: #667eea; font-size: 1.1rem;">
+            <p style="font-weight: 600; color: #5e7a4e; font-size: 1.1rem;">
                 AI-Powered Accessibility Mapper: Evaluating Community Support for Spectrum and Special Needs Populations
             </p>
 
@@ -871,7 +885,7 @@
                         ${resource.website ? `
                         <div class="detail-item">
                             <span class="detail-icon" aria-hidden="true">🌐</span>
-                            <a href="${resource.website}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none;">
+                            <a href="${resource.website}" target="_blank" rel="noopener noreferrer" style="color: #5e7a4e; text-decoration: none;">
                                 ${resource.website.replace('https://', '').replace('http://', '')}
                             </a>
                         </div>
@@ -1108,17 +1122,17 @@
                     const infoWindow = new google.maps.InfoWindow({
                         content: `
                             <div style="min-width: 200px;">
-                                <h3 style="margin: 0 0 10px 0; color: #667eea;">${resource.name}</h3>
-                                <p style="margin: 0 0 5px 0; font-size: 12px; background: #667eea; color: white; padding: 2px 8px; border-radius: 10px; display: inline-block;">
+                                <h3 style="margin: 0 0 10px 0; color: #5e7a4e;">${resource.name}</h3>
+                                <p style="margin: 0 0 5px 0; font-size: 12px; background: #5e7a4e; color: white; padding: 2px 8px; border-radius: 10px; display: inline-block;">
                                     ${formatType(resource.type)}
                                 </p>
                                 ${resource.distance && resource.distance < 999 ? `<p style="margin: 5px 0; color: #28a745; font-weight: bold;">📍 ${resource.distance.toFixed(1)} miles away</p>` : ''}
                                 <p style="margin: 5px 0;">${resource.address}</p>
                                 <p style="margin: 5px 0;">
-                                    <a href="tel:${resource.phone}" style="color: #667eea; text-decoration: none;">📞 ${resource.phone}</a>
+                                    <a href="tel:${resource.phone}" style="color: #5e7a4e; text-decoration: none;">📞 ${resource.phone}</a>
                                 </p>
                                 ${resource.description ? `<p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">${resource.description}</p>` : ''}
-                                ${resource.website ? `<p style="margin: 5px 0;"><a href="${resource.website}" target="_blank" style="color: #667eea;">🌐 Visit Website</a></p>` : ''}
+                                ${resource.website ? `<p style="margin: 5px 0;"><a href="${resource.website}" target="_blank" style="color: #5e7a4e;">🌐 Visit Website</a></p>` : ''}
                             </div>
                         `
                     });
@@ -1171,9 +1185,9 @@
                     map: map,
                     center: { lat: userLocation.lat, lng: userLocation.lng },
                     radius: 3218.69, // 2 miles in meters
-                    fillColor: '#667eea',
+                    fillColor: '#5e7a4e',
                     fillOpacity: 0.1,
-                    strokeColor: '#667eea',
+                    strokeColor: '#5e7a4e',
                     strokeOpacity: 0.3,
                     strokeWeight: 2
                 });
@@ -1315,6 +1329,17 @@
             }
         }
 
+        // Browse all resources without requiring a location
+        function browseAll() {
+            userLocation = null;
+            filteredResources = [...allResources];
+            showResultsInterface();
+            displayResources();
+            updateStats();
+            updateMap();
+            document.getElementById('mapContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // Sort resources by distance from user location
         function sortByDistance() {
             if (!userLocation) return;
@@ -1346,6 +1371,7 @@
         document.getElementById('clearBtn').addEventListener('click', clearFilters);
         document.getElementById('useLocationBtn').addEventListener('click', useMyLocation);
         document.getElementById('searchBtn').addEventListener('click', handleUnifiedSearch);
+        document.getElementById('browseAllBtn').addEventListener('click', browseAll);
         document.getElementById('unifiedSearchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') handleUnifiedSearch();
         });
