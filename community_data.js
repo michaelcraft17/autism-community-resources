@@ -1,7 +1,6 @@
-
 // Community Resources Data
 // Generated from community_resources.json on: 2026-06-18
-// Total resources: 464
+// Total resources: 740
 
 const communityResourcesData = [
   {
@@ -2522,6 +2521,44 @@ const communityResourcesData = [
     }
   },
   {
+    "name": "Wisconsin Early Autism Project (WEAP) - Milwaukee",
+    "address": "150 N. Sunnyslope Road, Suite 100, Brookfield, WI 53005",
+    "phone": "(262) 432-5660",
+    "website": "https://wiautism.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Wisconsin",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "School Support",
+      "Parent Training"
+    ],
+    "description": "Premier ABA therapy provider serving Milwaukee and surrounding areas",
+    "coordinates": {
+      "lat": 43.031755,
+      "lng": -88.086826
+    }
+  },
+  {
+    "name": "Autism Intervention Milwaukee",
+    "address": "6737 W Washington Street, Suite 3115, West Allis, WI 53214",
+    "phone": "Contact via website",
+    "website": "https://www.autisminterventionmilwaukee.com",
+    "type": "therapy",
+    "source": "State Resources 2025 - Wisconsin",
+    "services": [
+      "ABA Services",
+      "Behavioral Intervention",
+      "Family Support",
+      "Skills Development"
+    ],
+    "description": "Autism intervention services providing ABA therapy and behavioral support in Milwaukee",
+    "coordinates": {
+      "lat": 43.021165,
+      "lng": -87.996261
+    }
+  },
+  {
     "name": "Autism Society Western New York",
     "address": "19 Limestone Drive, Suite 1, Williamsville, NY 14221",
     "phone": "(716) 633-2275",
@@ -3973,6 +4010,44 @@ const communityResourcesData = [
     }
   },
   {
+    "name": "The Center for Autism - Newark",
+    "address": "341 Roseville Ave Newark, NJ 07107",
+    "phone": "(973) 732-9301",
+    "website": "https://centerforautismnj.org",
+    "type": "general_support",
+    "source": "Eastern States 2025 - New Jersey",
+    "services": [
+      "Services for Adults 21+",
+      "Community Support",
+      "Resources",
+      "Advocacy"
+    ],
+    "description": "Center providing services specifically for adults 21 and over with autism",
+    "coordinates": {
+      "lat": 40.762424,
+      "lng": -74.187466
+    }
+  },
+  {
+    "name": "Children's National Hospital - Center for Autism Spectrum Disorders",
+    "address": "Specialty Care Takoma Theatre 6833 4th St. NW Washington, DC 20012",
+    "phone": "(301) 765-5432",
+    "website": "https://www.childrensnational.org/get-care/departments/center-for-autism-spectrum-disorders",
+    "type": "medical",
+    "source": "Eastern States 2025 - DC",
+    "services": [
+      "Autism Evaluation",
+      "Treatment Services",
+      "Early Intervention (under 48 months)",
+      "Gender and Autism Care"
+    ],
+    "description": "Largest pediatric autism program in the Washington DC region providing evaluation and treatment",
+    "coordinates": {
+      "lat": 38.972782,
+      "lng": -77.017955
+    }
+  },
+  {
     "name": "ABLE Kids - Savannah",
     "address": "3 Johnston Street, Savannah, GA 31405",
     "phone": "(912) 525-0434",
@@ -4122,6 +4197,25 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 35.9799,
       "lng": -78.5097
+    }
+  },
+  {
+    "name": "BlueSprig Autism - Greenville",
+    "address": "10 Arborland Way Greenville, SC 29615",
+    "phone": "Contact via website",
+    "website": "https://www.bluesprigautism.com/centers/south-carolina/bluesprig-greenville",
+    "type": "therapy",
+    "source": "Eastern States 2025 - South Carolina",
+    "services": [
+      "ABA Therapy",
+      "Center-based Services",
+      "Evidence-based Treatment",
+      "Family Training"
+    ],
+    "description": "ABA therapy center serving children with autism in the Greenville area",
+    "coordinates": {
+      "lat": 34.866004,
+      "lng": -82.331964
     }
   },
   {
@@ -4331,6 +4425,44 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 32.8067,
       "lng": -86.7911
+    }
+  },
+  {
+    "name": "The Pediatrics and Autism Center - Shreveport",
+    "address": "650 Olive Street, Shreveport, LA 71104",
+    "phone": "(318) 302-6000",
+    "website": "https://thepacenter.com",
+    "type": "medical",
+    "source": "Eastern States 2025 - Louisiana",
+    "services": [
+      "Autism Diagnosis",
+      "Therapy Services",
+      "Medical Care",
+      "Family Support"
+    ],
+    "description": "Comprehensive autism diagnosis and therapy services for children in Shreveport",
+    "coordinates": {
+      "lat": 32.492742,
+      "lng": -93.742814
+    }
+  },
+  {
+    "name": "Louisiana Autism Center - Shreveport",
+    "address": "7330 Fern Ave, Suite 1001, Shreveport, LA",
+    "phone": "Contact via website",
+    "website": "https://www.louisianaautismcenter.com/shreveport",
+    "type": "therapy",
+    "source": "Eastern States 2025 - Louisiana",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Services",
+      "Educational Support",
+      "Family Training"
+    ],
+    "description": "ABA therapy and autism services in Shreveport",
+    "coordinates": {
+      "lat": 32.435038,
+      "lng": -93.727584
     }
   },
   {
@@ -4864,6 +4996,25 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 40.707539,
       "lng": -74.007604
+    }
+  },
+  {
+    "name": "Autism Society San Francisco Bay Area",
+    "address": "2066 N Capitol Ave #9012 San Jose, CA 95132",
+    "phone": "Contact via website",
+    "website": "https://sfautismsociety.org/",
+    "type": "advocacy",
+    "source": "Western States 2025 - California",
+    "services": [
+      "Community Support",
+      "Resources",
+      "Advocacy",
+      "Educational Programs"
+    ],
+    "description": "Nonprofit bringing the Bay Area autism community together through support and advocacy",
+    "coordinates": {
+      "lat": 37.40634,
+      "lng": -121.886801
     }
   },
   {
@@ -5463,6 +5614,25 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 33.4484,
       "lng": -112.074
+    }
+  },
+  {
+    "name": "Southwest Autism Research & Resource Center (SARRC)",
+    "address": "300 N 18th St, Phoenix, AZ 85006",
+    "phone": "Contact via website",
+    "website": "https://autismcenter.org/",
+    "type": "medical",
+    "source": "Western States 2025 - Arizona",
+    "services": [
+      "Research",
+      "Resources",
+      "Clinical Services",
+      "Community Support"
+    ],
+    "description": "Leading autism research and resource center providing clinical services and community support in Phoenix",
+    "coordinates": {
+      "lat": 33.451486,
+      "lng": -112.043443
     }
   },
   {
@@ -6321,6 +6491,25 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 37.290279,
       "lng": -121.934347
+    }
+  },
+  {
+    "name": "Autism Society San Francisco Bay Area",
+    "address": "2066 N Capitol Ave #9012 San Jose, CA 95132",
+    "phone": "(415) 227-8979",
+    "website": "https://sfautismsociety.org",
+    "type": "advocacy",
+    "source": "San Jose Expansion 2025",
+    "services": [
+      "Community Support",
+      "Resources",
+      "Advocacy",
+      "Family Events"
+    ],
+    "description": "Bringing the Bay Area autism community together with support and resources",
+    "coordinates": {
+      "lat": 37.40634,
+      "lng": -121.886801
     }
   },
   {
@@ -7268,6 +7457,25 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 42.072786,
       "lng": -72.659129
+    }
+  },
+  {
+    "name": "Autism Services & Resources Connecticut (ASRC)",
+    "address": "Connecticut",
+    "phone": "Contact via website",
+    "website": "https://ct-asrc.org/",
+    "type": "advocacy",
+    "source": "Eastern States 2025 - Connecticut",
+    "services": [
+      "Advocacy",
+      "Education",
+      "Family Support",
+      "Workshops and Events"
+    ],
+    "description": "Trusted leader in advocacy, education, and family support for individuals impacted by autism spectrum disorders",
+    "coordinates": {
+      "lat": 41.600619,
+      "lng": -73.085336
     }
   },
   {
@@ -8648,10 +8856,5116 @@ const communityResourcesData = [
       "lng": -98.554037
     },
     "placeless": true
+  },
+  {
+    "name": "Association for Autism and Neurodiversity (AANE)",
+    "address": "85 Main Street, Suite 3, Watertown, MA 02472",
+    "phone": "(617) 393-3824",
+    "website": "https://aane.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Support & Social Groups",
+      "Coaching",
+      "Webinars & Training",
+      "Free 30-Minute Consultation Call"
+    ],
+    "description": "National nonprofit supporting autistic individuals, families, and professionals through education, community, and coaching in an inclusive, neurodiversity-affirming environment.",
+    "coordinates": {
+      "lat": 42.370567,
+      "lng": -71.182062
+    }
+  },
+  {
+    "name": "Autism Society of Florida",
+    "address": "P.O. Box 677055, Orlando, FL 32867",
+    "phone": "(407) 207-3388",
+    "website": "https://www.autismfl.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Advocacy",
+      "Family Support",
+      "Information & Referral",
+      "Community Programs"
+    ],
+    "description": "Volunteer-driven statewide nonprofit working for over 30 years to ensure full participation and self-determination for people across the autism spectrum in Florida.",
+    "coordinates": {
+      "lat": 28.563778,
+      "lng": -81.208378
+    }
+  },
+  {
+    "name": "Action Behavior Centers - ABA Therapy",
+    "address": "1601 South Mo Pac Expressway, Suite C-300, Austin, TX 78746",
+    "phone": "(512) 920-1057",
+    "website": "https://www.actionbehavior.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Feeding Therapy"
+    ],
+    "description": "National network of ABA therapy centers for children with autism, integrating speech, occupational, feeding, and physical therapy. Use website locator to find the nearest center.",
+    "coordinates": {
+      "lat": 30.235327,
+      "lng": -97.839523
+    },
+    "placeless": true
+  },
+  {
+    "name": "Center for Autism and Related Disorders (CARD)",
+    "address": "21600 Oxnard St, Suite 1800, Woodland Hills, CA 91367",
+    "phone": "(818) 345-2345",
+    "website": "https://centerforautism.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Social Skills Training",
+      "Parent Training",
+      "Diagnostic Services"
+    ],
+    "description": "One of the world's largest providers of ABA therapy for autism, with centers across the US and internationally, offering evidence-based treatment for all ages.",
+    "coordinates": {
+      "lat": 34.172161,
+      "lng": -118.607223
+    }
+  },
+  {
+    "name": "Autism Society of Greater New Orleans",
+    "address": "New Orleans, Louisiana",
+    "phone": "Contact via website",
+    "website": "https://asgno.org",
+    "type": "social",
+    "source": "State Resources 2026",
+    "services": [
+      "Peer Support Groups",
+      "Cards & Connections Social Group (Teens & Adults)",
+      "Games and Gatherings Program",
+      "Neurodiversity-Affirming Training"
+    ],
+    "description": "Local affiliate providing peer support groups and in-person social programs for autistic teens and adults in the Greater New Orleans area, including the Cards & Connections and Games & Gatherings programs.",
+    "coordinates": {
+      "lat": 29.951065,
+      "lng": -90.071533
+    }
+  },
+  {
+    "name": "Autism Society of South Carolina",
+    "address": "Columbia, South Carolina",
+    "phone": "Contact via website",
+    "website": "https://scautism.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Support",
+      "Family Resources",
+      "Advocacy",
+      "Community Programs"
+    ],
+    "description": "The only statewide organization in South Carolina dedicated to providing support and resources to children and adults with autism and their families.",
+    "coordinates": {
+      "lat": 34.000235,
+      "lng": -81.034806
+    }
+  },
+  {
+    "name": "Autism Behavior Therapies LLC",
+    "address": "14355 Minnieville Rd, Suite 204, Woodbridge, VA 22193",
+    "phone": "(703) 763-8821",
+    "website": "https://autismbts.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Speech-Language Therapy",
+      "Occupational Therapy",
+      "Support for Ages 2-22"
+    ],
+    "description": "Virginia clinic supporting children and young adults ages 2-22 with autism, language-based learning disabilities, and twice-exceptional students through ABA, speech, and occupational therapy.",
+    "coordinates": {
+      "lat": 38.624222,
+      "lng": -77.298763
+    }
+  },
+  {
+    "name": "UF Center for Autism and Related Disabilities - Jacksonville",
+    "address": "655 W 8th St, Jacksonville, FL 32209",
+    "phone": "(904) 244-0160",
+    "website": "https://pediatrics.med.jax.ufl.edu/patient-care/center-for-autism-and-related-disabilities",
+    "type": "medical",
+    "source": "State Resources 2026",
+    "services": [
+      "Diagnostic Evaluation",
+      "Behavioral Consultation",
+      "Family Training",
+      "School Consultation"
+    ],
+    "description": "University of Florida state-funded center providing diagnostic services, training, and consultation for individuals with autism and related disabilities.",
+    "coordinates": {
+      "lat": 30.345875,
+      "lng": -81.657692
+    }
+  },
+  {
+    "name": "Autism Society of Greater Phoenix",
+    "address": "Phoenix, Arizona",
+    "phone": "Contact via website",
+    "website": "https://phxautism.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Therapy Provider Directory",
+      "Family Support",
+      "Community Events",
+      "Local Advocacy"
+    ],
+    "description": "Phoenix area autism society affiliate maintaining a comprehensive therapy provider directory and offering family support, advocacy, and community events.",
+    "coordinates": {
+      "lat": 33.448376,
+      "lng": -112.074036
+    }
+  },
+  {
+    "name": "The Talcott Center for Child Development",
+    "address": "304 Main Street, Suite A, Farmington, CT 06032",
+    "phone": "(860) 674-1824",
+    "website": "https://www.thetalcottcenter.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Occupational Therapy",
+      "Speech Therapy",
+      "Physical Therapy",
+      "Autism Day Program"
+    ],
+    "description": "Founded in 2004, The Talcott Center provides personalized multidisciplinary autism care near Hartford, CT, blending intensive ABA therapy with OT, speech, and physical therapies in a nurturing day program.",
+    "coordinates": {
+      "lat": 41.719,
+      "lng": -72.836
+    }
+  },
+  {
+    "name": "InBloom Autism Services - New Britain",
+    "address": "125 Whiting Street, New Britain, CT 06051",
+    "phone": "(888) 754-0398",
+    "website": "https://inbloomautism.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy (Ages 18 months–5 years)",
+      "Autism Diagnostic Evaluations (ADOS-2)",
+      "Learning Readiness Program",
+      "Family Support"
+    ],
+    "description": "Over 9,400 sq ft learning center in New Britain providing scientifically validated ABA therapy and diagnostic evaluations for children ages 18 months to 5 years with ASD.",
+    "coordinates": {
+      "lat": 41.661,
+      "lng": -72.775
+    }
+  },
+  {
+    "name": "Children's Specialized Hospital - Autism Center of Excellence (NJ)",
+    "address": "150 New Providence Road, Mountainside, NJ 07092",
+    "phone": "(888) 244-5373",
+    "website": "https://www.rwjbh.org/childrens-specialized-hospital/treatment-care/outpatient-programs/pediatric-autism",
+    "type": "medical",
+    "source": "State Resources 2026",
+    "services": [
+      "Autism Evaluation",
+      "ABA Therapy",
+      "Autism Research",
+      "Inpatient Care (Birth–21 years)"
+    ],
+    "description": "New Jersey's leading pediatric hospital system providing autism services across 14 NJ locations, offering comprehensive evaluation, ABA therapy, and research for individuals birth to age 21.",
+    "coordinates": {
+      "lat": 40.686,
+      "lng": -74.353
+    }
+  },
+  {
+    "name": "Bierman Autism Centers",
+    "address": "24 Crosby Drive, Suite 108, Bedford, MA 01730",
+    "phone": "(800) 931-8113",
+    "website": "https://www.biermanautism.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Autism Diagnostics (Ages 18 months–9 years)"
+    ],
+    "description": "Autism therapy network operating since 2006 with 20+ centers across Arizona, Indiana, Massachusetts, New Jersey, North Carolina, Ohio, and Rhode Island.",
+    "coordinates": {
+      "lat": 42.49,
+      "lng": -71.276
+    },
+    "placeless": true
+  },
+  {
+    "name": "Cincinnati Center for Autism",
+    "address": "100 Commercial Drive, Fairfield, OH 45014",
+    "phone": "(513) 874-6789",
+    "website": "https://www.cincinnaticenterforautism.org",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Communication Programs",
+      "Social Skills",
+      "Behavioral Support"
+    ],
+    "description": "Dedicated autism center serving Cincinnati-area families with programs addressing communication, educational, social, and behavioral needs of children with ASD.",
+    "coordinates": {
+      "lat": 39.354,
+      "lng": -84.537
+    }
+  },
+  {
+    "name": "Cincinnati Children's Hospital - Kelly O'Leary Center for ASD",
+    "address": "3430 Burnet Avenue, Cincinnati, OH 45229",
+    "phone": "(513) 636-4611",
+    "website": "https://www.cincinnatichildrens.org/service/k/autism",
+    "type": "medical",
+    "source": "State Resources 2026",
+    "services": [
+      "Diagnostic Assessment",
+      "Treatment",
+      "Short-term Consultative Services",
+      "Family Support"
+    ],
+    "description": "Nationally recognized center at Cincinnati Children's providing specialized diagnostic, consultative, and short-term treatment for children with ASD.",
+    "coordinates": {
+      "lat": 39.139,
+      "lng": -84.504
+    }
+  },
+  {
+    "name": "Children's Mercy Kansas City - Autism Clinic",
+    "address": "2401 Gillham Road, Kansas City, MO 64108",
+    "phone": "(816) 234-3674",
+    "website": "https://www.childrensmercy.org/departments-and-clinics/developmental-and-behavioral-health/autism-clinic",
+    "type": "medical",
+    "source": "State Resources 2026",
+    "services": [
+      "Autism Assessment",
+      "Developmental-Behavioral Pediatrics",
+      "Telehealth Continuity Clinic",
+      "Family Training"
+    ],
+    "description": "Kansas City's premier children's hospital autism clinic offering comprehensive assessment, the Autism & Neurodevelopment Continuity Clinic (ANDCC), and telehealth appointments.",
+    "coordinates": {
+      "lat": 39.079,
+      "lng": -94.569
+    }
+  },
+  {
+    "name": "Autism Society of the Heartland (Kansas/Missouri)",
+    "address": "12600 Quivira Road, Regnier Hall Suite 270A, Overland Park, KS 66213",
+    "phone": "(913) 706-0042",
+    "website": "https://asaheartland.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Grants & Scholarships",
+      "Information & Referral",
+      "Educational Workshops",
+      "Social & Support Groups"
+    ],
+    "description": "Autism Society affiliate serving the Kansas City metro area across Johnson and Wyandotte counties in Kansas and Clay, Jackson, Cass, and Platte counties in Missouri.",
+    "coordinates": {
+      "lat": 38.898,
+      "lng": -94.748
+    }
+  },
+  {
+    "name": "Mountain West Autism Services",
+    "address": "4568 South Highland Drive, Suite 200, Salt Lake City, UT 84117",
+    "phone": "(801) 871-9145",
+    "website": "https://mountainwestautism.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "Autism Evaluations (ASD Comprehensive)",
+      "In-Home ABA Therapy",
+      "Parent Coaching",
+      "Military Family Services (Tricare accepted)"
+    ],
+    "description": "Utah-based provider offering comprehensive psychological autism evaluations and in-home ABA therapy, accepting Regence, BCBS, Tricare, Cigna, and Medicaid.",
+    "coordinates": {
+      "lat": 40.661,
+      "lng": -111.874
+    }
+  },
+  {
+    "name": "Amplify Life (Sparks, NV)",
+    "address": "480 Galletti Way, Building 2, Sparks, NV 89436",
+    "phone": "(775) 827-3866",
+    "website": "https://amplifylife.org",
+    "type": "social",
+    "source": "State Resources 2026",
+    "services": [
+      "Recreational Programs",
+      "Therapeutic Programs",
+      "Educational Programs",
+      "Community Activities for Children, Teens & Adults"
+    ],
+    "description": "Northern Nevada nonprofit dedicated to providing recreational, therapeutic, and educational programs for children, teens, and adults with developmental disabilities including autism.",
+    "coordinates": {
+      "lat": 39.544,
+      "lng": -119.743
+    }
+  },
+  {
+    "name": "Mississippi Centers for Autism & Related Developmental Disabilities (MCARDD)",
+    "address": "4061 Suzanne Drive, D'Iberville, MS 39540",
+    "phone": "(228) 396-4434",
+    "website": "https://www.mscentersforautism.org",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy (Ages 0-18)",
+      "Workforce Readiness for Young Adults",
+      "Education System Navigation",
+      "Family Support"
+    ],
+    "description": "Mississippi's specialized center for comprehensive ABA therapy and autism support for individuals ages 0-18, plus workforce readiness programs for young adults. Accepts Medicaid.",
+    "coordinates": {
+      "lat": 30.454,
+      "lng": -88.902
+    }
+  },
+  {
+    "name": "Autism Center of North Mississippi - Tupelo",
+    "address": "146 S. Thomas Street, Suite C, Tupelo, MS 38801",
+    "phone": "(662) 840-0974",
+    "website": "https://www.autismcenternms.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Assessment",
+      "Parent Training",
+      "Community Support"
+    ],
+    "description": "North Mississippi autism center providing ABA therapy and behavioral support services for individuals with autism spectrum disorder in the Tupelo area.",
+    "coordinates": {
+      "lat": 34.26,
+      "lng": -88.7
+    }
+  },
+  {
+    "name": "Autism Center of North Mississippi - Oxford",
+    "address": "317 Heritage Drive, Suite 6, Oxford, MS 38655",
+    "phone": "(662) 840-0974",
+    "website": "https://www.autismcenternms.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Assessment",
+      "Parent Training",
+      "Community Support"
+    ],
+    "description": "Oxford-area location of the Autism Center of North Mississippi providing ABA therapy and behavioral support for individuals with autism in the Oxford/Lafayette County region.",
+    "coordinates": {
+      "lat": 34.363,
+      "lng": -89.526
+    }
+  },
+  {
+    "name": "North Georgia Autism Center",
+    "address": "345 Parkway 575, Woodstock, GA 30188",
+    "phone": "(404) 341-4137",
+    "website": "https://www.northgeorgiaautism.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Speech Therapy",
+      "Occupational Therapy"
+    ],
+    "description": "Woodstock, GA autism therapy center offering one-on-one ABA therapy, early intervention, speech, and occupational therapy for children diagnosed with ASD. Accepts most major insurance including Medicaid.",
+    "coordinates": {
+      "lat": 34.102,
+      "lng": -84.519
+    }
+  },
+  {
+    "name": "ABA Centers of Georgia",
+    "address": "Atlanta, Georgia (multiple locations)",
+    "phone": "(855) 929-5058",
+    "website": "https://www.abacentersga.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Autism Diagnostic Services",
+      "No Long Waiting List",
+      "Evidence-Based Treatment"
+    ],
+    "description": "Georgia ABA therapy network providing comprehensive Applied Behavior Analysis therapy and autism diagnostic services at multiple metro Atlanta locations without long waiting lists.",
+    "coordinates": {
+      "lat": 33.748995,
+      "lng": -84.387982
+    }
+  },
+  {
+    "name": "Autism Society of Maine",
+    "address": "72B Main Street, Winthrop, ME 04364",
+    "phone": "(800) 273-5200",
+    "website": "https://www.asmonline.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information Specialist Program",
+      "Summer Camp",
+      "Family Retreat",
+      "Statewide Advocacy"
+    ],
+    "description": "Maine's statewide nonprofit founded in 1976 promoting lifelong access and opportunity for all individuals on the autism spectrum through education, advocacy, support, and public awareness.",
+    "coordinates": {
+      "lat": 44.316,
+      "lng": -69.983
+    }
+  },
+  {
+    "name": "The Autism Project (TAP) - Rhode Island",
+    "address": "1516 Atwood Avenue, Johnston, RI 02919",
+    "phone": "(401) 785-2666",
+    "website": "https://theautismproject.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Training & Workshops",
+      "Social Skills Groups",
+      "Family Connections Support Groups",
+      "Grand Connections Grandparent Group"
+    ],
+    "description": "Rhode Island nonprofit providing quality support, training, and accessible programming for children and adults with ASD, their families, and professionals throughout the state.",
+    "coordinates": {
+      "lat": 41.827,
+      "lng": -71.516
+    }
+  },
+  {
+    "name": "Autism Society of Maryland",
+    "address": "9770 Patuxent Woods Drive, Suite 308, Columbia, MD 21046",
+    "phone": "(410) 290-3466",
+    "website": "https://autismsocietymd.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Educational Workshops",
+      "Community Gatherings",
+      "Autism Hiring Program"
+    ],
+    "description": "Maryland's Autism Society affiliate providing information, advocacy, and support to families and individuals in Howard, Montgomery, and Anne Arundel counties, including an autism employment hiring program.",
+    "coordinates": {
+      "lat": 39.213,
+      "lng": -76.88
+    }
+  },
+  {
+    "name": "Autism Society of Wisconsin",
+    "address": "Madison, Wisconsin",
+    "phone": "(608) 630-9147",
+    "website": "https://autismsocietywi.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Resources",
+      "Family Support",
+      "Advocacy",
+      "Community Programs"
+    ],
+    "description": "Wisconsin's statewide autism advocacy organization providing resources, family support, and community programs following the unification of multiple Wisconsin Autism Society affiliates.",
+    "coordinates": {
+      "lat": 43.074,
+      "lng": -89.384
+    }
+  },
+  {
+    "name": "Autism Society of Georgia",
+    "address": "8343 Roswell Road, Suite 339, Atlanta, GA 30350",
+    "phone": "Contact via website",
+    "website": "https://www.autismsocietyofga.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Support Groups",
+      "Resources",
+      "Advocacy",
+      "Community Events"
+    ],
+    "description": "Georgia's statewide Autism Society affiliate providing support groups, resources, advocacy, and community events for autistic individuals and their families across the state.",
+    "coordinates": {
+      "lat": 33.974,
+      "lng": -84.379
+    }
+  },
+  {
+    "name": "Autism Society Louisiana State Chapter",
+    "address": "Louisiana (statewide)",
+    "phone": "(225) 284-6066",
+    "website": "https://www.lastatechapter.com",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Information & Referral",
+      "Family Support",
+      "Advocacy",
+      "Community Resources"
+    ],
+    "description": "Louisiana's statewide Autism Society affiliate coordinating information, referral, and support services for autistic individuals and families across Louisiana.",
+    "coordinates": {
+      "lat": 30.451,
+      "lng": -91.187
+    }
+  },
+  {
+    "name": "Autism Society of Southwest Louisiana",
+    "address": "Lake Charles, Louisiana",
+    "phone": "(337) 855-2068",
+    "website": "https://www.autismsocietyswla.com",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Local Support Groups",
+      "Family Resources",
+      "Advocacy",
+      "Community Events"
+    ],
+    "description": "Southwest Louisiana Autism Society affiliate serving the Lake Charles and surrounding area with support groups, family resources, and autism advocacy.",
+    "coordinates": {
+      "lat": 30.228,
+      "lng": -93.217
+    }
+  },
+  {
+    "name": "University of Alabama Regional Autism Network (RAN)",
+    "address": "Box 870231, Tuscaloosa, AL 35487",
+    "phone": "(205) 348-3131",
+    "website": "https://ran.ua.edu",
+    "type": "education",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Training",
+      "Technical Assistance",
+      "School Consultation",
+      "Family Education"
+    ],
+    "description": "University of Alabama's statewide network providing training, technical assistance, and consultation for schools, families, and professionals supporting individuals with autism across Alabama.",
+    "coordinates": {
+      "lat": 33.211,
+      "lng": -87.537
+    }
+  },
+  {
+    "name": "Glenwood, Inc. (Birmingham, AL)",
+    "address": "150 Glenwood Lane, Birmingham, AL 35242",
+    "phone": "(205) 969-2880",
+    "website": "https://www.glenwoodinc.org",
+    "type": "general_support",
+    "source": "State Resources 2026",
+    "services": [
+      "Day Programs",
+      "Residential Services",
+      "Vocational Training",
+      "Behavioral Support"
+    ],
+    "description": "Birmingham, AL nonprofit providing day programs, residential services, and vocational training for individuals with autism and developmental disabilities across all ages.",
+    "coordinates": {
+      "lat": 33.44,
+      "lng": -86.703
+    }
+  },
+  {
+    "name": "Helping Hands Family ABA Therapy",
+    "address": "1 Great Valley Pkwy, Suite 30, Malvern, PA 19355",
+    "phone": "(855) 700-0400",
+    "website": "https://hhfamily.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Center-Based Services",
+      "In-Home Services",
+      "School Support"
+    ],
+    "description": "Multi-state ABA therapy provider with clinics in Pennsylvania, New Jersey, New York, Maryland, Virginia, and Connecticut, offering center-based and in-home services for children with autism.",
+    "coordinates": {
+      "lat": 40.036,
+      "lng": -75.514
+    },
+    "placeless": true
+  },
+  {
+    "name": "Achievements ABA Therapy",
+    "address": "Atlanta, Georgia (multiple states)",
+    "phone": "(877) 733-7033",
+    "website": "https://achievementstherapy.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "In-Home ABA Therapy",
+      "In-School ABA Therapy",
+      "Early Intervention",
+      "Parent Training"
+    ],
+    "description": "Multi-state ABA therapy provider offering in-home and in-school services across Georgia (Atlanta, 404-551-5330), North Carolina (Charlotte/Raleigh, 980-265-0989), and Arizona.",
+    "coordinates": {
+      "lat": 33.748995,
+      "lng": -84.387982
+    },
+    "placeless": true
+  },
+  {
+    "name": "Milestones Behavior Group (Birmingham, AL)",
+    "address": "200 Cahaba Park Circle, Suite 116, Birmingham, AL 35242",
+    "phone": "(205) 253-6903",
+    "website": "https://milestonesbehaviorgroup.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Assessment",
+      "Parent Training",
+      "Social Skills"
+    ],
+    "description": "Birmingham, Alabama behavioral therapy center providing individualized ABA therapy and behavioral support for children and adults with autism spectrum disorder.",
+    "coordinates": {
+      "lat": 33.44,
+      "lng": -86.7
+    }
+  },
+  {
+    "name": "Autism Tennessee (Nashville)",
+    "address": "955 Woodland Street, Nashville, TN 37206",
+    "phone": "(615) 385-2077",
+    "website": "https://autismtn.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "HELPLine (ext. 1)",
+      "Crisis Support",
+      "Education & Outreach",
+      "Self-Advocate Programs",
+      "EmployMe Adult Employment Program"
+    ],
+    "description": "Tennessee's leading autism advocacy organization offering the HELPLine, crisis support, adult self-advocacy programs, and the EmployMe employment program for autistic adults in Nashville.",
+    "coordinates": {
+      "lat": 36.172,
+      "lng": -86.736
+    }
+  },
+  {
+    "name": "Autism Society of East Tennessee",
+    "address": "123 Center Park Drive, Suite 211, Knoxville, TN 37922",
+    "phone": "(865) 247-5082",
+    "website": "https://www.asaetc.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Education & Resources",
+      "Annual Conference",
+      "Social Programs",
+      "Professional Training"
+    ],
+    "description": "East Tennessee's autism society affiliate providing educational resources, an annual conference, social programs, and professional training for the Knoxville and surrounding areas.",
+    "coordinates": {
+      "lat": 35.9,
+      "lng": -84.045
+    }
+  },
+  {
+    "name": "Arkansas Children's - Neurodevelopmental Clinic",
+    "address": "1 Children's Way, Little Rock, AR 72202",
+    "phone": "(501) 364-4000",
+    "website": "https://www.archildrens.org/programs-and-services/neuroscience-center/neurodevelopmental-neurobehavioral-clinic",
+    "type": "medical",
+    "source": "State Resources 2026",
+    "services": [
+      "Autism Evaluation (Physician Referral)",
+      "Developmental Assessment",
+      "Dual Diagnosis",
+      "Treatment Planning"
+    ],
+    "description": "Arkansas Children's Hospital neurodevelopmental clinic providing evaluation and treatment for autism, developmental delays, and dual diagnoses. Requires physician referral.",
+    "coordinates": {
+      "lat": 34.747,
+      "lng": -92.329
+    }
+  },
+  {
+    "name": "Autism Society West Virginia",
+    "address": "P.O. Box 7, Huntington, WV 25706",
+    "phone": "(304) 224-2769",
+    "website": "https://westvirginia-autism-society.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Education & Advocacy",
+      "Information & Referral",
+      "Support Groups",
+      "Community Programming"
+    ],
+    "description": "West Virginia's Autism Society providing statewide advocacy, information and referral services, support groups, and community programming through multiple regional chapters.",
+    "coordinates": {
+      "lat": 38.419,
+      "lng": -82.445
+    }
+  },
+  {
+    "name": "Fraser Autism Services (Minneapolis, MN)",
+    "address": "2400 West 64th Street, Minneapolis, MN 55423",
+    "phone": "(612) 767-7222",
+    "website": "https://www.fraser.org/services/autism",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "Intensive ABA Therapy (20+ hrs/week)",
+      "Social Skills",
+      "Communication Training",
+      "Gross/Fine Motor Skills"
+    ],
+    "description": "Minnesota's leading autism services provider offering intensive ABA at four Twin Cities locations (Minneapolis, Coon Rapids, Bloomington, Woodbury), helping children develop safety, play, and social skills.",
+    "coordinates": {
+      "lat": 44.888,
+      "lng": -93.324
+    }
+  },
+  {
+    "name": "Autism Resource Connection (Kansas & Nebraska)",
+    "address": "Online Resource - Kansas and Nebraska",
+    "phone": "Contact via website",
+    "website": "https://www.autismresourceconnection.org",
+    "type": "general_support",
+    "source": "Regional Resources 2026",
+    "services": [
+      "Searchable Provider Database (by Zip Code)",
+      "Medical Resources",
+      "Early Intervention (Ages 0-3)",
+      "School & Adult Transition Services"
+    ],
+    "description": "Free online database of autism resources and services for families in Kansas and Nebraska, searchable by zip code and category including medical, school, early intervention, and adult transition services.",
+    "coordinates": {
+      "lat": 39.011,
+      "lng": -98.484
+    },
+    "placeless": true
+  },
+  {
+    "name": "Delaware Network for Excellence in Autism (DNEA)",
+    "address": "University of Delaware, Newark, DE 19716",
+    "phone": "(302) 831-6974",
+    "website": "https://www.bidel.udel.edu/dnea",
+    "type": "education",
+    "source": "State Resources 2026",
+    "services": [
+      "Evidence-Based Support",
+      "Family Education",
+      "Professional Training",
+      "Quality Autism Care Access"
+    ],
+    "description": "University of Delaware-based statewide network ensuring that Delaware families have access to high-quality support, education, and evidence-based autism care.",
+    "coordinates": {
+      "lat": 39.679,
+      "lng": -75.753
+    }
+  },
+  {
+    "name": "Easterseals Hawaii - Autism Services",
+    "address": "200 N. Vineyard Blvd, Suite A-600, Honolulu, HI 96817",
+    "phone": "(808) 523-8188",
+    "website": "https://www.eastersealshawaii.org/autism-services",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "Autism Diagnostic Evaluations",
+      "ABA Therapy",
+      "In-Home Therapy",
+      "Telehealth Services"
+    ],
+    "description": "Hawaii's Easterseals chapter providing autism diagnostic evaluations and treatment recommendations through in-home, in-clinic, and telehealth services across the islands.",
+    "coordinates": {
+      "lat": 21.311,
+      "lng": -157.852
+    }
+  },
+  {
+    "name": "Peak Behavioral Therapy - Idaho & Wyoming",
+    "address": "Idaho Falls, Idaho / Laramie, Wyoming (multiple locations)",
+    "phone": "(307) 212-3284",
+    "website": "https://pkservice.org",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "Center-Based ABA Therapy",
+      "In-Home ABA Therapy",
+      "Early Intervention",
+      "Spanish-Language Services"
+    ],
+    "description": "ABA therapy provider serving Idaho (Idaho Falls, Rexburg) and Wyoming (Laramie, Rock Springs, Cheyenne, Green River), offering center-based and in-home services with some Spanish-language capacity.",
+    "coordinates": {
+      "lat": 43.492,
+      "lng": -112.034
+    },
+    "placeless": true
+  },
+  {
+    "name": "Brighter Strides ABA (Colorado & New Mexico)",
+    "address": "Colorado Springs, Colorado",
+    "phone": "Contact via website",
+    "website": "https://www.brighterstridesaba.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Parent Coaching",
+      "Multiple Service Settings"
+    ],
+    "description": "ABA therapy provider serving Colorado and New Mexico with personalized autism therapy programs, including center-based, in-home, and community-based services.",
+    "coordinates": {
+      "lat": 38.833882,
+      "lng": -104.821363
+    }
+  },
+  {
+    "name": "Autism Society of Minnesota (AuSM)",
+    "address": "2380 Wycliff Street, Suite 102, St. Paul, MN 55114",
+    "phone": "(651) 647-1083",
+    "website": "https://ausm.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Support Groups (inc. Women's Group)",
+      "Specialty Camps",
+      "Social Skills Classes",
+      "Annual State Conference",
+      "Counseling & Consulting"
+    ],
+    "description": "Minnesota's statewide Autism Society affiliate offering support across the lifespan including social skills classes, specialty camps, the annual autism conference, and free support groups.",
+    "coordinates": {
+      "lat": 44.968,
+      "lng": -93.165
+    }
+  },
+  {
+    "name": "Midwest Autism & Therapy Centers (Iowa & MN)",
+    "address": "1280 Office Plaza Drive, West Des Moines, IA 50266",
+    "phone": "Contact via website",
+    "website": "https://midwestautismservices.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Center-Based Services",
+      "Family Training"
+    ],
+    "description": "Early-intervention autism service provider with centers throughout Iowa (West Des Moines) and Minnesota (Woodbury), specializing in ABA therapy for young children with ASD.",
+    "coordinates": {
+      "lat": 41.596,
+      "lng": -93.763
+    }
+  },
+  {
+    "name": "Els for Autism Foundation",
+    "address": "18370 Limestone Creek Road, Jupiter, FL 33478",
+    "phone": "(561) 598-6200",
+    "website": "https://www.elsforautism.org",
+    "type": "general_support",
+    "source": "State Resources 2026",
+    "services": [
+      "Independent Living Programs (Adults 18+)",
+      "Employment Skills Training",
+      "Social & Recreational Activities",
+      "Golf & Arts Therapy"
+    ],
+    "description": "Jupiter, FL campus-based organization providing independent living programs, employment skills training, and social activities for adults with autism ages 18 and older, including unique golf and arts-based programs.",
+    "coordinates": {
+      "lat": 26.942,
+      "lng": -80.085
+    }
+  },
+  {
+    "name": "Montana Autism Center",
+    "address": "1005 Autism Lane, Ronan, MT 59864",
+    "phone": "Contact via University of Montana Rural Institute",
+    "website": "https://ruralinstitute.umt.edu",
+    "type": "education",
+    "source": "State Resources 2026",
+    "services": [
+      "Family Resources",
+      "Montana-Specific Information",
+      "Rural Autism Support",
+      "Professional Resources"
+    ],
+    "description": "Montana's autism resource center housed at the University of Montana Rural Institute, providing resources and information tailored to Montana families and professionals supporting individuals with autism.",
+    "coordinates": {
+      "lat": 47.529,
+      "lng": -114.101
+    }
+  },
+  {
+    "name": "Arkansas Autism Resource & Outreach Center (AAROC)",
+    "address": "Little Rock, Arkansas",
+    "phone": "(501) 454-8542",
+    "website": "https://www.aaroc.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Family Guidance",
+      "Diagnosis Navigation",
+      "Educational Services Support",
+      "Family Fun Days",
+      "Emotional Support"
+    ],
+    "description": "Arkansas nonprofit founded in 2008 providing hope and guidance for families, caregivers, and educators navigating autism spectrum disorder diagnoses, educational services, and therapy options.",
+    "coordinates": {
+      "lat": 34.746,
+      "lng": -92.289
+    }
+  },
+  {
+    "name": "Nashville Autism Peer Support",
+    "address": "Nashville, Tennessee",
+    "phone": "Contact via website",
+    "website": "https://nashvilleautismpeersupport.org",
+    "type": "social",
+    "source": "State Resources 2026",
+    "services": [
+      "Peer Support Groups",
+      "Autistic Adult Community",
+      "Social Events",
+      "Neurodiversity-Affirming Spaces"
+    ],
+    "description": "Nashville-based peer support network run by and for autistic adults, providing community connection, social events, and neurodiversity-affirming peer support groups.",
+    "coordinates": {
+      "lat": 36.162,
+      "lng": -86.774
+    }
+  },
+  {
+    "name": "Autism Care Partners (New England)",
+    "address": "Boston, Massachusetts",
+    "phone": "(617) 527-7000",
+    "website": "https://autismcarepartners.com",
+    "type": "therapy",
+    "source": "Regional Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Evaluations",
+      "Parent & Caregiver Resources",
+      "Multiple New England Locations"
+    ],
+    "description": "New England autism therapy network offering ABA therapy and diagnostic evaluations with multiple clinic locations across Massachusetts, Rhode Island, New Hampshire, and Vermont.",
+    "coordinates": {
+      "lat": 42.36,
+      "lng": -71.058
+    },
+    "placeless": true
+  },
+  {
+    "name": "Autism Society of Greater Houston",
+    "address": "2500 Tanglewilde Street, Suite 344, Houston, TX 77063",
+    "phone": "(713) 838-9404",
+    "website": "https://www.autismhouston.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Annual Gala & Fundraising Events"
+    ],
+    "description": "Houston-area Autism Society affiliate providing information and referral, support groups, and community events for autistic individuals and families in the greater Houston metropolitan region.",
+    "coordinates": {
+      "lat": 29.735,
+      "lng": -95.489
+    }
+  },
+  {
+    "name": "Blue Sprig Autism - Arkansas",
+    "address": "702 SW 14th Street, Bentonville, AR 72712",
+    "phone": "(479) 957-9121",
+    "website": "https://www.bluesprigautism.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Center-Based Services",
+      "Early Intervention",
+      "Multiple Arkansas Locations (Bentonville, Fayetteville, Ft. Smith)"
+    ],
+    "description": "ABA therapy provider with multiple locations across Northwest and Western Arkansas including Bentonville, Fayetteville, and Fort Smith, offering evidence-based autism therapy.",
+    "coordinates": {
+      "lat": 36.367,
+      "lng": -94.209
+    }
+  },
+  {
+    "name": "Inner Circle Autism Network - Little Rock",
+    "address": "Little Rock, Arkansas",
+    "phone": "Contact via website",
+    "website": "https://www.innercircleautism.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Center-Based Services",
+      "Behavioral Assessments",
+      "Family Support"
+    ],
+    "description": "Little Rock, Arkansas ABA therapy center providing individualized autism therapy and behavioral assessments for children and families in central Arkansas.",
+    "coordinates": {
+      "lat": 34.746,
+      "lng": -92.289
+    }
+  },
+  {
+    "name": "Autism Society of Greater Baton Rouge",
+    "address": "Baton Rouge, Louisiana",
+    "phone": "Contact via website",
+    "website": "https://www.autismsocietygbr.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Support Groups",
+      "Family Resources",
+      "Local Advocacy",
+      "Community Events"
+    ],
+    "description": "Baton Rouge area Autism Society affiliate providing local support groups, family resources, and community events for autistic individuals and families in the greater Baton Rouge region.",
+    "coordinates": {
+      "lat": 30.451,
+      "lng": -91.154
+    }
+  },
+  {
+    "name": "Autism Society of North Louisiana",
+    "address": "Shreveport, Louisiana",
+    "phone": "Contact via website",
+    "website": "https://www.autismsocietynorthla.com",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Community Resources"
+    ],
+    "description": "North Louisiana Autism Society affiliate serving the Shreveport-Bossier City area and surrounding parishes with information, referral, support groups, and autism advocacy.",
+    "coordinates": {
+      "lat": 32.525,
+      "lng": -93.75
+    }
+  },
+  {
+    "name": "Achieve ABA Therapy Group (Denver, CO)",
+    "address": "250 Fillmore Street, Suite 150, Denver, CO 80206",
+    "phone": "(720) 463-9000",
+    "website": "https://achieveaba.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Center-Based Services",
+      "In-Home Services",
+      "Parent Training"
+    ],
+    "description": "Denver-based ABA therapy center providing evidence-based autism therapy for children in the metro Denver area, with center-based and in-home service options.",
+    "coordinates": {
+      "lat": 39.722,
+      "lng": -104.943
+    }
+  },
+  {
+    "name": "Autism Council of Utah (ACU)",
+    "address": "Salt Lake City, Utah",
+    "phone": "Contact via website",
+    "website": "https://www.autismcouncilofutah.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "A-Z Provider Directory",
+      "Family Advocacy",
+      "Professional Collaboration",
+      "Community Education"
+    ],
+    "description": "Independent Utah council fostering collaboration, communication, and learning among families and agencies, maintaining a comprehensive A-Z directory of Utah autism service providers.",
+    "coordinates": {
+      "lat": 40.76,
+      "lng": -111.891
+    }
+  },
+  {
+    "name": "Autism Speaks - Autism Response Team (ART)",
+    "address": "1 East 33rd Street, 4th Floor, New York, NY 10016",
+    "phone": "(888) 288-4762",
+    "website": "https://www.autismspeaks.org/autism-response-team",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Personalized Resource Matching",
+      "Local Specialist Referrals",
+      "Insurance Navigation",
+      "Tool Kit Downloads"
+    ],
+    "description": "Autism Speaks' free Autism Response Team connects individuals and families to local specialists, insurance navigation help, and personalized resource referrals nationwide.",
+    "coordinates": {
+      "lat": 40.747793,
+      "lng": -73.984945
+    },
+    "placeless": true
+  },
+  {
+    "name": "IACC - Interagency Autism Coordinating Committee",
+    "address": "6001 Executive Blvd, Bethesda, MD 20892",
+    "phone": "(301) 496-0597",
+    "website": "https://iacc.hhs.gov",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Research Coordination",
+      "State Resource Directory (All 50 States)",
+      "Employment Resource Lists",
+      "Science & Policy Updates"
+    ],
+    "description": "Federal advisory committee coordinating autism research efforts across HHS agencies. Their website provides the most comprehensive state-by-state and national autism organization directory available.",
+    "coordinates": {
+      "lat": 38.998,
+      "lng": -77.098
+    }
+  },
+  {
+    "name": "US Autism Association - Support Directory",
+    "address": "National Online Directory",
+    "phone": "Contact via website",
+    "website": "https://usautism.org/autism-support-directory",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Searchable Support Directory (All 50 States)",
+      "Local Resource Finder",
+      "Organization Listings by State",
+      "Service Category Filtering"
+    ],
+    "description": "Comprehensive national autism support directory listing verified organizations across all 50 states, searchable by state and service category including therapy, advocacy, education, and social support.",
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    },
+    "placeless": true
+  },
+  {
+    "name": "Footprints Behavioral Interventions - Hawaii",
+    "address": "2752 Woodlawn Drive, Suite 5-202, Honolulu, HI 96822",
+    "phone": "(800) 273-4292",
+    "website": "https://footprintsbehavioral.com",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "In-Home Services",
+      "Telehealth",
+      "Behavioral Assessments"
+    ],
+    "description": "Hawaii-based ABA therapy provider offering in-home, telehealth, and community-based autism services across Oahu and neighboring islands.",
+    "coordinates": {
+      "lat": 21.298,
+      "lng": -157.818
+    }
+  },
+  {
+    "name": "Autism Society of New Hampshire",
+    "address": "P.O. Box 68, Concord, NH 03302",
+    "phone": "(603) 679-2424",
+    "website": "https://autismsocietynh.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Support Groups",
+      "Family Resources",
+      "Information & Referral",
+      "Advocacy"
+    ],
+    "description": "New Hampshire's Autism Society affiliate providing support groups, family resources, information and referral services, and autism advocacy throughout the Granite State.",
+    "coordinates": {
+      "lat": 43.207,
+      "lng": -71.538
+    }
+  },
+  {
+    "name": "Autism Society of Vermont",
+    "address": "Montpelier, Vermont",
+    "phone": "Contact via website",
+    "website": "https://autismsocietyofvermont.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Family Advocacy",
+      "Community Resources"
+    ],
+    "description": "Vermont's Autism Society affiliate providing information, referral, and support group services for autistic individuals and their families across Vermont.",
+    "coordinates": {
+      "lat": 44.259,
+      "lng": -72.575
+    }
+  },
+  {
+    "name": "Autism Society of Greater Cincinnati",
+    "address": "Cincinnati, Ohio",
+    "phone": "(513) 561-2440",
+    "website": "https://autismcincy.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Support Groups",
+      "Resource Guide",
+      "Advocacy",
+      "Community Programs"
+    ],
+    "description": "Greater Cincinnati area Autism Society affiliate offering support groups, a regional resource guide, and advocacy for families affected by autism in the Cincinnati tri-state area.",
+    "coordinates": {
+      "lat": 39.103,
+      "lng": -84.512
+    }
+  },
+  {
+    "name": "Autism Society of North Carolina - Raleigh (Statewide HQ)",
+    "address": "505 Oberlin Road, Suite 230, Raleigh, NC 27605",
+    "phone": "(919) 743-0204",
+    "website": "https://www.autismsociety-nc.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Adult Services & Day Programs",
+      "Autism Helpline",
+      "Education Advocacy",
+      "Camp Royall"
+    ],
+    "description": "North Carolina's statewide autism organization providing adult day programs, an autism helpline, education advocacy, and Camp Royall — one of the nation's oldest camps for individuals with autism.",
+    "coordinates": {
+      "lat": 35.788,
+      "lng": -78.659
+    }
+  },
+  {
+    "name": "NEXT for AUTISM",
+    "address": "14 Penn Plaza, Suite 1800, New York, NY 10122",
+    "phone": "(212) 465-1513",
+    "website": "https://www.nextforautism.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Adult Services Design",
+      "Employment Programs",
+      "Program Incubation",
+      "Policy & Systems Change"
+    ],
+    "description": "National nonprofit building and launching innovative programs for autistic adults nationwide, including employment pathways, independent living, and post-secondary education models.",
+    "coordinates": {
+      "lat": 40.749,
+      "lng": -73.994
+    }
+  },
+  {
+    "name": "Autism Speaks - Workplace Inclusion Now (WIN)",
+    "address": "1 East 33rd Street, 4th Floor, New York, NY 10016",
+    "phone": "(888) 288-4762",
+    "website": "https://www.autismspeaks.org/win-job-seekers",
+    "type": "social",
+    "source": "National Resources 2026",
+    "services": [
+      "Career Readiness Training",
+      "Job Search Assistance",
+      "Workplace Skills Development",
+      "Employer Matching"
+    ],
+    "description": "Autism Speaks' free Workplace Inclusion Now (WIN) program helping autistic adults build career readiness skills, navigate job searches, and connect with inclusive employers nationwide.",
+    "coordinates": {
+      "lat": 40.747793,
+      "lng": -73.984945
+    },
+    "placeless": true
+  },
+  {
+    "name": "Organization for Autism Research - Scholarships & Employment",
+    "address": "2111 Wilson Boulevard, Suite 401, Arlington, VA 22201",
+    "phone": "(866) 366-9710",
+    "website": "https://researchautism.org/self-advocates/job-seekers-resources",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Graduate Research Scholarships",
+      "Employment Resource Guide",
+      "Job-Seeker Tool Kits",
+      "Applied Autism Research"
+    ],
+    "description": "OAR provides autism research funding, graduate scholarships for autistic students, and free employment resource guides and tool kits for autistic adults entering the workforce.",
+    "coordinates": {
+      "lat": 38.891599,
+      "lng": -77.085028
+    }
+  },
+  {
+    "name": "Autism Society of Mississippi",
+    "address": "Flowood, Mississippi",
+    "phone": "(769) 233-0637",
+    "website": "https://autismsocietyms.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Support",
+      "Family Resources",
+      "Advocacy",
+      "Community Programs"
+    ],
+    "description": "Mississippi's Autism Society affiliate providing statewide support, family resources, and advocacy for autistic individuals and their families.",
+    "coordinates": {
+      "lat": 32.33,
+      "lng": -90.133
+    }
+  },
+  {
+    "name": "Autism Society of Oklahoma",
+    "address": "Oklahoma City, Oklahoma",
+    "phone": "Contact via website",
+    "website": "https://autismsocietyoklahoma.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Support",
+      "Family Resources",
+      "Advocacy",
+      "Information & Referral"
+    ],
+    "description": "Oklahoma's Autism Society affiliate providing statewide advocacy, family support, information and referral, and community resources for autistic individuals and families.",
+    "coordinates": {
+      "lat": 35.467,
+      "lng": -97.517
+    }
+  },
+  {
+    "name": "Autism Society of Nebraska",
+    "address": "Omaha, Nebraska",
+    "phone": "Contact via website",
+    "website": "https://autismsocietyofnebraska.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Family Resources"
+    ],
+    "description": "Nebraska's Autism Society affiliate providing information and referral, support groups, and statewide advocacy for autistic individuals and their families.",
+    "coordinates": {
+      "lat": 41.257,
+      "lng": -96.003
+    }
+  },
+  {
+    "name": "Autism Society of Iowa",
+    "address": "Des Moines, Iowa",
+    "phone": "Contact via website",
+    "website": "https://www.autismia.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Community Programs"
+    ],
+    "description": "Iowa's Autism Society affiliate offering information and referral services, support groups, and advocacy for autistic individuals and their families across the state.",
+    "coordinates": {
+      "lat": 41.603,
+      "lng": -93.615
+    }
+  },
+  {
+    "name": "Autism Society of New Mexico",
+    "address": "Albuquerque, New Mexico",
+    "phone": "(505) 332-0306",
+    "website": "https://autismneeds.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Resource Navigation",
+      "Family Support",
+      "Support Groups",
+      "Community Programs"
+    ],
+    "description": "New Mexico's Autism Society affiliate providing family support, resource navigation, support groups, and advocacy for autistic individuals and their families across New Mexico.",
+    "coordinates": {
+      "lat": 35.085,
+      "lng": -106.651
+    }
+  },
+  {
+    "name": "Autism Society of Greater Knoxville",
+    "address": "Knoxville, Tennessee",
+    "phone": "Contact via Autism Society East Tennessee",
+    "website": "https://www.asaetc.org",
+    "type": "social",
+    "source": "State Resources 2026",
+    "services": [
+      "Social Events",
+      "Support Groups",
+      "Family Activities",
+      "Community Connection"
+    ],
+    "description": "Community-level autism support and social programming in the greater Knoxville area through the Autism Society of East Tennessee affiliate.",
+    "coordinates": {
+      "lat": 35.961,
+      "lng": -83.921
+    }
+  },
+  {
+    "name": "Autism Society of Connecticut",
+    "address": "Hartford, Connecticut",
+    "phone": "Contact via website",
+    "website": "https://autismsocietyct.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Family Resources"
+    ],
+    "description": "Connecticut's Autism Society affiliate providing information and referral, support groups, and statewide advocacy for autistic individuals and families throughout Connecticut.",
+    "coordinates": {
+      "lat": 41.764,
+      "lng": -72.682
+    }
+  },
+  {
+    "name": "Autism Society of Greater Philadelphia",
+    "address": "123 South Broad Street, Suite 2250, Philadelphia, PA 19109",
+    "phone": "(215) 885-4180",
+    "website": "https://asphilly.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Resource Navigation",
+      "Support Groups",
+      "Advocacy",
+      "Community Events"
+    ],
+    "description": "Greater Philadelphia Autism Society affiliate providing resource navigation, support groups, and advocacy for autistic individuals and families in the Philadelphia metropolitan area.",
+    "coordinates": {
+      "lat": 39.951,
+      "lng": -75.163
+    }
+  },
+  {
+    "name": "Autism Speaks - State Resource Guide",
+    "address": "Online National Resource",
+    "phone": "(888) 288-4762",
+    "website": "https://www.autismspeaks.org/autism-numbers-state-summaries",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "State-by-State Resource Summaries",
+      "Autism Statistics by State",
+      "Local Program Finder",
+      "Policy Information"
+    ],
+    "description": "Autism Speaks' state-by-state autism resource summaries providing statistics, local programs, and policy information for all 50 states to help families find resources in their area.",
+    "coordinates": {
+      "lat": 40.747793,
+      "lng": -73.984945
+    },
+    "placeless": true
+  },
+  {
+    "name": "Autism Resource Center - KU Edwards Campus",
+    "address": "12600 Quivira Road, Regnier Hall Suite 270, Overland Park, KS 66213",
+    "phone": "(913) 897-8471",
+    "website": "https://autism.ku.edu/autism-resource-center",
+    "type": "education",
+    "source": "State Resources 2026",
+    "services": [
+      "Free Consultations (By Appointment)",
+      "Research-Based Resources",
+      "Professional Information",
+      "Kansas Autism Research"
+    ],
+    "description": "University of Kansas resource center providing free consultations and research-based autism information for families, educators, and professionals across Kansas. Open Mon-Fri 8am-5pm by appointment.",
+    "coordinates": {
+      "lat": 38.898,
+      "lng": -94.748
+    }
+  },
+  {
+    "name": "Autism Society of Idaho (INCA)",
+    "address": "Boise, Idaho",
+    "phone": "Contact via website",
+    "website": "https://autismidaho.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Family Support",
+      "Advocacy",
+      "Resource Directory"
+    ],
+    "description": "Idaho's Autism Society affiliate providing information and referral, family support, and advocacy for autistic individuals and their families throughout the state.",
+    "coordinates": {
+      "lat": 43.615,
+      "lng": -116.202
+    }
+  },
+  {
+    "name": "Autism Services Center (WV)",
+    "address": "929 4th Avenue, Huntington, WV 25701",
+    "phone": "(304) 525-7434",
+    "website": "https://www.asctherapies.org",
+    "type": "therapy",
+    "source": "State Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Residential Services",
+      "School Consultation",
+      "Multiple WV Locations"
+    ],
+    "description": "West Virginia's leading autism service provider offering ABA therapy, residential services, and school consultation across multiple locations in the state.",
+    "coordinates": {
+      "lat": 38.415,
+      "lng": -82.428
+    }
+  },
+  {
+    "name": "Autism Society of Kansas",
+    "address": "Wichita, Kansas",
+    "phone": "Contact via website",
+    "website": "https://www.autismkansas.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Statewide Resources",
+      "Family Support",
+      "Advocacy",
+      "Information & Referral"
+    ],
+    "description": "Kansas statewide autism advocacy organization providing family support, information and referral services, and community resources for autistic individuals and families across the state.",
+    "coordinates": {
+      "lat": 37.687,
+      "lng": -97.33
+    }
+  },
+  {
+    "name": "Autism Society of Eastern Missouri",
+    "address": "13209 Olive Boulevard, Suite 401, Saint Louis, MO 63141",
+    "phone": "(314) 966-2211",
+    "website": "https://autismeasternmo.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Community Programs",
+      "Advocacy"
+    ],
+    "description": "Eastern Missouri's Autism Society affiliate serving the greater St. Louis area with information and referral services, support groups, and autism advocacy programming.",
+    "coordinates": {
+      "lat": 38.66,
+      "lng": -90.43
+    }
+  },
+  {
+    "name": "Autism Society of Greater Phoenix - Southwest Autism Research (SARRC) Affiliate",
+    "address": "300 N 18th Street, Phoenix, AZ 85006",
+    "phone": "(602) 340-8717",
+    "website": "https://autismcenter.org",
+    "type": "medical",
+    "source": "State Resources 2026",
+    "services": [
+      "Autism Diagnostic Tests",
+      "ABA Therapy",
+      "Family Services",
+      "Research Programs (Ages 18 months–21 years)"
+    ],
+    "description": "Southwest Autism Research and Resource Center (SARRC) — one of Arizona's premier autism treatment and research centers serving ages 18 months to 21 years with multiple Phoenix-area locations.",
+    "coordinates": {
+      "lat": 33.451,
+      "lng": -112.043
+    }
+  },
+  {
+    "name": "Autism Empowerment (Vancouver, WA)",
+    "address": "2512 E. Evergreen Boulevard, Vancouver, WA 98661",
+    "phone": "(360) 852-8369",
+    "website": "https://autismempowerment.org",
+    "type": "social",
+    "source": "State Resources 2026",
+    "services": [
+      "Social Programs",
+      "After-School Activities",
+      "Parent Support Groups",
+      "Community Events",
+      "Neurodiversity Acceptance Programs"
+    ],
+    "description": "Southwest Washington nonprofit creating neurodiverse-inclusive programs and community for individuals with autism and their families across the greater Vancouver/Portland metro area.",
+    "coordinates": {
+      "lat": 45.627,
+      "lng": -122.624
+    }
+  },
+  {
+    "name": "Autism Society Washington State (ASWA)",
+    "address": "Seattle, Washington",
+    "phone": "(206) 763-2780",
+    "website": "https://www.autismsocietywa.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Annual Conference & Golf Tournament"
+    ],
+    "description": "Washington State's Autism Society affiliate providing statewide information, referral, and support for individuals with autism and their families, including an annual conference.",
+    "coordinates": {
+      "lat": 47.606,
+      "lng": -122.332
+    }
+  },
+  {
+    "name": "Autism Society of Northern Virginia (ASNV)",
+    "address": "10418 Main Street, Suite 202, Fairfax, VA 22030",
+    "phone": "(703) 495-8444",
+    "website": "https://www.asnv.org",
+    "type": "advocacy",
+    "source": "State Resources 2026",
+    "services": [
+      "Family Support",
+      "Resource Directory",
+      "Advocacy",
+      "Support Groups",
+      "Annual Gala"
+    ],
+    "description": "Northern Virginia's Autism Society affiliate providing family support, a local resource directory, and community advocacy for autistic individuals in Fairfax, Arlington, Loudoun, and Prince William counties.",
+    "coordinates": {
+      "lat": 38.85,
+      "lng": -77.307
+    }
+  },
+  {
+    "name": "Stone Soup Group",
+    "address": "307 E Northern Lights Blvd, Ste 100, Anchorage, AK 99503",
+    "phone": "(907) 561-3701",
+    "website": "https://www.stonesoupgroup.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Family support",
+      "Educational advocacy",
+      "Crisis intervention",
+      "Financial planning assistance"
+    ],
+    "description": "Stone Soup Group is a statewide 501(c)3 non-profit providing information, support, training, and resources to Alaskan families and professionals who care for individuals with special needs up to age 26. They offer educational and legal support, crisis intervention, and connect families to autism-related services throughout Alaska.",
+    "coordinates": {
+      "lat": 61.2136,
+      "lng": -149.8677
+    }
+  },
+  {
+    "name": "Hope Community Resources",
+    "address": "540 W International Airport Rd, Anchorage, AK 99518",
+    "phone": "(907) 561-5335",
+    "website": "https://www.hopealaska.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Behavioral health",
+      "Community supports",
+      "Residential services"
+    ],
+    "description": "Hope Community Resources is a non-profit organization providing community supports to hundreds of individuals and families in Alaska experiencing intellectual and developmental disabilities. They offer ABA therapy and behavioral and mental health services to children diagnosed with Autism Spectrum Disorder.",
+    "coordinates": {
+      "lat": 61.1744,
+      "lng": -149.9851
+    }
+  },
+  {
+    "name": "Easterseals Alaska",
+    "address": "670 W Fireweed Lane, Suite 201, Anchorage, AK 99503",
+    "phone": "(907) 277-7325",
+    "website": "https://www.easterseals.com/alaska",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "Day habilitation",
+      "Supported living",
+      "Adult programs"
+    ],
+    "description": "Easterseals Alaska provides exceptional services, education, outreach, and advocacy so that people living with autism and other disabilities can live, learn, work, and play in their communities. They offer autism-specific day habilitation, residential, and adult community living programs.",
+    "coordinates": {
+      "lat": 61.2062,
+      "lng": -149.9006
+    }
+  },
+  {
+    "name": "Alaska Autism Resource Center",
+    "address": "3350 Midtown Pl, Anchorage, AK 99503",
+    "phone": "(907) 563-6900",
+    "website": "https://www.alaskaarc.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Information and referral",
+      "Training",
+      "Resource navigation",
+      "Professional development"
+    ],
+    "description": "The Alaska Autism Resource Center (AARC) provides statewide information, training, and support services for individuals with autism, their families, and educators. They focus on enhancing the lives of those affected by autism through resource sharing and advocacy across Alaska.",
+    "coordinates": {
+      "lat": 61.19,
+      "lng": -149.87
+    }
+  },
+  {
+    "name": "Autism Assessment Center of Kentucky",
+    "address": "126 Trivette Drive, Suite 202, Pikeville, KY 41501",
+    "phone": "(606) 432-6957",
+    "website": "https://autismky.com",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "Psychological evaluations",
+      "Behavioral assessments",
+      "Family consultation"
+    ],
+    "description": "The Autism Assessment Center of Kentucky specializes in comprehensive autism diagnostic evaluations for children and adults in eastern Kentucky and surrounding Appalachian communities. They provide thorough psychological and behavioral assessments to support early diagnosis and treatment planning.",
+    "coordinates": {
+      "lat": 37.4787,
+      "lng": -82.5182
+    }
+  },
+  {
+    "name": "Autism Society of Kentuckiana",
+    "address": "500 S 4th St, Louisville, KY 40202",
+    "phone": "(502) 222-4706",
+    "website": "https://ask-lou.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Support groups",
+      "Information and referral",
+      "Advocacy",
+      "Family education"
+    ],
+    "description": "The Autism Society of Kentuckiana (ASK) is the Louisville-area chapter of the Autism Society of America, serving families and individuals in the greater Louisville area. They provide peer support, community connections, and advocacy resources to improve quality of life for those on the autism spectrum.",
+    "coordinates": {
+      "lat": 38.2527,
+      "lng": -85.7585
+    }
+  },
+  {
+    "name": "Kentucky Office of Autism",
+    "address": "275 East Main Street, 4WF, Frankfort, KY 40621",
+    "phone": "(859) 447-7792",
+    "website": "https://www.kyaca.org/about-us/kentucky-office-of-autism",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Policy coordination",
+      "Family support",
+      "State agency liaison",
+      "Resource navigation"
+    ],
+    "description": "The Kentucky Office of Autism coordinates statewide efforts to enhance the quality of life and independence for individuals with Autism Spectrum Disorder and provides support to their families and caregivers. The office serves as a hub for autism-related communication among state agencies and administers the Kentucky Advisory Council on Autism.",
+    "coordinates": {
+      "lat": 38.1998,
+      "lng": -84.8733
+    }
+  },
+  {
+    "name": "Catalyst Behavior Solutions",
+    "address": "1105 W Russell St, Sioux Falls, SD 57104",
+    "phone": "(866) 569-7395",
+    "website": "https://www.catalystbehavior.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Behavioral assessments",
+      "Parent training",
+      "School consultation"
+    ],
+    "description": "Catalyst Behavior Solutions provides individualized, evidence-based ABA therapy services in Sioux Falls, South Dakota. Their team of certified behavior analysts works with children diagnosed with autism and related disorders to build skills that promote independence and improve quality of life.",
+    "coordinates": {
+      "lat": 43.5499,
+      "lng": -96.7456
+    }
+  },
+  {
+    "name": "Treehouse Nest Autism Center",
+    "address": "106 W 69th Street, Sioux Falls, SD 57108",
+    "phone": "(605) 318-0470",
+    "website": "https://treehousenest.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Developmental therapy",
+      "Family support"
+    ],
+    "description": "Treehouse Nest Autism Center offers ABA therapy and early intervention in Sioux Falls, supporting children with autism and developmental delays. Their center provides a nurturing environment with specialized staff committed to helping children reach their highest potential.",
+    "coordinates": {
+      "lat": 43.494,
+      "lng": -96.7318
+    }
+  },
+  {
+    "name": "LifeScape",
+    "address": "2501 W 26th St, Sioux Falls, SD 57105",
+    "phone": "(605) 444-9700",
+    "website": "https://www.lifescapesd.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "ABA therapy",
+      "Occupational therapy",
+      "Speech therapy",
+      "Residential services"
+    ],
+    "description": "LifeScape provides specialized therapy, psychology, and autism services in Sioux Falls and Rapid City, South Dakota. Their multidisciplinary autism services team identifies and treats autism spectrum disorders in children through a comprehensive program designed to foster individual growth and healthy relationships.",
+    "coordinates": {
+      "lat": 43.5277,
+      "lng": -96.766
+    }
+  },
+  {
+    "name": "Alianza de Autismo de Puerto Rico",
+    "address": "X-10 Calle Eternidades, Villas de Cupey, San Juan, PR 00926",
+    "phone": "(787) 647-2718",
+    "website": "https://www.conexionpr.org/alianza-de-autismo",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Advocacy",
+      "Family support",
+      "Community education",
+      "Policy engagement"
+    ],
+    "description": "Alianza de Autismo de Puerto Rico is a nonprofit advocacy organization in San Juan dedicated to improving the lives of individuals with autism spectrum disorder in Puerto Rico. They provide family support, community education, and advocacy to ensure access to services and rights for autistic individuals on the island.",
+    "coordinates": {
+      "lat": 18.3646,
+      "lng": -66.0694
+    }
+  },
+  {
+    "name": "Centro Ponceño de Autismo",
+    "address": "120 Calle Sol, Ponce, PR 00730",
+    "phone": "(787) 284-2900",
+    "website": "https://en.wikipedia.org/wiki/Centro_Ponce%C3%B1o_de_Autismo",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Special education",
+      "Behavioral therapy",
+      "Family support",
+      "Vocational training"
+    ],
+    "description": "Centro Ponceño de Autismo (Ponce Autism Center) is a specialized educational and therapeutic center in Ponce, Puerto Rico, dedicated to serving children and adults with autism spectrum disorder. They provide special education, behavioral therapy, and family support services to improve quality of life across the lifespan.",
+    "coordinates": {
+      "lat": 18.0112,
+      "lng": -66.6141
+    }
+  },
+  {
+    "name": "Gersh Autism Academy Puerto Rico",
+    "address": "215 Carretera PR-2 Villa Caparra, Guaynabo, PR 00966",
+    "phone": "(787) 200-8684",
+    "website": "https://gershautismacademy.com/puerto-rico",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Bilingual special education",
+      "ABA therapy",
+      "Speech therapy",
+      "Occupational therapy",
+      "Transition services"
+    ],
+    "description": "Gersh Autism Academy Puerto Rico is the first bilingual specialized school for children diagnosed with Autism Spectrum Disorders, ages 5–21, in Puerto Rico. They provide evidence-based educational programming and therapeutic services in both English and Spanish, supporting students toward greater independence.",
+    "coordinates": {
+      "lat": 18.3824,
+      "lng": -66.1099
+    }
+  },
+  {
+    "name": "DC Autism Parents",
+    "address": "P.O. Box 60417, Washington, DC 20039",
+    "phone": "(202) 271-9262",
+    "website": "https://www.dcautismparents.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Parent support",
+      "Resource navigation",
+      "Early diagnosis education",
+      "Advocacy"
+    ],
+    "description": "DC Autism Parents (DCAP) is a nonprofit organization created by parents for parents, dedicated to improving the lives of those affected by autism through advocacy and education in Washington, DC. They connect families to much-needed resources supporting early autism diagnosis and lifetime navigation of services.",
+    "placeless": true,
+    "coordinates": {
+      "lat": 38.9072,
+      "lng": -77.0369
+    }
+  },
+  {
+    "name": "Lighthouse Autism Center – Castleton",
+    "address": "7526 E 82nd St, Indianapolis, IN 46256",
+    "phone": "(317) 222-1242",
+    "website": "https://lighthouseautismcenter.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills groups",
+      "Parent training"
+    ],
+    "description": "Lighthouse Autism Center in Castleton/Indianapolis provides compassionate center-based ABA therapy for children with autism. Their highly trained staff delivers individualized treatment plans focused on building communication, social, and adaptive skills in a welcoming, structured environment.",
+    "coordinates": {
+      "lat": 39.9015,
+      "lng": -86.0203
+    }
+  },
+  {
+    "name": "Lighthouse Autism Center – Portage",
+    "address": "3125 Willowcreek Rd, Portage, IN 46368",
+    "phone": "(219) 779-9501",
+    "website": "https://lighthouseautismcenter.com/locations",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills training",
+      "Parent coaching"
+    ],
+    "description": "Lighthouse Autism Center in Portage, Indiana provides center-based ABA therapy for children on the autism spectrum, serving northwest Indiana families. Their compassionate team of BCBAs and RBTs delivers individualized treatment focused on developmental milestones and functional life skills.",
+    "coordinates": {
+      "lat": 41.5765,
+      "lng": -87.18
+    }
+  },
+  {
+    "name": "Hopebridge Autism Therapy Center – Indianapolis",
+    "address": "6925 Parkdale Pl, Indianapolis, IN 46254",
+    "phone": "(317) 597-4553",
+    "website": "https://www.hopebridge.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Occupational therapy",
+      "Speech therapy",
+      "Feeding therapy"
+    ],
+    "description": "Hopebridge Autism Therapy Center in Indianapolis provides comprehensive ABA therapy alongside speech, occupational, and feeding therapies for children with autism. Their integrated approach addresses the whole child in a safe, welcoming center environment staffed by multidisciplinary specialists.",
+    "coordinates": {
+      "lat": 39.8455,
+      "lng": -86.2342
+    }
+  },
+  {
+    "name": "Indiana Autism Alliance",
+    "address": "9505 Delegates Row, Indianapolis, IN 46240",
+    "phone": "(317) 207-0824",
+    "website": "https://indianaautismalliance.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Advocacy",
+      "Resource directory",
+      "Family education",
+      "Policy support"
+    ],
+    "description": "The Indiana Autism Alliance is a statewide organization working to improve access to services and support for Hoosiers with autism spectrum disorder and their families. They maintain a comprehensive resource directory and engage in legislative advocacy to advance autism-related policies in Indiana.",
+    "coordinates": {
+      "lat": 39.9128,
+      "lng": -86.2196
+    }
+  },
+  {
+    "name": "Lighthouse Autism Center – Decatur",
+    "address": "875 S Wyckles Rd, Decatur, IL 62521",
+    "phone": "(217) 614-7557",
+    "website": "https://lighthouseautismcenter.com/locations/decatur-center",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills groups",
+      "Family support"
+    ],
+    "description": "Lighthouse Autism Center in Decatur, Illinois provides center-based ABA therapy services to children with autism spectrum disorder. Their team delivers personalized treatment using evidence-based ABA methods to help children develop communication, social, and daily living skills.",
+    "coordinates": {
+      "lat": 39.828,
+      "lng": -88.9543
+    }
+  },
+  {
+    "name": "Total Spectrum – Northbrook",
+    "address": "3375 Commercial Ave, Ste 250, Northbrook, IL 60062",
+    "phone": "(844) 263-1613",
+    "website": "https://totalspectrumcare.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "BCBA supervision",
+      "Social skills training",
+      "Parent education"
+    ],
+    "description": "Total Spectrum in Northbrook, Illinois provides ABA therapy for children with autism in a dedicated learning center environment. As part of LEARN Behavioral, their team of board-certified behavior analysts delivers individualized treatment plans designed to build meaningful skills for children on the spectrum.",
+    "coordinates": {
+      "lat": 42.1251,
+      "lng": -87.8282
+    }
+  },
+  {
+    "name": "Total Spectrum – Chicago",
+    "address": "670 W Hubbard St, Chicago, IL 60654",
+    "phone": "(844) 263-1613",
+    "website": "https://totalspectrumcare.com/locations/chicago",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills groups",
+      "Adolescent programs"
+    ],
+    "description": "Total Spectrum's Chicago Learning Center on W. Hubbard Street provides center-based ABA therapy for children and adolescents with autism spectrum disorder. Their experienced BCBA team offers individualized programming in a modern facility designed to maximize learning and development.",
+    "coordinates": {
+      "lat": 41.8892,
+      "lng": -87.6432
+    }
+  },
+  {
+    "name": "Illinois Center for Autism",
+    "address": "1306 Wabash Avenue, Belleville, IL 62220",
+    "phone": "(618) 398-7500",
+    "website": "https://illinoiscenterforautism.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Special education",
+      "Adult services",
+      "Vocational training",
+      "Residential services",
+      "Family support"
+    ],
+    "description": "Illinois Center for Autism (ICA) is a comprehensive autism service provider in Belleville, Illinois, offering special day school, adult services, vocational rehabilitation, and supported employment. ICA supports children and adults across the lifespan with education, employment coaching, and community integration services.",
+    "coordinates": {
+      "lat": 38.5201,
+      "lng": -90.0001
+    }
+  },
+  {
+    "name": "Little Friends Inc",
+    "address": "27555 Diehl Road, Warrenville, IL 60555",
+    "phone": "(630) 355-6533",
+    "website": "https://www.littlefriendsinc.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism day school",
+      "Residential services",
+      "Vocational training",
+      "Community living",
+      "Respite care"
+    ],
+    "description": "Little Friends Inc is a private nonprofit serving children and adults with autism and developmental disabilities in the Chicago suburbs. They operate the Little Friends Center for Autism, two special education schools, vocational training programs, and community-based residential services for adults.",
+    "coordinates": {
+      "lat": 41.8277,
+      "lng": -88.1901
+    }
+  },
+  {
+    "name": "Cortica – Torrance",
+    "address": "21515 Hawthorne Blvd, Ste GL-100, Torrance, CA 90503",
+    "phone": "(424) 571-2618",
+    "website": "https://www.corticacare.com/locations/torrance-ca-autism-therapy",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Speech therapy",
+      "Occupational therapy",
+      "Diagnostic evaluation",
+      "Music therapy"
+    ],
+    "description": "Cortica in Torrance, California provides whole-child autism care through their integrated model combining ABA, speech, occupational, and music therapies. Their multidisciplinary team creates personalized treatment plans addressing each child's unique needs in a welcoming clinic environment.",
+    "coordinates": {
+      "lat": 33.8358,
+      "lng": -118.3406
+    }
+  },
+  {
+    "name": "Cortica – San Rafael",
+    "address": "4000 Civic Center Dr, Ste 300, San Rafael, CA 94903",
+    "phone": "(628) 877-0040",
+    "website": "https://www.corticacare.com/locations/ca/san-rafael",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Speech therapy",
+      "Occupational therapy",
+      "Autism diagnosis",
+      "Family support"
+    ],
+    "description": "Cortica's San Rafael clinic serves Marin County families with comprehensive autism care, combining behavioral therapy with speech, occupational, and other therapies under one roof. Their whole-child model ensures coordinated, evidence-based treatment tailored to each individual child.",
+    "coordinates": {
+      "lat": 37.9735,
+      "lng": -122.5311
+    }
+  },
+  {
+    "name": "Cortica – Santa Ana",
+    "address": "2500 Red Hill Ave, Ste 100, Santa Ana, CA 92705",
+    "phone": "(949) 748-8571",
+    "website": "https://www.corticacare.com/locations/ca/santa-ana",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Speech therapy",
+      "Occupational therapy",
+      "Diagnostic evaluation"
+    ],
+    "description": "Cortica's Santa Ana location provides integrated autism care to Orange County families through their comprehensive whole-child model. Their team of specialists delivers ABA, speech, and occupational therapies alongside diagnostic evaluations in a collaborative, family-centered clinic setting.",
+    "coordinates": {
+      "lat": 33.7455,
+      "lng": -117.8683
+    }
+  },
+  {
+    "name": "Cortica – San Diego",
+    "address": "6160 Cornerstone Ct E, Ste 100, San Diego, CA 92121",
+    "phone": "(858) 304-6440",
+    "website": "https://www.corticacare.com/locations/ca/san-diego",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Speech therapy",
+      "Occupational therapy",
+      "Autism diagnosis",
+      "Physical therapy"
+    ],
+    "description": "Cortica in San Diego provides whole-child autism care with an integrated clinical team of behavior analysts, speech-language pathologists, and occupational therapists. Their evidence-based approach combines multiple therapy modalities to support children with autism in reaching their full developmental potential.",
+    "coordinates": {
+      "lat": 32.8948,
+      "lng": -117.2131
+    }
+  },
+  {
+    "name": "Ally Pediatric Therapy – North Phoenix",
+    "address": "2095 W Pinnacle Peak Rd, Ste 110B, Phoenix, AZ 85027",
+    "phone": "(623) 244-8186",
+    "website": "https://allypediatric.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Speech therapy",
+      "Occupational therapy",
+      "Physical therapy",
+      "Feeding therapy"
+    ],
+    "description": "Ally Pediatric Therapy in North Phoenix offers comprehensive ABA and pediatric therapy services for children with autism and developmental delays. Their integrated team of BCBAs, speech-language pathologists, and occupational therapists provides coordinated care to support each child's unique developmental journey.",
+    "coordinates": {
+      "lat": 33.6807,
+      "lng": -112.1232
+    }
+  },
+  {
+    "name": "Ally Pediatric Therapy – Surprise",
+    "address": "13700 N Dysart Rd, Ste 180, Surprise, AZ 85379",
+    "phone": "(480) 297-0793",
+    "website": "https://allypediatric.com/locations",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Speech therapy",
+      "Occupational therapy",
+      "Physical therapy"
+    ],
+    "description": "Ally Pediatric Therapy in Surprise, Arizona provides ABA therapy and pediatric rehabilitation services to children with autism spectrum disorder and related developmental conditions. Their multidisciplinary team delivers individualized therapy in a child-friendly environment in the west Phoenix Valley.",
+    "coordinates": {
+      "lat": 33.6299,
+      "lng": -112.368
+    }
+  },
+  {
+    "name": "Golden Steps ABA – Virginia Beach",
+    "address": "213 Business Park Dr, Ste 5, Virginia Beach, VA 23462",
+    "phone": "(888) 517-8377",
+    "website": "https://www.goldenstepsaba.com/locations/virginia-beach-va",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills training",
+      "Parent coaching"
+    ],
+    "description": "Golden Steps ABA in Virginia Beach provides evidence-based ABA therapy for children on the autism spectrum across Hampton Roads. Their compassionate team of BCBAs and behavior technicians delivers center-based and in-home therapy tailored to each child's individual treatment goals.",
+    "coordinates": {
+      "lat": 36.8529,
+      "lng": -76.1126
+    }
+  },
+  {
+    "name": "Golden Steps ABA – Madison",
+    "address": "2148 Gallatin Pike N, Madison, TN 37115",
+    "phone": "(615) 733-4651",
+    "website": "https://www.goldenstepsaba.com/locations/madison-tn",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills groups",
+      "Family training"
+    ],
+    "description": "Golden Steps ABA in Madison, Tennessee provides ABA therapy services to children with autism spectrum disorder in the greater Nashville area. Their team of credentialed behavior analysts and trained technicians implements individualized treatment programs to build meaningful life skills.",
+    "coordinates": {
+      "lat": 36.2584,
+      "lng": -86.7172
+    }
+  },
+  {
+    "name": "Golden Steps ABA – Troy",
+    "address": "100 W Big Beaver Rd, Suite 200, Troy, MI 48084",
+    "phone": "(313) 774-2928",
+    "website": "https://www.goldenstepsaba.com/locations",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Behavioral assessments",
+      "Social skills training",
+      "Parent consultation"
+    ],
+    "description": "Golden Steps ABA in Troy, Michigan delivers individualized ABA therapy for children with autism in the metro Detroit area. Their experienced clinical team provides center-based treatment using structured and naturalistic teaching strategies to promote development across all skill domains.",
+    "coordinates": {
+      "lat": 42.5614,
+      "lng": -83.1472
+    }
+  },
+  {
+    "name": "Butterfly Effects – Deerfield Beach",
+    "address": "500 Fairway Dr, Ste 102, Deerfield Beach, FL 33441",
+    "phone": "(888) 880-9270",
+    "website": "https://butterflyeffects.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "In-home therapy",
+      "Center-based therapy",
+      "Parent training"
+    ],
+    "description": "Butterfly Effects provides both center-based and in-home ABA therapy services for children with autism in Deerfield Beach and throughout Florida. Their Deerfield Beach location serves as the corporate headquarters and provides direct therapy, with additional centers in Tampa and Orlando.",
+    "coordinates": {
+      "lat": 26.3184,
+      "lng": -80.1003
+    }
+  },
+  {
+    "name": "Trumpet Behavioral Health – Colorado Springs",
+    "address": "6197 Lehman Dr, Ste 102, Colorado Springs, CO 80918",
+    "phone": "(719) 225-4655",
+    "website": "https://www.bluesprigautism.com/trumpet-behavioral-health",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills training",
+      "Family support"
+    ],
+    "description": "Trumpet Behavioral Health (TBH) in Colorado Springs offers ABA therapy for children, adolescents, and teens with autism while providing support and resources to their families. Now a division of BlueSprig, they deliver evidence-based ABA therapy tailored to each child's unique needs.",
+    "coordinates": {
+      "lat": 38.8943,
+      "lng": -104.753
+    }
+  },
+  {
+    "name": "Trumpet Behavioral Health – Northglenn",
+    "address": "10333 Federal Blvd, Suite 7, Northglenn, CO 80260",
+    "phone": "(720) 381-0264",
+    "website": "https://www.bluesprigautism.com/trumpet-behavioral-health",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intensive intervention",
+      "Social skills groups",
+      "Parent coaching"
+    ],
+    "description": "Trumpet Behavioral Health's North Denver/Northglenn center provides center-based and in-home ABA therapy for children and adolescents with autism spectrum disorder. As part of BlueSprig Autism, their clinical team delivers individualized, evidence-based treatment programs in the Denver metro area.",
+    "coordinates": {
+      "lat": 39.8883,
+      "lng": -104.9809
+    }
+  },
+  {
+    "name": "Acorn Health – Madison Heights",
+    "address": "29429 John R Road, Madison Heights, MI 48071",
+    "phone": "(844) 244-1818",
+    "website": "https://acornhealth.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Behavioral assessments",
+      "School support",
+      "Parent training"
+    ],
+    "description": "Acorn Health in Madison Heights provides high-quality ABA therapy and autism services to families in metro Detroit. Their team of board-certified behavior analysts conducts comprehensive assessments and designs individualized treatment programs to help children with autism build functional skills and independence.",
+    "coordinates": {
+      "lat": 42.486,
+      "lng": -83.1043
+    }
+  },
+  {
+    "name": "Acorn Health – St. Clair Shores",
+    "address": "31225 Jefferson Ave, St. Clair Shores, MI 48082",
+    "phone": "(844) 244-1818",
+    "website": "https://acornhealth.com/states/aba-autism-therapy-michigan",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "BCBA supervision",
+      "Caregiver support"
+    ],
+    "description": "Acorn Health's St. Clair Shores clinic provides ABA therapy for children with autism in Macomb and St. Clair counties. Their experienced clinical team delivers individualized behavior analytic services through comprehensive assessment and ongoing treatment monitoring to maximize each child's development.",
+    "coordinates": {
+      "lat": 42.5012,
+      "lng": -82.8948
+    }
+  },
+  {
+    "name": "NYU Langone NYC Regional Center for Autism Spectrum Disorders",
+    "address": "1 Park Ave, New York, NY 10016",
+    "phone": "(646) 754-4503",
+    "website": "https://med.nyu.edu/departments-institutes/child-adolescent-psychiatry/education/new-york-city-regional-center-autism-spectrum-disorders",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "Psychiatric evaluation",
+      "Research",
+      "Training programs",
+      "Clinical services"
+    ],
+    "description": "The NYU Langone NYC Regional Center for Autism Spectrum Disorders at NYU Grossman School of Medicine provides comprehensive diagnostic evaluations, clinical services, and research programs for individuals with autism. They serve as a regional hub for autism care, training, and advocacy in New York City.",
+    "coordinates": {
+      "lat": 40.7412,
+      "lng": -73.9856
+    }
+  },
+  {
+    "name": "Levine Autism Clinic at Golisano Children's Hospital",
+    "address": "200 East River Road, Third Floor, Rochester, NY 14623",
+    "phone": "(585) 275-2986",
+    "website": "https://www.urmc.rochester.edu/childrens-hospital/developmental-disabilities/services/levine",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "Developmental pediatrics",
+      "Behavioral consultation",
+      "Family guidance"
+    ],
+    "description": "The Levine Autism Clinic at Golisano Children's Hospital – University of Rochester Medicine offers comprehensive autism evaluations and consultation services for children and families. Their multidisciplinary team provides expert diagnostic assessments and connects families to appropriate interventions and community resources.",
+    "coordinates": {
+      "lat": 43.1204,
+      "lng": -77.6391
+    }
+  },
+  {
+    "name": "Penn Autism Clinic",
+    "address": "3535 Market Street, Philadelphia, PA 19104",
+    "phone": "(215) 746-8103",
+    "website": "https://www.med.upenn.edu/cmh/pennautismclinic",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "Psychiatric evaluation",
+      "CBT therapy",
+      "Social skills groups",
+      "Adult autism services"
+    ],
+    "description": "The Penn Autism Clinic at the Perelman School of Medicine, University of Pennsylvania, offers specialized evaluation and treatment for autistic individuals of all ages, with particular expertise in adults previously undiagnosed. Services include comprehensive assessments, individual and group therapy, and psychiatric medication management.",
+    "coordinates": {
+      "lat": 39.956,
+      "lng": -75.1905
+    }
+  },
+  {
+    "name": "Baylor Autism Resource Clinic",
+    "address": "One Bear Place #97305, Waco, TX 76798",
+    "phone": "(254) 710-7677",
+    "website": "https://bcdd.soe.baylor.edu/clinics/baylor-autism-resource-clinic",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "Diagnostic assessment",
+      "Consultation",
+      "Training"
+    ],
+    "description": "The Baylor Autism Resource Clinic at Baylor University's Mary Jo Robbins Clinic for Autism Research and Practice provides comprehensive autism evaluations and family consultation services in central Texas. Their team offers evidence-based assessments and connects families to community resources and treatment providers.",
+    "coordinates": {
+      "lat": 31.5474,
+      "lng": -97.1181
+    }
+  },
+  {
+    "name": "UTHealth CLASS Clinic",
+    "address": "6655 Travis Street, Houston, TX 77030",
+    "phone": "(713) 486-4000",
+    "website": "https://www.uth.edu",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "Individual therapy",
+      "Group therapy",
+      "Psychiatric services",
+      "Social skills training"
+    ],
+    "description": "The Changing Lives through Autism Spectrum Services (CLASS) Clinic at UT Health – McGovern Medical School specializes in serving intellectually-able adolescents and adults with autism who were previously undiagnosed. Services include evaluation, individual and family therapy, social skills groups, and psychiatric medication management.",
+    "coordinates": {
+      "lat": 29.7073,
+      "lng": -95.398
+    }
+  },
+  {
+    "name": "University of Houston-Clear Lake Center for Autism and Developmental Disabilities",
+    "address": "2700 Bay Area Blvd, Box 245, Houston, TX 77058",
+    "phone": "(281) 283-3452",
+    "website": "https://www.uhcl.edu/autism-center",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism assessment",
+      "Diagnostic services",
+      "Family consultation",
+      "Research"
+    ],
+    "description": "The Center for Autism and Developmental Disabilities at University of Houston-Clear Lake provides autism assessment and diagnostic services for children and adults in the greater Houston area. Their trained clinical team conducts comprehensive evaluations and offers consultation to families navigating autism services.",
+    "coordinates": {
+      "lat": 29.5668,
+      "lng": -95.1278
+    }
+  },
+  {
+    "name": "University of Miami Autism Spectrum Assessment Clinic",
+    "address": "5665 Ponce de Leon Blvd, 2nd Floor, Coral Gables, FL 33146",
+    "phone": "(305) 284-6140",
+    "website": "https://umasac.psy.miami.edu",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "Neuropsychological evaluation",
+      "Family consultation",
+      "Research participation"
+    ],
+    "description": "The Autism Spectrum Assessment Clinic (ASAC) at the University of Miami is a specialty clinic providing diagnostic and therapeutic services to individuals with autism spectrum disorder and related social, communication, or developmental challenges. Their expert multidisciplinary team conducts thorough assessments and provides evidence-based recommendations.",
+    "coordinates": {
+      "lat": 25.722,
+      "lng": -80.2684
+    }
+  },
+  {
+    "name": "University of Michigan Autism Clinic",
+    "address": "1540 E Hospital Dr, Floor 5 Reception B, Ann Arbor, MI 48109",
+    "phone": "(734) 232-7513",
+    "website": "https://www.uofmhealth.org/our-care/specialties-services/autism-spectrum-disorders-appointments",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "Developmental pediatrics",
+      "Multidisciplinary assessment",
+      "Family support"
+    ],
+    "description": "The University of Michigan Pediatric Development Assessment Clinic provides comprehensive autism evaluations for children in a leading academic medical center setting. Their multidisciplinary team of specialists conducts thorough assessments and provides individualized recommendations and referrals for children with autism spectrum disorder.",
+    "coordinates": {
+      "lat": 42.2822,
+      "lng": -83.734
+    }
+  },
+  {
+    "name": "Cincinnati Children's Hospital Autism Center",
+    "address": "3333 Burnet Avenue, Cincinnati, OH 45229",
+    "phone": "(513) 636-4688",
+    "website": "https://www.cincinnatichildrens.org/service/a/autism",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "Behavioral health",
+      "Applied behavior analysis",
+      "Family support",
+      "Transition services"
+    ],
+    "description": "Cincinnati Children's Hospital Autism Center provides world-class autism evaluations, behavioral interventions, and family support services. Their multidisciplinary clinical team is nationally recognized for autism research and care, offering comprehensive diagnostic assessments and treatment across all ages.",
+    "coordinates": {
+      "lat": 39.1395,
+      "lng": -84.5017
+    }
+  },
+  {
+    "name": "Rutgers Autism Center – Newark",
+    "address": "183 South Orange Avenue, Newark, NJ 07103",
+    "phone": "(973) 972-3818",
+    "website": "https://njms.rutgers.edu/autismcenter",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "ABA therapy",
+      "Family education",
+      "Community outreach"
+    ],
+    "description": "The Autism Center at Rutgers New Jersey Medical School provides comprehensive, culturally sensitive autism assessment and treatment services for children with ASD living in the greater Newark region. Their team delivers evidence-based care including evaluations, ABA therapy, and family education programs.",
+    "coordinates": {
+      "lat": 40.7413,
+      "lng": -74.1922
+    }
+  },
+  {
+    "name": "Community Services for Autistic Adults and Children (CSAAC)",
+    "address": "8615 East Village Ave, Montgomery Village, MD 20886",
+    "phone": "(240) 912-2220",
+    "website": "https://www.csaac.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Residential services",
+      "Employment support",
+      "Early intervention",
+      "Adult day programs",
+      "Community integration"
+    ],
+    "description": "Founded in 1979 in Montgomery County, CSAAC is a nationally recognized private nonprofit providing direct services to children and adults with autism across the lifespan. They offer residential housing, supported employment, early childhood programs, and community day services based on person-centered care principles.",
+    "coordinates": {
+      "lat": 39.1773,
+      "lng": -77.2264
+    }
+  },
+  {
+    "name": "Johns Hopkins All Children's Hospital – Autism Program",
+    "address": "501 6th Avenue South, St. Petersburg, FL 33701",
+    "phone": "(727) 898-7451",
+    "website": "https://www.hopkinsallchildrens.org/Services/Autism-Center",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "Developmental pediatrics",
+      "Behavioral health",
+      "Family support",
+      "ABA therapy referrals"
+    ],
+    "description": "Johns Hopkins All Children's Hospital's Autism Program in St. Petersburg, Florida provides comprehensive evaluation, diagnostic, and treatment services for children with autism spectrum disorder. Their interdisciplinary team offers expertise in autism assessment and connects families with evidence-based treatments throughout west Florida.",
+    "coordinates": {
+      "lat": 27.772,
+      "lng": -82.639
+    }
+  },
+  {
+    "name": "WV Autism Training Center at Marshall University",
+    "address": "1 John Marshall Drive, Old Main 316, Huntington, WV 25755",
+    "phone": "(304) 696-2332",
+    "website": "https://www.marshall.edu/atc",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Training",
+      "Consultation",
+      "Family support",
+      "Behavioral support",
+      "Research"
+    ],
+    "description": "The WV Autism Training Center at Marshall University provides training, consultation, and family support services for individuals with autism and related disabilities across West Virginia. Their statewide program equips educators, families, and professionals with evidence-based strategies and resources.",
+    "coordinates": {
+      "lat": 38.4187,
+      "lng": -82.4452
+    }
+  },
+  {
+    "name": "Autism Society of Washington",
+    "address": "120 State Ave NE, Ste 303, Olympia, WA 98501",
+    "phone": "(866) 290-3516",
+    "website": "https://www.autismsocietyofwa.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Information and referral",
+      "Employment resources",
+      "Advocacy",
+      "Community events",
+      "Family support"
+    ],
+    "description": "The Autism Society of Washington serves all of Washington State with information, referral, advocacy, and community building for individuals with autism and their families. They maintain employment resources, host events, and work to improve the quality of life for autistic Washingtonians through systemic advocacy.",
+    "coordinates": {
+      "lat": 47.0343,
+      "lng": -122.9007
+    }
+  },
+  {
+    "name": "Autism Empowerment",
+    "address": "P.O. Box 871676, Vancouver, WA 98687",
+    "phone": "(360) 852-8369",
+    "website": "https://www.autismempowerment.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Community programs",
+      "Autism magazine",
+      "Support groups",
+      "Arts programs",
+      "National outreach"
+    ],
+    "description": "Autism Empowerment is a nonprofit serving the autism and Asperger communities in SW Washington and nationally through local programming, Spectrum Life Magazine, Zoom Autism Magazine, and the Autism Empowerment Podcast. Their programs foster acceptance, enrichment, and empowerment for autistic individuals and their families.",
+    "placeless": true,
+    "coordinates": {
+      "lat": 45.6387,
+      "lng": -122.6615
+    }
+  },
+  {
+    "name": "Milestones Autism Resources",
+    "address": "4853 Galaxy Pkwy, Suite A, Warrensville Heights, OH 44128",
+    "phone": "(216) 464-7600",
+    "website": "https://www.milestones.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Free helpdesk",
+      "Resource directory",
+      "Professional training",
+      "Family consultation",
+      "Autism planning tool"
+    ],
+    "description": "Milestones Autism Resources, now a program of Lifeworks Autism Services in the Cleveland area, provides a free Helpdesk with over 1,000 vetted educational, therapeutic, medical, and recreational resources across Ohio. Their Milestones Autism Planning (MAP) Tool guides families step-by-step through the autism services landscape from early childhood through adulthood.",
+    "coordinates": {
+      "lat": 41.4362,
+      "lng": -81.494
+    }
+  },
+  {
+    "name": "Autism Society of Boulder County",
+    "address": "1905 15th Street, #4909, Boulder, CO 80306",
+    "phone": "(720) 272-8231",
+    "website": "https://autismboulder.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Support groups",
+      "Community events",
+      "Resource referral",
+      "Family education",
+      "Advocacy"
+    ],
+    "description": "The Autism Society of Boulder County provides community support, resource referrals, and advocacy for families and individuals with autism in Boulder County, Colorado. They host sensory-friendly community events, parent support groups, and work to increase autism acceptance and inclusion in Boulder.",
+    "coordinates": {
+      "lat": 40.015,
+      "lng": -105.2705
+    }
+  },
+  {
+    "name": "Autism Services of Southwest Louisiana",
+    "address": "3006 Common St, Lake Charles, LA 70601",
+    "phone": "(337) 436-5001",
+    "website": "https://autismservicesswla.com",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Residential housing",
+      "Community integration",
+      "Adult supports",
+      "Family advocacy"
+    ],
+    "description": "Autism Services of Southwest Louisiana is a nonprofit founded by family members touched by autism, providing residential housing and community support for adults in Lake Charles. They operate multiple group homes in which adults with autism live and thrive with support in their local southwest Louisiana community.",
+    "coordinates": {
+      "lat": 30.2261,
+      "lng": -93.2183
+    }
+  },
+  {
+    "name": "Autism Society of Louisiana State Chapter",
+    "address": "12824 Arlingford Ave, Baton Rouge, LA 70815",
+    "phone": "(225) 284-6066",
+    "website": "https://www.lastatechapter.com",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "State advocacy",
+      "Resource referral",
+      "Family support",
+      "Community education"
+    ],
+    "description": "The Autism Society Louisiana State Chapter provides statewide advocacy, resource referrals, and family support across Louisiana. They work to connect families with local autism services, promote public awareness, and advocate for policies that improve outcomes for individuals with autism spectrum disorder throughout the state.",
+    "coordinates": {
+      "lat": 30.4583,
+      "lng": -91.1403
+    }
+  },
+  {
+    "name": "Northwest Autism Foundation",
+    "address": "519 15th Street, Oregon City, OR 97045",
+    "phone": "(503) 557-2111",
+    "website": "https://www.nwautism.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family support",
+      "Resource navigation",
+      "Community advocacy",
+      "Education"
+    ],
+    "description": "Northwest Autism Foundation in Oregon City provides family support, resource navigation, and community advocacy for individuals with autism and their families in Oregon and Southwest Washington. Their mission centers on connecting families to services and advancing autism awareness and acceptance in the Northwest.",
+    "coordinates": {
+      "lat": 45.3573,
+      "lng": -122.6068
+    }
+  },
+  {
+    "name": "Stride Autism Centers – Bellevue",
+    "address": "2206 Longo Drive, Suite 207, Bellevue, NE 68005",
+    "phone": "(402) 383-2469",
+    "website": "https://stridecenters.com/locations/bellevue-ne",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills",
+      "Parent training"
+    ],
+    "description": "Stride Autism Centers in Bellevue, Nebraska specializes in up-to-full-day ABA therapy for preschool-aged children diagnosed with autism. Their evidence-based programs focus on early intensive behavioral intervention to build foundational communication, social, and adaptive skills.",
+    "coordinates": {
+      "lat": 41.1533,
+      "lng": -95.8953
+    }
+  },
+  {
+    "name": "Stride Autism Centers – Des Moines",
+    "address": "2680 Fleur Dr, Des Moines, IA 50321",
+    "phone": "(515) 481-5586",
+    "website": "https://stridecenters.com/location/des-moines-iowa",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intensive intervention",
+      "Social skills training",
+      "Parent coaching"
+    ],
+    "description": "Stride Autism Centers in Des Moines, Iowa provides specialized ABA therapy for preschool-aged children with autism, focusing on early intensive intervention to maximize developmental gains. Their welcoming center offers individualized programming in small groups with high therapist-to-child ratios.",
+    "coordinates": {
+      "lat": 41.5741,
+      "lng": -93.625
+    }
+  },
+  {
+    "name": "Autism Society of North Carolina – Raleigh",
+    "address": "5121 Kingdom Way, Suite 100, Raleigh, NC 27607",
+    "phone": "(800) 442-2762",
+    "website": "https://www.autismsociety-nc.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Information and referral",
+      "Camping programs",
+      "Crisis intervention",
+      "Housing resources",
+      "Employment support"
+    ],
+    "description": "Autism Society of North Carolina is one of the most comprehensive state autism organizations in the country, offering direct services including crisis support, camping, employment assistance, housing resources, and community day programs. Their statewide network helps individuals with autism thrive at every life stage.",
+    "coordinates": {
+      "lat": 35.8283,
+      "lng": -78.6735
+    }
+  },
+  {
+    "name": "Autism Society of North Carolina – Charlotte",
+    "address": "8307 University Executive Park Drive, Suite 231, Charlotte, NC 28262",
+    "phone": "(704) 894-9678",
+    "website": "https://www.autismsociety-nc.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Resource referral",
+      "Family support",
+      "Community education",
+      "Advocacy"
+    ],
+    "description": "The Autism Society of North Carolina Charlotte Area Services office provides local support, resource referrals, and community education for families and individuals with autism in the greater Charlotte region. They connect Piedmont-area families with ASNC's comprehensive statewide services and local partners.",
+    "coordinates": {
+      "lat": 35.2709,
+      "lng": -80.7449
+    }
+  },
+  {
+    "name": "Families for Effective Autism Treatment of Southern Nevada",
+    "address": "7055 Windy Street, Suite B, Las Vegas, NV 89119",
+    "phone": "(702) 368-3328",
+    "website": "https://www.featnv.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family advocacy",
+      "ABA education",
+      "Parent training",
+      "Community support",
+      "Resource referral"
+    ],
+    "description": "Families for Effective Autism Treatment of Southern Nevada (FEAT-SN) is a parent-run nonprofit supporting families of children with autism in the Las Vegas area. They provide education about evidence-based ABA treatment, family advocacy, community support groups, and connections to qualified autism service providers.",
+    "coordinates": {
+      "lat": 36.0856,
+      "lng": -115.1412
+    }
+  },
+  {
+    "name": "Autism Center of North Mississippi",
+    "address": "146 S Thomas St, Ste C, Tupelo, MS 38801",
+    "phone": "(662) 840-0974",
+    "website": "https://www.autismcenternms.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Behavioral assessments",
+      "Social skills groups",
+      "Family support"
+    ],
+    "description": "The Autism Center of North Mississippi in Tupelo provides ABA therapy and behavioral support services for children with autism in northeast Mississippi. Their clinical team works with families to develop individualized treatment plans that address each child's unique strengths and challenges.",
+    "coordinates": {
+      "lat": 34.2581,
+      "lng": -88.7023
+    }
+  },
+  {
+    "name": "Mississippi Centers for Autism and Related Developmental Disabilities",
+    "address": "4061 Suzanne Dr, Suites C & D, D'Iberville, MS 39540",
+    "phone": "(228) 396-4434",
+    "website": "https://www.mscentersforautism.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Social skills groups",
+      "Parent training",
+      "Community integration"
+    ],
+    "description": "Mississippi Centers for Autism and Related Developmental Disabilities (MCARDD) provides ABA therapy and developmental services to individuals with autism in coastal Mississippi. Their team of behavior analysts delivers individualized treatment programs to support children and families in the Gulf Coast region.",
+    "coordinates": {
+      "lat": 30.469,
+      "lng": -88.898
+    }
+  },
+  {
+    "name": "New Mexico Autism Society",
+    "address": "2424 San Pedro NE, Suite G, Albuquerque, NM 87110",
+    "phone": "(505) 332-0306",
+    "website": "https://nmautismsociety.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family support",
+      "Sensory-friendly events",
+      "Educational conferences",
+      "Advocacy",
+      "Community awareness"
+    ],
+    "description": "The New Mexico Autism Society (NMAS) provides advocacy and community support for individuals with autism and their families across New Mexico. They host monthly sensory-friendly family activities, educational conferences, and public awareness campaigns to improve understanding and acceptance of autism in the state.",
+    "coordinates": {
+      "lat": 35.1019,
+      "lng": -106.6692
+    }
+  },
+  {
+    "name": "Autism Learning Partners – Albuquerque",
+    "address": "4111 Montgomery Blvd, Suite B, Albuquerque, NM 87109",
+    "phone": "(505) 225-5323",
+    "website": "https://autismlearningpartners.com/locations/new-mexico/bernalillo-county/albuquerque",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Social skills groups",
+      "Parent training",
+      "School-based services"
+    ],
+    "description": "Autism Learning Partners in Albuquerque provides comprehensive ABA therapy in a nurturing, sensory-friendly center environment for children with autism. Their experienced clinical team has served the autism community since 1988, offering individualized treatment plans and accepting most major insurance including Medicaid.",
+    "coordinates": {
+      "lat": 35.1184,
+      "lng": -106.5774
+    }
+  },
+  {
+    "name": "Caravel Autism Health – Boise",
+    "address": "1087 E Park Blvd, Suite 100, Boise, ID 83712",
+    "phone": "(208) 274-8543",
+    "website": "https://caravelautism.com/autism-center/boise",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills training",
+      "Parent coaching",
+      "School support"
+    ],
+    "description": "Caravel Autism Health in Boise, Idaho provides evidence-based ABA therapy for children with autism in a center-based environment. Their team of board-certified behavior analysts and trained therapists delivers individualized programming to help children develop communication, social, and daily living skills.",
+    "coordinates": {
+      "lat": 43.5857,
+      "lng": -116.2311
+    }
+  },
+  {
+    "name": "Puzzle Box Academy",
+    "address": "125 E NASA Blvd, Melbourne, FL 32907",
+    "phone": "(321) 345-4232",
+    "website": "https://www.puzzleboxacademy.com",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Special education",
+      "Early intervention",
+      "Individualized academics",
+      "Therapy integration",
+      "Pre-K programs"
+    ],
+    "description": "Puzzle Box Academy in Melbourne, Florida is a private year-round school in Brevard County serving neurodivergent children from age 2 through 6th grade. They provide individualized academics, early intervention, and integrated therapies in a supportive environment designed for children with autism and developmental differences.",
+    "coordinates": {
+      "lat": 28.076,
+      "lng": -80.6291
+    }
+  },
+  {
+    "name": "Fraser",
+    "address": "2400 W 64th St, Minneapolis, MN 55423",
+    "phone": "(612) 767-7222",
+    "website": "https://www.fraser.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Autism evaluation",
+      "Speech therapy",
+      "Mental health services",
+      "Adult services"
+    ],
+    "description": "Fraser is one of Minnesota's largest autism service providers, offering intensive ABA therapy, comprehensive autism evaluations, speech-language pathology, and mental health services at multiple Twin Cities locations. They serve individuals from early childhood through adulthood with a wide range of developmental disability supports.",
+    "coordinates": {
+      "lat": 44.9025,
+      "lng": -93.3754
+    }
+  },
+  {
+    "name": "Bierman Autism Centers – Needham",
+    "address": "145 Rosemary Street, Suite K, Needham, MA 02494",
+    "phone": "(781) 400-2482",
+    "website": "https://www.biermanautism.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Social skills groups",
+      "Parent training",
+      "School consultation"
+    ],
+    "description": "Bierman Autism Centers in Needham, Massachusetts provides comprehensive ABA therapy for children with autism in the greater Boston area. Their expert team of BCBAs and behavior technicians designs individualized treatment programs focused on building social, communication, and adaptive skills.",
+    "coordinates": {
+      "lat": 42.2853,
+      "lng": -71.2308
+    }
+  },
+  {
+    "name": "Pacific Autism Center",
+    "address": "670 Auahi St, Ste A6, Honolulu, HI 96813",
+    "phone": "(808) 523-8188",
+    "website": "https://abanavigator.com/providers/pacific-autism-center-inc",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Special education",
+      "Parent training"
+    ],
+    "description": "Pacific Autism Center in Honolulu provides ABA-based early intervention and special education programs for children with autism spectrum disorder in Hawaii. Their experienced team works closely with families to deliver individualized support that promotes communication, social, and adaptive skills development.",
+    "coordinates": {
+      "lat": 21.2994,
+      "lng": -157.8604
+    }
+  },
+  {
+    "name": "Autism Society of the Heartland",
+    "address": "9221 Ward Pkwy, Suite 190, Kansas City, MO 64114",
+    "phone": "(913) 706-0042",
+    "website": "https://www.autismheartland.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Information and referral",
+      "Support groups",
+      "Advocacy",
+      "Community events",
+      "Family education"
+    ],
+    "description": "Autism Society of the Heartland serves the greater Kansas City metropolitan area in Missouri and Kansas with information, referral, advocacy, and support for individuals with autism and their families. As a local affiliate of the Autism Society of America, they host events, connect families to resources, and work to improve autism awareness in the region.",
+    "coordinates": {
+      "lat": 39.0359,
+      "lng": -94.5928
+    }
+  },
+  {
+    "name": "Kansas City Autism Training Center",
+    "address": "10842 McGee St, Kansas City, MO 64114",
+    "phone": "(816) 361-8840",
+    "website": "https://www.kcautism.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Social skills training",
+      "Educational consulting",
+      "Parent training",
+      "Staff training"
+    ],
+    "description": "Kansas City Autism Training Center provides ABA therapy, social skills groups, and educational consulting for children with autism and developmental disabilities in the Kansas City area. Their experienced team helps families access evidence-based interventions and supports staff and caregivers through specialized training programs.",
+    "coordinates": {
+      "lat": 39.0175,
+      "lng": -94.5783
+    }
+  },
+  {
+    "name": "Autism Behavioral Institute – Atlanta",
+    "address": "8097 Roswell Road, Building B, Atlanta, GA 30350",
+    "phone": "(800) 701-0498",
+    "website": "https://www.bhcoe.org/aba-therapy/autism-behavioral-institute-llc-atlanta-georgia-30350",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills groups",
+      "Parent training"
+    ],
+    "description": "Autism Behavioral Institute in Atlanta provides ABA therapy services for children with autism spectrum disorder in north metro Atlanta. Their BCBA-led team delivers individualized treatment using evidence-based applied behavior analysis to support children's development across communication, social, and adaptive skill domains.",
+    "coordinates": {
+      "lat": 33.98,
+      "lng": -84.358
+    }
+  },
+  {
+    "name": "Autism Society of Idaho",
+    "address": "P.O. Box 44831, Boise, ID 83711",
+    "phone": "(208) 323-5598",
+    "website": "https://www.autismsocietyidaho.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Resource referral",
+      "Family support",
+      "Advocacy",
+      "Community education"
+    ],
+    "description": "The Autism Society of Idaho serves individuals with autism and their families statewide with resource referrals, family support, and advocacy. As Idaho's state affiliate of the Autism Society of America, they work to connect Idahoans with autism to services and advocate for improved supports across the state.",
+    "placeless": true,
+    "coordinates": {
+      "lat": 43.615,
+      "lng": -116.2023
+    }
+  },
+  {
+    "name": "Applied ABC – Brooklyn Autism Center",
+    "address": "2508 Nostrand Ave, Brooklyn, NY 11210",
+    "phone": "(718) 421-1020",
+    "website": "https://appliedabc.com/service_center/brooklyn-center",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Social skills groups",
+      "Parent training",
+      "School readiness"
+    ],
+    "description": "Applied ABC's Brooklyn Autism Center provides center-based ABA therapy for children with autism in Brooklyn, New York. Their team of licensed behavior analysts and trained therapists delivers individualized treatment in a welcoming environment, with flexible scheduling including weekend hours to accommodate busy families.",
+    "coordinates": {
+      "lat": 40.6276,
+      "lng": -73.9437
+    }
+  },
+  {
+    "name": "Yellow Bus ABA – Queens",
+    "address": "72-15 Northern Blvd, Suite 201, Jackson Heights, NY 11372",
+    "phone": "(646) 661-9669",
+    "website": "https://www.yellowbusaba.com/locations/new-york",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Social skills groups",
+      "Early intervention",
+      "Adolescent programs",
+      "Parent coaching"
+    ],
+    "description": "Yellow Bus ABA's Queens center in the Forest Hills area provides center-based ABA therapy for children and adolescents with autism in New York City. Their modern facility features dedicated spaces for social skills groups and adolescent programming, supporting early childhood development and transition-age youth.",
+    "coordinates": {
+      "lat": 40.7483,
+      "lng": -73.8838
+    }
+  },
+  {
+    "name": "Riley ABA & Autism Center",
+    "address": "7200 N Oak Trafficway, Ste 6, Kansas City, MO 64118",
+    "phone": "(816) 866-5662",
+    "website": "https://rileyaba.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intensive intervention",
+      "Social skills training",
+      "Parent training"
+    ],
+    "description": "Riley ABA & Autism Center in Kansas City provides evidence-based ABA therapy for children with autism spectrum disorder in the metro Kansas City area. Their dedicated clinical team of BCBAs and registered behavior technicians delivers individualized treatment programs designed to maximize each child's growth and independence.",
+    "coordinates": {
+      "lat": 39.2137,
+      "lng": -94.5728
+    }
+  },
+  {
+    "name": "Achievements ABA Therapy – Atlanta",
+    "address": "730 Peachtree Street NE, Suite 570, Atlanta, GA 30308",
+    "phone": "(404) 551-5330",
+    "website": "https://achievementstherapy.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "In-home therapy",
+      "School-based services",
+      "Social skills groups"
+    ],
+    "description": "Achievements ABA Therapy in Atlanta provides in-home, in-school, and center-based ABA therapy services for children with autism across Georgia, North Carolina, and Arizona. Their compassionate team of BCBAs and behavior technicians designs individualized programs focused on building meaningful communication and life skills.",
+    "coordinates": {
+      "lat": 33.773,
+      "lng": -84.383
+    }
+  },
+  {
+    "name": "Midwest Autism Association",
+    "address": "P.O. Box 7361, Bismarck, ND 58507",
+    "phone": "(701) 391-7799",
+    "website": "https://midwestautism.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family support",
+      "Resource referral",
+      "Community advocacy",
+      "Educational events"
+    ],
+    "description": "Midwest Autism Association serves families affected by autism spectrum disorder in North Dakota and the surrounding region, providing resource referrals, family support, and community advocacy. Based in Bismarck, they work to connect ND families with appropriate autism services and raise awareness statewide.",
+    "placeless": true,
+    "coordinates": {
+      "lat": 46.8083,
+      "lng": -100.7837
+    }
+  },
+  {
+    "name": "Heartleaf ABA – Bangor",
+    "address": "25 Stillwater Ave, Bangor, ME 04401",
+    "phone": "(207) 561-7380",
+    "website": "https://heartleafaba.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Early intervention",
+      "Parent training",
+      "School consultation"
+    ],
+    "description": "Heartleaf ABA in Bangor, Maine provides individualized ABA therapy services for children with autism spectrum disorder in central and northern Maine. Their compassionate clinical team designs evidence-based treatment programs that build communication, social, and adaptive skills to support each child's unique development.",
+    "coordinates": {
+      "lat": 44.8012,
+      "lng": -68.7812
+    }
+  },
+  {
+    "name": "Step By Step Academy – Columbus",
+    "address": "2700 Corporate Exchange Dr, Ste 100, Columbus, OH 43231",
+    "phone": "(614) 939-5437",
+    "website": "https://stepbystepauto.com",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Special education",
+      "Social skills",
+      "Vocational training",
+      "Adult day programs"
+    ],
+    "description": "Step by Step Academy in Columbus, Ohio provides comprehensive programs for individuals with autism across the lifespan, including ABA therapy, special education classes, social skills groups, vocational training, and adult day programs. Their multiple Columbus-area campuses serve children and adults with autism and related disabilities.",
+    "coordinates": {
+      "lat": 40.0891,
+      "lng": -82.9329
+    }
+  },
+  {
+    "name": "Autism Learning Partners - San Jose",
+    "address": "1420 Koll Cir, San Jose, CA 95112",
+    "phone": "(855) 295-3276",
+    "website": "https://autismlearningpartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Social Skills Training"
+    ],
+    "description": "Autism Learning Partners provides center-based ABA therapy for children with autism and developmental delays. Their San Jose clinic offers individualized treatment plans developed by board-certified behavior analysts. They serve families across the South Bay region.",
+    "coordinates": {
+      "lat": 37.3541,
+      "lng": -121.8958
+    }
+  },
+  {
+    "name": "Autism Learning Partners - San Diego",
+    "address": "4025 Camino Del Rio S, Suite 101, San Diego, CA 92108",
+    "phone": "(888) 805-0759",
+    "website": "https://autismlearningpartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Assessment",
+      "Family Training"
+    ],
+    "description": "Autism Learning Partners' San Diego clinic delivers evidence-based ABA therapy for children with autism spectrum disorder. The clinic uses naturalistic teaching methods and data-driven approaches. Services are available in center, home, and school settings.",
+    "coordinates": {
+      "lat": 32.7647,
+      "lng": -117.0887
+    }
+  },
+  {
+    "name": "Autism Learning Partners - Charlotte",
+    "address": "6000 Fairview Rd, Suite 100, Charlotte, NC 28210",
+    "phone": "(855) 295-3276",
+    "website": "https://autismlearningpartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Caregiver Training"
+    ],
+    "description": "Autism Learning Partners operates a Charlotte-area ABA therapy clinic serving children with autism and related developmental conditions. Board-certified behavior analysts develop individualized programs tailored to each child's unique needs. They accept most major insurance plans.",
+    "coordinates": {
+      "lat": 35.156,
+      "lng": -80.8431
+    }
+  },
+  {
+    "name": "Autism Learning Partners - Costa Mesa",
+    "address": "1520 Nutmeg Pl, Suite 110, Costa Mesa, CA 92626",
+    "phone": "(855) 295-3276",
+    "website": "https://autismlearningpartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy Coordination",
+      "Social Skills Groups"
+    ],
+    "description": "Autism Learning Partners in Costa Mesa provides comprehensive ABA therapy for children with autism spectrum disorder throughout Orange County. The center features dedicated therapy rooms and naturalistic play environments. Their team includes BCBAs and trained behavior technicians.",
+    "coordinates": {
+      "lat": 33.6411,
+      "lng": -117.9187
+    }
+  },
+  {
+    "name": "Melmark Pennsylvania",
+    "address": "2600 Wayland Rd, Berwyn, PA 19312",
+    "phone": "(610) 325-4700",
+    "website": "https://www.melmark.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Residential Services",
+      "Special Education",
+      "Adult Day Programs",
+      "ABA Therapy"
+    ],
+    "description": "Melmark Pennsylvania is a comprehensive multiservice nonprofit agency providing evidence-based special education, residential, vocational, and therapeutic services on an 80-acre campus. It serves children and adults with autism spectrum disorders, intellectual disabilities, and other neurological conditions. Melmark's Applied Behavior Analysis model is nationally recognized for its clinical sophistication.",
+    "coordinates": {
+      "lat": 40.0426,
+      "lng": -75.4349
+    }
+  },
+  {
+    "name": "Melmark New England",
+    "address": "461 River Road, Andover, MA 01810",
+    "phone": "(978) 654-4300",
+    "website": "https://www.melmark.org/newengland",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Day School",
+      "Residential Services",
+      "Adult Vocational Training",
+      "ABA Therapy"
+    ],
+    "description": "Melmark New England delivers clinically sophisticated ABA-based educational and residential services for children and adults with autism and intellectual disabilities. Located in Andover, the program serves students from throughout the New England region. The adult services campus in Lawrence, MA offers day and residential programming.",
+    "coordinates": {
+      "lat": 42.6581,
+      "lng": -71.1368
+    }
+  },
+  {
+    "name": "Melmark Carolinas",
+    "address": "13325 South Point Blvd, Charlotte, NC 28273",
+    "phone": "(704) 704-3941",
+    "website": "https://www.melmark.org/carolinas",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Special Education Day School",
+      "ABA-Based Curriculum",
+      "Transition Services"
+    ],
+    "description": "Melmark Carolinas provides ABA-based special education for students with autism, intellectual disabilities, and other developmental conditions in the Charlotte, NC area. Students work toward standard diplomas, occupational course of study diplomas, or certificates of completion. The program emphasizes functional life skills and community integration.",
+    "coordinates": {
+      "lat": 35.1,
+      "lng": -80.9431
+    }
+  },
+  {
+    "name": "Spectrum Designs Foundation",
+    "address": "366 Main St, Port Washington, NY 11050",
+    "phone": "(516) 888-9631",
+    "website": "https://www.spectrumdesigns.org",
+    "type": "social",
+    "source": "National Resources 2026",
+    "services": [
+      "Supported Employment",
+      "Job Training",
+      "Custom Apparel Production",
+      "Vocational Skills"
+    ],
+    "description": "Spectrum Designs Foundation is an autism employment nonprofit that runs a custom screen-printing and apparel business providing competitive employment to adults on the autism spectrum. Founded in Port Washington, NY, it has expanded its social enterprise model to include multiple locations. The organization focuses on creating meaningful, sustainable careers for autistic adults.",
+    "coordinates": {
+      "lat": 40.8312,
+      "lng": -73.6985
+    }
+  },
+  {
+    "name": "AHRC New York City",
+    "address": "83 Maiden Lane, New York, NY 10038",
+    "phone": "(212) 780-4491",
+    "website": "https://www.ahrcnyc.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Day Habilitation",
+      "Residential Services",
+      "Clinical Evaluations",
+      "Employment Support",
+      "Family Services"
+    ],
+    "description": "AHRC New York City is one of the largest family-governed organizations serving people with intellectual and developmental disabilities, including autism, in New York City. It provides clinical evaluations, service coordination, residential supports, day programs, and employment services. AHRC serves thousands of New Yorkers across all five boroughs.",
+    "coordinates": {
+      "lat": 40.7074,
+      "lng": -74.006
+    }
+  },
+  {
+    "name": "The Center for Discovery",
+    "address": "641 Old Route 17, Monticello, NY 12701",
+    "phone": "(845) 794-1400",
+    "website": "https://thecenterfordiscovery.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Residential Programs",
+      "Day School",
+      "Medical Services",
+      "Research",
+      "Therapeutic Recreation"
+    ],
+    "description": "The Center for Discovery is a nationally recognized nonprofit providing educational, health, clinical, and residential services for children and adults with severe complex disabilities, including autism spectrum disorders. Set in the Catskill Mountains, the center integrates innovative health care, education, and residential environments. It serves over 2,000 individuals with complex support needs across the lifespan.",
+    "coordinates": {
+      "lat": 41.6559,
+      "lng": -74.6896
+    }
+  },
+  {
+    "name": "Job Path NYC",
+    "address": "256 W 38th St, Floor 2, New York, NY 10018",
+    "phone": "(212) 944-0564",
+    "website": "https://www.jobpathnyc.org",
+    "type": "social",
+    "source": "National Resources 2026",
+    "services": [
+      "Customized Employment",
+      "Supported Living",
+      "Community Connections",
+      "Career Development"
+    ],
+    "description": "Job Path NYC assists adults with autism and other developmental disabilities to find and maintain employment, secure independent living, and engage with their communities in New York City. Their Customized Employment model tailors job placements to individual strengths and interests. The organization also offers supported living services with varying levels of personal support.",
+    "coordinates": {
+      "lat": 40.7527,
+      "lng": -74
+    }
+  },
+  {
+    "name": "The Autism Community in Action (TACA)",
+    "address": "2222 Martin Street, Suite 140, Irvine, CA 92612",
+    "phone": "(949) 640-4401",
+    "website": "https://tacanow.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Parent Mentorship",
+      "Support Groups",
+      "Educational Conferences",
+      "Online Resources",
+      "Family Scholarships"
+    ],
+    "description": "TACA is a national nonprofit providing education, support, and hope to families living with autism through mentorship, support groups, conferences, and an extensive online resource library. Most TACA services are offered at no cost to families. They operate chapters and virtual programs across the United States.",
+    "placeless": true,
+    "coordinates": {
+      "lat": 33.6846,
+      "lng": -117.8265
+    }
+  },
+  {
+    "name": "Spectrum of Hope",
+    "address": "11820 Cypress Corner Ln, Houston, TX 77065",
+    "phone": "(281) 894-1423",
+    "website": "https://spectrumofhope.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Adolescent Programs",
+      "Adult Autism Services"
+    ],
+    "description": "Spectrum of Hope is a licensed ABA autism treatment center in the Houston area providing individualized therapy for children, adolescents, and adults with autism. Their team includes licensed behavior analysts, psychologists, and other professionals. They operate multiple Texas locations including Houston, Cypress, Magnolia, and the Dallas-Fort Worth area.",
+    "coordinates": {
+      "lat": 29.909,
+      "lng": -95.412
+    }
+  },
+  {
+    "name": "New Horizons Serving Individuals with Special Needs",
+    "address": "15725 Parthenia St, North Hills, CA 91343",
+    "phone": "(818) 894-9301",
+    "website": "https://newhorizons-sfv.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Day Programs",
+      "Residential Services",
+      "Employment Support",
+      "Independent Living Skills"
+    ],
+    "description": "New Horizons Serving Individuals with Special Needs provides services for adults 18 and older with developmental disabilities including autism in the San Fernando and Santa Clarita Valleys. Programs include day services, residential supports, and vocational training. The agency is CARF-accredited and serves several hundred individuals annually.",
+    "coordinates": {
+      "lat": 34.2347,
+      "lng": -118.4776
+    }
+  },
+  {
+    "name": "Community Options Inc.",
+    "address": "2000 Grant Ave, Suite 202, Philadelphia, PA 19115",
+    "phone": "(215) 613-0728",
+    "website": "https://www.comop.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Supported Living",
+      "Community Integration",
+      "Employment Support",
+      "Residential Services"
+    ],
+    "description": "Community Options Inc. is a national nonprofit supporting thousands of individuals with intellectual and developmental disabilities, including autism, across 11 states. The Philadelphia office coordinates supported living and community integration services. The organization emphasizes self-determination and community inclusion for all individuals served.",
+    "coordinates": {
+      "lat": 40.0712,
+      "lng": -75.01
+    }
+  },
+  {
+    "name": "UAB Civitan-Sparks Clinics",
+    "address": "930 20th Street South, Birmingham, AL 35205",
+    "phone": "(205) 934-1112",
+    "website": "https://www.uab.edu/civitansparks",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnostic Evaluations",
+      "Developmental Assessments",
+      "Behavior Consultation",
+      "Family Education"
+    ],
+    "description": "The UAB Civitan-Sparks Clinics at the University of Alabama at Birmingham offer a range of services for individuals with autism spectrum disorders and developmental disabilities. Faculty provide evaluations for children with concerns about development, behavior, social skills, and learning. The clinic also operates the Regional Autism Network (RAN) serving Alabama families.",
+    "coordinates": {
+      "lat": 33.505,
+      "lng": -86.802
+    }
+  },
+  {
+    "name": "UAMS Schmieding Developmental Center",
+    "address": "2575 S Gene George Blvd, Suite 100, Springdale, AR 72762",
+    "phone": "(479) 750-0125",
+    "website": "https://uamshealth.com/condition/autism",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnostic Evaluations",
+      "Developmental Pediatrics",
+      "Northwest Arkansas Family Services"
+    ],
+    "description": "The UAMS Schmieding Developmental Center serves families in Northwest Arkansas providing team-based autism diagnostic evaluations for children. This satellite center of UAMS brings University of Arkansas Medical Sciences expertise to the growing Springdale-Fayetteville metropolitan area. Services are coordinated with the main UAMS center in Little Rock.",
+    "coordinates": {
+      "lat": 36.1867,
+      "lng": -94.1288
+    }
+  },
+  {
+    "name": "MUSC Children's Health Developmental Behavioral Services",
+    "address": "135 Rutledge Ave, Charleston, SC 29425",
+    "phone": "(843) 876-0444",
+    "website": "https://musckids.org/our-services/autism",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnosis",
+      "Developmental Behavioral Pediatrics",
+      "Research Programs",
+      "SPARK Autism Registry"
+    ],
+    "description": "MUSC Children's Health Developmental Behavioral Services provides comprehensive autism evaluations and follow-up care through the Medical University of South Carolina. The program includes an Autism Aware Healthcare initiative and Project Rex for young adults with autism. MUSC has received substantial NIH funding for neurodevelopmental research.",
+    "coordinates": {
+      "lat": 32.783,
+      "lng": -79.95
+    }
+  },
+  {
+    "name": "Georgetown University Center for Child and Human Development",
+    "address": "2115 Wisconsin Ave NW, 6th Floor, Washington, DC 20007",
+    "phone": "(202) 687-5000",
+    "website": "https://gucchd.georgetown.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Assessment",
+      "LEND Training Program",
+      "Policy Research",
+      "Community Education",
+      "Family Support"
+    ],
+    "description": "The Georgetown University Center for Child and Human Development (GUCCHD) serves as the District's University Center for Excellence in Developmental Disabilities, providing interdisciplinary training, research, and service coordination. The center operates leadership training programs for professionals working with individuals with developmental disabilities including autism. GUCCHD also runs the Autism and Communications Disorders Clinic at MedStar Georgetown University Hospital.",
+    "coordinates": {
+      "lat": 38.916,
+      "lng": -77.07
+    }
+  },
+  {
+    "name": "Prisma Health Autism Wonders Program",
+    "address": "300 E McBee Avenue, Suite 400, Greenville, SC 29601",
+    "phone": "(864) 797-7553",
+    "website": "https://prismahealthchildrens.org",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Multidisciplinary Autism Evaluation",
+      "Developmental Behavioral Pediatrics",
+      "Follow-Up Care",
+      "Family Support"
+    ],
+    "description": "Prisma Health's Autism Wonders program provides coordinated multidisciplinary evaluations and care for children with autism spectrum disorder throughout the Upstate South Carolina region. The program was established in 2008 and features developmental-behavioral pediatricians, pediatric psychologists, nurse practitioners, and nurses working together. Prisma Health Urgent Care locations across South Carolina are also certified as Autism Speaks Care providers.",
+    "coordinates": {
+      "lat": 34.8526,
+      "lng": -82.394
+    }
+  },
+  {
+    "name": "Vermont Family Network",
+    "address": "600 Blair Park Road, Suite 240, Williston, VT 05495",
+    "phone": "(802) 876-5315",
+    "website": "https://www.vermontfamilynetwork.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family Support Consultants",
+      "Parent Training",
+      "Information & Referral",
+      "Transition Planning",
+      "Statewide Advocacy"
+    ],
+    "description": "Vermont Family Network is the statewide family support organization providing information, training, and individualized support to Vermont families raising children with disabilities and special health needs, including autism. Family support consultants offer one-on-one guidance from birth through young adulthood. The network also provides advocacy at the state and local levels.",
+    "coordinates": {
+      "lat": 44.4403,
+      "lng": -73.0623
+    }
+  },
+  {
+    "name": "Building Blocks Therapy",
+    "address": "33595 Bainbridge Rd, Suite 103, Solon, OH 44139",
+    "phone": "(216) 282-1234",
+    "website": "https://www.buildingblockstherapy.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Social Skills Groups",
+      "Parent Training",
+      "School Consultation"
+    ],
+    "description": "Building Blocks Therapy specializes in autism treatment for children, teenagers, and young adults across multiple Ohio locations including Solon, Akron, Avon, and Highland Heights. Their team of BCBAs and behavior technicians provides individualized ABA programs in clinic, home, and school settings. The organization emphasizes functional skill development and community integration.",
+    "coordinates": {
+      "lat": 41.3895,
+      "lng": -81.4407
+    }
+  },
+  {
+    "name": "Building Blocks Center for Autism",
+    "address": "175 Deer Run Road, Suite B, Danville, VA 24540",
+    "phone": "(434) 797-5531",
+    "website": "https://www.commonwealthautism.org/resource_db/building-blocks-center-for-autism",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Occupational Therapy",
+      "Speech Therapy",
+      "Social Skills"
+    ],
+    "description": "Building Blocks Center for Autism is a division of the Center for Pediatric Therapies established in 2004, providing multidisciplinary services for children with autism spectrum disorder in Southern Virginia. The center serves communities in Danville and surrounding areas of Central Virginia. Services include ABA therapy alongside occupational and speech therapy.",
+    "coordinates": {
+      "lat": 36.586,
+      "lng": -79.395
+    }
+  },
+  {
+    "name": "Attain ABA",
+    "address": "465 Herndon Parkway, Herndon, VA 20170",
+    "phone": "(833) 599-2560",
+    "website": "https://www.attainaba.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Social Skills",
+      "School Readiness"
+    ],
+    "description": "Attain ABA is a national leader in ABA therapy serving children with autism and developmental delays ages 0-21. The Herndon, VA clinic is part of their multi-state network spanning Virginia, Pennsylvania, Utah, and other states. All programs are designed and supervised by Board Certified Behavior Analysts.",
+    "coordinates": {
+      "lat": 38.9696,
+      "lng": -77.3861
+    }
+  },
+  {
+    "name": "Autism Care Partners - Concord NH",
+    "address": "194 Pleasant St, Suite 2, Concord, NH 03301",
+    "phone": "(800) 679-3609",
+    "website": "https://autismcarepartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Evaluations",
+      "Speech Therapy",
+      "Occupational Therapy"
+    ],
+    "description": "Autism Care Partners operates a comprehensive autism therapy center in Concord, NH offering ABA therapy, diagnostic evaluations, speech, and occupational therapy under one roof. This is one of the organization's New England locations serving northern New England families. Services are available for children and adults across the lifespan.",
+    "coordinates": {
+      "lat": 43.2081,
+      "lng": -71.5376
+    }
+  },
+  {
+    "name": "Autism Care Partners - Danvers MA",
+    "address": "152 Sylvan Street, Suite 1, Danvers, MA 01923",
+    "phone": "(800) 679-3609",
+    "website": "https://autismcarepartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Speech Therapy",
+      "Feeding Therapy",
+      "Family Support"
+    ],
+    "description": "Autism Care Partners' Danvers, MA center provides ABA therapy, speech therapy, and feeding therapy for individuals with autism on the North Shore of Massachusetts. The clinic employs BCBAs and licensed therapists delivering coordinated, multidisciplinary care. Evening and weekend appointments are available to accommodate family schedules.",
+    "coordinates": {
+      "lat": 42.5751,
+      "lng": -70.95
+    }
+  },
+  {
+    "name": "Autism Care Partners - Framingham MA",
+    "address": "260 Cochituate Rd, Framingham, MA 01701",
+    "phone": "(800) 679-3609",
+    "website": "https://autismcarepartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Evaluations",
+      "Occupational Therapy",
+      "Social Skills"
+    ],
+    "description": "Autism Care Partners' Framingham center serves the MetroWest Massachusetts region with ABA therapy, diagnostic evaluations, and occupational therapy. The clinic offers flexible scheduling for working families and coordinates care across disciplines. They are in-network with many Massachusetts insurance plans.",
+    "coordinates": {
+      "lat": 42.2793,
+      "lng": -71.4162
+    }
+  },
+  {
+    "name": "Autism Care Partners - Warwick RI",
+    "address": "275 West Natick Road, Suite 400, Warwick, RI 02886",
+    "phone": "(800) 679-3609",
+    "website": "https://autismcarepartners.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Evaluations",
+      "Speech Therapy",
+      "Occupational Therapy"
+    ],
+    "description": "Autism Care Partners operates one of Rhode Island's most comprehensive autism therapy centers in Warwick, providing ABA, speech, and occupational therapy. The center offers diagnostic evaluations for children suspected of autism spectrum disorder. This is the primary Rhode Island location for the Autism Care Partners network.",
+    "coordinates": {
+      "lat": 41.7001,
+      "lng": -71.4162
+    }
+  },
+  {
+    "name": "Autism Spectrum Therapies (AST)",
+    "address": "1526 Brookhollow Dr, Suite 71, Santa Ana, CA 92705",
+    "phone": "(866) 727-8274",
+    "website": "https://autismtherapies.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "School Consultation",
+      "In-Home Services"
+    ],
+    "description": "Autism Spectrum Therapies (AST) is a premier provider of ABA therapy for children with autism with over 20 years of experience. They offer personalized treatment in learning centers, homes, schools, and the community. AST operates across California, Arizona, Arkansas, Louisiana, New Mexico, Oregon, and Washington.",
+    "coordinates": {
+      "lat": 33.745,
+      "lng": -117.839
+    }
+  },
+  {
+    "name": "Murray State University Center for Autism Spectrum Disorders",
+    "address": "334 Wells Hall, Murray, KY 42071",
+    "phone": "(270) 809-6828",
+    "website": "https://www.murraystate.edu/autism",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnostic Services",
+      "Early Childhood Programs",
+      "Family Support",
+      "Professional Training",
+      "Research"
+    ],
+    "description": "The Center for Autism Spectrum Disorders at Murray State University provides diagnostic services, early intervention, and family support for individuals with autism in Western Kentucky. The center's Early Childhood Program serves toddlers and preschool-age children using evidence-based practices. Murray State's CASD also trains the next generation of autism specialists.",
+    "coordinates": {
+      "lat": 36.6103,
+      "lng": -88.3145
+    }
+  },
+  {
+    "name": "University of Hawaii Center on Disability Studies",
+    "address": "1776 University Ave, UA 4-6, Honolulu, HI 96822",
+    "phone": "(808) 956-2303",
+    "website": "https://coe.hawaii.edu/cds",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Services Coordination",
+      "ECHO Autism Hawaii",
+      "Professional Training",
+      "Research",
+      "Pacific Basin Outreach"
+    ],
+    "description": "The University of Hawaii Center on Disability Studies (CDS) is the Pacific Basin University Center for Excellence in Developmental Disabilities, serving Hawaii and the Pacific region. CDS operates ECHO Autism Hawaii to improve autism care quality through virtual collaborative learning. The center conducts research, training, and community outreach across the Hawaiian islands and Pacific territories.",
+    "coordinates": {
+      "lat": 21.2969,
+      "lng": -157.8177
+    }
+  },
+  {
+    "name": "UNLV Ackerman Autism Center",
+    "address": "630 S Rancho Dr, Suite A, Las Vegas, NV 89106",
+    "phone": "(702) 998-9505",
+    "website": "https://unlvhealth.org",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnosis",
+      "Early Intervention",
+      "ABA Therapy",
+      "Speech Therapy",
+      "Behavioral Assessments"
+    ],
+    "description": "The UNLV Medicine Ackerman Autism Center provides comprehensive autism evaluations and treatment for infants through young adults in Southern Nevada. The center combines diagnostic services, ABA therapy, and developmental therapies in an integrated model. It is one of Nevada's primary autism centers serving a rapidly growing population in the Las Vegas metropolitan area.",
+    "coordinates": {
+      "lat": 36.164,
+      "lng": -115.157
+    }
+  },
+  {
+    "name": "Autism After 21",
+    "address": "Online / National",
+    "phone": "",
+    "website": "https://www.autismafter21.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Transition Coaching",
+      "Life Skills Support",
+      "Peer Community",
+      "Online Programs"
+    ],
+    "description": "Autism After 21 helps young adults on the autism spectrum confidently build foundations for their future by shifting perspectives, defining next steps, and finding supportive community. The organization provides coaching, workshops, and peer support programs designed specifically for autistic young adults navigating the transition to adulthood. Programs are offered primarily online, making them accessible nationally.",
+    "placeless": true,
+    "coordinates": {
+      "lat": 39.5,
+      "lng": -98.35
+    }
+  },
+  {
+    "name": "Autism Society of the Black Hills",
+    "address": "505 Kansas City St, Rapid City, SD 57701",
+    "phone": "(605) 415-6582",
+    "website": "https://www.autismsd.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Support Groups",
+      "Summer Sports Camp",
+      "Life Skills Support",
+      "Referral Services",
+      "Email Support"
+    ],
+    "description": "The Autism Society of the Black Hills serves as South Dakota's Autism Society of America affiliate, providing community support and advocacy for individuals with autism and their families in the Black Hills region. Programs include support group meetings, a summer sports camp, and life skills support. The organization connects South Dakotans with autism-related resources statewide.",
+    "coordinates": {
+      "lat": 44.0805,
+      "lng": -103.231
+    }
+  },
+  {
+    "name": "Blossom Children's Center - Brighton MI",
+    "address": "8855 Citizens Dr, Brighton, MI 48116",
+    "phone": "(810) 206-1560",
+    "website": "https://blossomchildrenscenter.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Naturalistic Developmental Approach",
+      "Family Training",
+      "Early Intervention"
+    ],
+    "description": "Blossom Children's Center provides naturalistic ABA therapy for children with autism and related challenges across Metro Detroit including centers in Brighton, Canton, and Novi. Their collaborative approach engages families as integral partners in therapy. BCBAs and trained behavior technicians implement individualized programs using a naturalistic developmental framework.",
+    "coordinates": {
+      "lat": 42.5292,
+      "lng": -83.7813
+    }
+  },
+  {
+    "name": "Blossom Center for Children - San Antonio",
+    "address": "14235 Blanco Rd, San Antonio, TX 78216",
+    "phone": "(210) 888-6699",
+    "website": "https://www.blossomcenterforchildren.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Play-Based Intervention",
+      "Social Skills Training",
+      "Parent Training"
+    ],
+    "description": "Blossom Center for Children in San Antonio uses a unique, engaging play-based method of applied behavior analysis to help children with autism achieve their maximum potential. The organization serves the San Antonio and Houston metropolitan areas. Their approach integrates naturalistic teaching within motivating play activities.",
+    "coordinates": {
+      "lat": 29.546,
+      "lng": -98.494
+    }
+  },
+  {
+    "name": "Utah State University Center for Persons with Disabilities",
+    "address": "6800 Old Main Hill, Logan, UT 84322",
+    "phone": "(435) 797-1981",
+    "website": "https://idrpp.usu.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Research",
+      "Professional Training",
+      "ASSERT Program",
+      "Family Education",
+      "Policy Advocacy"
+    ],
+    "description": "Utah State University's Center for Persons with Disabilities is Utah's University Center for Excellence in Developmental Disabilities, conducting research, training, and outreach related to autism and other developmental disabilities. The ASSERT (Autism Spectrum Disorder Supports, Education, Research, and Training) program aims to improve lives of individuals with ASD across Utah. USU's Logan campus also houses nationally recognized autism researchers.",
+    "coordinates": {
+      "lat": 41.735,
+      "lng": -111.8338
+    }
+  },
+  {
+    "name": "NMSU Autism Diagnostic Center",
+    "address": "O'Donnell Hall, Las Cruces, NM 88003",
+    "phone": "(575) 646-3177",
+    "website": "https://cd.nmsu.edu/autism",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnostic Evaluations",
+      "Family Supports",
+      "Community Education",
+      "Advocacy Support",
+      "Provider Training"
+    ],
+    "description": "The New Mexico State University Papen-Aprendamos Autism Diagnostic Center provides diagnostic evaluations, family support, community education, and professional training for autism spectrum disorders in southern New Mexico. The center also offers in-home training, school-based consultation, and support groups. NMSU serves an underserved region on the US-Mexico border.",
+    "coordinates": {
+      "lat": 32.28,
+      "lng": -106.749
+    }
+  },
+  {
+    "name": "Applied Behavior Center for Autism",
+    "address": "7901 E 88th Street, Indianapolis, IN 46256",
+    "phone": "(317) 849-5437",
+    "website": "https://appliedbehaviorcenter.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "School Consultation",
+      "Social Skills"
+    ],
+    "description": "Applied Behavior Center for Autism is Indiana's largest ABA provider with clinics throughout the state including Indianapolis, Carmel, Fishers, Greenwood, Terre Haute, Vincennes, Richmond, and Evansville. The organization is led by BCBAs and serves hundreds of Indiana children and families annually. They accept Medicaid and most major insurance plans.",
+    "coordinates": {
+      "lat": 39.916,
+      "lng": -86.046
+    }
+  },
+  {
+    "name": "Acuity Behavior Solutions",
+    "address": "1820 W Orangewood Ave, Suite 110, Orange, CA 92868",
+    "phone": "(714) 696-2862",
+    "website": "https://www.acuitybehaviorsolutions.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Functional Behavior Assessments",
+      "Social Skills Programs",
+      "Online Programs"
+    ],
+    "description": "Acuity Behavior Solutions specializes in ABA therapy and autism services across Orange County, Los Angeles County, and Riverside County in California. The organization provides individualized behavior therapy, functional behavior assessments, and social skills programs. They serve a diverse community including LGBTQ+ families and maintain multiple therapist-to-client ratio options.",
+    "coordinates": {
+      "lat": 33.7879,
+      "lng": -117.8531
+    }
+  },
+  {
+    "name": "Action Behavior Centers - Houston",
+    "address": "1102 Pinemont Drive, Suite B, Houston, TX 77018",
+    "phone": "(800) 355-2221",
+    "website": "https://www.actionbehavior.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intensive Behavioral Intervention",
+      "Family Guidance",
+      "School Readiness"
+    ],
+    "description": "Action Behavior Centers (ABC) provides evidence-based ABA therapy at hundreds of locations across Texas, including multiple Houston-area clinics. Their autism care centers focus on children ages 18 months to 6 years with individualized early intervention programs. ABC is one of Texas's largest ABA providers serving Austin, Dallas, Fort Worth, Houston, and San Antonio.",
+    "coordinates": {
+      "lat": 29.806,
+      "lng": -95.443
+    }
+  },
+  {
+    "name": "Bierman Autism Centers - Fort Wayne",
+    "address": "12938 Coldwater Rd, Fort Wayne, IN 46845",
+    "phone": "(260) 245-1455",
+    "website": "https://www.biermanautism.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Autism Evaluations",
+      "Speech Therapy Coordination",
+      "Social Skills"
+    ],
+    "description": "Bierman Autism Centers operates a Fort Wayne clinic providing center-based ABA therapy for children with autism. The center's BCBAs design individualized programs based on each child's specific needs and goals. Bierman has locations across Indiana, Ohio, and other states, making it a major Midwest provider of autism services.",
+    "coordinates": {
+      "lat": 41.187,
+      "lng": -85.122
+    }
+  },
+  {
+    "name": "Bierman Autism Centers - Indianapolis",
+    "address": "1022 E 52nd St, Indianapolis, IN 46205",
+    "phone": "(317) 978-0708",
+    "website": "https://www.biermanautism.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Social Skills Training",
+      "Parent Training",
+      "Community Integration"
+    ],
+    "description": "Bierman Autism Centers' Indianapolis location provides center-based ABA therapy for children with autism spectrum disorder in the Indianapolis metropolitan area. The organization's BCBAs develop comprehensive treatment plans incorporating structured teaching and naturalistic strategies. Bierman also has locations in Broad Ripple, Avon, and Westfield, Indiana.",
+    "coordinates": {
+      "lat": 39.873,
+      "lng": -86.175
+    }
+  },
+  {
+    "name": "Cortica - Santa Ana",
+    "address": "2500 Red Hill Ave, Suite 100, Santa Ana, CA 92705",
+    "phone": "(949) 748-8571",
+    "website": "https://www.corticacare.com",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnosis",
+      "ABA Therapy",
+      "Medical Care",
+      "Developmental Therapies",
+      "Whole Child Model"
+    ],
+    "description": "Cortica provides integrated autism diagnosis, ABA therapy, and medical care through a Whole Child model that treats the full person rather than isolated symptoms. The Santa Ana clinic is one of several California locations offering multidisciplinary care including developmental pediatrics, behavior analysts, and therapists. Cortica operates across California, Arizona, Massachusetts, and North Carolina.",
+    "coordinates": {
+      "lat": 33.713,
+      "lng": -117.867
+    }
+  },
+  {
+    "name": "Abacus Therapies - Hollywood FL",
+    "address": "4000 Hollywood Blvd, Suite 555-S, Hollywood, FL 33021",
+    "phone": "(954) 400-3251",
+    "website": "https://abacustherapies.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "In-Home Services",
+      "School-Based Services",
+      "Center-Based Programs"
+    ],
+    "description": "Abacus Therapies provides center-based, in-home, and school-based ABA therapy for children with autism across South Florida and the Carolinas. Founded as a family-owned practice in 2017, the Hollywood, FL location serves Broward County and surrounding communities. The organization also serves Miami-Dade, Palm Beach, and areas of North Carolina, South Carolina, and Georgia.",
+    "coordinates": {
+      "lat": 26.0112,
+      "lng": -80.1495
+    }
+  },
+  {
+    "name": "Amaze ABA",
+    "address": "3372 Peachtree Rd NE, Atlanta, GA 30326",
+    "phone": "(855) 613-2025",
+    "website": "https://amazeaba.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "In-Home ABA Therapy",
+      "School-Based Services",
+      "Medicaid Services",
+      "No-Waitlist Intake"
+    ],
+    "description": "Amaze ABA provides in-home ABA therapy for children with autism in Virginia, Maryland, Georgia, and North Carolina with a focus on immediate access and no waiting lists. The organization accepts Medicaid and most major insurance plans. Their in-home model brings evidence-based autism therapy directly to families in their natural environment.",
+    "coordinates": {
+      "lat": 33.848,
+      "lng": -84.364
+    }
+  },
+  {
+    "name": "Autism Action Partnership",
+    "address": "10909 Mill Valley Road, Suite 205, Omaha, NE 68154",
+    "phone": "(402) 763-8830",
+    "website": "https://autismaction.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Employment Programs",
+      "A-TEAM Employment Support",
+      "Family Education",
+      "Community Advocacy",
+      "Resource Navigation"
+    ],
+    "description": "Autism Action Partnership is a Nebraska-based nonprofit dedicated to improving the lives of individuals with autism through employment, advocacy, and community engagement. Their A-TEAM program helps autistic adults gain competitive employment skills and find jobs. The organization serves the greater Omaha metropolitan area and advocates for autism policy statewide.",
+    "coordinates": {
+      "lat": 41.263,
+      "lng": -96.122
+    }
+  },
+  {
+    "name": "All Star ABA",
+    "address": "1777 Reisterstown Rd, Pikesville, MD 21208",
+    "phone": "(855) 997-8227",
+    "website": "https://www.allstaraba.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "In-Home Services",
+      "School-Based Services",
+      "Center-Based Programs",
+      "Bilingual Services"
+    ],
+    "description": "All Star ABA is a leading ABA therapy center in Baltimore, Maryland providing individualized autism therapy for children and young adults from infancy to age 21. The organization offers center-based, in-home, and school-based services with bilingual staff available. All Star ABA also operates in Virginia and Texas, serving diverse communities across multiple states.",
+    "coordinates": {
+      "lat": 39.3789,
+      "lng": -76.72
+    }
+  },
+  {
+    "name": "Positive Behavior Supports Corporation",
+    "address": "500 Marquette Avenue NW, Suite 1200, Albuquerque, NM 87102",
+    "phone": "(855) 832-6727",
+    "website": "https://www.teampbs.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Positive Behavior Support",
+      "In-Home Services",
+      "School Consultation",
+      "Community-Based Supports"
+    ],
+    "description": "Positive Behavior Supports Corporation (Team PBS) delivers ABA therapy through a Positive Behavior Support framework for individuals of all ages with autism and behavioral challenges across home, school, and community settings. The organization operates in multiple states including New Mexico, Florida, and others. PBS accepts nearly all major insurance plans including Medicaid.",
+    "coordinates": {
+      "lat": 35.0844,
+      "lng": -106.6504
+    }
+  },
+  {
+    "name": "Centria Autism - Farmington Hills",
+    "address": "27777 Inkster Road, Farmington Hills, MI 48334",
+    "phone": "(855) 423-4629",
+    "website": "https://centriahealthcare.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "In-Home Services",
+      "Center-Based Programs",
+      "Telehealth"
+    ],
+    "description": "Centria Autism is one of the nation's largest ABA providers with its Michigan headquarters in Farmington Hills. The organization operates dozens of Michigan locations including Dearborn, Clinton Township, Taylor, Woodhaven, and the Metro Detroit area. Centria provides center-based and in-home ABA therapy across Michigan, Indiana, and other states.",
+    "coordinates": {
+      "lat": 42.485,
+      "lng": -83.3677
+    }
+  },
+  {
+    "name": "Grant a Gift Autism Foundation",
+    "address": "630 S Rancho Dr, Las Vegas, NV 89106",
+    "phone": "(702) 564-2453",
+    "website": "https://www.grantagift.com",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Assessment Funding",
+      "Treatment Funding",
+      "Vocational Training",
+      "Family Support Services",
+      "Transition Planning"
+    ],
+    "description": "The Grant a Gift Autism Foundation helps children, young adults, and families master autism by providing assessment and treatment funding combined with support services, vocational training, and transition planning in Southern Nevada. The foundation operates the Ackerman Center in partnership with UNLV Medicine. It is one of Nevada's primary philanthropic organizations dedicated to autism.",
+    "coordinates": {
+      "lat": 36.164,
+      "lng": -115.157
+    }
+  },
+  {
+    "name": "Fraser Autism Services",
+    "address": "2400 W 64th St, Minneapolis, MN 55423",
+    "phone": "(612) 767-7222",
+    "website": "https://www.fraser.org/services/autism",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Positive Behavior Support",
+      "Adult Autism Services",
+      "Diagnostic Evaluations",
+      "School Programs"
+    ],
+    "description": "Fraser is one of Minnesota's largest providers of autism services, offering ABA therapy, positive behavior support, adult services, and diagnostic evaluations at multiple Twin Cities locations. Fraser's Autism Center of Excellence provides intensive services for individuals with complex behavioral needs. Adult programs support employment, independent living, and community participation.",
+    "coordinates": {
+      "lat": 44.919,
+      "lng": -93.334
+    }
+  },
+  {
+    "name": "Pediatric Therapy Network",
+    "address": "1815 W 213th Street, Suite 100, Torrance, CA 90501",
+    "phone": "(310) 328-0276",
+    "website": "https://momentum4all.org/pediatrictherapynetwork",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "Speech Therapy",
+      "Occupational Therapy",
+      "Physical Therapy",
+      "Autism Support Services"
+    ],
+    "description": "Momentum's Pediatric Therapy Network (PTN) in Torrance, California provides speech, physical, and occupational therapy to children of all abilities including those with autism spectrum disorder, developmental delays, and learning disabilities. PTN is part of the Momentum network serving the South Bay region of Los Angeles. The clinic is staffed by licensed therapists specializing in pediatric care.",
+    "coordinates": {
+      "lat": 33.8358,
+      "lng": -118.3406
+    }
+  },
+  {
+    "name": "Texana Center for Autism",
+    "address": "4910 Airport Ave, Rosenberg, TX 77471",
+    "phone": "(281) 239-1497",
+    "website": "https://www.texanacenter.com/services/autism-aba-services",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Social Skills",
+      "Communication Skills",
+      "Daily Living Skills"
+    ],
+    "description": "Texana Center's Children's Center for Autism is a nationally recognized ABA program serving the Houston-Fort Bend County region with clinic-based treatment for children with autism. The program teaches skills in appropriate behaviors, self-care, communication, social interaction, and more. Locations include Rosenberg, Sugar Land, and Fulshear.",
+    "coordinates": {
+      "lat": 29.5571,
+      "lng": -95.808
+    }
+  },
+  {
+    "name": "Pacific Autism Center for Education (PACE)",
+    "address": "1880 Pruneridge Ave, Santa Clara, CA 95050",
+    "phone": "(408) 245-3400",
+    "website": "https://www.pacificautism.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Special Education Day School",
+      "Adult Day Programs",
+      "Residential Services",
+      "ABA Therapy",
+      "Transition Programs"
+    ],
+    "description": "Pacific Autism Center for Education (PACE) provides high-quality educational and residential programs for individuals with autism throughout the San Francisco Bay Area. The Santa Clara campus offers a special education day school, adult programs, and residential services. PACE has served the autism community since 1966 with campuses in Santa Clara, Sunnyvale, and San Jose.",
+    "coordinates": {
+      "lat": 37.3541,
+      "lng": -121.9552
+    }
+  },
+  {
+    "name": "Hope Network Center for Autism",
+    "address": "3361 36th St SE, Grand Rapids, MI 49512",
+    "phone": "(844) 969-0252",
+    "website": "https://hopenetwork.org/center-for-autism",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Neuropsychological Evaluations",
+      "Early Intervention",
+      "Autism Screening"
+    ],
+    "description": "Hope Network Center for Autism diagnoses and treats autism spectrum disorders with an emphasis on evidence-based early intervention for children as young as 18 months. The Grand Rapids clinic provides comprehensive outpatient treatment combining ABA therapy with neuropsychology. Hope Network operates multiple Michigan locations as part of a larger human services organization.",
+    "coordinates": {
+      "lat": 42.97,
+      "lng": -85.63
+    }
+  },
+  {
+    "name": "UNC TEACCH Autism Program - Greensboro Center",
+    "address": "925 Revolution Mill Drive, Suite 7, Greensboro, NC 27405",
+    "phone": "(919) 966-1000",
+    "website": "https://teacch.com/regional-centers/greensboro",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "Diagnostic Evaluations",
+      "Individual Therapy",
+      "Education Consultation",
+      "Community Training",
+      "Adult Services"
+    ],
+    "description": "The UNC TEACCH Autism Program Greensboro Center is one of several regional centers in North Carolina's world-renowned statewide autism program. TEACCH offers diagnostic evaluations, intervention services, education consultation, and community training. The program developed Structured TEACCHing, an internationally recognized approach to supporting autistic individuals across the lifespan.",
+    "coordinates": {
+      "lat": 36.095,
+      "lng": -79.789
+    }
+  },
+  {
+    "name": "Appalachian State University HANd Program",
+    "address": "University Hall, Boone, NC 28608",
+    "phone": "(828) 262-2910",
+    "website": "https://appwell.appstate.edu/hand",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnostic Evaluations",
+      "Speech-Language Assessments",
+      "Camp Crinkleroot",
+      "Community Education",
+      "Resource Lending Library"
+    ],
+    "description": "Appalachian State University's Hub for Autism and Neurodiversity (HANd) provides community-wide education, diagnostic services, and resource connections for autism and neurodiversity in western North Carolina. HANd offers low-volume diagnostic evaluations and in-depth speech-language assessments. Camp Crinkleroot provides free day camp experiences for children on the autism spectrum twice yearly.",
+    "coordinates": {
+      "lat": 36.2168,
+      "lng": -81.6746
+    }
+  },
+  {
+    "name": "Lighthouse Autism Center - Indianapolis",
+    "address": "3435 W 96th St, Indianapolis, IN 46268",
+    "phone": "(317) 222-1242",
+    "website": "https://lighthouseautismcenter.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Social Skills Development",
+      "Parent Training"
+    ],
+    "description": "Lighthouse Autism Center provides compassionate, center-based ABA therapy for children with autism across Indiana, Michigan, Illinois, Iowa, and Nebraska. The Indianapolis clinic uses research-supported methods with individualized programs for each child. Lighthouse is based in Mishawaka, Indiana and is one of the Midwest's largest autism-specific ABA providers.",
+    "coordinates": {
+      "lat": 39.908,
+      "lng": -86.17
+    }
+  },
+  {
+    "name": "Lighthouse Autism Center - Cedar Rapids",
+    "address": "4444 1st Ave NE, Cedar Rapids, IA 52402",
+    "phone": "(319) 382-4000",
+    "website": "https://lighthouseautismcenter.com/locations/cedar-rapids-autism-center",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Social Skills",
+      "Parent Coaching"
+    ],
+    "description": "Lighthouse Autism Center's Cedar Rapids location provides center-based ABA therapy for young children with autism in Eastern Iowa. The clinic focuses on early intervention for children ages 2-6, using evidence-based ABA methods. Lighthouse Autism Center's Iowa network also includes locations in West Des Moines and the Quad Cities area.",
+    "coordinates": {
+      "lat": 42.0006,
+      "lng": -91.6679
+    }
+  },
+  {
+    "name": "Stride Autism Centers - Cedar Rapids",
+    "address": "5655 Edgewood Rd NE, Suite 1, Cedar Rapids, IA 52411",
+    "phone": "(319) 469-8100",
+    "website": "https://stridecenters.com/locations/cedar-rapids-ia",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Preschool Readiness",
+      "Family Collaboration"
+    ],
+    "description": "Stride Autism Centers' Cedar Rapids location offers intensive center-based ABA therapy for children ages 2-6 in Eastern Iowa. Located in Edgewood Plaza, the center provides structured daily programming with high ratios of BCBA supervision. Stride's early intervention model is designed to maximize developmental gains during the critical early years.",
+    "coordinates": {
+      "lat": 41.978,
+      "lng": -91.663
+    }
+  },
+  {
+    "name": "Abacus Therapies - Charlotte NC",
+    "address": "9013 Perimeter Woods Drive, Suite I, Charlotte, NC 28216",
+    "phone": "(888) 225-9756",
+    "website": "https://abacustherapies.com/aba-therapy/charlotte",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Center-Based Services",
+      "In-Home Services",
+      "School-Based Services"
+    ],
+    "description": "Abacus Therapies brings South Florida's established ABA therapy model to Charlotte, North Carolina, serving children with autism in the greater Charlotte metropolitan area. The Charlotte clinic provides center-based, in-home, and school-based ABA therapy. Abacus also serves South Carolina and Georgia families through this Carolinas location.",
+    "coordinates": {
+      "lat": 35.3,
+      "lng": -80.88
+    }
+  },
+  {
+    "name": "Autism Learning Partners - Milwaukie OR",
+    "address": "3400 SE 17th Ave, Suite 2, Portland, OR 97202",
+    "phone": "(855) 295-3276",
+    "website": "https://autismlearningpartners.com/locations/oregon",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "In-Home Services",
+      "Center-Based Programs",
+      "School Consultation"
+    ],
+    "description": "Autism Learning Partners serves the Milwaukie and greater Portland, Oregon area with center-based and in-home ABA therapy for children with autism. The clinic is part of ALP's Pacific Northwest network covering the Clackamas County region. Services are available for children of various ages with programs supervised by Board Certified Behavior Analysts.",
+    "coordinates": {
+      "lat": 45.4657,
+      "lng": -122.6412
+    }
+  },
+  {
+    "name": "Stride Autism Centers - Davenport",
+    "address": "3402 Elmore Ave, Davenport, IA 52807",
+    "phone": "(563) 372-2842",
+    "website": "https://stridecenters.com/locations/davenport-ia",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Preschool Preparation",
+      "Behavior Management"
+    ],
+    "description": "Stride Autism Centers' Davenport location serves the Quad Cities area of Iowa with specialized early intervention ABA therapy for children ages 2-6. The center-based program provides intensive daily treatment using evidence-based ABA methods. Stride's Davenport clinic expands access to quality autism therapy in eastern Iowa.",
+    "coordinates": {
+      "lat": 41.5236,
+      "lng": -90.5776
+    }
+  },
+  {
+    "name": "Cortica - Scottsdale",
+    "address": "8501 E Princess Dr, Suite 100, Scottsdale, AZ 85255",
+    "phone": "(480) 530-7600",
+    "website": "https://www.corticacare.com/locations/scottsdale-az-autism-therapy",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnosis",
+      "ABA Therapy",
+      "Medical Evaluation",
+      "Speech Therapy",
+      "Occupational Therapy"
+    ],
+    "description": "Cortica's Scottsdale clinic integrates autism diagnosis, ABA therapy, and medical care through the Whole Child model addressing the complete developmental profile of each child. The Arizona location joins Cortica centers in California, Massachusetts, and North Carolina. Cortica's interdisciplinary team includes developmental pediatricians, neurologists, and behavior specialists.",
+    "coordinates": {
+      "lat": 33.683,
+      "lng": -111.896
+    }
+  },
+  {
+    "name": "Building Blocks Specialty ABA Services - Danvers",
+    "address": "6 Southside Road, Danvers, MA 01923",
+    "phone": "(978) 624-2351",
+    "website": "https://disabilityinfo.org/records/building-blocks",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Counseling",
+      "Skills Training",
+      "Socialization Activities"
+    ],
+    "description": "Building Blocks Specialty ABA Services in Danvers, Massachusetts provides applied behavior analysis therapy, counseling, and skills training for individuals with autism on the North Shore of Massachusetts. The organization emphasizes socialization activities and community integration as core components of treatment. Services are tailored to meet each individual's unique goals.",
+    "coordinates": {
+      "lat": 42.5751,
+      "lng": -70.95
+    }
+  },
+  {
+    "name": "Centria Autism - Clinton Township",
+    "address": "37650 Garfield Road, Clinton Township, MI 48038",
+    "phone": "(855) 423-4629",
+    "website": "https://centriahealthcare.com/location/michigan-clinton-township",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Center-Based Programs",
+      "In-Home Services",
+      "Behavioral Assessments"
+    ],
+    "description": "Centria Autism's Clinton Township clinic provides center-based ABA therapy for children with autism in Macomb County, Michigan. The location is part of Centria's extensive Michigan network of autism therapy centers. BCBAs design individualized treatment plans with consistent progress monitoring and family involvement.",
+    "coordinates": {
+      "lat": 42.5917,
+      "lng": -82.9218
+    }
+  },
+  {
+    "name": "Centria Autism - Dearborn",
+    "address": "3001 S Gulley Road, Dearborn, MI 48124",
+    "phone": "(855) 423-4629",
+    "website": "https://centriahealthcare.com/location/michigan-dearborn",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Center-Based Programs",
+      "In-Home ABA"
+    ],
+    "description": "Centria Autism's Dearborn location serves children with autism in Wayne County and the western Detroit metropolitan area. As part of Centria's statewide Michigan network, the Dearborn clinic provides consistent, evidence-based ABA therapy supervised by BCBAs. The organization also offers in-home services for families preferring therapy in the home environment.",
+    "coordinates": {
+      "lat": 42.3223,
+      "lng": -83.1763
+    }
+  },
+  {
+    "name": "Attain ABA - Philadelphia",
+    "address": "4646 Umbria St, Manayunk, PA 19127",
+    "phone": "(833) 599-2560",
+    "website": "https://www.attainaba.com/behavior-analysis/pennsylvania/philadelphia",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intensive Intervention",
+      "Social Skills",
+      "Family Guidance"
+    ],
+    "description": "Attain ABA's Philadelphia-area clinic in Manayunk provides ABA therapy for children with autism ages 0-21 in the greater Philadelphia region. The center is part of Attain's national network with locations across Virginia, Pennsylvania, Utah, and other states. All programming is designed and supervised by nationally certified Board Certified Behavior Analysts.",
+    "coordinates": {
+      "lat": 40.026,
+      "lng": -75.2258
+    }
+  },
+  {
+    "name": "Blossom Children's Center - Canton MI",
+    "address": "1850 N Lilley Rd, Canton, MI 48187",
+    "phone": "(734) 802-0400",
+    "website": "https://blossomchildrenscenter.com/aba-therapy-canton-mi",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Naturalistic Teaching",
+      "Family Collaboration",
+      "Early Intervention"
+    ],
+    "description": "Blossom Children's Center's Canton clinic serves western Wayne County and surrounding communities with naturalistic ABA therapy for children with autism. The Canton location is one of three Metro Detroit area clinics alongside Brighton and Novi. Blossom's approach uses naturalistic developmental ABA to support children in home, school, and community environments.",
+    "coordinates": {
+      "lat": 42.3098,
+      "lng": -83.4822
+    }
+  },
+  {
+    "name": "Abacus Therapies - Miami",
+    "address": "1900 N Bayshore Dr, Miami, FL 33132",
+    "phone": "(888) 225-9756",
+    "website": "https://abacustherapies.com/aba-therapy/miami-dade",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "In-Home Services",
+      "School-Based Services",
+      "Center-Based Programs"
+    ],
+    "description": "Abacus Therapies provides ABA therapy for children with autism across Miami-Dade County through center-based and in-home services. The Miami location is part of the Abacus network serving South Florida. Their clinical team includes experienced BCBAs and trained behavior technicians delivering individualized autism treatment.",
+    "coordinates": {
+      "lat": 25.79,
+      "lng": -80.187
+    }
+  },
+  {
+    "name": "Brain Balance Achievement Centers",
+    "address": "1-800-877-5500 (National)",
+    "phone": "(800) 877-5500",
+    "website": "https://www.brainbalancecenters.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "Neurodevelopmental Programs",
+      "Sensory Integration",
+      "Academic Skills",
+      "Social Skills",
+      "Behavior Support"
+    ],
+    "description": "Brain Balance Achievement Centers is a national network of approximately 100 after-school learning centers providing drug-free programs for children with ADHD, autism spectrum disorder, sensory processing disorder, and learning challenges. Centers offer personalized, multi-sensory programs combining physical exercises, academics, and dietary guidance. Locations are found across the United States.",
+    "placeless": true,
+    "coordinates": {
+      "lat": 39.5,
+      "lng": -98.35
+    }
+  },
+  {
+    "name": "Stride Autism Centers - Coralville",
+    "address": "2850 Coral Ct, Suite 500, Coralville, IA 52241",
+    "phone": "(319) 469-8246",
+    "website": "https://stridecenters.com/locations/iowa",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Preschool Readiness",
+      "Behavioral Supports"
+    ],
+    "description": "Stride Autism Centers' Coralville location serves the Iowa City and Coralville area with center-based ABA therapy for young children with autism ages 2-6. The clinic's full-day early intervention program provides intensive treatment during the critical developmental window. Stride's Eastern Iowa presence spans both the Coralville and Cedar Rapids centers.",
+    "coordinates": {
+      "lat": 41.6722,
+      "lng": -91.5826
+    }
+  },
+  {
+    "name": "Autism Care Partners - Holyoke MA",
+    "address": "1500 Main St, Suite 105, Holyoke, MA 01040",
+    "phone": "(800) 679-3609",
+    "website": "https://autismcarepartners.com/locations/massachusetts/holyoke",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Diagnostic Evaluations",
+      "Occupational Therapy",
+      "Family Support"
+    ],
+    "description": "Autism Care Partners' Holyoke clinic serves western Massachusetts with comprehensive autism therapy including ABA, diagnostic evaluations, and occupational therapy. The location extends Autism Care Partners' reach to the Pioneer Valley and surrounding communities. The clinic accepts most major Massachusetts insurance plans and connects families with broader community resources.",
+    "coordinates": {
+      "lat": 42.2042,
+      "lng": -72.6162
+    }
+  },
+  {
+    "name": "Cortica - Dedham MA",
+    "address": "300 Legacy Place, Dedham, MA 02026",
+    "phone": "(781) 329-8900",
+    "website": "https://www.corticacare.com/locations/ma/dedham",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism Diagnosis",
+      "ABA Therapy",
+      "Medical Care",
+      "Developmental Therapies"
+    ],
+    "description": "Cortica's Dedham, Massachusetts location brings the Whole Child autism model to the Greater Boston area, integrating ABA therapy, medical care, and developmental therapies. The clinic serves families from Greater Boston and surrounding suburbs with comprehensive evaluation and treatment. Cortica Dedham joins the organization's national network of integrated autism care centers.",
+    "coordinates": {
+      "lat": 42.2417,
+      "lng": -71.1759
+    }
+  },
+  {
+    "name": "Autism Care Partners - Bronx NY",
+    "address": "2055 Glebe Ave, Suite 201, Bronx, NY 10462",
+    "phone": "(800) 679-3609",
+    "website": "https://autismcarepartners.com/locations/new-york/bronx",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Diagnostic Evaluations",
+      "Family Services"
+    ],
+    "description": "Autism Care Partners operates a Bronx, New York clinic extending their New England network into the New York City area. The Bronx location provides ABA therapy and early intervention services for families across the borough. The clinic accepts most New York insurance plans and Medicaid.",
+    "coordinates": {
+      "lat": 40.8448,
+      "lng": -73.8648
+    }
+  },
+  {
+    "name": "Affinity Autism Services",
+    "address": "1970 W 7800 S, West Jordan, UT 84088",
+    "phone": "(801) 506-6695",
+    "website": "https://www.affinityautism.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Social Skills Training",
+      "Parent Training",
+      "School Consultation"
+    ],
+    "description": "Affinity Autism Services provides ABA therapy for children with autism spectrum disorder in the Salt Lake Valley, with a center in West Jordan, Utah. The organization's BCBAs design individualized treatment programs with ongoing progress monitoring. Affinity emphasizes collaboration with families and schools to ensure skills generalize across environments.",
+    "coordinates": {
+      "lat": 40.6097,
+      "lng": -111.9391
+    }
+  },
+  {
+    "name": "All Star ABA Texas",
+    "address": "6750 West Loop S, Suite 750, Houston, TX 77401",
+    "phone": "(832) 305-5986",
+    "website": "https://allstarabatx.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "In-Home Services",
+      "School-Based Services",
+      "Bilingual Services"
+    ],
+    "description": "All Star ABA Texas provides in-home and center-based ABA therapy for children with autism in the Houston and surrounding Texas metropolitan areas. The organization offers bilingual services in English and Spanish to serve Houston's diverse community. All Star ABA Texas is affiliated with All Star ABA Maryland, part of the same autism therapy network.",
+    "coordinates": {
+      "lat": 29.7218,
+      "lng": -95.4613
+    }
+  },
+  {
+    "name": "Action Behavior Centers - Austin",
+    "address": "1601 S Mopac Expy, Suite D-250, Austin, TX 78746",
+    "phone": "(888) 923-4222",
+    "website": "https://www.actionbehavior.com/state/texas",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intensive Behavioral Intervention",
+      "Family Guidance",
+      "Naturalistic Teaching"
+    ],
+    "description": "Action Behavior Centers provides evidence-based ABA therapy for children with autism in the Austin, Texas area through multiple locations including Round Rock, North Austin, Central Austin, South Austin, Bee Cave, Pflugerville, and Buda. Their centers offer individualized early intervention programs for children 18 months to 6 years. ABC is part of one of the nation's fastest-growing ABA therapy networks.",
+    "coordinates": {
+      "lat": 30.2504,
+      "lng": -97.81
+    }
+  },
+  {
+    "name": "Stride Autism Centers - West Des Moines",
+    "address": "9902 Swanson Blvd, Clive, IA 50325",
+    "phone": "(515) 481-5586",
+    "website": "https://stridecenters.com/locations/west-des-moines",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "Preschool Preparation",
+      "Parent Collaboration"
+    ],
+    "description": "Stride Autism Centers' West Des Moines/Clive location provides center-based ABA therapy programs for children ages 2-6 on the west side of the Des Moines metropolitan area. The clinic offers full-day and part-day programming options to fit different family needs. Stride's multiple Des Moines area locations expand access to early autism intervention across central Iowa.",
+    "coordinates": {
+      "lat": 41.5772,
+      "lng": -93.7116
+    }
+  },
+  {
+    "name": "Spectrum of Hope - Cypress TX",
+    "address": "12110 Huffmeister Road, Cypress, TX 77429",
+    "phone": "(281) 894-1423",
+    "website": "https://spectrumofhope.com/cypress-tx-autism-treatment",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Adolescent Programs",
+      "Teen Services",
+      "Behavior Support"
+    ],
+    "description": "Spectrum of Hope's Cypress, Texas clinic provides ABA therapy for children, adolescents, and adults with autism in the Northwest Houston area. The Cypress location specifically offers specialized programs for teens and adults alongside pediatric services. Spectrum of Hope operates multiple Texas locations across the Houston metro area.",
+    "coordinates": {
+      "lat": 29.9681,
+      "lng": -95.657
+    }
+  },
+  {
+    "name": "Heartlinks ABA - Indianapolis",
+    "address": "10475 Crosspoint Blvd, Suite 250, Indianapolis, IN 46256",
+    "phone": "(317) 456-3900",
+    "website": "https://heartlinksaba.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "School-Based Services",
+      "Telehealth ABA"
+    ],
+    "description": "Heartlinks ABA provides center-based, school-based, and telehealth ABA therapy for children with autism throughout Indiana. The Indianapolis headquarters serves the greater metropolitan area, with a statewide network of clinics and in-home services. Heartlinks BCBAs design individualized treatment plans with measurable goals and regular family collaboration.",
+    "coordinates": {
+      "lat": 39.93,
+      "lng": -86.02
+    }
+  },
+  {
+    "name": "Collaborative Behavior Solutions (CBS) - Indianapolis",
+    "address": "7236 Zionsville Rd, Suite 100, Indianapolis, IN 46268",
+    "phone": "(317) 522-1956",
+    "website": "https://cbsindy.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Behavioral Assessment",
+      "Center-Based Programs",
+      "Family Training"
+    ],
+    "description": "Collaborative Behavior Solutions (CBS) specializes in center-based applied behavior analysis therapy for individuals with autism in Indianapolis, Indiana. The organization's BCBAs collaborate with families to develop and implement individualized ABA programs. CBS focuses on functional skill development across communication, social, academic, and daily living domains.",
+    "coordinates": {
+      "lat": 39.915,
+      "lng": -86.2
+    }
+  },
+  {
+    "name": "Fraser Autism Center of Excellence - Richfield",
+    "address": "10156 Irwin Road, Minneapolis, MN 55437",
+    "phone": "(612) 767-7222",
+    "website": "https://www.fraser.org/locations/autism-center-of-excellence-satellite",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "Intensive ABA Therapy",
+      "Complex Behavioral Needs",
+      "Day Programming",
+      "Residential Support Coordination"
+    ],
+    "description": "Fraser's Autism Center of Excellence satellite in Richfield provides intensive services for Minnesota individuals with autism who have complex behavioral needs. The center offers specialized day programming and clinical support beyond what standard ABA programs typically address. Fraser is Minnesota's largest comprehensive autism services provider.",
+    "coordinates": {
+      "lat": 44.8192,
+      "lng": -93.3343
+    }
+  },
+  {
+    "name": "Pacific Autism Center for Education - Sunnyvale",
+    "address": "824 San Aleso Ave, Sunnyvale, CA 94085",
+    "phone": "(408) 625-6199",
+    "website": "https://www.pacificautism.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Special Education",
+      "ABA Therapy",
+      "Adult Day Programs",
+      "Transition Planning"
+    ],
+    "description": "PACE's Sunnyvale campus provides special education and adult day services for individuals with autism in the heart of Silicon Valley. The program serves a diverse Bay Area community with evidence-based educational programming. PACE has served the autism community since 1966 with multiple Santa Clara County campuses.",
+    "coordinates": {
+      "lat": 37.3688,
+      "lng": -122.0363
+    }
+  },
+  {
+    "name": "New Horizons - San Jose",
+    "address": "897 Broadleaf Lane, San Jose, CA 95128",
+    "phone": "(408) 625-6198",
+    "website": "https://www.pacificautism.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Adult Day Programs",
+      "Supported Employment",
+      "Life Skills Training",
+      "Community Integration"
+    ],
+    "description": "PACE's San Jose campus offers adult day programs for individuals with autism and developmental disabilities in the South Bay. Located in the Broadleaf neighborhood, the center provides vocational training, life skills instruction, and community integration activities. The program serves adults who have completed school-age programming.",
+    "coordinates": {
+      "lat": 37.323,
+      "lng": -121.936
+    }
+  },
+  {
+    "name": "Autism Learning Partners - Hickory NC",
+    "address": "2350 US-70 SE, Suite B, Hickory, NC 28602",
+    "phone": "(855) 295-3276",
+    "website": "https://autismlearningpartners.com/locations/north-carolina",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intervention",
+      "School Consultation",
+      "In-Home Services"
+    ],
+    "description": "Autism Learning Partners' Hickory, North Carolina location provides center-based and in-home ABA therapy for children with autism in the Catawba Valley region. The clinic serves families in Hickory, Catawba County, and surrounding western piedmont communities. ALP's North Carolina network provides coverage across multiple regions of the state.",
+    "coordinates": {
+      "lat": 35.739,
+      "lng": -81.344
+    }
+  },
+  {
+    "name": "Hope Center for Autism - Kansas City",
+    "address": "7200 W 132nd St, Suite 225, Overland Park, KS 66213",
+    "phone": "(913) 383-8111",
+    "website": "https://www.hopecenterforautism.org",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Social Skills Groups",
+      "Parent Training",
+      "School Consultation"
+    ],
+    "description": "The Hope Center for Autism provides ABA therapy and related services for children and families in the Kansas City metropolitan area. The center's team of behavior analysts develops individualized programs targeting communication, social skills, and adaptive behaviors. The Hope Center serves both Missouri and Kansas families in the greater Kansas City region.",
+    "coordinates": {
+      "lat": 38.901,
+      "lng": -94.69
+    }
+  },
+  {
+    "name": "East Tennessee State University Access Program",
+    "address": "1276 Gilbreath Dr, Johnson City, TN 37614",
+    "phone": "(423) 439-4578",
+    "website": "https://www.etsu.edu/coe/access",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Post-Secondary Education",
+      "Life Skills",
+      "Community Integration",
+      "Vocational Training",
+      "Social Programming"
+    ],
+    "description": "The Access ETSU Program at East Tennessee State University provides supplemental support to young adults with intellectual and developmental disabilities, including autism, who want to experience college life. Students participate in classes, campus activities, and employment preparation. The program supports the transition from high school to adult life.",
+    "coordinates": {
+      "lat": 36.3028,
+      "lng": -82.3646
+    }
+  },
+  {
+    "name": "Therapeutic Pathways - Modesto",
+    "address": "1520 Coffee Road, Suite F, Modesto, CA 95355",
+    "phone": "(209) 522-0700",
+    "website": "https://www.therapeuticpathways.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA Therapy",
+      "Early Intensive Intervention",
+      "School Support",
+      "Adult Services"
+    ],
+    "description": "Therapeutic Pathways provides ABA therapy for children, adolescents, and adults with autism in California's Central Valley with multiple locations including Modesto, Stockton, Fresno, and Sacramento. The organization has over 25 years of experience delivering evidence-based autism treatment. Therapeutic Pathways operates one of the largest nonprofit ABA programs in Central California.",
+    "coordinates": {
+      "lat": 37.639,
+      "lng": -120.998
+    }
+  },
+  {
+    "name": "Eden II Programs",
+    "address": "150 Granite Ave, Staten Island, NY 10303",
+    "phone": "(718) 816-1422",
+    "website": "https://www.eden2.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Special Education",
+      "Residential Services",
+      "Adult Day Programs",
+      "Community Habilitation",
+      "Employment Services"
+    ],
+    "description": "Eden II Programs is a leading provider of services for individuals with autism in New York, operating schools, residences, and adult day services on Staten Island and in Nassau County. The organization has served the autism community since 1976, emphasizing ABA-based education and meaningful community inclusion. Eden II operates one of New York State's most comprehensive autism service systems.",
+    "coordinates": {
+      "lat": 40.635,
+      "lng": -74.14
+    }
+  },
+  {
+    "name": "Alpine Learning Group",
+    "address": "777 Paramus Rd, Paramus, NJ 07652",
+    "phone": "(201) 612-7800",
+    "website": "https://www.alpinelearninggroup.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA-Based Education",
+      "Social Skills Programs",
+      "Transition Planning",
+      "Professional Training",
+      "Research"
+    ],
+    "description": "Alpine Learning Group is a nationally recognized nonprofit school and training center for individuals with autism in Paramus, New Jersey. Using an intensive ABA model, Alpine serves students with autism from preschool through adulthood. The organization also provides professional training to educators and clinicians nationwide.",
+    "coordinates": {
+      "lat": 40.944,
+      "lng": -74.0708
+    }
+  },
+  {
+    "name": "TEACCH Autism Program - Chapel Hill",
+    "address": "CB 7180, Chapel Hill, NC 27599",
+    "phone": "(919) 966-1000",
+    "website": "https://teacch.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "Diagnostic Evaluations",
+      "Structured TEACCHing",
+      "Adult Services",
+      "Professional Training",
+      "Research"
+    ],
+    "description": "TEACCH (Treatment and Education of Autistic and Communication Handicapped Children) at UNC-Chapel Hill is the original center of the internationally renowned TEACCH Autism Program serving North Carolinians across the lifespan. Developed by Dr. Eric Schopler in 1972, TEACCH's Structured TEACCHing approach has been adopted globally. The Chapel Hill center provides evaluations, therapy, and world-class professional training.",
+    "coordinates": {
+      "lat": 35.9049,
+      "lng": -79.0469
+    }
+  },
+  {
+    "name": "Autism Society of Greater Wisconsin",
+    "address": "2340 Crossroads Dr, Suite 3050, Madison, WI 53718",
+    "phone": "(608) 222-2033",
+    "website": "https://www.asw4autism.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family Support",
+      "Information & Referral",
+      "Support Groups",
+      "Advocacy",
+      "Community Events"
+    ],
+    "description": "The Autism Society of Greater Wisconsin (ASGW) provides advocacy, support, and resources for individuals with autism and their families across Wisconsin, with a focus on the Madison metropolitan area. ASGW hosts support groups, family events, and educational programming throughout the year. As an ASA affiliate, they connect Wisconsin families with national autism resources.",
+    "coordinates": {
+      "lat": 43.073,
+      "lng": -89.381
+    }
   }
 ];
-
-// Make available globally
-if (typeof window !== "undefined") {
-  window.communityData = communityResourcesData;
-}
