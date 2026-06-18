@@ -208,16 +208,27 @@ const pinSymbol = (act) => ({
   strokeWeight: 2,
   scale: act ? 15 : 12,
 });
+const youSymbol = { path: 0, fillColor: '#3a7ca5', fillOpacity: 1, strokeColor: '#ffffff', strokeWeight: 3, scale: 8 };
+function boundsAround(center, miles){
+  const dLat = miles/69;
+  const dLng = miles/(69*Math.max(0.2, Math.cos(center.lat*Math.PI/180)));
+  const b = new google.maps.LatLngBounds();
+  b.extend({ lat: center.lat+dLat, lng: center.lng+dLng });
+  b.extend({ lat: center.lat-dLat, lng: center.lng-dLng });
+  return b;
+}
 
 /* ─── Map panel — real Google Map with numbered pins ────────── */
-const MapPanel = ({resources, active, filtered, onHover}) => {
+const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
   const show = filtered.length > 0 ? filtered : resources;
   const elRef = useRef(null);
   const mapRef = useRef(null);
   const infoRef = useRef(null);
   const markersRef = useRef({});
+  const userMarkerRef = useRef(null);
   const [ready, setReady] = useState(0);
   const showKey = show.map(r=>r.id).join(',');
+  const centerKey = center ? center.lat + ',' + center.lng : '';
 
   // init map (wait for Google Maps script to be ready)
   useEffect(() => {
@@ -266,12 +277,30 @@ const MapPanel = ({resources, active, filtered, onHover}) => {
       marker.addListener('mouseover', () => onHover(r.id));
       marker.addListener('mouseout', () => onHover(null));
       markersRef.current[r.id] = marker;
-      bounds.extend(r.coordinates);
-      count++;
     });
-    if (count === 1) { map.setCenter(bounds.getCenter()); map.setZoom(11); }
-    else if (count > 1) map.fitBounds(bounds, 56);
-  }, [showKey, ready]);
+
+    // "You are here" marker for the searched location
+    if (userMarkerRef.current) { userMarkerRef.current.setMap(null); userMarkerRef.current = null; }
+    if (center) {
+      userMarkerRef.current = new google.maps.Marker({ position: center, map, icon: youSymbol, title: 'Searched location', zIndex: 0 });
+    }
+
+    // Focus the map around the searched location
+    if (center) {
+      let eff = radiusMi;
+      if (eff == null) {
+        const ds = show.filter(r => r.distance != null).map(r => r.distance).sort((a,b)=>a-b);
+        eff = ds.length ? Math.min(50, Math.max(8, ds[Math.min(9, ds.length-1)])) : 25;
+      }
+      map.fitBounds(boundsAround(center, eff), 48);
+    } else if (show.length > 1) {
+      const b = new google.maps.LatLngBounds();
+      show.forEach(r => r.coordinates && b.extend(r.coordinates));
+      map.fitBounds(b, 56);
+    } else if (show.length === 1 && show[0].coordinates) {
+      map.setCenter(show[0].coordinates); map.setZoom(12);
+    }
+  }, [showKey, ready, centerKey, radiusMi]);
 
   // highlight active marker without redrawing
   useEffect(() => {
@@ -334,7 +363,7 @@ const Sidebar = ({typeFilter, setTypeFilter, radius, setRadius}) => {
 const Header = ({dark, setDark, locLabel, keyword, setKeyword, onLogoClick, onChangeLocation}) => {
   return (
     <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:200,boxShadow:'0 1px 4px rgba(42,38,30,.06)'}}>
-      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 24px',height:62,display:'flex',alignItems:'center',gap:16}}>
+      <div style={{maxWidth:1600,margin:'0 auto',padding:'0 24px',height:62,display:'flex',alignItems:'center',gap:16}}>
         <Logo onClick={onLogoClick}/>
         <form onSubmit={e=>e.preventDefault()} style={{flex:1,display:'flex',alignItems:'center',gap:0,border:'2px solid var(--border-focus)',borderRadius:10,overflow:'hidden',height:42,maxWidth:700}}>
           <div style={{flex:1,display:'flex',alignItems:'center',gap:8,padding:'0 14px',background:'var(--surface)'}}>
@@ -377,7 +406,7 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
         </button>
         {error && <div style={{marginTop:14,color:'#ffd9cf',fontSize:14}}>{error}</div>}
       </section>
-      <section style={{maxWidth:900,margin:'56px auto',padding:'0 24px'}}>
+      <section style={{maxWidth:1100,margin:'56px auto',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:36}}>
           <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--brand)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Cal Poly Pomona · CS Department</span>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:32,letterSpacing:'.01em',color:'var(--text)',margin:0}}>AI-POWERED RESEARCH PROJECT</h2>
@@ -417,7 +446,7 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
   const shown = filtered.slice(0, MAX_SHOWN);
 
   return (
-    <div style={{maxWidth:1280,margin:'0 auto',padding:'24px 24px 64px'}}>
+    <div style={{maxWidth:1600,margin:'0 auto',padding:'24px 24px 64px'}}>
       <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
         <span style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
         <span>›</span>
@@ -435,9 +464,9 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
           {` · ${ALL.length} total in directory`}
         </div>
       </div>
-      <div style={{display:'flex',gap:0,alignItems:'flex-start'}}>
+      <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
         <Sidebar typeFilter={typeFilter} setTypeFilter={setTypeFilter} radius={radius} setRadius={setRadius}/>
-        <div style={{flex:1,minWidth:0}}>
+        <div style={{flex:'1 1 460px',minWidth:320}}>
           {shown.length === 0 ? (
             <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
               <div style={{fontSize:32,marginBottom:10}}>🔍</div>
@@ -448,8 +477,8 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
             <ResourceCard key={r.id} r={r} idx={i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId}/>
           ))}
         </div>
-        <div style={{width:380,flexShrink:0,marginLeft:20,position:'sticky',top:80,height:'calc(100vh - 100px)'}}>
-          <MapPanel resources={shown} filtered={shown} active={activeId} onHover={setActiveId}/>
+        <div style={{flex:'1 1 440px',minWidth:340,marginLeft:0,position:'sticky',top:80,height:'calc(100vh - 100px)'}}>
+          <MapPanel resources={shown} filtered={shown} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius}/>
         </div>
       </div>
     </div>
