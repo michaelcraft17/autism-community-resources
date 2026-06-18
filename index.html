@@ -38,6 +38,7 @@ button{font-family:inherit;cursor:pointer;}
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="community_data.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjIaR8sa936xf4hZzQ_-ObzpxCRsCWKIM&loading=async"></script>
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
@@ -60,6 +61,35 @@ const TYPE_META = {
   social:          { label:'Social',         bg:'var(--type-social-bg)',    fg:'var(--type-social-fg)',    thumb:'#f5d5c8' },
   general_support: { label:'General Support',bg:'var(--type-general-bg)',   fg:'var(--type-general-fg)',   thumb:'#ddd8cf' },
 };
+
+/* ─── Full dataset (community_data.js) + geo helpers ────────── */
+const ALL = (Array.isArray(window.communityData) && window.communityData.length
+  ? window.communityData
+  : RESOURCES
+).map((r,i) => ({
+  id: i+1, name: r.name, type: r.type, address: r.address, phone: r.phone,
+  website: r.website, services: r.services || [], description: r.description || '',
+  coordinates: r.coordinates,
+})).filter(r => r.coordinates && r.coordinates.lat && r.coordinates.lng);
+
+function haversine(a, b){
+  if (!a || !b) return null;
+  const R = 3959; // miles
+  const dLat = (b.lat-a.lat)*Math.PI/180, dLng = (b.lng-a.lng)*Math.PI/180;
+  const s = Math.sin(dLat/2)**2 + Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
+}
+
+async function geocode(q){
+  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=' + encodeURIComponent(q);
+  const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
+  const data = await res.json();
+  if (data && data.length) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+  return null;
+}
+
+const DIST_OPTIONS = [["Any distance",null],["Driving (25 mi.)",25],["Nearby (10 mi.)",10],["Close (5 mi.)",5],["Walking (2 mi.)",2]];
+const MAX_SHOWN = 60;
 
 /* ─── Icons ─────────────────────────────────────────────────── */
 const PinIcon = ({s=15}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2"/></svg>;
@@ -125,7 +155,7 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
               <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:12,color:'var(--text-muted)'}}>
                 <PinIcon s={12}/>{r.address}
               </span>
-              {r.distance < 20 && <span style={{fontSize:12,fontWeight:600,color:'var(--success-fg)'}}>{r.distance.toFixed(1)} mi away</span>}
+              {r.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--success-fg)'}}>{r.distance.toFixed(1)} mi away</span>}
             </div>
           </div>
           <div style={{display:'flex',gap:2,flexShrink:0}}>
@@ -260,10 +290,8 @@ const MapPanel = ({resources, active, filtered, onHover}) => {
 };
 
 /* ─── Sidebar filters ────────────────────────────────────────── */
-const Sidebar = ({typeFilter, setTypeFilter}) => {
-  const distances = ['Bird\'s-eye View','Driving (5 mi.)','Biking (2 mi.)','Walking (1 mi.)','Within 4 blocks'];
+const Sidebar = ({typeFilter, setTypeFilter, radius, setRadius}) => {
   const suggested = ['Open Now','Accepts Insurance','Wheelchair Accessible','Free Services','Telehealth Available','In-home Services'];
-  const [selDist, setSelDist] = useState(2);
   const [selSug, setSelSug] = useState([]);
   const toggleSug = s => setSelSug(a => a.includes(s) ? a.filter(x=>x!==s) : [...a,s]);
   const sectionStyle = {borderBottom:'1px solid var(--divider)',paddingBottom:18,marginBottom:18};
@@ -273,9 +301,9 @@ const Sidebar = ({typeFilter, setTypeFilter}) => {
     <aside style={{width:220,flexShrink:0,paddingRight:20}}>
       <div style={sectionStyle}>
         <span style={labelStyle}>Distance</span>
-        {distances.map((d,i)=>(
+        {DIST_OPTIONS.map(([d,mi])=>(
           <label key={d} style={radioStyle}>
-            <input type="radio" name="dist" checked={selDist===i} onChange={()=>setSelDist(i)} style={{accentColor:'var(--brand)'}}/>
+            <input type="radio" name="dist" checked={radius===mi} onChange={()=>setRadius(mi)} style={{accentColor:'var(--brand)'}}/>
             {d}
           </label>
         ))}
@@ -303,24 +331,23 @@ const Sidebar = ({typeFilter, setTypeFilter}) => {
 };
 
 /* ─── Header ─────────────────────────────────────────────────── */
-const Header = ({dark, setDark, query, onSearch, onLogoClick}) => {
-  const [val, setVal] = useState(query);
+const Header = ({dark, setDark, locLabel, keyword, setKeyword, onLogoClick, onChangeLocation}) => {
   return (
     <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:200,boxShadow:'0 1px 4px rgba(42,38,30,.06)'}}>
       <div style={{maxWidth:1280,margin:'0 auto',padding:'0 24px',height:62,display:'flex',alignItems:'center',gap:16}}>
         <Logo onClick={onLogoClick}/>
-        <form onSubmit={e=>{e.preventDefault();onSearch(val||'Near you');}} style={{flex:1,display:'flex',alignItems:'center',gap:0,border:'2px solid var(--border-focus)',borderRadius:10,overflow:'hidden',height:42,maxWidth:700}}>
+        <form onSubmit={e=>e.preventDefault()} style={{flex:1,display:'flex',alignItems:'center',gap:0,border:'2px solid var(--border-focus)',borderRadius:10,overflow:'hidden',height:42,maxWidth:700}}>
           <div style={{flex:1,display:'flex',alignItems:'center',gap:8,padding:'0 14px',background:'var(--surface)'}}>
             <span style={{color:'var(--text-muted)',display:'inline-flex'}}><SearchIcon/></span>
-            <input value={val} onChange={e=>setVal(e.target.value)} placeholder="Autism resources, therapy, education…" style={{flex:1,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
+            <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Filter by name, service, or type…" style={{flex:1,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
           </div>
           <div style={{width:1,height:28,background:'var(--border)'}}/>
-          <div style={{display:'flex',alignItems:'center',gap:6,padding:'0 12px',background:'var(--surface)',height:'100%',cursor:'pointer',fontSize:13,color:'var(--text-secondary)'}}>
-            <PinIcon s={14}/><span style={{whiteSpace:'nowrap'}}>{query || 'Near you'}</span>
-          </div>
-          <button type="submit" style={{height:'100%',width:44,background:'var(--brand)',border:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff'}}>
-            <SearchIcon s={16}/>
+          <button type="button" onClick={onChangeLocation} title="Change location" style={{display:'flex',alignItems:'center',gap:6,padding:'0 12px',background:'var(--surface)',border:'none',height:'100%',cursor:'pointer',fontSize:13,color:'var(--text-secondary)'}}>
+            <PinIcon s={14}/><span style={{whiteSpace:'nowrap'}}>{locLabel || 'Near you'}</span>
           </button>
+          <div style={{height:'100%',width:44,background:'var(--brand)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff'}}>
+            <SearchIcon s={16}/>
+          </div>
         </form>
         <button onClick={()=>setDark(d=>!d)} style={{marginLeft:'auto',display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 14px',background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13}}>
           {dark?<SunIcon/>:<MoonIcon/>} {dark?'Light':'Dark'}
@@ -331,7 +358,7 @@ const Header = ({dark, setDark, query, onSearch, onLogoClick}) => {
 };
 
 /* ─── Landing ────────────────────────────────────────────────── */
-const Landing = ({onSearch}) => {
+const Landing = ({onSearch, onLocate, busy, error}) => {
   const [q, setQ] = useState('');
   return (
     <div>
@@ -343,11 +370,12 @@ const Landing = ({onSearch}) => {
         <p style={{fontSize:18,color:'rgba(255,255,255,.8)',margin:'0 auto 36px',maxWidth:'50ch',lineHeight:1.6}}>Find autism &amp; special needs resources near you — therapy, advocacy, education, medical, and more.</p>
         <form onSubmit={e=>{e.preventDefault();if(q.trim())onSearch(q);}} style={{display:'flex',gap:0,maxWidth:620,margin:'0 auto',borderRadius:12,overflow:'hidden',boxShadow:'0 8px 30px rgba(0,0,0,.2)'}}>
           <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Enter city, zip code, or address…" style={{flex:1,height:54,padding:'0 20px',border:'none',outline:'none',fontSize:16,background:'#fff',color:'#2a261e',fontFamily:'var(--font-sans)'}}/>
-          <button type="submit" style={{height:54,padding:'0 28px',background:'var(--coral-500)',color:'#fff',border:'none',fontSize:16,fontWeight:700,fontFamily:'var(--font-antonio)',letterSpacing:'.05em',cursor:'pointer',whiteSpace:'nowrap'}}>SEARCH</button>
+          <button type="submit" disabled={busy} style={{height:54,padding:'0 28px',background:'var(--coral-500)',color:'#fff',border:'none',fontSize:16,fontWeight:700,fontFamily:'var(--font-antonio)',letterSpacing:'.05em',cursor:busy?'wait':'pointer',whiteSpace:'nowrap',opacity:busy?.7:1}}>{busy?'…':'SEARCH'}</button>
         </form>
-        <button onClick={()=>onSearch('My Location')} style={{marginTop:14,background:'transparent',border:'none',color:'rgba(255,255,255,.75)',fontSize:14,cursor:'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
+        <button onClick={onLocate} disabled={busy} style={{marginTop:14,background:'transparent',border:'none',color:'rgba(255,255,255,.75)',fontSize:14,cursor:busy?'wait':'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
           <PinIcon s={14}/> Use my current location
         </button>
+        {error && <div style={{marginTop:14,color:'#ffd9cf',fontSize:14}}>{error}</div>}
       </section>
       <section style={{maxWidth:900,margin:'56px auto',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:36}}>
@@ -369,14 +397,25 @@ const Landing = ({onSearch}) => {
 };
 
 /* ─── Results ────────────────────────────────────────────────── */
-const Results = ({query, favs, onFav}) => {
-  const [search, setSearch] = useState('');
+const Results = ({coords, locLabel, keyword, favs, onFav}) => {
   const [typeFilter, setTypeFilter] = useState('');
+  const [radius, setRadius] = useState(null);
   const [activeId, setActiveId] = useState(null);
-  const filtered = RESOURCES.filter(r =>
-    (!search || r.name.toLowerCase().includes(search.toLowerCase())) &&
-    (!typeFilter || r.type === typeFilter)
+
+  const kw = keyword.trim().toLowerCase();
+  let list = ALL.map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
+  if (coords) list.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
+  const filtered = list.filter(r =>
+    (!kw
+      || r.name.toLowerCase().includes(kw)
+      || (r.services||[]).join(' ').toLowerCase().includes(kw)
+      || (r.description||'').toLowerCase().includes(kw)
+      || (TYPE_META[r.type] ? TYPE_META[r.type].label.toLowerCase().includes(kw) : false)) &&
+    (!typeFilter || r.type === typeFilter) &&
+    (radius == null || (r.distance != null && r.distance <= radius))
   );
+  const shown = filtered.slice(0, MAX_SHOWN);
+
   return (
     <div style={{maxWidth:1280,margin:'0 auto',padding:'24px 24px 64px'}}>
       <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
@@ -384,31 +423,33 @@ const Results = ({query, favs, onFav}) => {
         <span>›</span>
         <span style={{cursor:'pointer',color:'var(--text-link)'}}>Autism &amp; Special Needs</span>
         <span>›</span>
-        <span style={{color:'var(--text-muted)'}}>{query}</span>
+        <span style={{color:'var(--text-muted)'}}>{locLabel}</span>
       </div>
       <div style={{marginBottom:20}}>
         <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(20px,3vw,28px)',margin:'0 0 4px',letterSpacing:'.01em',color:'var(--text)'}}>
-          Top {filtered.length} Resources Near {query}
+          {filtered.length} Resource{filtered.length!==1?'s':''}{radius!=null?` within ${radius} mi`:''} Near {locLabel}
         </h2>
         <div style={{fontSize:13,color:'var(--text-muted)'}}>
-          {filtered.length} results · Sorted by distance
+          {coords ? 'Sorted by distance' : 'Browse all'}
+          {filtered.length > shown.length ? ` · showing nearest ${shown.length}` : ''}
+          {` · ${ALL.length} total in directory`}
         </div>
       </div>
       <div style={{display:'flex',gap:0,alignItems:'flex-start'}}>
-        <Sidebar typeFilter={typeFilter} setTypeFilter={setTypeFilter}/>
+        <Sidebar typeFilter={typeFilter} setTypeFilter={setTypeFilter} radius={radius} setRadius={setRadius}/>
         <div style={{flex:1,minWidth:0}}>
-          {filtered.length === 0 ? (
+          {shown.length === 0 ? (
             <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
               <div style={{fontSize:32,marginBottom:10}}>🔍</div>
               <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700}}>NO RESULTS FOUND</div>
-              <div style={{fontSize:14,marginTop:6}}>Try adjusting your filters</div>
+              <div style={{fontSize:14,marginTop:6}}>Try widening the distance or clearing filters</div>
             </div>
-          ) : filtered.map((r,i)=>(
+          ) : shown.map((r,i)=>(
             <ResourceCard key={r.id} r={r} idx={i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId}/>
           ))}
         </div>
         <div style={{width:380,flexShrink:0,marginLeft:20,position:'sticky',top:80,height:'calc(100vh - 100px)'}}>
-          <MapPanel resources={RESOURCES} filtered={filtered} active={activeId} onHover={setActiveId}/>
+          <MapPanel resources={shown} filtered={shown} active={activeId} onHover={setActiveId}/>
         </div>
       </div>
     </div>
@@ -419,15 +460,41 @@ const Results = ({query, favs, onFav}) => {
 function App() {
   const [dark, setDark] = useState(false);
   const [screen, setScreen] = useState('landing');
-  const [query, setQuery] = useState('');
+  const [coords, setCoords] = useState(null);
+  const [locLabel, setLocLabel] = useState('');
+  const [keyword, setKeyword] = useState('');
   const [favs, setFavs] = useState([]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
   useEffect(() => { document.body.classList.toggle('dark', dark); }, [dark]);
-  const handleSearch = q => { setQuery(q); setScreen('results'); };
+
+  const goLanding = () => { setScreen('landing'); setError(''); };
+
+  const searchLocation = async (text) => {
+    setBusy(true); setError('');
+    try {
+      const c = await geocode(text);
+      if (!c) { setError('Couldn’t find that location. Try a city, ZIP code, or full address.'); setBusy(false); return; }
+      setCoords(c); setLocLabel(text); setKeyword(''); setScreen('results');
+    } catch (e) { setError('Search failed — please try again.'); }
+    setBusy(false);
+  };
+
+  const useMyLocation = () => {
+    if (!navigator.geolocation) { setError('Geolocation isn’t supported by your browser.'); return; }
+    setBusy(true); setError('');
+    navigator.geolocation.getCurrentPosition(
+      pos => { setCoords({lat:pos.coords.latitude, lng:pos.coords.longitude}); setLocLabel('My Location'); setKeyword(''); setScreen('results'); setBusy(false); },
+      err => { setError(err.code===1 ? 'Location permission denied — enter a location instead.' : 'Couldn’t get your location.'); setBusy(false); },
+      { enableHighAccuracy:true, timeout:10000 }
+    );
+  };
+
   const toggleFav = id => setFavs(f => f.includes(id) ? f.filter(x=>x!==id) : [...f,id]);
   return (
     <div>
-      <Header dark={dark} setDark={setDark} query={query} onSearch={handleSearch} onLogoClick={()=>setScreen('landing')}/>
-      <main>{screen==='landing' ? <Landing onSearch={handleSearch}/> : <Results query={query} favs={favs} onFav={toggleFav}/>}</main>
+      <Header dark={dark} setDark={setDark} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} onLogoClick={goLanding} onChangeLocation={goLanding}/>
+      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results coords={coords} locLabel={locLabel} keyword={keyword} favs={favs} onFav={toggleFav}/>}</main>
       <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'18px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
         © 2025 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
         <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',fontWeight:600}}>GitHub</a>
