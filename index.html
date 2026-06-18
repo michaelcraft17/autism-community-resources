@@ -142,8 +142,8 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
             <circle cx="12" cy="10" r="3.2" fill="#fff"/>
           </svg>
         </div>
-        <div style={{position:'absolute',top:10,left:10,width:28,height:28,borderRadius:'50%',background:'var(--coral-500)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:15,boxShadow:'0 2px 6px rgba(200,106,82,.4)'}}>
-          {idx+1}
+        <div style={{position:'absolute',top:10,left:10,width:28,height:28,borderRadius:'50%',background:r.placeless?'var(--harbor-600)':'var(--coral-500)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:r.placeless?13:15,boxShadow:'0 2px 6px rgba(200,106,82,.4)'}}>
+          {r.placeless ? '🌐' : idx+1}
         </div>
       </div>
       <div style={{flex:1,padding:'14px 16px 14px 18px',display:'flex',flexDirection:'column',gap:6,minWidth:0}}>
@@ -155,7 +155,9 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
               <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:12,color:'var(--text-muted)'}}>
                 <PinIcon s={12}/>{r.address}
               </span>
-              {r.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--success-fg)'}}>{r.distance.toFixed(1)} mi away</span>}
+              {r.placeless
+                ? <span style={{fontSize:11,fontWeight:700,color:'var(--info-fg)',background:'var(--info-bg)',padding:'2px 9px',borderRadius:999}}>Nationwide / Virtual</span>
+                : (r.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--success-fg)'}}>{r.distance.toFixed(1)} mi away</span>)}
             </div>
           </div>
           <div style={{display:'flex',gap:2,flexShrink:0}}>
@@ -257,7 +259,7 @@ const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
     const bounds = new google.maps.LatLngBounds();
     let count = 0;
     show.forEach(r => {
-      if (!r.coordinates) return;
+      if (!r.coordinates || r.placeless) return;
       const num = resources.findIndex(x => x.id === r.id) + 1;
       const marker = new google.maps.Marker({
         position: r.coordinates, map,
@@ -435,18 +437,20 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
   const [activeId, setActiveId] = useState(null);
 
   const kw = keyword.trim().toLowerCase();
-  let list = ALL.map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
-  if (coords) list.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
-  const filtered = list.filter(r =>
+  const matchKwType = r =>
     (!kw
       || r.name.toLowerCase().includes(kw)
       || (r.services||[]).join(' ').toLowerCase().includes(kw)
       || (r.description||'').toLowerCase().includes(kw)
       || (TYPE_META[r.type] ? TYPE_META[r.type].label.toLowerCase().includes(kw) : false)) &&
-    (!typeFilter || r.type === typeFilter) &&
-    (radius == null || (r.distance != null && r.distance <= radius))
-  );
+    (!typeFilter || r.type === typeFilter);
+
+  // Located resources (mapped, distance-filtered) vs. placeless nationwide/virtual ones
+  let local = ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
+  if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
+  const filtered = local.filter(r => matchKwType(r) && (radius == null || (r.distance != null && r.distance <= radius)));
   const shown = filtered.slice(0, MAX_SHOWN);
+  const national = ALL.filter(r => r.placeless && matchKwType(r));
 
   return (
     <div style={{maxWidth:2400,margin:'0 auto',padding:'24px 24px 64px'}}>
@@ -470,15 +474,28 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
       <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
         <Sidebar typeFilter={typeFilter} setTypeFilter={setTypeFilter} radius={radius} setRadius={setRadius}/>
         <div style={{flex:'1 1 460px',minWidth:320}}>
-          {shown.length === 0 ? (
+          {shown.length === 0 && national.length === 0 ? (
             <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
               <div style={{fontSize:32,marginBottom:10}}>🔍</div>
               <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700}}>NO RESULTS FOUND</div>
               <div style={{fontSize:14,marginTop:6}}>Try widening the distance or clearing filters</div>
             </div>
-          ) : shown.map((r,i)=>(
-            <ResourceCard key={r.id} r={r} idx={i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId}/>
-          ))}
+          ) : (
+            <React.Fragment>
+              {shown.map((r,i)=>(
+                <ResourceCard key={r.id} r={r} idx={i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId}/>
+              ))}
+              {national.length > 0 && (
+                <div style={{marginTop:24}}>
+                  <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.06em',textTransform:'uppercase',color:'var(--text-secondary)',margin:'0 0 4px',borderTop:'1px solid var(--divider)',paddingTop:18}}>Available Nationwide &amp; Virtual</h3>
+                  <p style={{fontSize:12,color:'var(--text-muted)',margin:'0 0 14px'}}>{national.length} service{national.length!==1?'s':''} you can reach from anywhere — no fixed location.</p>
+                  {national.map((r,i)=>(
+                    <ResourceCard key={r.id} r={r} idx={shown.length+i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId}/>
+                  ))}
+                </div>
+              )}
+            </React.Fragment>
+          )}
         </div>
         <div style={{flex:'1 1 440px',minWidth:340,marginLeft:0,position:'sticky',top:80,height:'calc(100vh - 100px)'}}>
           <MapPanel resources={shown} filtered={shown} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius}/>
