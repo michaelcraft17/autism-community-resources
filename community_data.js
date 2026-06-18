@@ -2,7 +2,7 @@
 // Generated from community_resources.json on: 2026-06-18
 // Total resources: 740
 
-const communityResourcesData = [
+window.communityData = [
   {
     "name": "Autism Society of Los Angeles",
     "address": "21250 Hawthorne Blvd Suite 500, Torrance, CA 90503",
