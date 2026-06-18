@@ -1,6 +1,6 @@
 
 // Community Resources Data
-// Generated from community_resources.json on: 2026-06-17
+// Generated from community_resources.json on: 2026-06-18
 // Total resources: 468
 
 const communityResourcesData = [
@@ -19,8 +19,8 @@ const communityResourcesData = [
     ],
     "description": "Non-profit serving Los Angeles area through advocacy, education, support, and community collaboration",
     "coordinates": {
-      "lat": 33.8461,
-      "lng": -118.3531
+      "lat": 33.836389,
+      "lng": -118.35322
     }
   },
   {
@@ -38,8 +38,8 @@ const communityResourcesData = [
     ],
     "description": "Providing people with autism and developmental disabilities opportunities for lifetime support and assistance",
     "coordinates": {
-      "lat": 37.9358,
-      "lng": -122.3477
+      "lat": 37.988807,
+      "lng": -122.331326
     }
   },
   {
@@ -76,8 +76,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism research and treatment center providing evidence-based interventions",
     "coordinates": {
-      "lat": 34.0689,
-      "lng": -118.4452
+      "lat": 34.068178,
+      "lng": -118.44492
     }
   },
   {
@@ -95,8 +95,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism diagnoses, evaluations and treatments with warm phone line for behavioral issues",
     "coordinates": {
-      "lat": 34.1017,
-      "lng": -118.2917
+      "lat": 34.095607,
+      "lng": -118.29168
     }
   },
   {
@@ -114,8 +114,8 @@ const communityResourcesData = [
     ],
     "description": "Research and clinical center using innovative eye tracking technology for early autism identification",
     "coordinates": {
-      "lat": 32.8573,
-      "lng": -117.2528
+      "lat": 32.854072,
+      "lng": -117.253788
     }
   },
   {
@@ -133,8 +133,8 @@ const communityResourcesData = [
     ],
     "description": "Stanford Medicine's comprehensive autism research and treatment center at Packard Children's Hospital",
     "coordinates": {
-      "lat": 37.4275,
-      "lng": -122.1697
+      "lat": 37.439453,
+      "lng": -122.171088
     }
   },
   {
@@ -152,8 +152,8 @@ const communityResourcesData = [
     ],
     "description": "Non-public school for students with moderate to severe autism, emphasis on non-verbal students",
     "coordinates": {
-      "lat": 37.3236,
-      "lng": -121.9797
+      "lat": 37.329832,
+      "lng": -121.952017
     }
   },
   {
@@ -171,8 +171,8 @@ const communityResourcesData = [
     ],
     "description": "Non-public school serving children and young adults ages 6-22 with autism and developmental disabilities",
     "coordinates": {
-      "lat": 37.9358,
-      "lng": -122.3477
+      "lat": 37.988807,
+      "lng": -122.331326
     }
   },
   {
@@ -209,8 +209,8 @@ const communityResourcesData = [
     ],
     "description": "California state autism resource hub providing information and tools for individuals, families, and professionals",
     "coordinates": {
-      "lat": 38.5767,
-      "lng": -121.4934
+      "lat": 38.57403,
+      "lng": -121.492896
     }
   },
   {
@@ -228,8 +228,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive assessments and treatment for children, adolescents, and adults with autism spectrum disorder",
     "coordinates": {
-      "lat": 34.0689,
-      "lng": -118.4452
+      "lat": 34.068178,
+      "lng": -118.44492
     }
   },
   {
@@ -266,8 +266,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism advocacy organization providing resources, support, and services nationwide",
     "coordinates": {
-      "lat": 40.7452,
-      "lng": -73.9836
+      "lat": 40.747793,
+      "lng": -73.984945
     }
   },
   {
@@ -285,8 +285,8 @@ const communityResourcesData = [
     ],
     "description": "National nonprofit advocacy organization run by and for autistic individuals",
     "coordinates": {
-      "lat": 38.9072,
-      "lng": -77.0369
+      "lat": 38.904619,
+      "lng": -77.034536
     }
   },
   {
@@ -304,8 +304,8 @@ const communityResourcesData = [
     ],
     "description": "National non-profit providing advocacy, education, and support for individuals with autism and families",
     "coordinates": {
-      "lat": 41.7404,
-      "lng": -71.3087
+      "lat": 41.738847,
+      "lng": -71.318573
     }
   },
   {
@@ -323,8 +323,8 @@ const communityResourcesData = [
     ],
     "description": "National organization promoting applied research to help families, educators, and individuals with autism",
     "coordinates": {
-      "lat": 38.8951,
-      "lng": -77.0714
+      "lat": 38.891599,
+      "lng": -77.085028
     }
   },
   {
@@ -342,8 +342,8 @@ const communityResourcesData = [
     ],
     "description": "Non-profit dedicated to conducting research and providing resources for individuals with autism and families",
     "coordinates": {
-      "lat": 32.7631,
-      "lng": -117.1222
+      "lat": 32.763284,
+      "lng": -117.105167
     }
   },
   {
@@ -361,8 +361,8 @@ const communityResourcesData = [
     ],
     "description": "National information and referral center for autism and developmental disabilities support",
     "coordinates": {
-      "lat": 38.901,
-      "lng": -77.0447
+      "lat": 38.900676,
+      "lng": -77.044997
     }
   },
   {
@@ -399,8 +399,8 @@ const communityResourcesData = [
     ],
     "description": "National helpline providing support and resources for autism spectrum disorder and mental health (M-F, 10am-10pm ET)",
     "coordinates": {
-      "lat": 38.9072,
-      "lng": -77.0369
+      "lat": 38.907633,
+      "lng": -77.041831
     }
   },
   {
@@ -418,8 +418,8 @@ const communityResourcesData = [
     ],
     "description": "National crisis line providing 24/7 support for mental health emergencies (call or text 988)",
     "coordinates": {
-      "lat": 38.9072,
-      "lng": -77.0369
+      "lat": 38.910888,
+      "lng": -77.032089
     }
   },
   {
@@ -437,8 +437,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism program providing family-centered diagnosis and management at one of the nation's leading children's hospitals",
     "coordinates": {
-      "lat": 29.7088,
-      "lng": -95.3979
+      "lat": 29.70736,
+      "lng": -95.402668
     }
   },
   {
@@ -456,8 +456,8 @@ const communityResourcesData = [
     ],
     "description": "Expert care for autism and developmental disabilities from specialists across different disciplines",
     "coordinates": {
-      "lat": 32.8098,
-      "lng": -96.8352
+      "lat": 32.808947,
+      "lng": -96.836127
     }
   },
   {
@@ -475,8 +475,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide advocacy organization providing support and resources throughout Texas",
     "coordinates": {
-      "lat": 30.3222,
-      "lng": -97.7189
+      "lat": 30.328617,
+      "lng": -97.711927
     }
   },
   {
@@ -494,8 +494,8 @@ const communityResourcesData = [
     ],
     "description": "Autism diagnostics and therapy services for San Antonio families",
     "coordinates": {
-      "lat": 29.4469,
-      "lng": -98.5275
+      "lat": 29.452486,
+      "lng": -98.548805
     }
   },
   {
@@ -532,8 +532,8 @@ const communityResourcesData = [
     ],
     "description": "One of the largest and oldest local autism organizations in Florida serving hundreds of member families",
     "coordinates": {
-      "lat": 28.5383,
-      "lng": -81.3792
+      "lat": 28.535719,
+      "lng": -81.376836
     }
   },
   {
@@ -570,8 +570,8 @@ const communityResourcesData = [
     ],
     "description": "Collaborative program between NewYork-Presbyterian, Weill Cornell Medicine, and Columbia in partnership with NEXT for AUTISM",
     "coordinates": {
-      "lat": 41.0351,
-      "lng": -73.7629
+      "lat": 41.025678,
+      "lng": -73.757737
     }
   },
   {
@@ -589,8 +589,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism assessment, research, treatment and services center in Chicago",
     "coordinates": {
-      "lat": 41.8773,
-      "lng": -87.669
+      "lat": 41.87754,
+      "lng": -87.66835
     }
   },
   {
@@ -608,8 +608,8 @@ const communityResourcesData = [
     ],
     "description": "Leading children's hospital providing comprehensive autism services and developmental pediatrics",
     "coordinates": {
-      "lat": 41.896,
-      "lng": -87.6231
+      "lat": 41.896694,
+      "lng": -87.622924
     }
   },
   {
@@ -627,8 +627,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism experts providing accurate diagnosis and follow-up care through the Autism Integrated Care Program",
     "coordinates": {
-      "lat": 39.9493,
-      "lng": -75.192
+      "lat": 39.94786,
+      "lng": -75.193775
     }
   },
   {
@@ -646,8 +646,8 @@ const communityResourcesData = [
     ],
     "description": "Research center dedicated to understanding autism and improving lives through innovative research and clinical care",
     "coordinates": {
-      "lat": 39.944,
-      "lng": -75.1867
+      "lat": 39.946042,
+      "lng": -75.185213
     }
   },
   {
@@ -665,8 +665,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism research and resource center serving ages 18 months - 21 years with multiple Phoenix area locations",
     "coordinates": {
-      "lat": 33.4534,
-      "lng": -112.0455
+      "lat": 33.451486,
+      "lng": -112.043443
     }
   },
   {
@@ -684,8 +684,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism center serving Washington, Alaska, Idaho, and Montana with financial assistance available",
     "coordinates": {
-      "lat": 47.6597,
-      "lng": -122.285
+      "lat": 47.664719,
+      "lng": -122.300959
     }
   },
   {
@@ -703,8 +703,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive, family-centered diagnostic and care services with locations in Boston, Brookline, Peabody, and Waltham",
     "coordinates": {
-      "lat": 42.3363,
-      "lng": -71.1045
+      "lat": 42.337942,
+      "lng": -71.105701
     }
   },
   {
@@ -722,8 +722,8 @@ const communityResourcesData = [
     ],
     "description": "One of the largest autism centers in the U.S., treating over 4,500 children annually with latest research and treatments",
     "coordinates": {
-      "lat": 33.8096,
-      "lng": -84.3236
+      "lat": 33.808913,
+      "lng": -84.334471
     }
   },
   {
@@ -741,8 +741,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism services through Developmental Pediatrics Program with 24/7 availability",
     "coordinates": {
-      "lat": 39.7432,
-      "lng": -104.8358
+      "lat": 39.741348,
+      "lng": -104.83691
     }
   },
   {
@@ -779,8 +779,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide advocacy organization providing resources and support for Michigan families",
     "coordinates": {
-      "lat": 42.476,
-      "lng": -83.2315
+      "lat": 42.484368,
+      "lng": -83.270788
     }
   },
   {
@@ -817,8 +817,8 @@ const communityResourcesData = [
     ],
     "description": "TEACCH regional center providing evidence-based services for individuals with autism and their families",
     "coordinates": {
-      "lat": 35.3081,
-      "lng": -80.7369
+      "lat": 35.302285,
+      "lng": -80.75379
     }
   },
   {
@@ -836,8 +836,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide organization providing support, education, and advocacy for North Carolina families",
     "coordinates": {
-      "lat": 35.3081,
-      "lng": -80.7369
+      "lat": 35.301175,
+      "lng": -80.754831
     }
   },
   {
@@ -855,8 +855,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy services with multiple locations in the Minneapolis area including Plymouth, Fridley, and Woodbury",
     "coordinates": {
-      "lat": 45.018,
-      "lng": -93.4558
+      "lat": 45.014084,
+      "lng": -93.461662
     }
   },
   {
@@ -874,8 +874,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism services including intensive behavioral support in the Portland area",
     "coordinates": {
-      "lat": 45.5428,
-      "lng": -122.5355
+      "lat": 45.565159,
+      "lng": -122.533908
     }
   },
   {
@@ -893,8 +893,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism evaluation and testing services at Oregon's leading children's hospital",
     "coordinates": {
-      "lat": 45.4985,
-      "lng": -122.6858
+      "lat": 45.49791,
+      "lng": -122.685851
     }
   },
   {
@@ -912,8 +912,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism research and treatment institute at Vanderbilt offering comprehensive family services",
     "coordinates": {
-      "lat": 36.1403,
-      "lng": -86.8027
+      "lat": 36.142882,
+      "lng": -86.79463
     }
   },
   {
@@ -931,8 +931,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism center providing early screening, diagnosis, and treatment for children across Ohio",
     "coordinates": {
-      "lat": 39.9548,
-      "lng": -82.9988
+      "lat": 39.952232,
+      "lng": -82.979595
     }
   },
   {
@@ -969,8 +969,8 @@ const communityResourcesData = [
     ],
     "description": "Original TEACCH autism program center at UNC offering evidence-based services across North Carolina",
     "coordinates": {
-      "lat": 35.9101,
-      "lng": -79.0753
+      "lat": 35.891789,
+      "lng": -79.080755
     }
   },
   {
@@ -988,8 +988,8 @@ const communityResourcesData = [
     ],
     "description": "Internationally recognized center for autism research and treatment serving children, families and professionals",
     "coordinates": {
-      "lat": 39.3498,
-      "lng": -76.635
+      "lat": 39.335132,
+      "lng": -76.656025
     }
   },
   {
@@ -1007,8 +1007,8 @@ const communityResourcesData = [
     ],
     "description": "University autism clinic providing comprehensive evaluations and support for children ages 1-18",
     "coordinates": {
-      "lat": 44.9731,
-      "lng": -93.2323
+      "lat": 44.97261,
+      "lng": -93.228377
     }
   },
   {
@@ -1045,8 +1045,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy services for children with autism in the Milwaukee area",
     "coordinates": {
-      "lat": 43.0389,
-      "lng": -88.1065
+      "lat": 43.031755,
+      "lng": -88.086826
     }
   },
   {
@@ -1064,8 +1064,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and autism intervention services for children and families in the Milwaukee area",
     "coordinates": {
-      "lat": 43.0167,
-      "lng": -88.0167
+      "lat": 43.021165,
+      "lng": -87.996261
     }
   },
   {
@@ -1083,8 +1083,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center serving Las Vegas and Henderson families",
     "coordinates": {
-      "lat": 36.1447,
-      "lng": -115.2545
+      "lat": 36.143913,
+      "lng": -115.253935
     }
   },
   {
@@ -1121,8 +1121,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive assessment and treatment for autism spectrum disorder and neurodevelopmental disorders from birth to age 18",
     "coordinates": {
-      "lat": 39.7817,
-      "lng": -86.1611
+      "lat": 39.778736,
+      "lng": -86.175025
     }
   },
   {
@@ -1140,8 +1140,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism center serving Missouri families with diagnosis, research, and clinical services",
     "coordinates": {
-      "lat": 38.9517,
-      "lng": -92.3341
+      "lat": 38.953495,
+      "lng": -92.288648
     }
   },
   {
@@ -1159,8 +1159,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide resource center dedicated to improving lives of individuals with autism and their families",
     "coordinates": {
-      "lat": 37.5407,
-      "lng": -77.436
+      "lat": 37.546381,
+      "lng": -77.457751
     }
   },
   {
@@ -1197,8 +1197,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism diagnostic and treatment center at Tulane School of Medicine",
     "coordinates": {
-      "lat": 29.9511,
-      "lng": -90.0715
+      "lat": 29.958128,
+      "lng": -90.077238
     }
   },
   {
@@ -1216,8 +1216,8 @@ const communityResourcesData = [
     ],
     "description": "Internationally recognized center for autism research and clinical services with decades of expertise",
     "coordinates": {
-      "lat": 41.3083,
-      "lng": -72.9279
+      "lat": 41.305687,
+      "lng": -72.931999
     }
   },
   {
@@ -1235,8 +1235,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive developmental and behavioral autism services for children and adolescents",
     "coordinates": {
-      "lat": 32.7876,
-      "lng": -79.9403
+      "lat": 32.785981,
+      "lng": -79.94991
     }
   },
   {
@@ -1254,8 +1254,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism center incorporating diagnostic, therapy, and training services",
     "coordinates": {
-      "lat": 38.2527,
-      "lng": -85.7585
+      "lat": 38.248212,
+      "lng": -85.751762
     }
   },
   {
@@ -1273,8 +1273,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism evaluations for individuals of any age through Huntsman Mental Health Institute",
     "coordinates": {
-      "lat": 40.7649,
-      "lng": -111.8421
+      "lat": 40.717782,
+      "lng": -111.884285
     }
   },
   {
@@ -1292,8 +1292,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism evaluation, education, training and consultation services for New Mexico families",
     "coordinates": {
-      "lat": 35.1107,
-      "lng": -106.61
+      "lat": 35.109144,
+      "lng": -106.617763
     }
   },
   {
@@ -1311,8 +1311,8 @@ const communityResourcesData = [
     ],
     "description": "Academic medical center providing comprehensive autism diagnosis and treatment services",
     "coordinates": {
-      "lat": 41.6574,
-      "lng": -91.5507
+      "lat": 41.663403,
+      "lng": -91.545987
     }
   },
   {
@@ -1330,8 +1330,8 @@ const communityResourcesData = [
     ],
     "description": "Specialized center for autism assessment and coordinating expert clinical services",
     "coordinates": {
-      "lat": 34.7465,
-      "lng": -92.2896
+      "lat": 34.73854,
+      "lng": -92.292834
     }
   },
   {
@@ -1349,8 +1349,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism therapy and diagnostic services for Oklahoma families",
     "coordinates": {
-      "lat": 35.5222,
-      "lng": -97.6154
+      "lat": 35.536875,
+      "lng": -97.587052
     }
   },
   {
@@ -1368,8 +1368,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide network providing autism resources, training, and provider directory",
     "coordinates": {
-      "lat": 35.4876,
-      "lng": -97.5164
+      "lat": 35.480211,
+      "lng": -97.493178
     }
   },
   {
@@ -1387,8 +1387,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide organization providing support, resources, and education for Hawaii families",
     "coordinates": {
-      "lat": 21.292,
-      "lng": -157.7155
+      "lat": 21.302093,
+      "lng": -157.708298
     }
   },
   {
@@ -1406,8 +1406,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy and autism services for Hawaii children and families",
     "coordinates": {
-      "lat": 21.3099,
-      "lng": -157.8581
+      "lat": 21.31736,
+      "lng": -157.859901
     }
   },
   {
@@ -1425,8 +1425,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism assessment and diagnosis services at University of Kansas Health System",
     "coordinates": {
-      "lat": 39.0515,
-      "lng": -94.6087
+      "lat": 39.057324,
+      "lng": -94.611683
     }
   },
   {
@@ -1482,8 +1482,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive services for individuals with autism and developmental disabilities",
     "coordinates": {
-      "lat": 41.2061,
-      "lng": -96.0967
+      "lat": 41.205387,
+      "lng": -96.052598
     }
   },
   {
@@ -1501,8 +1501,8 @@ const communityResourcesData = [
     ],
     "description": "University medical center providing autism diagnosis and developmental services",
     "coordinates": {
-      "lat": 32.3317,
-      "lng": -90.1848
+      "lat": 32.328769,
+      "lng": -90.175559
     }
   },
   {
@@ -1539,8 +1539,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy services with multiple service settings in Boise area",
     "coordinates": {
-      "lat": 43.615,
-      "lng": -116.3655
+      "lat": 43.641934,
+      "lng": -116.3559
     }
   },
   {
@@ -1558,8 +1558,8 @@ const communityResourcesData = [
     ],
     "description": "Psychiatry center providing autism evaluation and mental health services",
     "coordinates": {
-      "lat": 45.7833,
-      "lng": -108.5492
+      "lat": 45.760111,
+      "lng": -108.576047
     }
   },
   {
@@ -1577,8 +1577,8 @@ const communityResourcesData = [
     ],
     "description": "Support group for families affected by autism and individuals on the spectrum",
     "coordinates": {
-      "lat": 42.8501,
-      "lng": -106.3252
+      "lat": 42.853154,
+      "lng": -106.315224
     }
   },
   {
@@ -1596,8 +1596,8 @@ const communityResourcesData = [
     ],
     "description": "Medical center providing developmental and autism services for Alaska Native families",
     "coordinates": {
-      "lat": 61.1919,
-      "lng": -149.8583
+      "lat": 61.181996,
+      "lng": -149.799619
     }
   },
   {
@@ -1615,8 +1615,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive services for children and adults with disabilities including autism",
     "coordinates": {
-      "lat": 64.8378,
-      "lng": -147.7164
+      "lat": 64.838835,
+      "lng": -147.725923
     }
   },
   {
@@ -1634,8 +1634,8 @@ const communityResourcesData = [
     ],
     "description": "Hospital-based autism program affiliated with Brown University Medical School",
     "coordinates": {
-      "lat": 41.774,
-      "lng": -71.3706
+      "lat": 41.7922,
+      "lng": -71.365828
     }
   },
   {
@@ -1653,8 +1653,8 @@ const communityResourcesData = [
     ],
     "description": "Multi-disciplinary autism therapy center providing comprehensive services",
     "coordinates": {
-      "lat": 44.4669,
-      "lng": -73.1709
+      "lat": 44.454245,
+      "lng": -73.145301
     }
   },
   {
@@ -1710,8 +1710,8 @@ const communityResourcesData = [
     ],
     "description": "Center of excellence providing expert care for autism and developmental disorders",
     "coordinates": {
-      "lat": 43.6398,
-      "lng": -70.2953
+      "lat": 43.638401,
+      "lng": -70.358124
     }
   },
   {
@@ -1729,8 +1729,8 @@ const communityResourcesData = [
     ],
     "description": "Center-based early intervention autism therapy in Bangor and Augusta",
     "coordinates": {
-      "lat": 44.8016,
-      "lng": -68.7778
+      "lat": 44.816454,
+      "lng": -68.817511
     }
   },
   {
@@ -1748,8 +1748,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide advocacy organization providing support and resources for Delaware families",
     "coordinates": {
-      "lat": 39.6837,
-      "lng": -75.7497
+      "lat": 39.689565,
+      "lng": -75.684501
     }
   },
   {
@@ -1767,8 +1767,8 @@ const communityResourcesData = [
     ],
     "description": "University-based autism diagnostic and consultation services for South Dakota families",
     "coordinates": {
-      "lat": 43.5446,
-      "lng": -96.7311
+      "lat": 43.533095,
+      "lng": -96.742516
     }
   },
   {
@@ -1805,8 +1805,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism services including intensive behavioral support in San Jose",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.309139,
+      "lng": -121.899734
     }
   },
   {
@@ -1824,8 +1824,8 @@ const communityResourcesData = [
     ],
     "description": "Pediatric specialty care including autism and developmental services",
     "coordinates": {
-      "lat": 30.11,
-      "lng": -81.5464
+      "lat": 30.141444,
+      "lng": -81.520828
     }
   },
   {
@@ -1843,8 +1843,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism center providing diagnostic and treatment services for all ages",
     "coordinates": {
-      "lat": 40.0928,
-      "lng": -82.9358
+      "lat": 40.109946,
+      "lng": -82.931197
     }
   },
   {
@@ -1862,8 +1862,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism assessment and treatment at Dell Children's Medical Center",
     "coordinates": {
-      "lat": 30.2969,
-      "lng": -97.7202
+      "lat": 30.301282,
+      "lng": -97.705834
     }
   },
   {
@@ -1881,8 +1881,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism diagnostic and treatment center improving outcomes for children with ASD",
     "coordinates": {
-      "lat": 39.1434,
-      "lng": -84.5007
+      "lat": 39.141244,
+      "lng": -84.500436
     }
   },
   {
@@ -1900,8 +1900,8 @@ const communityResourcesData = [
     ],
     "description": "National model providing comprehensive clinical, educational, and medical supports for autism",
     "coordinates": {
-      "lat": 33.798,
-      "lng": -84.3244
+      "lat": 33.796304,
+      "lng": -84.321695
     }
   },
   {
@@ -1995,8 +1995,8 @@ const communityResourcesData = [
     ],
     "description": "First telehealth provider focused exclusively on autistic and neurodivergent adults",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.825719,
+      "lng": -98.577136
     }
   },
   {
@@ -2014,8 +2014,8 @@ const communityResourcesData = [
     ],
     "description": "Nonprofit providing job training and employment opportunities to autistic individuals",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.828733,
+      "lng": -98.584431
     }
   },
   {
@@ -2090,8 +2090,8 @@ const communityResourcesData = [
     ],
     "description": "Transition program building independence for high school graduates and young adults with autism",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.831988,
+      "lng": -98.574689
     }
   },
   {
@@ -2109,8 +2109,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive transitional program helping young adults achieve healthy independent living",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.821407,
+      "lng": -98.580719
     }
   },
   {
@@ -2147,8 +2147,8 @@ const communityResourcesData = [
     ],
     "description": "Academic medical center providing autism evaluation and treatment services",
     "coordinates": {
-      "lat": 43.0389,
-      "lng": -88.0084
+      "lat": 43.045772,
+      "lng": -88.020451
     }
   },
   {
@@ -2166,8 +2166,8 @@ const communityResourcesData = [
     ],
     "description": "Internationally recognized autism center providing multidisciplinary services to children and families",
     "coordinates": {
-      "lat": 39.3498,
-      "lng": -76.6352
+      "lat": 39.335132,
+      "lng": -76.656025
     }
   },
   {
@@ -2185,8 +2185,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism institute with multiple locations across Southern California",
     "coordinates": {
-      "lat": 32.8142,
-      "lng": -117.1405
+      "lat": 32.809781,
+      "lng": -117.151019
     }
   },
   {
@@ -2204,8 +2204,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism center serving children, adolescents, and adults with ASD",
     "coordinates": {
-      "lat": 40.4406,
-      "lng": -79.9584
+      "lat": 40.443267,
+      "lng": -79.959844
     }
   },
   {
@@ -2223,8 +2223,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism research and clinical center at Duke University Medical Center",
     "coordinates": {
-      "lat": 36.0097,
-      "lng": -78.9403
+      "lat": 36.008737,
+      "lng": -78.944358
     }
   },
   {
@@ -2242,8 +2242,8 @@ const communityResourcesData = [
     ],
     "description": "University center specializing in autism assessment and developmental disabilities",
     "coordinates": {
-      "lat": 35.1495,
-      "lng": -90.049
+      "lat": 35.140334,
+      "lng": -90.030428
     }
   },
   {
@@ -2261,8 +2261,8 @@ const communityResourcesData = [
     ],
     "description": "Children's Guild Foundation autism center providing comprehensive diagnostic and treatment services",
     "coordinates": {
-      "lat": 42.8864,
-      "lng": -78.8784
+      "lat": 42.900416,
+      "lng": -78.869495
     }
   },
   {
@@ -2280,8 +2280,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism center at University of Rochester providing comprehensive services",
     "coordinates": {
-      "lat": 43.1566,
-      "lng": -77.6088
+      "lat": 43.11175,
+      "lng": -77.624
     }
   },
   {
@@ -2299,8 +2299,8 @@ const communityResourcesData = [
     ],
     "description": "World-renowned research institute dedicated to autism and neurodevelopmental disorders",
     "coordinates": {
-      "lat": 38.5477,
-      "lng": -121.4557
+      "lat": 38.550232,
+      "lng": -121.447846
     }
   },
   {
@@ -2318,8 +2318,8 @@ const communityResourcesData = [
     ],
     "description": "Child Study Center providing autism treatment and developmental disability services",
     "coordinates": {
-      "lat": 32.7357,
-      "lng": -97.3446
+      "lat": 32.738426,
+      "lng": -97.341899
     }
   },
   {
@@ -2375,8 +2375,8 @@ const communityResourcesData = [
     ],
     "description": "Developmental clinic assessing children's development and identifying behavioral challenges",
     "coordinates": {
-      "lat": 33.3943,
-      "lng": -111.8731
+      "lat": 33.388856,
+      "lng": -111.874727
     }
   },
   {
@@ -2394,8 +2394,8 @@ const communityResourcesData = [
     ],
     "description": "Local chapter providing support and resources for El Paso autism community",
     "coordinates": {
-      "lat": 31.7619,
-      "lng": -106.485
+      "lat": 31.741633,
+      "lng": -106.36708
     }
   },
   {
@@ -2413,8 +2413,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism educational and behavioral services in El Paso",
     "coordinates": {
-      "lat": 31.7971,
-      "lng": -106.5731
+      "lat": 31.819721,
+      "lng": -106.54393
     }
   },
   {
@@ -2432,8 +2432,8 @@ const communityResourcesData = [
     ],
     "description": "Autism center with multiple Fresno locations providing comprehensive ABA services",
     "coordinates": {
-      "lat": 36.8539,
-      "lng": -119.7871
+      "lat": 36.837759,
+      "lng": -119.808222
     }
   },
   {
@@ -2470,8 +2470,8 @@ const communityResourcesData = [
     ],
     "description": "Autism services with multiple Colorado Springs locations providing ABA and diagnostic services",
     "coordinates": {
-      "lat": 38.8339,
-      "lng": -104.8214
+      "lat": 38.793996,
+      "lng": -104.812083
     }
   },
   {
@@ -2546,8 +2546,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism society providing support and resources for Western New York families",
     "coordinates": {
-      "lat": 42.9645,
-      "lng": -78.7375
+      "lat": 42.965199,
+      "lng": -78.71198
     }
   },
   {
@@ -2584,8 +2584,8 @@ const communityResourcesData = [
     ],
     "description": "University medical center autism clinic providing comprehensive diagnostic services",
     "coordinates": {
-      "lat": 43.1566,
-      "lng": -77.6088
+      "lat": 43.11175,
+      "lng": -77.624
     }
   },
   {
@@ -2603,8 +2603,8 @@ const communityResourcesData = [
     ],
     "description": "UNC TEACCH regional center providing evidence-based autism services",
     "coordinates": {
-      "lat": 35.7796,
-      "lng": -78.6382
+      "lat": 35.302285,
+      "lng": -80.75379
     }
   },
   {
@@ -2622,8 +2622,8 @@ const communityResourcesData = [
     ],
     "description": "Children's hospital providing comprehensive services for children with special needs including autism",
     "coordinates": {
-      "lat": 35.1495,
-      "lng": -90.049
+      "lat": 35.143636,
+      "lng": -90.033094
     }
   },
   {
@@ -2641,8 +2641,8 @@ const communityResourcesData = [
     ],
     "description": "National ABA therapy provider with centers across multiple states offering in-person and virtual services",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.834903,
+      "lng": -98.583701
     }
   },
   {
@@ -2660,8 +2660,8 @@ const communityResourcesData = [
     ],
     "description": "National autism therapy provider with centers in multiple states offering comprehensive services",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.826074,
+      "lng": -98.571221
     }
   },
   {
@@ -2679,8 +2679,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy provider with multiple Fresno locations specializing in autism behavioral services",
     "coordinates": {
-      "lat": 36.7378,
-      "lng": -119.7871
+      "lat": 36.742824,
+      "lng": -119.782488
     }
   },
   {
@@ -2717,8 +2717,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and autism services serving Fairbanks and Alaska communities",
     "coordinates": {
-      "lat": 64.8378,
-      "lng": -147.7164
+      "lat": 64.837739,
+      "lng": -147.80825
     }
   },
   {
@@ -2736,8 +2736,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral health center providing autism services in Anchorage",
     "coordinates": {
-      "lat": 61.2181,
-      "lng": -149.9003
+      "lat": 61.213682,
+      "lng": -149.883167
     }
   },
   {
@@ -2774,8 +2774,8 @@ const communityResourcesData = [
     ],
     "description": "Premier ABA therapy for preschool children with multiple Des Moines area locations",
     "coordinates": {
-      "lat": 41.5868,
-      "lng": -93.625
+      "lat": 41.627635,
+      "lng": -93.619334
     }
   },
   {
@@ -2793,8 +2793,8 @@ const communityResourcesData = [
     ],
     "description": "Child development center providing comprehensive autism evaluations and services",
     "coordinates": {
-      "lat": 41.5868,
-      "lng": -93.625
+      "lat": 41.590703,
+      "lng": -93.632378
     }
   },
   {
@@ -2831,8 +2831,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive disability services including autism support and therapy programs",
     "coordinates": {
-      "lat": 43.546,
-      "lng": -96.7313
+      "lat": 43.529364,
+      "lng": -96.756117
     }
   },
   {
@@ -2888,8 +2888,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive speech, language, and autism services for children in Buffalo area",
     "coordinates": {
-      "lat": 42.8864,
-      "lng": -78.8784
+      "lat": 42.902257,
+      "lng": -78.867802
     }
   },
   {
@@ -2907,8 +2907,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism services provider serving Western New York communities",
     "coordinates": {
-      "lat": 42.8864,
-      "lng": -78.8784
+      "lat": 42.883819,
+      "lng": -78.876036
     }
   },
   {
@@ -2945,8 +2945,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive residential and transition programs for adults with autism and learning differences",
     "coordinates": {
-      "lat": 41.3083,
-      "lng": -72.9623
+      "lat": 41.328667,
+      "lng": -72.964284
     }
   },
   {
@@ -2964,8 +2964,8 @@ const communityResourcesData = [
     ],
     "description": "National foundation expanding housing choice and opportunity for autistic adults across the country",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.824032,
+      "lng": -98.587718
     }
   },
   {
@@ -2983,8 +2983,8 @@ const communityResourcesData = [
     ],
     "description": "Autism specialist providing comprehensive pediatric psychology services in Peachtree Corners",
     "coordinates": {
-      "lat": 33.9698,
-      "lng": -84.2214
+      "lat": 33.967582,
+      "lng": -84.255026
     }
   },
   {
@@ -3040,8 +3040,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral pediatrics practice specializing in autism and developmental disorders",
     "coordinates": {
-      "lat": 32.0809,
-      "lng": -81.0912
+      "lat": 32.00872,
+      "lng": -81.109064
     }
   },
   {
@@ -3059,8 +3059,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism therapy center serving Shreveport and surrounding areas",
     "coordinates": {
-      "lat": 32.5252,
-      "lng": -93.7502
+      "lat": 32.435038,
+      "lng": -93.727584
     }
   },
   {
@@ -3078,8 +3078,8 @@ const communityResourcesData = [
     ],
     "description": "Pediatric center specializing in autism therapy and developmental services",
     "coordinates": {
-      "lat": 32.5252,
-      "lng": -93.7502
+      "lat": 32.492742,
+      "lng": -93.742814
     }
   },
   {
@@ -3097,8 +3097,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral specialists providing autism therapy and support services",
     "coordinates": {
-      "lat": 32.5252,
-      "lng": -93.7502
+      "lat": 32.49262,
+      "lng": -93.75
     }
   },
   {
@@ -3135,8 +3135,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide advocacy organization providing support and resources for Louisiana families",
     "coordinates": {
-      "lat": 30.4515,
-      "lng": -91.1871
+      "lat": 30.458325,
+      "lng": -91.043227
     }
   },
   {
@@ -3154,8 +3154,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism society serving Lafayette and Acadiana region",
     "coordinates": {
-      "lat": 30.2241,
-      "lng": -92.0198
+      "lat": 30.170625,
+      "lng": -91.999643
     }
   },
   {
@@ -3173,8 +3173,8 @@ const communityResourcesData = [
     ],
     "description": "Nonprofit serving autistic individuals of all ages with services and community education",
     "coordinates": {
-      "lat": 35.0456,
-      "lng": -85.2672
+      "lat": 35.038349,
+      "lng": -85.281444
     }
   },
   {
@@ -3192,8 +3192,8 @@ const communityResourcesData = [
     ],
     "description": "Children's institute providing developmental pediatrics and autism services",
     "coordinates": {
-      "lat": 35.0456,
-      "lng": -85.2672
+      "lat": 35.043975,
+      "lng": -85.312645
     }
   },
   {
@@ -3211,8 +3211,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism center providing ABA, speech therapy, OT, and counseling services",
     "coordinates": {
-      "lat": 35.9606,
-      "lng": -84.1079
+      "lat": 35.979566,
+      "lng": -84.106364
     }
   },
   {
@@ -3230,8 +3230,8 @@ const communityResourcesData = [
     ],
     "description": "University center providing speech-language and autism spectrum disorder services",
     "coordinates": {
-      "lat": 35.9606,
-      "lng": -83.9207
+      "lat": 35.962535,
+      "lng": -83.921963
     }
   },
   {
@@ -3249,8 +3249,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide advocacy organization supporting South Carolina autism community",
     "coordinates": {
-      "lat": 34.0007,
-      "lng": -81.0348
+      "lat": 33.983341,
+      "lng": -81.070966
     }
   },
   {
@@ -3268,8 +3268,8 @@ const communityResourcesData = [
     ],
     "description": "University of South Carolina psychology center providing autism assessment services",
     "coordinates": {
-      "lat": 34.0007,
-      "lng": -81.0348
+      "lat": 34.014247,
+      "lng": -81.036231
     }
   },
   {
@@ -3287,8 +3287,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide parent-to-parent support network for families of children with disabilities",
     "coordinates": {
-      "lat": 34.0007,
-      "lng": -81.0348
+      "lat": 34.018209,
+      "lng": -81.00153
     }
   },
   {
@@ -3325,8 +3325,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy and autism treatment center in Fayetteville",
     "coordinates": {
-      "lat": 36.0822,
-      "lng": -94.1719
+      "lat": 36.108806,
+      "lng": -94.145256
     }
   },
   {
@@ -3363,8 +3363,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy and autism treatment center in Fort Smith",
     "coordinates": {
-      "lat": 35.3859,
-      "lng": -94.3985
+      "lat": 35.364205,
+      "lng": -94.369351
     }
   },
   {
@@ -3382,8 +3382,8 @@ const communityResourcesData = [
     ],
     "description": "Pediatric therapy center providing ABA and comprehensive autism services",
     "coordinates": {
-      "lat": 35.4368,
-      "lng": -94.3477
+      "lat": 35.449932,
+      "lng": -94.356333
     }
   },
   {
@@ -3420,8 +3420,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center with multiple Madison area locations providing comprehensive autism services",
     "coordinates": {
-      "lat": 43.0731,
-      "lng": -89.4012
+      "lat": 43.070519,
+      "lng": -89.398836
     }
   },
   {
@@ -3458,8 +3458,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism therapy services in the Twin Cities metropolitan area",
     "coordinates": {
-      "lat": 44.9778,
-      "lng": -93.265
+      "lat": 44.975219,
+      "lng": -93.262636
     }
   },
   {
@@ -3477,8 +3477,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism society providing support and advocacy for Greater Akron area",
     "coordinates": {
-      "lat": 41.0814,
-      "lng": -81.519
+      "lat": 41.06786,
+      "lng": -81.518091
     }
   },
   {
@@ -3496,8 +3496,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism society serving Dayton and surrounding communities",
     "coordinates": {
-      "lat": 39.7589,
-      "lng": -84.1916
+      "lat": 39.780917,
+      "lng": -84.128423
     }
   },
   {
@@ -3534,8 +3534,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism society serving Northwest Ohio communities",
     "coordinates": {
-      "lat": 41.6528,
-      "lng": -83.5379
+      "lat": 41.67517,
+      "lng": -83.713864
     }
   },
   {
@@ -3553,8 +3553,8 @@ const communityResourcesData = [
     ],
     "description": "Children's hospital autism center providing comprehensive diagnostic and treatment services",
     "coordinates": {
-      "lat": 41.6528,
-      "lng": -83.5379
+      "lat": 41.576413,
+      "lng": -83.693868
     }
   },
   {
@@ -3591,8 +3591,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism society serving Northwestern Pennsylvania",
     "coordinates": {
-      "lat": 42.1292,
-      "lng": -80.0851
+      "lat": 42.106201,
+      "lng": -80.069952
     }
   },
   {
@@ -3629,8 +3629,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide advocacy organization for autism and intellectual disabilities",
     "coordinates": {
-      "lat": 40.2732,
-      "lng": -76.8867
+      "lat": 40.301282,
+      "lng": -76.903312
     }
   },
   {
@@ -3667,8 +3667,8 @@ const communityResourcesData = [
     ],
     "description": "University-based autism center providing comprehensive care for children with ASD",
     "coordinates": {
-      "lat": 40.7357,
-      "lng": -74.1724
+      "lat": 40.738847,
+      "lng": -74.19108
     }
   },
   {
@@ -3686,8 +3686,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide autism advocacy organization serving New Jersey families",
     "coordinates": {
-      "lat": 40.2206,
-      "lng": -74.6297
+      "lat": 40.199529,
+      "lng": -74.643043
     }
   },
   {
@@ -3705,8 +3705,8 @@ const communityResourcesData = [
     ],
     "description": "Family support organization providing autism resources and services statewide",
     "coordinates": {
-      "lat": 40.2206,
-      "lng": -74.5586
+      "lat": 40.20667,
+      "lng": -74.630175
     }
   },
   {
@@ -3724,8 +3724,8 @@ const communityResourcesData = [
     ],
     "description": "Maryland's largest autism organization providing comprehensive family support and resources",
     "coordinates": {
-      "lat": 39.0458,
-      "lng": -76.6413
+      "lat": 39.043219,
+      "lng": -76.638936
     }
   },
   {
@@ -3743,8 +3743,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy provider with Annapolis location serving Maryland families",
     "coordinates": {
-      "lat": 38.9784,
-      "lng": -76.4922
+      "lat": 38.98015,
+      "lng": -76.525215
     }
   },
   {
@@ -3762,8 +3762,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and autism testing center serving Frederick and surrounding areas",
     "coordinates": {
-      "lat": 39.4143,
-      "lng": -77.4105
+      "lat": 39.396045,
+      "lng": -77.431276
     }
   },
   {
@@ -3800,8 +3800,8 @@ const communityResourcesData = [
     ],
     "description": "Largest pediatric autism program in Washington DC region providing comprehensive services",
     "coordinates": {
-      "lat": 38.9072,
-      "lng": -77.0369
+      "lat": 38.900307,
+      "lng": -77.038119
     }
   },
   {
@@ -3838,8 +3838,8 @@ const communityResourcesData = [
     ],
     "description": "Full-time center-based ABA therapy for young children with 100% insurance coverage",
     "coordinates": {
-      "lat": 38.8816,
-      "lng": -77.2253
+      "lat": 38.880509,
+      "lng": -77.23532
     }
   },
   {
@@ -3857,8 +3857,8 @@ const communityResourcesData = [
     ],
     "description": "Virtual autism diagnostic evaluations for kids with no waitlist, accepting insurance nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.837599,
+      "lng": -98.576104
     }
   },
   {
@@ -3876,8 +3876,8 @@ const communityResourcesData = [
     ],
     "description": "Virtual adult-focused autism assessment from neurodivergent clinicians, nationwide availability",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.818594,
+      "lng": -98.575494
     }
   },
   {
@@ -3895,8 +3895,8 @@ const communityResourcesData = [
     ],
     "description": "Affordable virtual autism evaluations across 11 states for all ages including adults",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.832991,
+      "lng": -98.589525
     }
   },
   {
@@ -3914,8 +3914,8 @@ const communityResourcesData = [
     ],
     "description": "Nationwide telehealth autism evaluations across 32 states with comprehensive service options",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.831774,
+      "lng": -98.568424
     }
   },
   {
@@ -3952,8 +3952,8 @@ const communityResourcesData = [
     ],
     "description": "Rutgers medical school autism center providing comprehensive clinical and diagnostic services",
     "coordinates": {
-      "lat": 40.7435,
-      "lng": -74.1869
+      "lat": 40.738847,
+      "lng": -74.19108
     }
   },
   {
@@ -3990,8 +3990,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy and autism treatment services in Savannah",
     "coordinates": {
-      "lat": 32.0809,
-      "lng": -81.0912
+      "lat": 32.022781,
+      "lng": -81.112814
     }
   },
   {
@@ -4028,8 +4028,8 @@ const communityResourcesData = [
     ],
     "description": "Multi-disciplinary autism therapy center providing ABA, OT, speech, and feeding therapy",
     "coordinates": {
-      "lat": 32.0287,
-      "lng": -81.1562
+      "lat": 32.052084,
+      "lng": -81.164601
     }
   },
   {
@@ -4047,8 +4047,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and autism services serving the Augusta and Martinez Georgia area",
     "coordinates": {
-      "lat": 33.5165,
-      "lng": -82.0857
+      "lat": 33.509766,
+      "lng": -82.081709
     }
   },
   {
@@ -4066,8 +4066,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral pediatrics practice specializing in autism evaluation and treatment",
     "coordinates": {
-      "lat": 32.0809,
-      "lng": -81.0912
+      "lat": 32.00872,
+      "lng": -81.109064
     }
   },
   {
@@ -4085,8 +4085,8 @@ const communityResourcesData = [
     ],
     "description": "UNC TEACCH regional center providing evidence-based autism services in Greensboro",
     "coordinates": {
-      "lat": 36.0726,
-      "lng": -79.8164
+      "lat": 36.099808,
+      "lng": -79.778789
     }
   },
   {
@@ -4142,8 +4142,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center serving children with autism in the Greenville area",
     "coordinates": {
-      "lat": 34.8526,
-      "lng": -82.394
+      "lat": 34.850019,
+      "lng": -82.391636
     }
   },
   {
@@ -4161,8 +4161,8 @@ const communityResourcesData = [
     ],
     "description": "Autism diagnosis and ABA therapy services in Greenville",
     "coordinates": {
-      "lat": 34.8526,
-      "lng": -82.394
+      "lat": 34.850689,
+      "lng": -82.39251
     }
   },
   {
@@ -4180,8 +4180,8 @@ const communityResourcesData = [
     ],
     "description": "Developmental pediatrics program with autism specialty services",
     "coordinates": {
-      "lat": 34.8526,
-      "lng": -82.394
+      "lat": 34.853033,
+      "lng": -82.398931
     }
   },
   {
@@ -4199,8 +4199,8 @@ const communityResourcesData = [
     ],
     "description": "University-based autism diagnostic clinic providing comprehensive assessments",
     "coordinates": {
-      "lat": 34.0007,
-      "lng": -81.0348
+      "lat": 34.014247,
+      "lng": -81.036231
     }
   },
   {
@@ -4218,8 +4218,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide autism advocacy organization providing support and resources",
     "coordinates": {
-      "lat": 33.9937,
-      "lng": -81.074
+      "lat": 33.983341,
+      "lng": -81.070966
     }
   },
   {
@@ -4256,8 +4256,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism therapy center providing diagnostic and treatment services",
     "coordinates": {
-      "lat": 38.0406,
-      "lng": -84.5037
+      "lat": 38.029188,
+      "lng": -84.452703
     }
   },
   {
@@ -4275,8 +4275,8 @@ const communityResourcesData = [
     ],
     "description": "Local autism society providing support and advocacy for Lexington area families",
     "coordinates": {
-      "lat": 38.0406,
-      "lng": -84.5037
+      "lat": 38.038019,
+      "lng": -84.501336
     }
   },
   {
@@ -4294,8 +4294,8 @@ const communityResourcesData = [
     ],
     "description": "Autism clinic providing diagnostic and support services in Huntsville",
     "coordinates": {
-      "lat": 34.7304,
-      "lng": -86.5861
+      "lat": 34.752371,
+      "lng": -86.588453
     }
   },
   {
@@ -4313,8 +4313,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive services for children and adults with autism and developmental disabilities",
     "coordinates": {
-      "lat": 33.5207,
-      "lng": -86.8025
+      "lat": 33.518263,
+      "lng": -86.775715
     }
   },
   {
@@ -4332,8 +4332,8 @@ const communityResourcesData = [
     ],
     "description": "Early intervention ABA therapy services for children with autism in Birmingham area",
     "coordinates": {
-      "lat": 33.4484,
-      "lng": -86.7872
+      "lat": 33.418735,
+      "lng": -86.799327
     }
   },
   {
@@ -4370,8 +4370,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral specialists providing ABA therapy and consultation services",
     "coordinates": {
-      "lat": 32.5252,
-      "lng": -93.7502
+      "lat": 32.49262,
+      "lng": -93.75
     }
   },
   {
@@ -4389,8 +4389,8 @@ const communityResourcesData = [
     ],
     "description": "University-based children's center providing autism support and educational programs",
     "coordinates": {
-      "lat": 32.5252,
-      "lng": -93.7502
+      "lat": 32.478126,
+      "lng": -93.759388
     }
   },
   {
@@ -4408,8 +4408,8 @@ const communityResourcesData = [
     ],
     "description": "Autism center with offices in Baton Rouge and Prairieville",
     "coordinates": {
-      "lat": 30.4515,
-      "lng": -91.1871
+      "lat": 30.448919,
+      "lng": -91.184736
     }
   },
   {
@@ -4427,8 +4427,8 @@ const communityResourcesData = [
     ],
     "description": "University psychological services center providing autism assessments and services",
     "coordinates": {
-      "lat": 30.4515,
-      "lng": -91.1871
+      "lat": 30.451933,
+      "lng": -91.192031
     }
   },
   {
@@ -4465,8 +4465,8 @@ const communityResourcesData = [
     ],
     "description": "Resource center providing training and support for families with children diagnosed with autism",
     "coordinates": {
-      "lat": 36.0679,
-      "lng": -94.1574
+      "lat": 36.065319,
+      "lng": -94.155036
     }
   },
   {
@@ -4484,8 +4484,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center providing autism treatment in Fayetteville",
     "coordinates": {
-      "lat": 36.0679,
-      "lng": -94.1574
+      "lat": 36.068333,
+      "lng": -94.162331
     }
   },
   {
@@ -4503,8 +4503,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism resource center providing support and services for Central Massachusetts",
     "coordinates": {
-      "lat": 42.2626,
-      "lng": -71.8023
+      "lat": 42.299523,
+      "lng": -71.762358
     }
   },
   {
@@ -4541,8 +4541,8 @@ const communityResourcesData = [
     ],
     "description": "Autism resource center serving Western Massachusetts families",
     "coordinates": {
-      "lat": 42.1015,
-      "lng": -72.5898
+      "lat": 42.147712,
+      "lng": -72.525905
     }
   },
   {
@@ -4560,8 +4560,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and autism services in Springfield",
     "coordinates": {
-      "lat": 42.1015,
-      "lng": -72.5898
+      "lat": 42.09768,
+      "lng": -72.584159
     }
   },
   {
@@ -4655,8 +4655,8 @@ const communityResourcesData = [
     ],
     "description": "Center for Autism and Related Disabilities providing support and resources in Tampa region",
     "coordinates": {
-      "lat": 28.0587,
-      "lng": -82.4132
+      "lat": 28.067423,
+      "lng": -82.42602
     }
   },
   {
@@ -4693,8 +4693,8 @@ const communityResourcesData = [
     ],
     "description": "University of Miami CARD center serving South Florida region",
     "coordinates": {
-      "lat": 25.7617,
-      "lng": -80.1918
+      "lat": 25.711702,
+      "lng": -80.281401
     }
   },
   {
@@ -4712,8 +4712,8 @@ const communityResourcesData = [
     ],
     "description": "CARD center providing autism support and resources for Northeast Florida",
     "coordinates": {
-      "lat": 30.224,
-      "lng": -81.6018
+      "lat": 30.260748,
+      "lng": -81.645425
     }
   },
   {
@@ -4731,8 +4731,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism resource center providing support and programs for Virginia Beach families",
     "coordinates": {
-      "lat": 36.8529,
-      "lng": -76.0852
+      "lat": 36.840879,
+      "lng": -76.093562
     }
   },
   {
@@ -4750,8 +4750,8 @@ const communityResourcesData = [
     ],
     "description": "Autism therapy center providing comprehensive ABA and behavioral services",
     "coordinates": {
-      "lat": 36.8529,
-      "lng": -76.0852
+      "lat": 36.848012,
+      "lng": -76.127422
     }
   },
   {
@@ -4769,8 +4769,8 @@ const communityResourcesData = [
     ],
     "description": "Regional autism society providing advocacy and support for Tidewater Virginia families",
     "coordinates": {
-      "lat": 36.8529,
-      "lng": -76.0852
+      "lat": 36.840879,
+      "lng": -76.093562
     }
   },
   {
@@ -4788,8 +4788,8 @@ const communityResourcesData = [
     ],
     "description": "University of Tennessee program providing center and home-based autism services",
     "coordinates": {
-      "lat": 35.9606,
-      "lng": -83.9207
+      "lat": 35.962535,
+      "lng": -83.921963
     }
   },
   {
@@ -4826,8 +4826,8 @@ const communityResourcesData = [
     ],
     "description": "Autism diagnostic services available in Chattanooga and Nashville locations",
     "coordinates": {
-      "lat": 35.0456,
-      "lng": -85.3097
+      "lat": 35.043019,
+      "lng": -85.307336
     }
   },
   {
@@ -4864,8 +4864,8 @@ const communityResourcesData = [
     ],
     "description": "National respite network helping families find respite care services in their community",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.81781,
+      "lng": -98.585579
     }
   },
   {
@@ -4883,8 +4883,8 @@ const communityResourcesData = [
     ],
     "description": "Crisis respite and transitional housing program for autism community emergencies",
     "coordinates": {
-      "lat": 40.7128,
-      "lng": -74.006
+      "lat": 40.710219,
+      "lng": -74.003636
     }
   },
   {
@@ -4921,8 +4921,8 @@ const communityResourcesData = [
     ],
     "description": "Empowers the autistic community through autism-affirming support and resources",
     "coordinates": {
-      "lat": 37.7749,
-      "lng": -122.4194
+      "lat": 37.775333,
+      "lng": -122.424331
     }
   },
   {
@@ -4978,8 +4978,8 @@ const communityResourcesData = [
     ],
     "description": "Provides insight into young minds through comprehensive psychological evaluations and autism assessments",
     "coordinates": {
-      "lat": 45.5152,
-      "lng": -122.6784
+      "lat": 45.512619,
+      "lng": -122.676036
     }
   },
   {
@@ -4998,8 +4998,8 @@ const communityResourcesData = [
     ],
     "description": "Leading research and treatment center for autism, fragile X, Down syndrome and other neurodevelopmental conditions",
     "coordinates": {
-      "lat": 38.5516,
-      "lng": -121.4944
+      "lat": 38.550232,
+      "lng": -121.447846
     }
   },
   {
@@ -5017,8 +5017,8 @@ const communityResourcesData = [
     ],
     "description": "Integrated clinical center and research lab supporting toddlers through young adults with autism spectrum disorder",
     "coordinates": {
-      "lat": 37.7749,
-      "lng": -122.4194
+      "lat": 37.778588,
+      "lng": -122.414589
     }
   },
   {
@@ -5092,8 +5092,8 @@ const communityResourcesData = [
     ],
     "description": "University of Washington Autism Center serving South Sound families since 2004 with ABA-based therapy",
     "coordinates": {
-      "lat": 47.2529,
-      "lng": -122.4443
+      "lat": 47.250319,
+      "lng": -122.441936
     }
   },
   {
@@ -5110,8 +5110,8 @@ const communityResourcesData = [
     ],
     "description": "Applied Behavior Analysis therapy services for children with autism spectrum disorder in Seattle",
     "coordinates": {
-      "lat": 47.6062,
-      "lng": -122.3321
+      "lat": 47.603619,
+      "lng": -122.329736
     }
   },
   {
@@ -5128,8 +5128,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy serving multiple Washington cities including Auburn, Bellevue, Kent, Tacoma, and Seattle",
     "coordinates": {
-      "lat": 47.6062,
-      "lng": -122.3321
+      "lat": 47.606633,
+      "lng": -122.337031
     }
   },
   {
@@ -5147,8 +5147,8 @@ const communityResourcesData = [
     ],
     "description": "Oregon's largest autism clinic serving 1,000 children annually with evaluation services in Portland and Eugene",
     "coordinates": {
-      "lat": 45.5152,
-      "lng": -122.6784
+      "lat": 45.515633,
+      "lng": -122.683331
     }
   },
   {
@@ -5184,8 +5184,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide autism testing, ADHD testing, life coaching, and counseling for adults in Oregon",
     "coordinates": {
-      "lat": 43.8041,
-      "lng": -120.5542
+      "lat": 43.801519,
+      "lng": -120.551836
     }
   },
   {
@@ -5202,8 +5202,8 @@ const communityResourcesData = [
     ],
     "description": "Neurodivergent affirming autism assessment for adults via secure video platform serving Oregon, Washington, and Florida",
     "coordinates": {
-      "lat": 43.8041,
-      "lng": -120.5542
+      "lat": 43.804533,
+      "lng": -120.559131
     }
   },
   {
@@ -5219,8 +5219,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy services for children with autism in Portland area",
     "coordinates": {
-      "lat": 45.5152,
-      "lng": -122.6784
+      "lat": 45.518888,
+      "lng": -122.673589
     }
   },
   {
@@ -5273,8 +5273,8 @@ const communityResourcesData = [
     ],
     "description": "Evidence-based ABA therapy center serving Las Vegas and Henderson with ethical, assent-based practices",
     "coordinates": {
-      "lat": 36.1699,
-      "lng": -115.1398
+      "lat": 36.167319,
+      "lng": -115.137436
     }
   },
   {
@@ -5291,8 +5291,8 @@ const communityResourcesData = [
     ],
     "description": "Nonprofit committed to advocating for the rights and well-being of individuals with autism in Nevada",
     "coordinates": {
-      "lat": 38.8026,
-      "lng": -116.4194
+      "lat": 38.800019,
+      "lng": -116.417036
     }
   },
   {
@@ -5310,8 +5310,8 @@ const communityResourcesData = [
     ],
     "description": "Families for Effective Autism Treatment support network providing advocacy and resources in Southern Nevada",
     "coordinates": {
-      "lat": 36.1699,
-      "lng": -115.1398
+      "lat": 36.170333,
+      "lng": -115.144731
     }
   },
   {
@@ -5348,8 +5348,8 @@ const communityResourcesData = [
     ],
     "description": "In-home ABA therapy serving Salt Lake City, Provo, Ogden, and St. George",
     "coordinates": {
-      "lat": 40.7608,
-      "lng": -111.891
+      "lat": 40.758219,
+      "lng": -111.888636
     }
   },
   {
@@ -5384,8 +5384,8 @@ const communityResourcesData = [
     ],
     "description": "GIANT Steps Autism Preschool and school-based services in Provo",
     "coordinates": {
-      "lat": 40.2338,
-      "lng": -111.6585
+      "lat": 40.243677,
+      "lng": -111.662036
     }
   },
   {
@@ -5403,8 +5403,8 @@ const communityResourcesData = [
     ],
     "description": "One of few Colorado centers welcoming adults, serving individuals from 3 months to over 21 years",
     "coordinates": {
-      "lat": 39.7392,
-      "lng": -105.0813
+      "lat": 39.747516,
+      "lng": -105.104085
     }
   },
   {
@@ -5500,8 +5500,8 @@ const communityResourcesData = [
     ],
     "description": "Leading autism research and resource center providing clinical services and community support in Phoenix",
     "coordinates": {
-      "lat": 33.4484,
-      "lng": -112.074
+      "lat": 33.445819,
+      "lng": -112.071636
     }
   },
   {
@@ -5536,8 +5536,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism program with locations in Mesa and Scottsdale serving children",
     "coordinates": {
-      "lat": 33.4484,
-      "lng": -112.074
+      "lat": 33.582211,
+      "lng": -111.930571
     }
   },
   {
@@ -5553,8 +5553,8 @@ const communityResourcesData = [
     ],
     "description": "ABA services proudly offered across Arizona including Phoenix, Tucson, and Flagstaff",
     "coordinates": {
-      "lat": 33.4484,
-      "lng": -112.074
+      "lat": 33.448833,
+      "lng": -112.078931
     }
   },
   {
@@ -5607,8 +5607,8 @@ const communityResourcesData = [
     ],
     "description": "Combines ABA, speech therapy, and occupational therapy for individuals with autism in home and clinic settings",
     "coordinates": {
-      "lat": 35.0844,
-      "lng": -106.6504
+      "lat": 35.081819,
+      "lng": -106.648036
     }
   },
   {
@@ -5626,8 +5626,8 @@ const communityResourcesData = [
     ],
     "description": "Flexible ABA therapy offered in home, community, school, or via telehealth in greater Albuquerque",
     "coordinates": {
-      "lat": 35.0844,
-      "lng": -106.6504
+      "lat": 35.084833,
+      "lng": -106.655331
     }
   },
   {
@@ -5663,8 +5663,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral analysis and childhood development services for ages 3-21 in Nampa",
     "coordinates": {
-      "lat": 43.5407,
-      "lng": -116.5635
+      "lat": 43.60069,
+      "lng": -116.59136
     }
   },
   {
@@ -5701,8 +5701,8 @@ const communityResourcesData = [
     ],
     "description": "New Meridian clinic offering early autism intervention services with no waitlist",
     "coordinates": {
-      "lat": 43.6121,
-      "lng": -116.3915
+      "lat": 43.627402,
+      "lng": -116.356069
     }
   },
   {
@@ -5721,8 +5721,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide autism resource center providing information, training, and consultation via on-site and distance delivery",
     "coordinates": {
-      "lat": 61.2181,
-      "lng": -149.9003
+      "lat": 61.215519,
+      "lng": -149.897936
     }
   },
   {
@@ -5741,8 +5741,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive child and family developmental services including ABA, therapy services, and behavioral health",
     "coordinates": {
-      "lat": 61.2181,
-      "lng": -149.9003
+      "lat": 61.181996,
+      "lng": -149.799619
     }
   },
   {
@@ -5799,8 +5799,8 @@ const communityResourcesData = [
     ],
     "description": "Support center for individuals and families affected by autism spectrum disorder and developmental disabilities",
     "coordinates": {
-      "lat": 46.8772,
-      "lng": -96.7898
+      "lat": 46.874619,
+      "lng": -96.787436
     }
   },
   {
@@ -5817,8 +5817,8 @@ const communityResourcesData = [
     ],
     "description": "San Francisco-based virtual ABA therapy service expanded to 47 states as digital-only autism therapy provider",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.840625,
+      "lng": -98.58221
     }
   },
   {
@@ -5835,8 +5835,8 @@ const communityResourcesData = [
     ],
     "description": "Online autism therapy and testing services specifically designed for adults nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.820768,
+      "lng": -98.568787
     }
   },
   {
@@ -5852,8 +5852,8 @@ const communityResourcesData = [
     ],
     "description": "Providing insight into young minds through comprehensive evaluations",
     "coordinates": {
-      "lat": 45.5152,
-      "lng": -122.6784
+      "lat": 45.508307,
+      "lng": -122.679619
     }
   },
   {
@@ -5869,8 +5869,8 @@ const communityResourcesData = [
     ],
     "description": "Evidence-based ABA therapy services throughout California",
     "coordinates": {
-      "lat": 32.7157,
-      "lng": -117.1611
+      "lat": 32.713119,
+      "lng": -117.158736
     }
   },
   {
@@ -5887,8 +5887,8 @@ const communityResourcesData = [
     ],
     "description": "Provides employment and vocational training opportunities for individuals with autism",
     "coordinates": {
-      "lat": 37.9358,
-      "lng": -122.3477
+      "lat": 37.988807,
+      "lng": -122.331326
     }
   },
   {
@@ -5922,8 +5922,8 @@ const communityResourcesData = [
     ],
     "description": "Families for Effective Autism Treatment support network and advocacy organization",
     "coordinates": {
-      "lat": 36.1699,
-      "lng": -115.1398
+      "lat": 36.173588,
+      "lng": -115.134989
     }
   },
   {
@@ -5941,8 +5941,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism services for children, adolescents, adults and families",
     "coordinates": {
-      "lat": 40.7608,
-      "lng": -111.891
+      "lat": 40.761233,
+      "lng": -111.895931
     }
   },
   {
@@ -5958,8 +5958,8 @@ const communityResourcesData = [
     ],
     "description": "Specialized autism programs including preschool and school-based services",
     "coordinates": {
-      "lat": 40.2338,
-      "lng": -111.6585
+      "lat": 40.243677,
+      "lng": -111.662036
     }
   },
   {
@@ -5975,8 +5975,8 @@ const communityResourcesData = [
     ],
     "description": "Boulder County-specific autism resources and community support",
     "coordinates": {
-      "lat": 40.015,
-      "lng": -105.2705
+      "lat": 40.012419,
+      "lng": -105.268136
     }
   },
   {
@@ -5991,8 +5991,8 @@ const communityResourcesData = [
     ],
     "description": "Empowering individuals on autism spectrum through comprehensive skilled trades career training",
     "coordinates": {
-      "lat": 39.7392,
-      "lng": -104.9903
+      "lat": 39.736619,
+      "lng": -104.987936
     }
   },
   {
@@ -6010,8 +6010,8 @@ const communityResourcesData = [
     ],
     "description": "Arizona largest pediatric therapy agency providing full spectrum care",
     "coordinates": {
-      "lat": 33.4484,
-      "lng": -112.074
+      "lat": 33.452088,
+      "lng": -112.069189
     }
   },
   {
@@ -6027,8 +6027,8 @@ const communityResourcesData = [
     ],
     "description": "Phoenix Children Hospital autism specialty program with multiple locations",
     "coordinates": {
-      "lat": 33.3931,
-      "lng": -111.7318
+      "lat": 33.39379,
+      "lng": -111.720966
     }
   },
   {
@@ -6043,8 +6043,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide ABA services in major Arizona cities",
     "coordinates": {
-      "lat": 33.4484,
-      "lng": -112.074
+      "lat": 33.441507,
+      "lng": -112.075219
     }
   },
   {
@@ -6064,8 +6064,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive developmental services for autism and related conditions",
     "coordinates": {
-      "lat": 61.1919,
-      "lng": -149.8342
+      "lat": 61.181996,
+      "lng": -149.799619
     }
   },
   {
@@ -6082,8 +6082,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center established in 2012, providing comprehensive autism treatment services",
     "coordinates": {
-      "lat": 37.3222,
-      "lng": -121.8619
+      "lat": 37.308384,
+      "lng": -121.866192
     }
   },
   {
@@ -6100,8 +6100,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism programs including elementary, high school, residential, and ABA therapy services",
     "coordinates": {
-      "lat": 37.3107,
-      "lng": -121.9458
+      "lat": 37.332654,
+      "lng": -121.941109
     }
   },
   {
@@ -6120,8 +6120,8 @@ const communityResourcesData = [
     ],
     "description": "Parent support organization for children and adults with disabilities in San Jose",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.335619,
+      "lng": -121.883936
     }
   },
   {
@@ -6156,8 +6156,8 @@ const communityResourcesData = [
     ],
     "description": "Leading provider of autism treatment services with evidence-based ABA therapy",
     "coordinates": {
-      "lat": 37.2524,
-      "lng": -121.8298
+      "lat": 37.2797,
+      "lng": -121.844641
     }
   },
   {
@@ -6174,8 +6174,8 @@ const communityResourcesData = [
     ],
     "description": "Professional autism evaluations for children and adults with free consultation available",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.338633,
+      "lng": -121.891231
     }
   },
   {
@@ -6192,8 +6192,8 @@ const communityResourcesData = [
     ],
     "description": "Personalized comprehensive approach to understanding and living with autism diagnosis",
     "coordinates": {
-      "lat": 37.3166,
-      "lng": -121.9522
+      "lat": 37.332631,
+      "lng": -121.943171
     }
   },
   {
@@ -6210,8 +6210,8 @@ const communityResourcesData = [
     ],
     "description": "Evidence-based ABA treatment strategies for children with Autism Spectrum Disorder",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.341888,
+      "lng": -121.881489
     }
   },
   {
@@ -6229,8 +6229,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy at home, school, community, and online via telehealth",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.331307,
+      "lng": -121.887519
     }
   },
   {
@@ -6248,8 +6248,8 @@ const communityResourcesData = [
     ],
     "description": "Center-based and at-home ABA programs with diagnostic evaluations",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.344803,
+      "lng": -121.890501
     }
   },
   {
@@ -6266,8 +6266,8 @@ const communityResourcesData = [
     ],
     "description": "Applied behavior analysis care program with contracts with major health plans",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.335974,
+      "lng": -121.878021
     }
   },
   {
@@ -6284,8 +6284,8 @@ const communityResourcesData = [
     ],
     "description": "Autism therapy services with locations throughout the Bay Area",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.333932,
+      "lng": -121.894518
     }
   },
   {
@@ -6320,8 +6320,8 @@ const communityResourcesData = [
     ],
     "description": "In-home and on-site ABA therapy for young children with autism",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.347499,
+      "lng": -121.882904
     }
   },
   {
@@ -6338,8 +6338,8 @@ const communityResourcesData = [
     ],
     "description": "Dedicated autism center providing comprehensive behavioral therapy services",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.328494,
+      "lng": -121.882294
     }
   },
   {
@@ -6356,8 +6356,8 @@ const communityResourcesData = [
     ],
     "description": "Autism and social skills services for children and adolescents in San Jose",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.342891,
+      "lng": -121.896325
     }
   },
   {
@@ -6375,8 +6375,8 @@ const communityResourcesData = [
     ],
     "description": "Bringing the Bay Area autism community together with support and resources",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.341674,
+      "lng": -121.875224
     }
   },
   {
@@ -6424,8 +6424,8 @@ const communityResourcesData = [
     ],
     "description": "Provider of Applied Behavior Analysis therapy and autism treatment services in Sacramento",
     "coordinates": {
-      "lat": 38.5816,
-      "lng": -121.4944
+      "lat": 38.579019,
+      "lng": -121.492036
     }
   },
   {
@@ -6456,8 +6456,8 @@ const communityResourcesData = [
     ],
     "description": "Exceptional ABA treatment program serving Bakersfield area",
     "coordinates": {
-      "lat": 35.3733,
-      "lng": -119.0187
+      "lat": 35.370719,
+      "lng": -119.016336
     }
   },
   {
@@ -6472,8 +6472,8 @@ const communityResourcesData = [
     ],
     "description": "Personalized autism services in Riverside and San Bernardino counties",
     "coordinates": {
-      "lat": 33.9533,
-      "lng": -117.3962
+      "lat": 33.946345,
+      "lng": -117.39139
     }
   },
   {
@@ -6489,8 +6489,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy and diagnostic services across Inland Empire",
     "coordinates": {
-      "lat": 33.9806,
-      "lng": -117.3755
+      "lat": 33.998474,
+      "lng": -117.339756
     }
   },
   {
@@ -6538,8 +6538,8 @@ const communityResourcesData = [
     ],
     "description": "Serving individuals with developmental disabilities in San Bernardino and Riverside Counties",
     "coordinates": {
-      "lat": 34.0633,
-      "lng": -117.6509
+      "lat": 34.060719,
+      "lng": -117.648536
     }
   },
   {
@@ -6555,8 +6555,8 @@ const communityResourcesData = [
     ],
     "description": "Two convenient centers serving San Bernardino and Riverside counties with autism assessments",
     "coordinates": {
-      "lat": 34.0633,
-      "lng": -117.6509
+      "lat": 34.063733,
+      "lng": -117.655831
     }
   },
   {
@@ -6590,8 +6590,8 @@ const communityResourcesData = [
     ],
     "description": "Centralized early diagnosis for autism and advanced therapy at CHOC",
     "coordinates": {
-      "lat": 33.6846,
-      "lng": -117.8265
+      "lat": 33.682019,
+      "lng": -117.824136
     }
   },
   {
@@ -6657,8 +6657,8 @@ const communityResourcesData = [
     ],
     "description": "Riverside County Office of Education autism programs for students and families",
     "coordinates": {
-      "lat": 33.9533,
-      "lng": -117.3962
+      "lat": 33.950719,
+      "lng": -117.393836
     }
   },
   {
@@ -6674,8 +6674,8 @@ const communityResourcesData = [
     ],
     "description": "Parent training using Positive Parenting Program model, available in-office or via telehealth",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.826558,
+      "lng": -98.592943
     }
   },
   {
@@ -6690,8 +6690,8 @@ const communityResourcesData = [
     ],
     "description": "Parent training strategies to manage and prevent challenging behavior via telehealth",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.839005,
+      "lng": -98.570478
     }
   },
   {
@@ -6706,8 +6706,8 @@ const communityResourcesData = [
     ],
     "description": "Free virtual autism training series presented by clinical experts at May Institute",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.813881,
+      "lng": -98.578904
     }
   },
   {
@@ -6740,8 +6740,8 @@ const communityResourcesData = [
     ],
     "description": "Offers online and in-person support groups for child, teen and adult siblings nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.838826,
+      "lng": -98.589974
     }
   },
   {
@@ -6757,8 +6757,8 @@ const communityResourcesData = [
     ],
     "description": "Connecting siblings nationwide and advancing causes important to siblings of people with disabilities",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.827595,
+      "lng": -98.56426
     }
   },
   {
@@ -6774,8 +6774,8 @@ const communityResourcesData = [
     ],
     "description": "Guidance for young children, teenagers and parents on sibling relationships with autism",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.818271,
+      "lng": -98.591518
     }
   },
   {
@@ -6809,8 +6809,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive transition program with 5 US centers for young adults 18-26 with autism and learning differences",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.844196,
+      "lng": -98.577361
     }
   },
   {
@@ -6825,8 +6825,8 @@ const communityResourcesData = [
     ],
     "description": "Preparing young adults with autism for greater independence and fulfillment, ages 18-28",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.814824,
+      "lng": -98.570124
     }
   },
   {
@@ -6861,8 +6861,8 @@ const communityResourcesData = [
     ],
     "description": "Direct virtual therapy for ABA, OT, speech therapy and parent training nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.831984,
+      "lng": -98.595876
     }
   },
   {
@@ -6881,8 +6881,8 @@ const communityResourcesData = [
     ],
     "description": "Virtual therapy services with research showing same progress rate as in-person services",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.836825,
+      "lng": -98.564623
     }
   },
   {
@@ -6897,8 +6897,8 @@ const communityResourcesData = [
     ],
     "description": "Telehealth for autism treatment shortening waiting lists and providing schedule flexibility",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.811628,
+      "lng": -98.584819
     }
   },
   {
@@ -6913,8 +6913,8 @@ const communityResourcesData = [
     ],
     "description": "Transforming education with innovative teletherapy services for schools nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.844501,
+      "lng": -98.586985
     }
   },
   {
@@ -6930,8 +6930,8 @@ const communityResourcesData = [
     ],
     "description": "Understanding neurobiological basis of autism spectrum disorder at Harvard Medical School",
     "coordinates": {
-      "lat": 42.3601,
-      "lng": -71.0589
+      "lat": 42.357519,
+      "lng": -71.056536
     }
   },
   {
@@ -6964,8 +6964,8 @@ const communityResourcesData = [
     ],
     "description": "$27.7M ARIA grant for non-invasive functional communication through brain modeling in ASD",
     "coordinates": {
-      "lat": 41.3083,
-      "lng": -72.9279
+      "lat": 41.305719,
+      "lng": -72.925536
     }
   },
   {
@@ -6983,8 +6983,8 @@ const communityResourcesData = [
     ],
     "description": "Nationwide network of affiliates providing advocacy, education, referrals and support",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.821279,
+      "lng": -98.562723
     }
   },
   {
@@ -6999,8 +6999,8 @@ const communityResourcesData = [
     ],
     "description": "National advocacy organization for people with intellectual and developmental disabilities",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.822032,
+      "lng": -98.596927
     }
   },
   {
@@ -7015,8 +7015,8 @@ const communityResourcesData = [
     ],
     "description": "Free 24/7 crisis support via text message for people in crisis nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.844984,
+      "lng": -98.570731
     }
   },
   {
@@ -7050,8 +7050,8 @@ const communityResourcesData = [
     ],
     "description": "Safe, supported camp environment for participants with autism to build skills and friendships",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.809763,
+      "lng": -98.574614
     }
   },
   {
@@ -7067,8 +7067,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive directory since 2003 connecting families to inclusive camps with specialized support",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.838839,
+      "lng": -98.595891
     }
   },
   {
@@ -7083,8 +7083,8 @@ const communityResourcesData = [
     ],
     "description": "Free virtual autism parenting event accessible from computer, phone or tablet",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.831653,
+      "lng": -98.559987
     }
   },
   {
@@ -7099,8 +7099,8 @@ const communityResourcesData = [
     ],
     "description": "Improves clinicians knowledge with manualized parent-training program for children with autism",
     "coordinates": {
-      "lat": 39.9612,
-      "lng": -82.9988
+      "lat": 39.958619,
+      "lng": -82.996436
     }
   },
   {
@@ -7117,8 +7117,8 @@ const communityResourcesData = [
     ],
     "description": "Supporting autism research and providing resources for parents and siblings nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.812404,
+      "lng": -98.591811
     }
   },
   {
@@ -7136,8 +7136,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive resources including 100 Day Kit, sibling guides and family support tools",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.848639,
+      "lng": -98.581185
     }
   },
   {
@@ -7153,8 +7153,8 @@ const communityResourcesData = [
     ],
     "description": "Free anonymous social service hotline connecting to local autism and disability services 24/7",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.814239,
+      "lng": -98.5643
     }
   },
   {
@@ -7172,8 +7172,8 @@ const communityResourcesData = [
     ],
     "description": "Multidisciplinary program providing evaluation and treatment to people of all ages with autism spectrum disorder and Asperger syndrome",
     "coordinates": {
-      "lat": 42.3601,
-      "lng": -71.0589
+      "lat": 42.360533,
+      "lng": -71.063831
     }
   },
   {
@@ -7190,8 +7190,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive, family centered diagnostic and care services for children with autism spectrum disorder",
     "coordinates": {
-      "lat": 42.3601,
-      "lng": -71.0589
+      "lat": 42.363788,
+      "lng": -71.054089
     }
   },
   {
@@ -7208,8 +7208,8 @@ const communityResourcesData = [
     ],
     "description": "Dedicated to evaluation and care of children, adolescents and young adults with autism spectrum disorder",
     "coordinates": {
-      "lat": 42.3601,
-      "lng": -71.0589
+      "lat": 42.353207,
+      "lng": -71.060119
     }
   },
   {
@@ -7227,8 +7227,8 @@ const communityResourcesData = [
     ],
     "description": "Nonprofit providing educational, rehabilitative, and behavioral healthcare services to children and adults with autism spectrum disorder",
     "coordinates": {
-      "lat": 42.3601,
-      "lng": -71.0589
+      "lat": 42.366703,
+      "lng": -71.063101
     }
   },
   {
@@ -7244,8 +7244,8 @@ const communityResourcesData = [
     ],
     "description": "Evidence-based ABA therapy serving families in Massachusetts, New Hampshire, and Vermont",
     "coordinates": {
-      "lat": 42.3601,
-      "lng": -71.0589
+      "lat": 42.357874,
+      "lng": -71.050621
     }
   },
   {
@@ -7263,8 +7263,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism services including ABA, diagnostics, speech and occupational therapy in Worcester",
     "coordinates": {
-      "lat": 42.2626,
-      "lng": -71.8023
+      "lat": 42.260019,
+      "lng": -71.799936
     }
   },
   {
@@ -7282,8 +7282,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA services with no current waitlist, providing diagnostic evaluations and behavioral therapies",
     "coordinates": {
-      "lat": 42.2626,
-      "lng": -71.8023
+      "lat": 42.263033,
+      "lng": -71.807231
     }
   },
   {
@@ -7301,8 +7301,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy services offering center-based, in-home, and virtual telehealth options across multiple Massachusetts locations",
     "coordinates": {
-      "lat": 42.2626,
-      "lng": -71.8023
+      "lat": 42.266288,
+      "lng": -71.797489
     }
   },
   {
@@ -7319,8 +7319,8 @@ const communityResourcesData = [
     ],
     "description": "Developing outpatient program for clinical assessment and treatment of individuals across the age continuum with ASD",
     "coordinates": {
-      "lat": 41.7658,
-      "lng": -72.6734
+      "lat": 41.763219,
+      "lng": -72.671036
     }
   },
   {
@@ -7339,8 +7339,8 @@ const communityResourcesData = [
     ],
     "description": "Specialized programs for individuals with autism and Asperger's including residential, transition, and independent living",
     "coordinates": {
-      "lat": 41.3083,
-      "lng": -72.9279
+      "lat": 41.308733,
+      "lng": -72.932831
     }
   },
   {
@@ -7357,8 +7357,8 @@ const communityResourcesData = [
     ],
     "description": "Private, not-for-profit agency providing autism services in Connecticut for over 50 years",
     "coordinates": {
-      "lat": 41.3083,
-      "lng": -72.9279
+      "lat": 41.311988,
+      "lng": -72.923089
     }
   },
   {
@@ -7377,8 +7377,8 @@ const communityResourcesData = [
     ],
     "description": "Nationally recognized for one of the most comprehensive continua of care for children to young adults with ASD/DD struggling with mental health",
     "coordinates": {
-      "lat": 41.824,
-      "lng": -71.4128
+      "lat": 41.7922,
+      "lng": -71.365828
     }
   },
   {
@@ -7417,8 +7417,8 @@ const communityResourcesData = [
     ],
     "description": "Continuum of highest quality supports for individuals with autism and neurodevelopmental disorders across the lifespan",
     "coordinates": {
-      "lat": 41.824,
-      "lng": -71.4128
+      "lat": 41.821419,
+      "lng": -71.410436
     }
   },
   {
@@ -7435,8 +7435,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy for children in Providence accepting most major insurance plans including Medicaid",
     "coordinates": {
-      "lat": 41.824,
-      "lng": -71.4128
+      "lat": 41.824433,
+      "lng": -71.417731
     }
   },
   {
@@ -7454,8 +7454,8 @@ const communityResourcesData = [
     ],
     "description": "Unique collaboration of parents, professionals, autistic individuals offering family navigation, support, and education",
     "coordinates": {
-      "lat": 41.824,
-      "lng": -71.4128
+      "lat": 41.827688,
+      "lng": -71.407989
     }
   },
   {
@@ -7585,8 +7585,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy with expert therapists in Wilmington, accepting Cigna, Humana, and United Healthcare",
     "coordinates": {
-      "lat": 39.7391,
-      "lng": -75.5398
+      "lat": 39.736519,
+      "lng": -75.537436
     }
   },
   {
@@ -7622,8 +7622,8 @@ const communityResourcesData = [
     ],
     "description": "Early diagnosis and treatment with complete evaluations, genetic testing, and advanced brain imaging",
     "coordinates": {
-      "lat": 39.7391,
-      "lng": -75.5398
+      "lat": 39.739533,
+      "lng": -75.544731
     }
   },
   {
@@ -7642,8 +7642,8 @@ const communityResourcesData = [
     ],
     "description": "Advocacy organization providing mentoring, information, adult services, and financial assistance",
     "coordinates": {
-      "lat": 39.6837,
-      "lng": -75.7497
+      "lat": 39.689565,
+      "lng": -75.684501
     }
   },
   {
@@ -7660,8 +7660,8 @@ const communityResourcesData = [
     ],
     "description": "Nonprofit licensed behavioral health center founded in 1979 providing ABA therapy and community programs",
     "coordinates": {
-      "lat": 38.4192,
-      "lng": -82.4452
+      "lat": 38.415693,
+      "lng": -82.457072
     }
   },
   {
@@ -7696,8 +7696,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism evaluation services partnering with WV Autism Training Center at Marshall University",
     "coordinates": {
-      "lat": 38.4192,
-      "lng": -82.4452
+      "lat": 38.416619,
+      "lng": -82.442836
     }
   },
   {
@@ -7732,8 +7732,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and resources tailored to meet the needs of individuals with autism and their families",
     "coordinates": {
-      "lat": 30.4266,
-      "lng": -88.8903
+      "lat": 30.44093,
+      "lng": -88.903055
     }
   },
   {
@@ -7749,8 +7749,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral services with multiple locations across Mississippi including Gulfport, Hattiesburg, and Summit",
     "coordinates": {
-      "lat": 30.3674,
-      "lng": -89.0928
+      "lat": 30.399908,
+      "lng": -89.001385
     }
   },
   {
@@ -7786,8 +7786,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and academic services provided in-home, in centers, at school, and remotely via telehealth",
     "coordinates": {
-      "lat": 33.5186,
-      "lng": -86.8104
+      "lat": 33.516019,
+      "lng": -86.808036
     }
   },
   {
@@ -7822,8 +7822,8 @@ const communityResourcesData = [
     ],
     "description": "Personalized ABA therapy with locations in Birmingham, Montgomery, and Mobile areas",
     "coordinates": {
-      "lat": 33.5186,
-      "lng": -86.8104
+      "lat": 33.519033,
+      "lng": -86.815331
     }
   },
   {
@@ -7859,8 +7859,8 @@ const communityResourcesData = [
     ],
     "description": "Unique 1:1 approach to empower individuals on autism spectrum with multiple Louisville campuses",
     "coordinates": {
-      "lat": 38.2527,
-      "lng": -85.7585
+      "lat": 38.250119,
+      "lng": -85.756136
     }
   },
   {
@@ -7877,8 +7877,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive coordinated treatment for children with autism starting at 15 months of age",
     "coordinates": {
-      "lat": 38.2527,
-      "lng": -85.7585
+      "lat": 38.242237,
+      "lng": -85.576875
     }
   },
   {
@@ -7895,8 +7895,8 @@ const communityResourcesData = [
     ],
     "description": "ABA services across Kentucky with expansion in South Central Kentucky in June 2025",
     "coordinates": {
-      "lat": 38.2527,
-      "lng": -85.7585
+      "lat": 38.253133,
+      "lng": -85.763431
     }
   },
   {
@@ -7914,8 +7914,8 @@ const communityResourcesData = [
     ],
     "description": "Scholarship program awarding $3,000 to autistic students, with over $2 million awarded since 2007",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.828402,
+      "lng": -98.6005
     }
   },
   {
@@ -7932,8 +7932,8 @@ const communityResourcesData = [
     ],
     "description": "Grant program offering up to $20,000 to families in New England, New York, New Jersey, and Southern California",
     "coordinates": {
-      "lat": 42.3601,
-      "lng": -71.0589
+      "lat": 42.355832,
+      "lng": -71.067118
     }
   },
   {
@@ -7951,8 +7951,8 @@ const communityResourcesData = [
     ],
     "description": "Provides communication devices for non-verbal or minimally verbal individuals with ASD nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.842604,
+      "lng": -98.563732
     }
   },
   {
@@ -7969,8 +7969,8 @@ const communityResourcesData = [
     ],
     "description": "Grant funding programs supporting innovative autism projects and community initiatives nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.806817,
+      "lng": -98.581491
     }
   },
   {
@@ -7988,8 +7988,8 @@ const communityResourcesData = [
     ],
     "description": "Beacon of hope providing empowerment, advocacy, and justice for autistic individuals and families",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.845711,
+      "lng": -98.592714
     }
   },
   {
@@ -8007,8 +8007,8 @@ const communityResourcesData = [
     ],
     "description": "Nation's largest provider of legal advocacy services for people with disabilities with P&A in every state",
     "coordinates": {
-      "lat": 38.9072,
-      "lng": -77.0369
+      "lat": 38.904974,
+      "lng": -77.028621
     }
   },
   {
@@ -8025,8 +8025,8 @@ const communityResourcesData = [
     ],
     "description": "Works to improve the lives of people with autism through the power of the law nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.824338,
+      "lng": -98.557722
     }
   },
   {
@@ -8043,8 +8043,8 @@ const communityResourcesData = [
     ],
     "description": "Participates in litigation to advance the rights of people with intellectual and developmental disabilities",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.816364,
+      "lng": -98.598468
     }
   },
   {
@@ -8062,8 +8062,8 @@ const communityResourcesData = [
     ],
     "description": "Central hub of housing information and developer tools to build neuro-inclusive communities nationwide",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.850176,
+      "lng": -98.573505
     }
   },
   {
@@ -8101,8 +8101,8 @@ const communityResourcesData = [
     ],
     "description": "Residential and day services empowering adults to make choices, explore passions, and experience life on their terms",
     "coordinates": {
-      "lat": 28.5383,
-      "lng": -81.3792
+      "lat": 28.538733,
+      "lng": -81.384131
     }
   },
   {
@@ -8120,8 +8120,8 @@ const communityResourcesData = [
     ],
     "description": "Established 1996, providing evidence-based professional development training and resources for education, early childhood, mental health, and employment systems",
     "coordinates": {
-      "lat": 38.2527,
-      "lng": -85.7585
+      "lat": 38.256388,
+      "lng": -85.753689
     }
   },
   {
@@ -8138,8 +8138,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA services and one-on-one behavioral and psychological therapies with no waitlist",
     "coordinates": {
-      "lat": 42.2626,
-      "lng": -71.8023
+      "lat": 42.255707,
+      "lng": -71.803519
     }
   },
   {
@@ -8154,8 +8154,8 @@ const communityResourcesData = [
     ],
     "description": "Outpatient program for clinical assessment and treatment of individuals with ASD across the age continuum",
     "coordinates": {
-      "lat": 41.7658,
-      "lng": -72.6734
+      "lat": 41.766233,
+      "lng": -72.678331
     }
   },
   {
@@ -8189,8 +8189,8 @@ const communityResourcesData = [
     ],
     "description": "Collaboration of parents, professionals and autistic individuals offering support and education",
     "coordinates": {
-      "lat": 41.824,
-      "lng": -71.4128
+      "lat": 41.817107,
+      "lng": -71.414019
     }
   },
   {
@@ -8205,8 +8205,8 @@ const communityResourcesData = [
     ],
     "description": "Nationally recognized comprehensive care for children to young adults with ASD struggling with mental health",
     "coordinates": {
-      "lat": 41.824,
-      "lng": -71.4128
+      "lat": 41.830603,
+      "lng": -71.417001
     }
   },
   {
@@ -8239,8 +8239,8 @@ const communityResourcesData = [
     ],
     "description": "Providing quality support services to children and adults with developmental disabilities for 60+ years",
     "coordinates": {
-      "lat": 43.6591,
-      "lng": -70.2568
+      "lat": 43.656519,
+      "lng": -70.254436
     }
   },
   {
@@ -8255,8 +8255,8 @@ const communityResourcesData = [
     ],
     "description": "Expert care for people living with autism and other developmental disorders in Maine",
     "coordinates": {
-      "lat": 43.6591,
-      "lng": -70.2568
+      "lat": 43.659533,
+      "lng": -70.261731
     }
   },
   {
@@ -8308,8 +8308,8 @@ const communityResourcesData = [
     ],
     "description": "Committed to improving quality of life for autistics in West Virginia with training and support",
     "coordinates": {
-      "lat": 38.4192,
-      "lng": -82.4452
+      "lat": 38.419633,
+      "lng": -82.450131
     }
   },
   {
@@ -8343,8 +8343,8 @@ const communityResourcesData = [
     ],
     "description": "Autism services in Jackson accepting most major insurances and Medicaid",
     "coordinates": {
-      "lat": 32.2988,
-      "lng": -90.1848
+      "lat": 32.296219,
+      "lng": -90.182436
     }
   },
   {
@@ -8359,8 +8359,8 @@ const communityResourcesData = [
     ],
     "description": "Gulfport location providing autism services and ABA therapy",
     "coordinates": {
-      "lat": 30.3674,
-      "lng": -89.0928
+      "lat": 30.434519,
+      "lng": -89.035369
     }
   },
   {
@@ -8375,8 +8375,8 @@ const communityResourcesData = [
     ],
     "description": "Meets diverse needs of children with disabilities in greater Jackson area",
     "coordinates": {
-      "lat": 32.2988,
-      "lng": -90.1848
+      "lat": 32.299233,
+      "lng": -90.189731
     }
   },
   {
@@ -8410,8 +8410,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive coordinated treatment plans in one location for children with autism",
     "coordinates": {
-      "lat": 38.2527,
-      "lng": -85.7585
+      "lat": 38.242237,
+      "lng": -85.576875
     }
   },
   {
@@ -8427,8 +8427,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive and coordinated treatment plans for children with autism in Lexington",
     "coordinates": {
-      "lat": 38.0406,
-      "lng": -84.5037
+      "lat": 38.029188,
+      "lng": -84.452703
     }
   },
   {
@@ -8443,8 +8443,8 @@ const communityResourcesData = [
     ],
     "description": "Serving families throughout Kentucky at 8 clinic locations with ABA services",
     "coordinates": {
-      "lat": 38.2527,
-      "lng": -85.7585
+      "lat": 38.245807,
+      "lng": -85.759719
     }
   },
   {
@@ -8462,8 +8462,8 @@ const communityResourcesData = [
     ],
     "description": "Provided $1.85M+ in grants to 1,562+ families since 2005 for therapy and equipment",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.807881,
+      "lng": -98.569021
     }
   },
   {
@@ -8478,8 +8478,8 @@ const communityResourcesData = [
     ],
     "description": "One-time grant for families in dire financial need with child under 21 with autism diagnosis",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.83637,
+      "lng": -98.601269
     }
   },
   {
@@ -8494,8 +8494,8 @@ const communityResourcesData = [
     ],
     "description": "For non-verbal or minimally verbal individuals whose communication challenges increase risk",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.837152,
+      "lng": -98.557754
     }
   },
   {
@@ -8510,8 +8510,8 @@ const communityResourcesData = [
     ],
     "description": "Provides access to medical-related services not fully covered by health benefit plans",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.806849,
+      "lng": -98.589666
     }
   },
   {
@@ -8526,8 +8526,8 @@ const communityResourcesData = [
     ],
     "description": "Funded 380+ projects at 172 organizations nationwide, primarily supporting organizations",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.85123,
+      "lng": -98.586569
     }
   },
   {
@@ -8545,8 +8545,8 @@ const communityResourcesData = [
     ],
     "description": "Developing resources for legal professionals to better represent and support Autistic clients",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.816039,
+      "lng": -98.558579
     }
   },
   {
@@ -8578,8 +8578,8 @@ const communityResourcesData = [
     ],
     "description": "Innovative housing development specifically designed for adults with autism",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.823156,
+      "lng": -98.603454
     }
   },
   {
@@ -8595,8 +8595,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive housing and community living resources and information",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.848476,
+      "lng": -98.565168
     }
   },
   {
@@ -8612,8 +8612,8 @@ const communityResourcesData = [
     ],
     "description": "National housing resources and support information for individuals with autism",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.803497,
+      "lng": -98.576409
     }
   },
   {
@@ -8628,8 +8628,8 @@ const communityResourcesData = [
     ],
     "description": "Model supported living programs for individuals with autism in Washington state",
     "coordinates": {
-      "lat": 47.6062,
-      "lng": -122.3321
+      "lat": 47.609888,
+      "lng": -122.327289
     }
   },
   {
@@ -8644,8 +8644,8 @@ const communityResourcesData = [
     ],
     "description": "Federal program offering rental assistance to low-income persons with disabilities",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.844659,
+      "lng": -98.598719
     }
   },
   {
@@ -8660,8 +8660,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive directory of organizations that can help individuals with autism and families",
     "coordinates": {
-      "lat": 39.8283,
-      "lng": -98.5795
+      "lat": 39.829229,
+      "lng": -98.554037
     }
   }
 ];
