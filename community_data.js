@@ -249,7 +249,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 38.9072,
       "lng": -77.0369
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Speaks - National Headquarters",
@@ -382,7 +383,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 41.8781,
       "lng": -87.6298
-    }
+    },
+    "placeless": true
   },
   {
     "name": "NAMI HelpLine - Autism Support",
@@ -420,7 +422,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 38.910888,
       "lng": -77.032089
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Texas Children's Hospital - Autism Program",
@@ -515,7 +518,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 28.5383,
       "lng": -81.3792
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Society of Greater Orlando",
@@ -1978,7 +1982,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.8283,
       "lng": -98.5795
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Prosper Health - Online Adult Autism Services",
@@ -1997,7 +2002,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.825719,
       "lng": -98.577136
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Spectrum Works",
@@ -2016,7 +2022,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.828733,
       "lng": -98.584431
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Els for Autism - Employment Programs",
@@ -2092,7 +2099,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.831988,
       "lng": -98.574689
-    }
+    },
+    "placeless": true
   },
   {
     "name": "New Directions for Young Adults (NDFYA)",
@@ -2111,7 +2119,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.821407,
       "lng": -98.580719
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Early Support Program for Autism (ESPA) - CHC",
@@ -2643,7 +2652,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.834903,
       "lng": -98.583701
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Hopebridge Autism Therapy Centers",
@@ -2662,7 +2672,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.826074,
       "lng": -98.571221
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Go Behavioral LLC - Fresno",
@@ -2871,7 +2882,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 46.8772,
       "lng": -96.7898
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Buffalo Hearing & Speech Center",
@@ -2966,7 +2978,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.824032,
       "lng": -98.587718
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Georgia Autism Center",
@@ -3859,7 +3872,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.837599,
       "lng": -98.576104
-    }
+    },
+    "placeless": true
   },
   {
     "name": "NeuroSpark Health - Virtual Autism Assessment",
@@ -3878,7 +3892,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.818594,
       "lng": -98.575494
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Blue Tide Therapy - Virtual Autism Evaluation",
@@ -3916,7 +3931,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.831774,
       "lng": -98.568424
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Camp Ramapo",
@@ -4866,7 +4882,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.81781,
       "lng": -98.585579
-    }
+    },
+    "placeless": true
   },
   {
     "name": "AHRC NYC Crisis Respite Program",
@@ -5204,7 +5221,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 43.804533,
       "lng": -120.559131
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Spectrum Therapies - Portland",
@@ -5819,7 +5837,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.840625,
       "lng": -98.58221
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Prosper Health",
@@ -5837,7 +5856,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.820768,
       "lng": -98.568787
-    }
+    },
+    "placeless": true
   },
   {
     "name": "MindSights PDX",
@@ -6676,7 +6696,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.826558,
       "lng": -98.592943
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Marcus Autism Center - RUBI Parent Training",
@@ -6692,7 +6713,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.839005,
       "lng": -98.570478
-    }
+    },
+    "placeless": true
   },
   {
     "name": "National Autism Center - Pathways for Parents",
@@ -6708,7 +6730,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.813881,
       "lng": -98.578904
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Stanford Autism Center - Parent/Child Education & Training",
@@ -6742,7 +6765,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.838826,
       "lng": -98.589974
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Sibling Leadership Network",
@@ -6759,7 +6783,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.827595,
       "lng": -98.56426
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Organization for Autism Research - Sibling Support Initiative",
@@ -6776,7 +6801,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.818271,
       "lng": -98.591518
-    }
+    },
+    "placeless": true
   },
   {
     "name": "UC Davis MIND Institute - Sibling Support Program",
@@ -6811,7 +6837,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.844196,
       "lng": -98.577361
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Meristem",
@@ -6827,7 +6854,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.814824,
       "lng": -98.570124
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Nationwide Children's - Adolescent Transition Program",
@@ -6863,7 +6891,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.831984,
       "lng": -98.595876
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Cortica Telehealth",
@@ -6883,7 +6912,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.836825,
       "lng": -98.564623
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Ascend Autism Telehealth",
@@ -6899,7 +6929,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.811628,
       "lng": -98.584819
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Presence Learning",
@@ -6915,7 +6946,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.844501,
       "lng": -98.586985
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Harvard - Tan Yang Autism Center",
@@ -6985,7 +7017,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.821279,
       "lng": -98.562723
-    }
+    },
+    "placeless": true
   },
   {
     "name": "The Arc of the United States",
@@ -7001,7 +7034,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.822032,
       "lng": -98.596927
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Crisis Text Line",
@@ -7017,7 +7051,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.844984,
       "lng": -98.570731
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Camp Royall",
@@ -7052,7 +7087,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.809763,
       "lng": -98.574614
-    }
+    },
+    "placeless": true
   },
   {
     "name": "VerySpecialCamps.com",
@@ -7069,7 +7105,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.838839,
       "lng": -98.595891
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Parenting Summit",
@@ -7085,7 +7122,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.831653,
       "lng": -98.559987
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Project ECHO - RUBI",
@@ -7119,7 +7157,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.812404,
       "lng": -98.591811
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Speaks",
@@ -7138,7 +7177,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.848639,
       "lng": -98.581185
-    }
+    },
+    "placeless": true
   },
   {
     "name": "211 Helpline",
@@ -7155,7 +7195,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.814239,
       "lng": -98.5643
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Lurie Center for Autism - Mass General",
@@ -7916,7 +7957,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.828402,
       "lng": -98.6005
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Doug Flutie Jr. Foundation",
@@ -7953,7 +7995,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.842604,
       "lng": -98.563732
-    }
+    },
+    "placeless": true
   },
   {
     "name": "NEXT for AUTISM Grants Program",
@@ -7971,7 +8014,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.806817,
       "lng": -98.581491
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Society - Autism Justice Center",
@@ -7990,7 +8034,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.845711,
       "lng": -98.592714
-    }
+    },
+    "placeless": true
   },
   {
     "name": "National Disability Rights Network (NDRN)",
@@ -8027,7 +8072,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.824338,
       "lng": -98.557722
-    }
+    },
+    "placeless": true
   },
   {
     "name": "The Arc - Legal Advocacy Fund",
@@ -8045,7 +8091,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.816364,
       "lng": -98.598468
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Housing Network",
@@ -8064,7 +8111,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.850176,
       "lng": -98.573505
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Els for Autism - Independent Living Programs",
@@ -8084,7 +8132,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 40.0583,
       "lng": -74.4057
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Foundation for Independent Living",
@@ -8464,7 +8513,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.807881,
       "lng": -98.569021
-    }
+    },
+    "placeless": true
   },
   {
     "name": "National Autism Association - Helping Hand Program",
@@ -8480,7 +8530,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.83637,
       "lng": -98.601269
-    }
+    },
+    "placeless": true
   },
   {
     "name": "National Autism Association - Give a Voice Grant",
@@ -8496,7 +8547,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.837152,
       "lng": -98.557754
-    }
+    },
+    "placeless": true
   },
   {
     "name": "United Healthcare Children's Foundation",
@@ -8512,7 +8564,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.806849,
       "lng": -98.589666
-    }
+    },
+    "placeless": true
   },
   {
     "name": "NEXT for AUTISM - Grants Program",
@@ -8528,7 +8581,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.85123,
       "lng": -98.586569
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Justice Center",
@@ -8547,7 +8601,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.816039,
       "lng": -98.558579
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Legal Reform for the Intellectually & Developmentally Disabled (LRIDD)",
@@ -8564,7 +8619,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 37.4316,
       "lng": -78.6569
-    }
+    },
+    "placeless": true
   },
   {
     "name": "29 Acres",
@@ -8580,7 +8636,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.823156,
       "lng": -98.603454
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Speaks - Housing and Community Living",
@@ -8597,7 +8654,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.848476,
       "lng": -98.565168
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Autism Society - Housing Resources",
@@ -8614,7 +8672,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.803497,
       "lng": -98.576409
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Washington Autism Alliance - Supported Living",
@@ -8646,7 +8705,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.844659,
       "lng": -98.598719
-    }
+    },
+    "placeless": true
   },
   {
     "name": "Birch Tree Center - Housing Resources",
@@ -8662,7 +8722,8 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 39.829229,
       "lng": -98.554037
-    }
+    },
+    "placeless": true
   }
 ];
 
