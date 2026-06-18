@@ -1,7 +1,7 @@
 
 // Community Resources Data
 // Generated from community_resources.json on: 2026-06-18
-// Total resources: 468
+// Total resources: 464
 
 const communityResourcesData = [
   {
@@ -177,7 +177,7 @@ const communityResourcesData = [
   },
   {
     "name": "Autism Society San Francisco Bay Area",
-    "address": "San Francisco Bay Area, CA",
+    "address": "2066 N Capitol Ave #9012 San Jose, CA 95132",
     "phone": "(415) 227-4099",
     "website": "https://sfautismsociety.org",
     "type": "advocacy",
@@ -190,8 +190,8 @@ const communityResourcesData = [
     ],
     "description": "Bringing the Bay Area autism community together through support and advocacy",
     "coordinates": {
-      "lat": 37.7749,
-      "lng": -122.4194
+      "lat": 37.40634,
+      "lng": -121.886801
     }
   },
   {
@@ -523,7 +523,7 @@ const communityResourcesData = [
   },
   {
     "name": "Autism Society of Greater Orlando",
-    "address": "P.O. Box 677055, Orlando, FL 32867",
+    "address": "1650 Sand Lake Road Suite 240, Orlando, FL 32809",
     "phone": "(407) 855-0235",
     "website": "https://asgo.org",
     "type": "advocacy",
@@ -536,8 +536,8 @@ const communityResourcesData = [
     ],
     "description": "One of the largest and oldest local autism organizations in Florida serving hundreds of member families",
     "coordinates": {
-      "lat": 28.535719,
-      "lng": -81.376836
+      "lat": 28.450139,
+      "lng": -81.399365
     }
   },
   {
@@ -1435,7 +1435,7 @@ const communityResourcesData = [
   },
   {
     "name": "Kansas Center for Autism Research and Training (K-CART)",
-    "address": "University of Kansas, Kansas City, KS",
+    "address": "1315 Wakarusa Drive Lawrence, KS 66049",
     "phone": "(913) 897-8471",
     "website": "https://autism.ku.edu",
     "type": "education",
@@ -1448,8 +1448,8 @@ const communityResourcesData = [
     ],
     "description": "University-based autism research and training center providing resources and support",
     "coordinates": {
-      "lat": 39.0515,
-      "lng": -94.6087
+      "lat": 38.960646,
+      "lng": -95.307011
     }
   },
   {
@@ -1682,7 +1682,7 @@ const communityResourcesData = [
   },
   {
     "name": "Dartmouth Health Children's - BANDS Program",
-    "address": "Dartmouth-Hitchcock Medical Center, Lebanon, NH",
+    "address": "100 Hitchcock Way Manchester, NH 03104",
     "phone": "(603) 727-6068",
     "website": "https://childrens.dartmouth-health.org/psychiatry/bands",
     "type": "medical",
@@ -1695,8 +1695,8 @@ const communityResourcesData = [
     ],
     "description": "Behavioral and neurodevelopmental services for children with autism spectrum disorders",
     "coordinates": {
-      "lat": 43.6422,
-      "lng": -72.2517
+      "lat": 43.010109,
+      "lng": -71.422413
     }
   },
   {
@@ -1948,7 +1948,7 @@ const communityResourcesData = [
   },
   {
     "name": "Autism Society Central Virginia",
-    "address": "Richmond, VA",
+    "address": "8730 Stony Point Pkwy, Ste 150 Richmond, VA 23235",
     "phone": "(804) 257-0192",
     "website": "https://ascv.org",
     "type": "advocacy",
@@ -1961,8 +1961,8 @@ const communityResourcesData = [
     ],
     "description": "40+ years providing services, advocacy, and support for Central Virginia autism community",
     "coordinates": {
-      "lat": 37.5407,
-      "lng": -77.436
+      "lat": 37.552568,
+      "lng": -77.566491
     }
   },
   {
@@ -2333,7 +2333,7 @@ const communityResourcesData = [
   },
   {
     "name": "University of Arizona - The A Center",
-    "address": "P.O. Box 210056, Tucson, AZ 85721",
+    "address": "1435 E. 4th Street, Tucson, AZ 85721",
     "phone": "(520) 621-7763",
     "website": "https://theacenter.arizona.edu",
     "type": "education",
@@ -2346,13 +2346,13 @@ const communityResourcesData = [
     ],
     "description": "University autism center providing assessment and support services",
     "coordinates": {
-      "lat": 32.2319,
-      "lng": -110.9501
+      "lat": 32.23047,
+      "lng": -110.950465
     }
   },
   {
     "name": "SARRC Mesa Campus",
-    "address": "Mesa, AZ",
+    "address": "2165 N Power Rd, Mesa, AZ 85215",
     "phone": "(602) 340-8717",
     "website": "https://autismcenter.org/mesa",
     "type": "medical",
@@ -2365,8 +2365,8 @@ const communityResourcesData = [
     ],
     "description": "Southwest Autism Research & Resource Center Mesa location serving East Valley families",
     "coordinates": {
-      "lat": 33.4152,
-      "lng": -111.8315
+      "lat": 33.454375,
+      "lng": -111.684025
     }
   },
   {
@@ -2504,7 +2504,7 @@ const communityResourcesData = [
   },
   {
     "name": "Soar Autism Center",
-    "address": "Colorado Springs, CO",
+    "address": "8890 N Union Blvd, Suite 200, Colorado Springs, CO 80920",
     "phone": "Contact via website",
     "website": "https://soarautismcenter.com",
     "type": "therapy",
@@ -2517,27 +2517,8 @@ const communityResourcesData = [
     ],
     "description": "Integrated autism therapy center providing comprehensive multi-disciplinary services",
     "coordinates": {
-      "lat": 38.8339,
-      "lng": -104.8214
-    }
-  },
-  {
-    "name": "Autism Intervention Milwaukee",
-    "address": "Milwaukee, WI",
-    "phone": "Contact via website",
-    "website": "https://www.autisminterventionmilwaukee.com",
-    "type": "therapy",
-    "source": "State Resources 2025 - Wisconsin",
-    "services": [
-      "ABA Services",
-      "Behavioral Intervention",
-      "Family Support",
-      "Skills Development"
-    ],
-    "description": "Autism intervention services providing ABA therapy and behavioral support in Milwaukee",
-    "coordinates": {
-      "lat": 43.0389,
-      "lng": -88.0084
+      "lat": 38.960364,
+      "lng": -104.762762
     }
   },
   {
@@ -2561,7 +2542,7 @@ const communityResourcesData = [
   },
   {
     "name": "The Summit Center",
-    "address": "Buffalo, NY",
+    "address": "150 Stahl Road Getzville, NY 14068",
     "phone": "Contact via website",
     "website": "https://www.thesummitcenter.org",
     "type": "therapy",
@@ -2574,8 +2555,8 @@ const communityResourcesData = [
     ],
     "description": "Leading provider of behavioral health and autism services in Western New York",
     "coordinates": {
-      "lat": 42.8864,
-      "lng": -78.8784
+      "lat": 43.01284,
+      "lng": -78.768189
     }
   },
   {
@@ -2848,7 +2829,7 @@ const communityResourcesData = [
   },
   {
     "name": "Catalyst Behavior - Sioux Falls",
-    "address": "Sioux Falls, SD",
+    "address": "1105 W. Russell St. Sioux Falls, SD 57104",
     "phone": "Contact via website",
     "website": "https://catalystbehavior.com/sioux-falls-sd",
     "type": "therapy",
@@ -2861,8 +2842,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and autism treatment services in Sioux Falls",
     "coordinates": {
-      "lat": 43.546,
-      "lng": -96.7313
+      "lat": 43.563496,
+      "lng": -96.741059
     }
   },
   {
@@ -3002,7 +2983,7 @@ const communityResourcesData = [
   },
   {
     "name": "Circle City ABA - Augusta",
-    "address": "Augusta, GA",
+    "address": "3670 Wheeler Road, Augusta, GA 30909",
     "phone": "Contact via website",
     "website": "https://circlecityaba.com/augusta-ga",
     "type": "therapy",
@@ -3015,13 +2996,13 @@ const communityResourcesData = [
     ],
     "description": "State-of-the-art ABA therapy center serving Augusta and surrounding areas",
     "coordinates": {
-      "lat": 33.4735,
-      "lng": -82.0105
+      "lat": 33.483123,
+      "lng": -82.098038
     }
   },
   {
     "name": "Atrium Health Navicent - Autism and Developmental Center",
-    "address": "Macon, GA",
+    "address": "777 Hemlock Street, Macon, GA 31201",
     "phone": "(478) 633-8100",
     "website": "https://navicenthealth.org/service-center/autism-and-developmental-center-navicent-health",
     "type": "medical",
@@ -3034,8 +3015,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism and developmental center providing pediatric behavioral health services",
     "coordinates": {
-      "lat": 32.8407,
-      "lng": -83.6324
+      "lat": 32.83312,
+      "lng": -83.63629
     }
   },
   {
@@ -3116,7 +3097,7 @@ const communityResourcesData = [
   },
   {
     "name": "Gulfsouth Autism Center",
-    "address": "Baton Rouge and Prairieville, LA",
+    "address": "9063 Siegen Lane, Ste A Baton Rouge, LA 70810",
     "phone": "Contact via website",
     "website": "https://gulfsouthautismcenter.com",
     "type": "therapy",
@@ -3129,8 +3110,8 @@ const communityResourcesData = [
     ],
     "description": "Autism center with offices in Baton Rouge and Prairieville",
     "coordinates": {
-      "lat": 30.4515,
-      "lng": -91.1871
+      "lat": 30.367286,
+      "lng": -91.074988
     }
   },
   {
@@ -3306,7 +3287,7 @@ const communityResourcesData = [
   },
   {
     "name": "BlueSprig Autism - Greenville",
-    "address": "Greenville County, SC",
+    "address": "10 Arborland Way Greenville, SC 29615",
     "phone": "Contact via website",
     "website": "https://www.bluesprigautism.com/centers/south-carolina/bluesprig-greenville",
     "type": "therapy",
@@ -3319,8 +3300,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy and autism treatment center serving greater Greenville County",
     "coordinates": {
-      "lat": 34.8526,
-      "lng": -82.394
+      "lat": 34.866004,
+      "lng": -82.331964
     }
   },
   {
@@ -3439,7 +3420,7 @@ const communityResourcesData = [
   },
   {
     "name": "MAC Midwest - Minnesota Autism Center",
-    "address": "Twin Cities, MN",
+    "address": "5868 Baker Road Minnetonka, MN 55345",
     "phone": "(952) 767-4200",
     "website": "https://www.mnautism.org",
     "type": "therapy",
@@ -3452,13 +3433,13 @@ const communityResourcesData = [
     ],
     "description": "Minnesota autism center providing comprehensive therapy and support services",
     "coordinates": {
-      "lat": 44.9778,
-      "lng": -93.265
+      "lat": 44.89824,
+      "lng": -93.447457
     }
   },
   {
     "name": "Midwest Autism & Therapy Centers",
-    "address": "Twin Cities area, MN",
+    "address": "7550 France Ave. S., Suite 200 Edina, MN 55435",
     "phone": "(515) 513-9649",
     "website": "https://midwestautismservices.com",
     "type": "therapy",
@@ -3471,8 +3452,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism therapy services in the Twin Cities metropolitan area",
     "coordinates": {
-      "lat": 44.975219,
-      "lng": -93.262636
+      "lat": 44.866414,
+      "lng": -93.32905
     }
   },
   {
@@ -3648,7 +3629,7 @@ const communityResourcesData = [
   },
   {
     "name": "The Center for Autism - Newark",
-    "address": "Newark, NJ",
+    "address": "341 Roseville Ave Newark, NJ 07107",
     "phone": "(973) 732-9301",
     "website": "https://centerforautismnj.org",
     "type": "general_support",
@@ -3661,8 +3642,8 @@ const communityResourcesData = [
     ],
     "description": "Center providing day services and support for adults with autism",
     "coordinates": {
-      "lat": 40.7357,
-      "lng": -74.1724
+      "lat": 40.762424,
+      "lng": -74.187466
     }
   },
   {
@@ -3781,7 +3762,7 @@ const communityResourcesData = [
   },
   {
     "name": "The Arc of Frederick County",
-    "address": "Frederick, MD",
+    "address": "620A Research Court Frederick, MD 21703",
     "phone": "(301) 663-0909",
     "website": "https://www.arcfc.org",
     "type": "advocacy",
@@ -3794,13 +3775,13 @@ const communityResourcesData = [
     ],
     "description": "Advocacy organization supporting individuals with developmental disabilities including autism",
     "coordinates": {
-      "lat": 39.4143,
-      "lng": -77.4105
+      "lat": 39.402687,
+      "lng": -77.43469
     }
   },
   {
     "name": "Children's National Hospital - Center for Autism Spectrum Disorders",
-    "address": "Washington, DC",
+    "address": "Specialty Care Takoma Theatre 6833 4th St. NW Washington, DC 20012",
     "phone": "Contact via website",
     "website": "https://www.childrensnational.org/get-care/departments/center-for-autism-spectrum-disorders",
     "type": "medical",
@@ -3813,8 +3794,8 @@ const communityResourcesData = [
     ],
     "description": "Largest pediatric autism program in Washington DC region providing comprehensive services",
     "coordinates": {
-      "lat": 38.900307,
-      "lng": -77.038119
+      "lat": 38.972782,
+      "lng": -77.017955
     }
   },
   {
@@ -4012,7 +3993,7 @@ const communityResourcesData = [
   },
   {
     "name": "The Matthew Reardon Center for Autism",
-    "address": "Savannah, GA",
+    "address": "11500 Middleground Road, Savannah, GA 31419",
     "phone": "(912) 355-9098",
     "website": "https://matthewreardon.org",
     "type": "education",
@@ -4025,8 +4006,8 @@ const communityResourcesData = [
     ],
     "description": "Autism center providing educational programs and community support in Savannah",
     "coordinates": {
-      "lat": 32.0809,
-      "lng": -81.0912
+      "lat": 31.988929,
+      "lng": -81.157449
     }
   },
   {
@@ -4107,7 +4088,7 @@ const communityResourcesData = [
   },
   {
     "name": "Hopebridge Autism Therapy - Winston-Salem",
-    "address": "Winston-Salem, NC",
+    "address": "130 Charlois Blvd, Winston-Salem, NC 27103",
     "phone": "(855) 324-0885",
     "website": "https://www.hopebridge.com/centers/winston-salem-nc",
     "type": "therapy",
@@ -4120,8 +4101,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism therapy services in Winston-Salem",
     "coordinates": {
-      "lat": 36.0999,
-      "lng": -80.2442
+      "lat": 36.08538,
+      "lng": -80.302038
     }
   },
   {
@@ -4141,25 +4122,6 @@ const communityResourcesData = [
     "coordinates": {
       "lat": 35.9799,
       "lng": -78.5097
-    }
-  },
-  {
-    "name": "BlueSprig Autism - Greenville",
-    "address": "Greenville, SC",
-    "phone": "Contact via website",
-    "website": "https://www.bluesprigautism.com/centers/south-carolina/bluesprig-greenville",
-    "type": "therapy",
-    "source": "Eastern States 2025 - South Carolina",
-    "services": [
-      "ABA Therapy",
-      "Center-based Services",
-      "Evidence-based Treatment",
-      "Family Training"
-    ],
-    "description": "ABA therapy center serving children with autism in the Greenville area",
-    "coordinates": {
-      "lat": 34.850019,
-      "lng": -82.391636
     }
   },
   {
@@ -4240,7 +4202,7 @@ const communityResourcesData = [
   },
   {
     "name": "BlueSprig Autism - Lexington",
-    "address": "Lexington, KY",
+    "address": "2464 Fortune Dr. Suite 195 Lexington, KY 40509",
     "phone": "Contact via website",
     "website": "https://www.bluesprigautism.com/centers/kentucky/bluesprig-lexington",
     "type": "therapy",
@@ -4253,8 +4215,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center providing autism treatment in Lexington",
     "coordinates": {
-      "lat": 38.0406,
-      "lng": -84.5037
+      "lat": 38.033537,
+      "lng": -84.446196
     }
   },
   {
@@ -4411,7 +4373,7 @@ const communityResourcesData = [
   },
   {
     "name": "Gulfsouth Autism Center",
-    "address": "Baton Rouge & Prairieville, LA",
+    "address": "17520 Old Jefferson Highway Prairieville, LA 70769",
     "phone": "Contact via website",
     "website": "https://gulfsouthautismcenter.com",
     "type": "medical",
@@ -4424,8 +4386,8 @@ const communityResourcesData = [
     ],
     "description": "Autism center with offices in Baton Rouge and Prairieville",
     "coordinates": {
-      "lat": 30.448919,
-      "lng": -91.184736
+      "lat": 30.322431,
+      "lng": -90.976786
     }
   },
   {
@@ -4449,7 +4411,7 @@ const communityResourcesData = [
   },
   {
     "name": "Access for Autism (A4A) - University of Arkansas",
-    "address": "Epley Center for Health Professions, Fayetteville, AR",
+    "address": "606 N. Razorback Road Fayetteville, AR 72701",
     "phone": "(479) 575-2000",
     "website": "https://accessforautism.uark.edu",
     "type": "medical",
@@ -4462,13 +4424,13 @@ const communityResourcesData = [
     ],
     "description": "University of Arkansas autism program providing diagnostic and therapy services",
     "coordinates": {
-      "lat": 36.0679,
-      "lng": -94.1574
+      "lat": 36.071239,
+      "lng": -94.179907
     }
   },
   {
     "name": "Arkansas Autism Resource and Outreach Center (AAROC)",
-    "address": "University of Arkansas, Fayetteville, AR",
+    "address": "10809 Executive Center Drive Searcy Building, Suite 316 Little Rock, AR 72211",
     "phone": "Contact via website",
     "website": "https://uofapartners.uark.edu/projects/autism-resource-outreach",
     "type": "education",
@@ -4481,13 +4443,13 @@ const communityResourcesData = [
     ],
     "description": "Resource center providing training and support for families with children diagnosed with autism",
     "coordinates": {
-      "lat": 36.065319,
-      "lng": -94.155036
+      "lat": 34.739227,
+      "lng": -92.394575
     }
   },
   {
     "name": "BlueSprig Autism - Fayetteville",
-    "address": "Fayetteville, AR",
+    "address": "3155 N. College Ave. Suite 108 Fayetteville, AR 72703",
     "phone": "(479) 957-9121",
     "website": "https://www.bluesprigautism.com/centers/arkansas/bluesprig-fayetteville",
     "type": "therapy",
@@ -4500,8 +4462,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center providing autism treatment in Fayetteville",
     "coordinates": {
-      "lat": 36.068333,
-      "lng": -94.162331
+      "lat": 36.108806,
+      "lng": -94.145256
     }
   },
   {
@@ -4582,7 +4544,7 @@ const communityResourcesData = [
   },
   {
     "name": "Mary W. Parker Autism Center - Institute of Living",
-    "address": "Hartford, CT",
+    "address": "200 Retreat Avenue Hartford, CT 06106",
     "phone": "Contact via website",
     "website": "https://instituteofliving.org/programs-services/child-adolescent-services/departments-services/autism-center",
     "type": "medical",
@@ -4595,13 +4557,13 @@ const communityResourcesData = [
     ],
     "description": "Outpatient autism program providing assessment and treatment across all ages",
     "coordinates": {
-      "lat": 41.7658,
-      "lng": -72.6734
+      "lat": 41.751489,
+      "lng": -72.682107
     }
   },
   {
     "name": "InBloom Autism Services - East Hartford",
-    "address": "East Hartford, CT",
+    "address": "77 Hartland St, Suite 108 East Hartford, CT 06108",
     "phone": "Contact via website",
     "website": "https://inbloomautism.com/aba-therapy-learning-centers/aba-therapy-connecticut",
     "type": "therapy",
@@ -4614,13 +4576,13 @@ const communityResourcesData = [
     ],
     "description": "Early intervention ABA therapy center specializing in young children",
     "coordinates": {
-      "lat": 41.782,
-      "lng": -72.612
+      "lat": 41.762485,
+      "lng": -72.657152
     }
   },
   {
     "name": "InBloom Autism Services - New Haven-Hamden",
-    "address": "New Haven-Hamden, CT",
+    "address": "77 Hartland St, Suite 108 East Hartford, CT 06108",
     "phone": "Contact via website",
     "website": "https://inbloomautism.com/aba-therapy-learning-centers/aba-therapy-connecticut",
     "type": "therapy",
@@ -4633,8 +4595,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive play-based ABA therapy services in New Haven area",
     "coordinates": {
-      "lat": 41.3083,
-      "lng": -72.9279
+      "lat": 41.762485,
+      "lng": -72.657152
     }
   },
   {
@@ -4677,7 +4639,7 @@ const communityResourcesData = [
   },
   {
     "name": "CARD - University of Florida Gainesville",
-    "address": "Gainesville, FL",
+    "address": "4101 NW 89th Boulevard Gainesville, FL 32606",
     "phone": "1-800-9-AUTISM",
     "website": "https://card.ufl.edu",
     "type": "education",
@@ -4690,8 +4652,8 @@ const communityResourcesData = [
     ],
     "description": "University of Florida CARD center providing statewide autism support and resources",
     "coordinates": {
-      "lat": 29.6516,
-      "lng": -82.3248
+      "lat": 29.691477,
+      "lng": -82.437183
     }
   },
   {
@@ -4810,7 +4772,7 @@ const communityResourcesData = [
   },
   {
     "name": "Chattanooga Autism Center",
-    "address": "Chattanooga, TN",
+    "address": "1400 McCallie Avenue, Suite 100 Chattanooga, TN 37404",
     "phone": "(423) 531-6961",
     "website": "https://www.chattanoogaautismcenter.org",
     "type": "medical",
@@ -4823,13 +4785,13 @@ const communityResourcesData = [
     ],
     "description": "Outpatient autism center providing therapy and diagnostic services in Chattanooga",
     "coordinates": {
-      "lat": 35.0456,
-      "lng": -85.3097
+      "lat": 35.038349,
+      "lng": -85.281444
     }
   },
   {
     "name": "Siskin Children's Institute",
-    "address": "Chattanooga & Nashville, TN",
+    "address": "2201 Murphy Ave., Suite 306, Nashville, TN 37203",
     "phone": "Contact via website",
     "website": "https://www.siskin.org/autism-diagnosis",
     "type": "medical",
@@ -4842,8 +4804,8 @@ const communityResourcesData = [
     ],
     "description": "Autism diagnostic services available in Chattanooga and Nashville locations",
     "coordinates": {
-      "lat": 35.043019,
-      "lng": -85.307336
+      "lat": 36.154687,
+      "lng": -86.806051
     }
   },
   {
@@ -4887,7 +4849,7 @@ const communityResourcesData = [
   },
   {
     "name": "AHRC NYC Crisis Respite Program",
-    "address": "New York City, NY",
+    "address": "83 Maiden Lane New York, NY 10038",
     "phone": "Contact via website",
     "website": "https://www.ahrcnyc.org/services/families/respite",
     "type": "general_support",
@@ -4900,8 +4862,8 @@ const communityResourcesData = [
     ],
     "description": "Crisis respite and transitional housing program for autism community emergencies",
     "coordinates": {
-      "lat": 40.710219,
-      "lng": -74.003636
+      "lat": 40.707539,
+      "lng": -74.007604
     }
   },
   {
@@ -4944,7 +4906,7 @@ const communityResourcesData = [
   },
   {
     "name": "Autism Society San Diego",
-    "address": "San Diego, CA",
+    "address": "4699 Murphy Canyon Rd. Suite 209 San Diego, CA 92123",
     "phone": "Contact via website",
     "website": "https://www.autismsocietysandiego.org/",
     "type": "advocacy",
@@ -4957,13 +4919,13 @@ const communityResourcesData = [
     ],
     "description": "Offers comprehensive support programs and resources for San Diego autism community",
     "coordinates": {
-      "lat": 32.7157,
-      "lng": -117.1611
+      "lat": 32.827305,
+      "lng": -117.119414
     }
   },
   {
     "name": "Morgan Autism Center",
-    "address": "San Jose, CA",
+    "address": "950 St Elizabeth Dr, San Jose, CA 95126",
     "phone": "Contact via website",
     "website": "https://www.morgancenter.org/",
     "type": "general_support",
@@ -4976,8 +4938,8 @@ const communityResourcesData = [
     ],
     "description": "Helps children and adults with autism maximize their potential in a dignified, positive and loving environment",
     "coordinates": {
-      "lat": 37.3382,
-      "lng": -121.8863
+      "lat": 37.306262,
+      "lng": -121.91633
     }
   },
   {
@@ -5021,7 +4983,7 @@ const communityResourcesData = [
   },
   {
     "name": "Child Mind Institute - San Francisco",
-    "address": "San Francisco, CA",
+    "address": "220 Montgomery Street, Suite 600 San Francisco, CA 94104",
     "phone": "Contact via website",
     "website": "https://childmind.org/care/areas-of-expertise/autism-clinical-center/",
     "type": "medical",
@@ -5034,8 +4996,8 @@ const communityResourcesData = [
     ],
     "description": "Integrated clinical center and research lab supporting toddlers through young adults with autism spectrum disorder",
     "coordinates": {
-      "lat": 37.778588,
-      "lng": -122.414589
+      "lat": 37.7912,
+      "lng": -122.402355
     }
   },
   {
@@ -5059,7 +5021,7 @@ const communityResourcesData = [
   },
   {
     "name": "L.E.A.P.S. and Beyond",
-    "address": "Tacoma, Oak Harbor, Bremerton, Spokane, WA",
+    "address": "1720 N. Hamilton St. Spokane, WA 99207",
     "phone": "Contact via website",
     "website": "https://leapsandbeyond.com/",
     "type": "therapy",
@@ -5072,8 +5034,8 @@ const communityResourcesData = [
     ],
     "description": "ABA services company enabling individuals with autism and developmental disabilities to live life to the fullest",
     "coordinates": {
-      "lat": 47.2529,
-      "lng": -122.4443
+      "lat": 47.673322,
+      "lng": -117.396463
     }
   },
   {
@@ -5096,7 +5058,7 @@ const communityResourcesData = [
   },
   {
     "name": "UW Autism Center - Tacoma",
-    "address": "UW Tacoma campus, Tacoma, WA",
+    "address": "1900 Commerce St Tacoma, WA 98402",
     "phone": "Contact via website",
     "website": "https://depts.washington.edu/uwautism/about/uw-autism-center-tacoma/",
     "type": "medical",
@@ -5109,13 +5071,13 @@ const communityResourcesData = [
     ],
     "description": "University of Washington Autism Center serving South Sound families since 2004 with ABA-based therapy",
     "coordinates": {
-      "lat": 47.250319,
-      "lng": -122.441936
+      "lat": 47.244934,
+      "lng": -122.437599
     }
   },
   {
     "name": "ACES ABA - Seattle",
-    "address": "Seattle, WA",
+    "address": "914 140th Ave NE., Suite 201, Bellevue, WA 98007",
     "phone": "Contact via website",
     "website": "https://www.acesaba.com/locations/seattle",
     "type": "therapy",
@@ -5127,8 +5089,8 @@ const communityResourcesData = [
     ],
     "description": "Applied Behavior Analysis therapy services for children with autism spectrum disorder in Seattle",
     "coordinates": {
-      "lat": 47.603619,
-      "lng": -122.329736
+      "lat": 47.618074,
+      "lng": -122.153536
     }
   },
   {
@@ -5151,7 +5113,7 @@ const communityResourcesData = [
   },
   {
     "name": "OHSU Doernbecher - Pediatric Autism",
-    "address": "Portland and Eugene, OR",
+    "address": "700 S.W. Campus Drive Portland, OR 97239",
     "phone": "(503) 346-0640 (Portland), (503) 346-1640 (Eugene)",
     "website": "https://www.ohsu.edu/doernbecher/pediatric-autism",
     "type": "medical",
@@ -5164,8 +5126,8 @@ const communityResourcesData = [
     ],
     "description": "Oregon's largest autism clinic serving 1,000 children annually with evaluation services in Portland and Eugene",
     "coordinates": {
-      "lat": 45.515633,
-      "lng": -122.683331
+      "lat": 45.49791,
+      "lng": -122.685851
     }
   },
   {
@@ -5262,7 +5224,7 @@ const communityResourcesData = [
   },
   {
     "name": "Nevada Autism Center",
-    "address": "Las Vegas, NV",
+    "address": "7730 West Sahara Avenue #115 Las Vegas, NV 89117",
     "phone": "Contact via website",
     "website": "https://nevadaautism.com/",
     "type": "therapy",
@@ -5273,8 +5235,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy center serving Las Vegas autism community",
     "coordinates": {
-      "lat": 36.1699,
-      "lng": -115.1398
+      "lat": 36.143775,
+      "lng": -115.259805
     }
   },
   {
@@ -5315,7 +5277,7 @@ const communityResourcesData = [
   },
   {
     "name": "FEAT of Southern Nevada",
-    "address": "Las Vegas area, NV",
+    "address": "4485 S Jones Blvd, Las Vegas, NV 89103",
     "phone": "Contact via website",
     "website": "https://featsonv.org/",
     "type": "advocacy",
@@ -5328,13 +5290,13 @@ const communityResourcesData = [
     ],
     "description": "Families for Effective Autism Treatment support network providing advocacy and resources in Southern Nevada",
     "coordinates": {
-      "lat": 36.170333,
-      "lng": -115.144731
+      "lat": 36.108227,
+      "lng": -115.225012
     }
   },
   {
     "name": "University of Utah Health - Autism Clinic",
-    "address": "Salt Lake City, UT",
+    "address": "240 E Morris Ave, Fourth Floor South Salt Lake, UT 84115",
     "phone": "Contact via website",
     "website": "https://healthcare.utah.edu/hmhi/treatments/autism-clinic",
     "type": "medical",
@@ -5348,8 +5310,8 @@ const communityResourcesData = [
     ],
     "description": "University health clinic serving children, adolescents, and adults with comprehensive autism services",
     "coordinates": {
-      "lat": 40.7608,
-      "lng": -111.891
+      "lat": 40.717782,
+      "lng": -111.884285
     }
   },
   {
@@ -5427,7 +5389,7 @@ const communityResourcesData = [
   },
   {
     "name": "Soar Autism Center",
-    "address": "Denver area, CO",
+    "address": "6750 W 52nd Ave, Suite G, Arvada, CO 80002",
     "phone": "Contact via website",
     "website": "https://soarautismcenter.com/",
     "type": "therapy",
@@ -5440,8 +5402,8 @@ const communityResourcesData = [
     ],
     "description": "Integrated autism therapy combining ESDM-based ABA, speech, and occupational therapy for children",
     "coordinates": {
-      "lat": 39.7392,
-      "lng": -104.9903
+      "lat": 39.791019,
+      "lng": -105.070439
     }
   },
   {
@@ -5504,27 +5466,8 @@ const communityResourcesData = [
     }
   },
   {
-    "name": "Southwest Autism Research & Resource Center (SARRC)",
-    "address": "Phoenix, AZ",
-    "phone": "Contact via website",
-    "website": "https://autismcenter.org/",
-    "type": "medical",
-    "source": "Western States 2025 - Arizona",
-    "services": [
-      "Research",
-      "Resources",
-      "Clinical Services",
-      "Community Support"
-    ],
-    "description": "Leading autism research and resource center providing clinical services and community support in Phoenix",
-    "coordinates": {
-      "lat": 33.445819,
-      "lng": -112.071636
-    }
-  },
-  {
     "name": "Arizona Institute for Autism",
-    "address": "Scottsdale, Gilbert, Mesa, Tempe, Phoenix, AZ",
+    "address": "4autism.com 8901 E Raintree Dr Ste 160 Scottsdale, AZ 85260",
     "phone": "Contact via website",
     "website": "https://www.azinstitute4autism.com/",
     "type": "therapy",
@@ -5536,8 +5479,8 @@ const communityResourcesData = [
     ],
     "description": "Expert clinical ABA therapy for children and teens with autism diagnosis in Phoenix metro area",
     "coordinates": {
-      "lat": 33.4942,
-      "lng": -111.9261
+      "lat": 33.618463,
+      "lng": -111.888662
     }
   },
   {
@@ -5560,7 +5503,7 @@ const communityResourcesData = [
   },
   {
     "name": "Intermountain Centers - Arizona",
-    "address": "Phoenix, Tucson, Flagstaff, AZ",
+    "address": "19 Update Intermountain Centers 401 N. Bonita Ave Tucson, AZ 85745",
     "phone": "Contact via website",
     "website": "https://www.intermountaincenters.org/services/autism-aba-services",
     "type": "therapy",
@@ -5571,8 +5514,8 @@ const communityResourcesData = [
     ],
     "description": "ABA services proudly offered across Arizona including Phoenix, Tucson, and Flagstaff",
     "coordinates": {
-      "lat": 33.448833,
-      "lng": -112.078931
+      "lat": 32.227455,
+      "lng": -110.985664
     }
   },
   {
@@ -5594,7 +5537,7 @@ const communityResourcesData = [
   },
   {
     "name": "Carelinks ABA - New Mexico",
-    "address": "Albuquerque, Las Cruces, Rio Rancho, Santa Fe, Roswell, NM",
+    "address": "1209 Mountain Road Pl NE #5793 Albuquerque, NM 87110",
     "phone": "Contact via website",
     "website": "https://www.carelinksaba.com/new-mexico",
     "type": "therapy",
@@ -5606,13 +5549,13 @@ const communityResourcesData = [
     ],
     "description": "In-home ABA therapy serving entire state of New Mexico for children and young adults ages 2-21",
     "coordinates": {
-      "lat": 35.0844,
-      "lng": -106.6504
+      "lat": 35.091209,
+      "lng": -106.557716
     }
   },
   {
     "name": "Prism Autism Services",
-    "address": "Albuquerque, Los Lunas, Santa Fe, NM",
+    "address": "20 22 Prism inc ALBUQUERQUE 4600 Columbine Ave NE Albuquerque, NM 87113",
     "phone": "Contact via website",
     "website": "https://www.prismincnm.com",
     "type": "therapy",
@@ -5625,8 +5568,8 @@ const communityResourcesData = [
     ],
     "description": "Combines ABA, speech therapy, and occupational therapy for individuals with autism in home and clinic settings",
     "coordinates": {
-      "lat": 35.081819,
-      "lng": -106.648036
+      "lat": 35.185769,
+      "lng": -106.594506
     }
   },
   {
@@ -5650,7 +5593,7 @@ const communityResourcesData = [
   },
   {
     "name": "Accel Therapies - Boise",
-    "address": "Boise, Meridian, Nampa, ID",
+    "address": "350 North Mitchell Street Boise, ID 83704",
     "phone": "Contact via website",
     "website": "https://acceltherapies.com/locations/idaho/boise/",
     "type": "therapy",
@@ -5663,8 +5606,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy supporting children with autism, ADHD, and social communication disorders across Boise metro area",
     "coordinates": {
-      "lat": 43.615,
-      "lng": -116.2023
+      "lat": 43.608635,
+      "lng": -116.304126
     }
   },
   {
@@ -5687,7 +5630,7 @@ const communityResourcesData = [
   },
   {
     "name": "Caravel Autism Health - Nampa",
-    "address": "Highway 45, West Georgia Ave, Nampa, ID",
+    "address": "220 W Georgia Ave, Nampa, ID 83686",
     "phone": "Contact via website",
     "website": "https://clinics.caravelautism.com/caravel-autism-health-263dada0b0c6",
     "type": "medical",
@@ -5701,8 +5644,8 @@ const communityResourcesData = [
     ],
     "description": "Specializes in evaluation, diagnosis, and treatment of children on the autism spectrum in child-friendly environment",
     "coordinates": {
-      "lat": 43.5407,
-      "lng": -116.5635
+      "lat": 43.556193,
+      "lng": -116.574862
     }
   },
   {
@@ -5725,7 +5668,7 @@ const communityResourcesData = [
   },
   {
     "name": "Alaska Autism Resource Center (AARC)",
-    "address": "Anchorage, AK (Statewide services)",
+    "address": "2025. Alaska Autism Resource Center 2600 Denali St., Ste 200 Anchorage, AK 99503",
     "phone": "Contact via website",
     "website": "https://www.alaskaarc.org/",
     "type": "advocacy",
@@ -5739,8 +5682,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide autism resource center providing information, training, and consultation via on-site and distance delivery",
     "coordinates": {
-      "lat": 61.215519,
-      "lng": -149.897936
+      "lat": 61.196926,
+      "lng": -149.876816
     }
   },
   {
@@ -5861,7 +5804,7 @@ const communityResourcesData = [
   },
   {
     "name": "MindSights PDX",
-    "address": "Portland area, OR",
+    "address": "847 NE 19th Ave Suite 150 Portland, OR 97232",
     "phone": "Contact via website",
     "website": "https://www.mindsightspdx.com",
     "type": "medical",
@@ -5872,13 +5815,13 @@ const communityResourcesData = [
     ],
     "description": "Providing insight into young minds through comprehensive evaluations",
     "coordinates": {
-      "lat": 45.508307,
-      "lng": -122.679619
+      "lat": 45.528781,
+      "lng": -122.646545
     }
   },
   {
     "name": "Autism Spectrum Therapies - San Diego",
-    "address": "San Diego, CA",
+    "address": "2550 N Hollywood Way Suite 301 Burbank, CA 91505",
     "phone": "Contact via website",
     "website": "https://autismtherapies.com",
     "type": "therapy",
@@ -5889,8 +5832,8 @@ const communityResourcesData = [
     ],
     "description": "Evidence-based ABA therapy services throughout California",
     "coordinates": {
-      "lat": 32.713119,
-      "lng": -117.158736
+      "lat": 34.194905,
+      "lng": -118.348839
     }
   },
   {
@@ -5913,7 +5856,7 @@ const communityResourcesData = [
   },
   {
     "name": "OHSU Doernbecher Pediatric Autism Program",
-    "address": "Portland and Eugene, OR",
+    "address": "700 S.W. Campus Drive Portland, OR 97239",
     "phone": "(503) 346-0640",
     "website": "https://www.ohsu.edu/doernbecher/pediatric-autism",
     "type": "medical",
@@ -5924,13 +5867,13 @@ const communityResourcesData = [
     ],
     "description": "Oregon largest autism clinic serving children and families across Oregon and SW Washington",
     "coordinates": {
-      "lat": 45.4992,
-      "lng": -122.6853
+      "lat": 45.49791,
+      "lng": -122.685851
     }
   },
   {
     "name": "FEAT Southern Nevada",
-    "address": "Las Vegas, NV",
+    "address": "4485 S Jones Blvd, Las Vegas, NV 89103",
     "phone": "Contact via website",
     "website": "https://featsonv.org",
     "type": "advocacy",
@@ -5942,13 +5885,13 @@ const communityResourcesData = [
     ],
     "description": "Families for Effective Autism Treatment support network and advocacy organization",
     "coordinates": {
-      "lat": 36.173588,
-      "lng": -115.134989
+      "lat": 36.108227,
+      "lng": -115.225012
     }
   },
   {
     "name": "University of Utah Health - Autism Spectrum Disorder Clinic",
-    "address": "Salt Lake City, UT",
+    "address": "240 E Morris Ave, Fourth Floor South Salt Lake, UT 84115",
     "phone": "Contact via website",
     "website": "https://healthcare.utah.edu/hmhi/treatments/autism-clinic",
     "type": "medical",
@@ -5961,8 +5904,8 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive autism services for children, adolescents, adults and families",
     "coordinates": {
-      "lat": 40.761233,
-      "lng": -111.895931
+      "lat": 40.717782,
+      "lng": -111.884285
     }
   },
   {
@@ -5984,7 +5927,7 @@ const communityResourcesData = [
   },
   {
     "name": "Autism Society Boulder County",
-    "address": "Boulder, CO",
+    "address": "1905 15th Street #4909, Boulder, CO 80306",
     "phone": "Contact via website",
     "website": "https://autismboulder.org",
     "type": "advocacy",
@@ -5995,8 +5938,8 @@ const communityResourcesData = [
     ],
     "description": "Boulder County-specific autism resources and community support",
     "coordinates": {
-      "lat": 40.012419,
-      "lng": -105.268136
+      "lat": 40.01776,
+      "lng": -105.275796
     }
   },
   {
@@ -6053,7 +5996,7 @@ const communityResourcesData = [
   },
   {
     "name": "Intermountain Centers - Autism & ABA Services",
-    "address": "Phoenix, Tucson, Flagstaff, AZ",
+    "address": "19 Update Intermountain Centers 401 N. Bonita Ave Tucson, AZ 85745",
     "phone": "Contact via website",
     "website": "https://www.intermountaincenters.org/services/autism-aba-services",
     "type": "therapy",
@@ -6063,8 +6006,8 @@ const communityResourcesData = [
     ],
     "description": "Statewide ABA services in major Arizona cities",
     "coordinates": {
-      "lat": 33.441507,
-      "lng": -112.075219
+      "lat": 32.227455,
+      "lng": -110.985664
     }
   },
   {
@@ -6126,7 +6069,7 @@ const communityResourcesData = [
   },
   {
     "name": "Parents Helping Parents (PHP)",
-    "address": "San Jose, CA",
+    "address": "1400 Parkmoor Av Ste 100, San Jose, CA 95126",
     "phone": "(408) 727-5775",
     "website": "https://www.php.com",
     "type": "advocacy",
@@ -6140,8 +6083,8 @@ const communityResourcesData = [
     ],
     "description": "Parent support organization for children and adults with disabilities in San Jose",
     "coordinates": {
-      "lat": 37.335619,
-      "lng": -121.883936
+      "lat": 37.316514,
+      "lng": -121.911442
     }
   },
   {
@@ -6182,7 +6125,7 @@ const communityResourcesData = [
   },
   {
     "name": "Relucent Psychology Group - San Jose",
-    "address": "San Jose, CA",
+    "address": "1101 S Winchester Blvd Suite A101, San Jose, CA 95128",
     "phone": "(408) 680-1441",
     "website": "https://relucentpg.com",
     "type": "medical",
@@ -6194,8 +6137,8 @@ const communityResourcesData = [
     ],
     "description": "Professional autism evaluations for children and adults with free consultation available",
     "coordinates": {
-      "lat": 37.338633,
-      "lng": -121.891231
+      "lat": 37.305675,
+      "lng": -121.950094
     }
   },
   {
@@ -6218,7 +6161,7 @@ const communityResourcesData = [
   },
   {
     "name": "BlueSprig Autism - San Jose",
-    "address": "San Jose, CA",
+    "address": "1835 Park Ave San Jose, CA 95126",
     "phone": "(888) 554-0310",
     "website": "https://www.bluesprigautism.com/centers/california/san-jose",
     "type": "therapy",
@@ -6230,13 +6173,13 @@ const communityResourcesData = [
     ],
     "description": "Evidence-based ABA treatment strategies for children with Autism Spectrum Disorder",
     "coordinates": {
-      "lat": 37.341888,
-      "lng": -121.881489
+      "lat": 37.335603,
+      "lng": -121.926138
     }
   },
   {
     "name": "Autism Behavior Services, Inc. (ABSI) - San Jose",
-    "address": "San Jose, CA (serving San Jose, Milpitas, Cupertino, Santa Clara)",
+    "address": "2080 N. Tustin Ave Santa Ana, CA 92705",
     "phone": "(877) 248-2661",
     "website": "https://autismbehaviorservices.com/offices/san-jose-office",
     "type": "therapy",
@@ -6249,13 +6192,13 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA therapy at home, school, community, and online via telehealth",
     "coordinates": {
-      "lat": 37.331307,
-      "lng": -121.887519
+      "lat": 33.76428,
+      "lng": -117.835826
     }
   },
   {
     "name": "The Stepping Stones Group - San Jose Autism Learning Center",
-    "address": "San Jose, CA",
+    "address": "577 Salmar Avenue, Campbell, CA 95008",
     "phone": "(844) 577-7771",
     "website": "https://thesteppingstonesgroup.com/california-autism-services/san-jose",
     "type": "therapy",
@@ -6268,8 +6211,8 @@ const communityResourcesData = [
     ],
     "description": "Center-based and at-home ABA programs with diagnostic evaluations",
     "coordinates": {
-      "lat": 37.344803,
-      "lng": -121.890501
+      "lat": 37.293401,
+      "lng": -121.93965
     }
   },
   {
@@ -6310,7 +6253,7 @@ const communityResourcesData = [
   },
   {
     "name": "Evolibri Therapy - Santa Clara",
-    "address": "Santa Clara, CA",
+    "address": "4655 Old Ironsides Dr., Suite 170 Santa Clara, CA 95054",
     "phone": "(408) 735-7990",
     "website": "https://www.evolibri.com",
     "type": "therapy",
@@ -6322,8 +6265,8 @@ const communityResourcesData = [
     ],
     "description": "Multi-disciplinary therapy services for children with autism in Santa Clara",
     "coordinates": {
-      "lat": 37.3541,
-      "lng": -121.9552
+      "lat": 37.397917,
+      "lng": -121.979425
     }
   },
   {
@@ -6364,7 +6307,7 @@ const communityResourcesData = [
   },
   {
     "name": "Bay Area Clinical Associates - San Jose",
-    "address": "San Jose, CA",
+    "address": "901 Campisi Way. Suite 150, Campbell, CA 95008",
     "phone": "(408) 356-3754",
     "website": "https://www.baca.org/autism-and-social-skills-san-jose-peninsula",
     "type": "therapy",
@@ -6376,32 +6319,13 @@ const communityResourcesData = [
     ],
     "description": "Autism and social skills services for children and adolescents in San Jose",
     "coordinates": {
-      "lat": 37.342891,
-      "lng": -121.896325
-    }
-  },
-  {
-    "name": "Autism Society San Francisco Bay Area",
-    "address": "San Jose Chapter, CA",
-    "phone": "(415) 227-8979",
-    "website": "https://sfautismsociety.org",
-    "type": "advocacy",
-    "source": "San Jose Expansion 2025",
-    "services": [
-      "Community Support",
-      "Resources",
-      "Advocacy",
-      "Family Events"
-    ],
-    "description": "Bringing the Bay Area autism community together with support and resources",
-    "coordinates": {
-      "lat": 37.341674,
-      "lng": -121.875224
+      "lat": 37.290279,
+      "lng": -121.934347
     }
   },
   {
     "name": "California Autism Center",
-    "address": "Fresno, Clovis, Merced, CA (Central Valley)",
+    "address": "7010 N Palm Ave, Suite 101 Fresno, CA 93650",
     "phone": "Contact via website",
     "website": "https://caclg.org",
     "type": "therapy",
@@ -6411,13 +6335,13 @@ const communityResourcesData = [
     ],
     "description": "Center-based ABA company serving Fresno, Clovis, Merced and surrounding Central Valley areas",
     "coordinates": {
-      "lat": 36.7378,
-      "lng": -119.7871
+      "lat": 36.837759,
+      "lng": -119.808222
     }
   },
   {
     "name": "Behavior Frontiers - Sacramento",
-    "address": "Sacramento, CA",
+    "address": "3640 American River Drive, Suite 100 Sacramento, CA 95864",
     "phone": "Contact via website",
     "website": "https://www.behaviorfrontiers.com/sacramento-ca",
     "type": "therapy",
@@ -6427,13 +6351,13 @@ const communityResourcesData = [
     ],
     "description": "Expanded ABA therapy program to Sacramento area with professional clinicians",
     "coordinates": {
-      "lat": 38.5816,
-      "lng": -121.4944
+      "lat": 38.570859,
+      "lng": -121.376663
     }
   },
   {
     "name": "Sacramento ABA Therapy",
-    "address": "Sacramento, CA",
+    "address": "2035 Hurley Way, Suite 280 Sacramento, CA 95825",
     "phone": "Contact via website",
     "website": "https://sacramentoabatherapy.com",
     "type": "therapy",
@@ -6444,8 +6368,8 @@ const communityResourcesData = [
     ],
     "description": "Provider of Applied Behavior Analysis therapy and autism treatment services in Sacramento",
     "coordinates": {
-      "lat": 38.579019,
-      "lng": -121.492036
+      "lat": 38.588977,
+      "lng": -121.418116
     }
   },
   {
@@ -6466,7 +6390,7 @@ const communityResourcesData = [
   },
   {
     "name": "Behavior Frontiers - Bakersfield",
-    "address": "Bakersfield, CA",
+    "address": "5080 California Avenue, Suite 250 Bakersfield, CA 93309",
     "phone": "Contact via website",
     "website": "https://www.behaviorfrontiers.com/bakersfield-ca",
     "type": "therapy",
@@ -6476,8 +6400,8 @@ const communityResourcesData = [
     ],
     "description": "Exceptional ABA treatment program serving Bakersfield area",
     "coordinates": {
-      "lat": 35.370719,
-      "lng": -119.016336
+      "lat": 35.361931,
+      "lng": -119.059529
     }
   },
   {
@@ -6547,7 +6471,7 @@ const communityResourcesData = [
   },
   {
     "name": "Inland Regional Center",
-    "address": "San Bernardino and Riverside Counties, CA",
+    "address": "1365 South Waterman Avenue San Bernardino, CA 92408",
     "phone": "Contact via website",
     "website": "https://www.inlandrc.org",
     "type": "general_support",
@@ -6558,13 +6482,13 @@ const communityResourcesData = [
     ],
     "description": "Serving individuals with developmental disabilities in San Bernardino and Riverside Counties",
     "coordinates": {
-      "lat": 34.060719,
-      "lng": -117.648536
+      "lat": 34.076019,
+      "lng": -117.278667
     }
   },
   {
     "name": "IEAACE - Inland Empire Autism Assessment Center",
-    "address": "San Bernardino and Riverside County, CA",
+    "address": "1499 S. Tippecanoe Ave., #A San Bernardino, CA 92408",
     "phone": "Contact via website",
     "website": "https://www.autismassessment4ie.org",
     "type": "medical",
@@ -6575,8 +6499,8 @@ const communityResourcesData = [
     ],
     "description": "Two convenient centers serving San Bernardino and Riverside counties with autism assessments",
     "coordinates": {
-      "lat": 34.063733,
-      "lng": -117.655831
+      "lat": 34.073937,
+      "lng": -117.259702
     }
   },
   {
@@ -6599,7 +6523,7 @@ const communityResourcesData = [
   },
   {
     "name": "CHOC - Thompson Autism and Neurodevelopmental Center",
-    "address": "Orange County, CA",
+    "address": "1201 W La Veta Ave Orange, CA 92868",
     "phone": "Contact via website",
     "website": "https://choc.org/autism-neurodevelopmental",
     "type": "medical",
@@ -6610,13 +6534,13 @@ const communityResourcesData = [
     ],
     "description": "Centralized early diagnosis for autism and advanced therapy at CHOC",
     "coordinates": {
-      "lat": 33.682019,
-      "lng": -117.824136
+      "lat": 33.780382,
+      "lng": -117.864943
     }
   },
   {
     "name": "Valley Mountain Regional Center",
-    "address": "Central Valley, CA (serving Stockton area)",
+    "address": "702 North Aurora Street Stockton, CA 95202",
     "phone": "Contact via website",
     "website": "https://www.vmrc.net",
     "type": "general_support",
@@ -6627,13 +6551,13 @@ const communityResourcesData = [
     ],
     "description": "Regional center providing disability services and support for Central Valley including Stockton",
     "coordinates": {
-      "lat": 37.9577,
-      "lng": -121.2908
+      "lat": 37.962549,
+      "lng": -121.281785
     }
   },
   {
     "name": "PACE School",
-    "address": "Pruneridge Campus (Santa Clara), Sunnyvale Campus, CA",
+    "address": "1880 Pruneridge Avenue Santa Clara, CA 95050",
     "phone": "Contact via website",
     "website": "https://www.pacificautism.org/programs/pace-school",
     "type": "education",
@@ -6644,13 +6568,13 @@ const communityResourcesData = [
     ],
     "description": "WASC-accredited school serving students with moderate to severe autism, emphasis on non-verbal students",
     "coordinates": {
-      "lat": 37.3688,
-      "lng": -121.9844
+      "lat": 37.329832,
+      "lng": -121.952017
     }
   },
   {
     "name": "ABC School - California Autism Foundation",
-    "address": "Richmond, CA",
+    "address": "4138 Lakeside Dr., Richmond, CA 94806",
     "phone": "Contact via website",
     "website": "https://www.calautism.org/programs/abc-school",
     "type": "education",
@@ -6661,8 +6585,8 @@ const communityResourcesData = [
     ],
     "description": "Non-public school with vocational training, culinary, art, music, and self-help skills for ages 6-22",
     "coordinates": {
-      "lat": 37.9358,
-      "lng": -122.3477
+      "lat": 37.988807,
+      "lng": -122.331326
     }
   },
   {
@@ -6806,7 +6730,7 @@ const communityResourcesData = [
   },
   {
     "name": "UC Davis MIND Institute - Sibling Support Program",
-    "address": "Sacramento, CA (Hybrid: Virtual + In-Person)",
+    "address": "2825 50th St. Sacramento, CA 95817",
     "phone": "Contact via website",
     "website": "https://health.ucdavis.edu/mind-institute",
     "type": "general_support",
@@ -6817,8 +6741,8 @@ const communityResourcesData = [
     ],
     "description": "Free hybrid sibling support for youth 7-16 with siblings who have autism, ADHD or other disabilities",
     "coordinates": {
-      "lat": 38.5449,
-      "lng": -121.4298
+      "lat": 38.550232,
+      "lng": -121.447846
     }
   },
   {
@@ -6859,7 +6783,7 @@ const communityResourcesData = [
   },
   {
     "name": "Nationwide Children's - Adolescent Transition Program",
-    "address": "Columbus, OH (serves nationwide)",
+    "address": "700 Childrens Drive Columbus, OH 43205",
     "phone": "Contact via website",
     "website": "https://www.nationwidechildrens.org/specialties/center-for-autism-spectrum-disorders/adolescent-transition-program",
     "type": "medical",
@@ -6870,8 +6794,8 @@ const communityResourcesData = [
     ],
     "description": "Services for adolescents and young adults preparing for transition to adulthood",
     "coordinates": {
-      "lat": 39.9612,
-      "lng": -82.9988
+      "lat": 39.952232,
+      "lng": -82.979595
     }
   },
   {
@@ -7056,7 +6980,7 @@ const communityResourcesData = [
   },
   {
     "name": "Camp Royall",
-    "address": "Moncure, NC",
+    "address": "250 Bill Ash Road Moncure, NC 27559",
     "phone": "Contact via website",
     "website": "https://www.autismsociety-nc.org/camp-royall/programs",
     "type": "general_support",
@@ -7068,8 +6992,8 @@ const communityResourcesData = [
     ],
     "description": "Autism Society of NC camp offering respite care during family camping and specialized programs",
     "coordinates": {
-      "lat": 35.6299,
-      "lng": -79.0342
+      "lat": 35.683452,
+      "lng": -79.154546
     }
   },
   {
@@ -7127,7 +7051,7 @@ const communityResourcesData = [
   },
   {
     "name": "Project ECHO - RUBI",
-    "address": "Columbus, OH (nationwide virtual)",
+    "address": "700 Childrens Drive Columbus, OH 43205",
     "phone": "Contact via website",
     "website": "https://www.nationwidechildrens.org/for-medical-professionals/education-and-training/echo/series/rubi",
     "type": "medical",
@@ -7137,8 +7061,8 @@ const communityResourcesData = [
     ],
     "description": "Improves clinicians knowledge with manualized parent-training program for children with autism",
     "coordinates": {
-      "lat": 39.958619,
-      "lng": -82.996436
+      "lat": 39.952232,
+      "lng": -82.979595
     }
   },
   {
@@ -7200,7 +7124,7 @@ const communityResourcesData = [
   },
   {
     "name": "Lurie Center for Autism - Mass General",
-    "address": "Massachusetts General Hospital, Boston, MA",
+    "address": "55 Fruit Street Boston, MA 02114",
     "phone": "Contact via website",
     "website": "https://www.massgeneral.org/children/autism/lurie-center",
     "type": "medical",
@@ -7213,8 +7137,8 @@ const communityResourcesData = [
     ],
     "description": "Multidisciplinary program providing evaluation and treatment to people of all ages with autism spectrum disorder and Asperger syndrome",
     "coordinates": {
-      "lat": 42.360533,
-      "lng": -71.063831
+      "lat": 42.362486,
+      "lng": -71.069834
     }
   },
   {
@@ -7237,7 +7161,7 @@ const communityResourcesData = [
   },
   {
     "name": "Bressler Program for Autism Spectrum Disorder",
-    "address": "Mass General, Boston, MA",
+    "address": "624 Massachusetts General Hospital 55 Fruit Street Boston, MA 02114",
     "phone": "Contact via website",
     "website": "https://www.massgeneral.org/psychiatry/treatments-and-services/clinical-and-research-program-for-autism-spectrum-disorder",
     "type": "medical",
@@ -7249,8 +7173,8 @@ const communityResourcesData = [
     ],
     "description": "Dedicated to evaluation and care of children, adolescents and young adults with autism spectrum disorder",
     "coordinates": {
-      "lat": 42.353207,
-      "lng": -71.060119
+      "lat": 42.362486,
+      "lng": -71.069834
     }
   },
   {
@@ -7310,7 +7234,7 @@ const communityResourcesData = [
   },
   {
     "name": "Community Autism - Worcester",
-    "address": "Worcester, MA",
+    "address": "48 Elm Street, Worcester, MA 01609",
     "phone": "Contact via website",
     "website": "https://thesteppingstonesgroup.com/massachusetts-autism-services/worcester/",
     "type": "therapy",
@@ -7323,13 +7247,13 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA services with no current waitlist, providing diagnostic evaluations and behavioral therapies",
     "coordinates": {
-      "lat": 42.263033,
-      "lng": -71.807231
+      "lat": 42.265209,
+      "lng": -71.806268
     }
   },
   {
     "name": "Autism Allies",
-    "address": "Worcester, Shrewsbury, Agawam, MA",
+    "address": "901 Springfield Street Agawam, MA 01030",
     "phone": "Contact via website",
     "website": "https://www.autismallies.com/",
     "type": "therapy",
@@ -7342,13 +7266,13 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy services offering center-based, in-home, and virtual telehealth options across multiple Massachusetts locations",
     "coordinates": {
-      "lat": 42.266288,
-      "lng": -71.797489
+      "lat": 42.072786,
+      "lng": -72.659129
     }
   },
   {
     "name": "Mary W. Parker Autism Center - Hartford",
-    "address": "Hartford, CT",
+    "address": "200 Retreat Avenue Hartford, CT 06106",
     "phone": "Contact via website",
     "website": "https://instituteofliving.org/programs-services/child-adolescent-services/departments-services/autism-center",
     "type": "medical",
@@ -7360,13 +7284,13 @@ const communityResourcesData = [
     ],
     "description": "Developing outpatient program for clinical assessment and treatment of individuals across the age continuum with ASD",
     "coordinates": {
-      "lat": 41.763219,
-      "lng": -72.671036
+      "lat": 41.751489,
+      "lng": -72.682107
     }
   },
   {
     "name": "Chapel Haven Schleifer Center",
-    "address": "New Haven, CT",
+    "address": "1040 Whalley Avenue, New Haven, CT 06515",
     "phone": "Contact via website",
     "website": "https://www.chapelhaven.org/",
     "type": "general_support",
@@ -7380,8 +7304,8 @@ const communityResourcesData = [
     ],
     "description": "Specialized programs for individuals with autism and Asperger's including residential, transition, and independent living",
     "coordinates": {
-      "lat": 41.308733,
-      "lng": -72.932831
+      "lat": 41.328667,
+      "lng": -72.964284
     }
   },
   {
@@ -7577,7 +7501,7 @@ const communityResourcesData = [
   },
   {
     "name": "MaineHealth Behavioral Health",
-    "address": "Portland, ME",
+    "address": "37 Andover Rd. Portland, ME 04102",
     "phone": "Contact via website",
     "website": "https://www.mainehealth.org/Maine-Behavioral-Healthcare/Services/Autism-Developmental-Disorders",
     "type": "medical",
@@ -7589,13 +7513,13 @@ const communityResourcesData = [
     ],
     "description": "Expert care for people living with autism and other developmental disorders in Portland",
     "coordinates": {
-      "lat": 43.6591,
-      "lng": -70.2568
+      "lat": 43.653013,
+      "lng": -70.339448
     }
   },
   {
     "name": "ABA Centers of Delaware",
-    "address": "Wilmington, DE",
+    "address": "904 Churchmans Rd, ext. New Castle, DE 19720",
     "phone": "(844) 855-8517",
     "website": "https://www.abacentersde.com/",
     "type": "therapy",
@@ -7608,8 +7532,8 @@ const communityResourcesData = [
     ],
     "description": "Autism diagnosis evaluations and ABA therapy with drastically reduced wait times in Wilmington",
     "coordinates": {
-      "lat": 39.7391,
-      "lng": -75.5398
+      "lat": 39.664248,
+      "lng": -75.61072
     }
   },
   {
@@ -7796,7 +7720,7 @@ const communityResourcesData = [
   },
   {
     "name": "Glenwood",
-    "address": "Birmingham, AL",
+    "address": "150 Glenwood Lane Birmingham, AL 35242",
     "phone": "Contact via website",
     "website": "https://glenwood.org/",
     "type": "general_support",
@@ -7808,8 +7732,8 @@ const communityResourcesData = [
     ],
     "description": "Nonprofit providing 30+ comprehensive treatments and services for children and adults with autism and behavioral health needs",
     "coordinates": {
-      "lat": 33.5186,
-      "lng": -86.8104
+      "lat": 33.481199,
+      "lng": -86.663308
     }
   },
   {
@@ -7833,7 +7757,7 @@ const communityResourcesData = [
   },
   {
     "name": "Easterseals Central Alabama",
-    "address": "Montgomery, AL",
+    "address": "2185 Normandie Drive Montgomery, AL 36111",
     "phone": "Contact via website",
     "website": "https://eastersealscentralalabama.org/autism-resources/",
     "type": "therapy",
@@ -7846,8 +7770,8 @@ const communityResourcesData = [
     ],
     "description": "ASD testing, speech therapy, pediatric OT, and specialized food school programs in Montgomery",
     "coordinates": {
-      "lat": 32.3668,
-      "lng": -86.2999
+      "lat": 32.32875,
+      "lng": -86.275346
     }
   },
   {
@@ -7888,7 +7812,7 @@ const communityResourcesData = [
   },
   {
     "name": "Bluegrass Center for Autism",
-    "address": "Multiple Louisville campuses, KY",
+    "address": "9810 Bluegrass Parkway Louisville, KY 40299",
     "phone": "Contact via website",
     "website": "https://bcaky.org/",
     "type": "therapy",
@@ -7900,8 +7824,8 @@ const communityResourcesData = [
     ],
     "description": "Unique 1:1 approach to empower individuals on autism spectrum with multiple Louisville campuses",
     "coordinates": {
-      "lat": 38.250119,
-      "lng": -85.756136
+      "lat": 38.2222,
+      "lng": -85.573706
     }
   },
   {
@@ -7924,7 +7848,7 @@ const communityResourcesData = [
   },
   {
     "name": "Cultivate Behavioral Health & Education - Kentucky",
-    "address": "Bowling Green, Georgetown, Hebron, Lexington, Louisville, Mount Sterling, KY",
+    "address": "805 Alexa Drive, Suite D, Mount Sterling, KY 40353",
     "phone": "Contact via website",
     "website": "https://cultivatebhe.com/locations/kentucky/",
     "type": "therapy",
@@ -7936,8 +7860,8 @@ const communityResourcesData = [
     ],
     "description": "ABA services across Kentucky with expansion in South Central Kentucky in June 2025",
     "coordinates": {
-      "lat": 38.253133,
-      "lng": -85.763431
+      "lat": 38.065499,
+      "lng": -83.953783
     }
   },
   {
@@ -8175,7 +8099,7 @@ const communityResourcesData = [
   },
   {
     "name": "Community Autism Services - Worcester",
-    "address": "Worcester, MA",
+    "address": "48 Elm Street, Worcester, MA 01609",
     "phone": "Contact via website",
     "website": "https://thesteppingstonesgroup.com/massachusetts-autism-services/worcester",
     "type": "therapy",
@@ -8187,13 +8111,13 @@ const communityResourcesData = [
     ],
     "description": "Comprehensive ABA services and one-on-one behavioral and psychological therapies with no waitlist",
     "coordinates": {
-      "lat": 42.255707,
-      "lng": -71.803519
+      "lat": 42.265209,
+      "lng": -71.806268
     }
   },
   {
     "name": "Mary H. Parker Autism Center - Institute of Living",
-    "address": "Hartford, CT",
+    "address": "200 Retreat Avenue Hartford, CT 06106",
     "phone": "Contact via website",
     "website": "https://instituteofliving.org/programs-services/child-adolescent-services/departments-services/autism-center",
     "type": "medical",
@@ -8203,13 +8127,13 @@ const communityResourcesData = [
     ],
     "description": "Outpatient program for clinical assessment and treatment of individuals with ASD across the age continuum",
     "coordinates": {
-      "lat": 41.766233,
-      "lng": -72.678331
+      "lat": 41.751489,
+      "lng": -72.682107
     }
   },
   {
     "name": "The SEED Center",
-    "address": "Stamford & Greenwich, CT",
+    "address": "30 Buxton Farm Rd., Suite 105 Stamford, CT 06905",
     "phone": "Contact via website",
     "website": "https://seedautismcenter.com",
     "type": "therapy",
@@ -8219,8 +8143,8 @@ const communityResourcesData = [
     ],
     "description": "ABA therapy for Stamford, Greenwich, Norwalk and Westport communities",
     "coordinates": {
-      "lat": 41.0534,
-      "lng": -73.5387
+      "lat": 41.110874,
+      "lng": -73.546109
     }
   },
   {
@@ -8294,7 +8218,7 @@ const communityResourcesData = [
   },
   {
     "name": "MaineHealth Behavioral Health - Autism and Developmental Disorders",
-    "address": "Portland, ME",
+    "address": "37 Andover Rd. Portland, ME 04102",
     "phone": "Contact via website",
     "website": "https://www.mainehealth.org/care-services/behavioral-health-care/developmental-disorder-care-mainehealth-behavioral-health",
     "type": "medical",
@@ -8304,8 +8228,8 @@ const communityResourcesData = [
     ],
     "description": "Expert care for people living with autism and other developmental disorders in Maine",
     "coordinates": {
-      "lat": 43.659533,
-      "lng": -70.261731
+      "lat": 43.653013,
+      "lng": -70.339448
     }
   },
   {
