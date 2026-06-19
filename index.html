@@ -286,20 +286,31 @@ const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
       userMarkerRef.current = new google.maps.Marker({ position: center, map, icon: youSymbol, title: 'Searched location', zIndex: 0 });
     }
 
-    // Focus the map around the searched location
-    if (center) {
-      let eff = radiusMi;
-      if (eff == null) {
-        const ds = show.filter(r => r.distance != null).map(r => r.distance).sort((a,b)=>a-b);
-        eff = ds.length ? Math.min(50, Math.max(8, ds[Math.min(9, ds.length-1)])) : 25;
-      }
-      map.fitBounds(boundsAround(center, eff), 48);
-    } else if (show.length > 1) {
+    // Don't let fitBounds zoom in too far on a tight cluster of pins
+    const capZoom = (max) => google.maps.event.addListenerOnce(map, 'idle', () => {
+      if (map.getZoom() > max) map.setZoom(max);
+    });
+
+    // Focus the map tightly around the pins actually shown on this page
+    const pts = show.filter(r => r.coordinates && !r.placeless);
+    if (center && pts.length > 0) {
+      // Fit the searched location + this page's pins (tighter than a fixed radius)
       const b = new google.maps.LatLngBounds();
-      show.forEach(r => r.coordinates && b.extend(r.coordinates));
+      b.extend(center);
+      pts.forEach(r => b.extend(r.coordinates));
       map.fitBounds(b, 56);
-    } else if (show.length === 1 && show[0].coordinates) {
-      map.setCenter(show[0].coordinates); map.setZoom(12);
+      capZoom(14);
+    } else if (center) {
+      // No located pins on this page — just center on the searched location
+      const eff = radiusMi || 15;
+      map.fitBounds(boundsAround(center, eff), 48);
+    } else if (pts.length > 1) {
+      const b = new google.maps.LatLngBounds();
+      pts.forEach(r => b.extend(r.coordinates));
+      map.fitBounds(b, 56);
+      capZoom(14);
+    } else if (pts.length === 1) {
+      map.setCenter(pts[0].coordinates); map.setZoom(13);
     }
   }, [showKey, ready, centerKey, radiusMi]);
 
