@@ -1,6 +1,6 @@
 // Community Resources Data
 // Generated from community_resources.json on: 2026-06-19
-// Total resources: 925
+// Total resources: 976
 
 window.communityData = [
   {
@@ -17598,6 +17598,1015 @@ window.communityData = [
     "coordinates": {
       "lat": 32.9773,
       "lng": -96.9145
+    }
+  },
+  {
+    "name": "Association of University Centers on Disabilities (AUCD)",
+    "address": "1100 Wayne Ave Suite 1000, Silver Spring, MD 20910",
+    "phone": "(301) 588-8252",
+    "website": "https://www.aucd.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "UCEDD network coordination",
+      "LEND program support",
+      "Disability policy advocacy",
+      "Training and technical assistance"
+    ],
+    "description": "AUCD is the national association of university-based interdisciplinary programs that build the capacities of individuals and communities to support full participation of people with developmental and other disabilities. It coordinates the national network of 67 UCEDDs and LEND programs.",
+    "placeless": true
+  },
+  {
+    "name": "Nisonger Center — Ohio State University (UCEDD)",
+    "address": "1581 Dodd Drive, Columbus, OH 43210",
+    "phone": "(614) 685-3192",
+    "website": "https://nisonger.osu.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis and evaluation",
+      "Interdisciplinary training",
+      "Community-based research",
+      "Family support"
+    ],
+    "description": "The OSU Nisonger Center is Ohio's federally designated University Center for Excellence in Developmental Disabilities, providing evaluation, training, and community services for individuals with intellectual and developmental disabilities including autism.",
+    "coordinates": {
+      "lat": 39.999,
+      "lng": -83.02
+    }
+  },
+  {
+    "name": "Institute on Human Development and Disability — UGA (UCEDD)",
+    "address": "850 College Station Road, Rivers Crossing Building, Athens, GA 30602",
+    "phone": "(706) 542-3457",
+    "website": "https://ihdd.uga.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "Disability research",
+      "Community inclusion",
+      "Professional training",
+      "Family resources"
+    ],
+    "description": "Georgia's federally designated UCEDD at the University of Georgia, providing research, training, and community services across the lifespan for individuals with developmental disabilities including autism spectrum disorder.",
+    "coordinates": {
+      "lat": 33.941,
+      "lng": -83.371
+    }
+  },
+  {
+    "name": "FSU Center for Autism and Related Disabilities (CARD)",
+    "address": "2390 Phillips Road, Tallahassee, FL 32308",
+    "phone": "(850) 644-4367",
+    "website": "https://fsucard.com",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism consultation",
+      "Training for educators and families",
+      "Behavioral support",
+      "Community outreach",
+      "Transition planning"
+    ],
+    "description": "FSU CARD is part of Florida's statewide CARD network, providing free consultation, training, and resources to individuals with autism and related disabilities and those who support them across Northwest Florida.",
+    "coordinates": {
+      "lat": 30.499,
+      "lng": -84.257
+    }
+  },
+  {
+    "name": "University of Iowa Center for Disabilities and Development (UCEDD)",
+    "address": "100 Hawkins Drive, Iowa City, IA 52242",
+    "phone": "(319) 356-1168",
+    "website": "https://cdd.center.uiowa.edu",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "Developmental pediatrics",
+      "Interdisciplinary assessment",
+      "Community training",
+      "Family support"
+    ],
+    "description": "Iowa's UCEDD embedded in University of Iowa Health Care, offering specialized diagnostic and habilitative services for children and adults with developmental disabilities including autism, along with professional training and research.",
+    "coordinates": {
+      "lat": 41.66,
+      "lng": -91.551
+    }
+  },
+  {
+    "name": "Michigan Developmental Disabilities Institute — Wayne State (UCEDD)",
+    "address": "4809 Woodward Avenue, Leonard N. Simons Building, Detroit, MI 48202",
+    "phone": "(313) 577-2654",
+    "website": "https://ddi.wayne.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Disability research",
+      "Interdisciplinary training",
+      "Autism supports",
+      "Policy advocacy",
+      "Community inclusion"
+    ],
+    "description": "Michigan's federally designated UCEDD at Wayne State University focuses on training the next generation of disability leaders and advancing research and policy to improve outcomes for individuals with developmental disabilities including autism.",
+    "coordinates": {
+      "lat": 42.357,
+      "lng": -83.067
+    }
+  },
+  {
+    "name": "UNM Center for Development and Disability (UCEDD)",
+    "address": "2300 Menaul Blvd NE, Albuquerque, NM 87107",
+    "phone": "(505) 272-3000",
+    "website": "https://cdd.unm.edu",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "Developmental pediatrics",
+      "Assistive technology",
+      "Family support",
+      "Interdisciplinary training"
+    ],
+    "description": "New Mexico's UCEDD at the University of New Mexico provides evaluation, treatment, training, and technical assistance for individuals with autism and other developmental disabilities across the lifespan.",
+    "coordinates": {
+      "lat": 35.123,
+      "lng": -106.628
+    }
+  },
+  {
+    "name": "UConn A.J. Pappanikou Center for Excellence in Developmental Disabilities (UCEDD)",
+    "address": "263 Farmington Avenue MC 6222, Farmington, CT 06030",
+    "phone": "(860) 679-1500",
+    "website": "https://uconnucedd.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism training",
+      "Leadership education in neurodevelopmental disabilities (LEND)",
+      "Research",
+      "Community programs",
+      "Family navigation"
+    ],
+    "description": "Connecticut's UCEDD at the University of Connecticut School of Medicine, providing training for future disability leaders through LEND fellowships, and offering research and community engagement for individuals with autism and other developmental disabilities.",
+    "coordinates": {
+      "lat": 41.72,
+      "lng": -72.826
+    }
+  },
+  {
+    "name": "University of South Dakota Center for Disabilities (UCEDD)",
+    "address": "1400 West 22nd Street, Sioux Falls, SD 57105",
+    "phone": "(605) 357-1439",
+    "website": "https://www.usd.edu/Academics/Colleges-and-Schools/sanford-school-of-medicine/Research-and-Outreach-Centers/Center-for-Disabilities",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "Developmental pediatrics",
+      "LEND training",
+      "Respite care coordination",
+      "Community outreach"
+    ],
+    "description": "South Dakota's federally designated UCEDD at the USD Sanford School of Medicine, providing evaluation, training, and statewide outreach for individuals with developmental disabilities and autism throughout the region.",
+    "coordinates": {
+      "lat": 43.545,
+      "lng": -96.765
+    }
+  },
+  {
+    "name": "UNH Institute on Disability (UCEDD)",
+    "address": "10 West Edge Drive Suite 101, Durham, NH 03824",
+    "phone": "(603) 862-4320",
+    "website": "https://iod.unh.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism research",
+      "Disability policy",
+      "Inclusive education",
+      "Transition to adulthood",
+      "Family and community support"
+    ],
+    "description": "New Hampshire's UCEDD at the University of New Hampshire, advancing inclusion and self-determination for individuals with disabilities including autism through research, training, and technical assistance.",
+    "coordinates": {
+      "lat": 43.136,
+      "lng": -70.931
+    }
+  },
+  {
+    "name": "Idaho Center on Disabilities and Human Development (UCEDD)",
+    "address": "1187 Alturas Drive, Moscow, ID 83843",
+    "phone": "(208) 885-6000",
+    "website": "https://idahocdhd.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "Family training",
+      "Assistive technology",
+      "Community inclusion",
+      "Early intervention"
+    ],
+    "description": "Idaho's federally designated UCEDD at the University of Idaho provides research, training, and service programs to improve quality of life for individuals with developmental disabilities including autism across the state.",
+    "coordinates": {
+      "lat": 46.73,
+      "lng": -117.003
+    }
+  },
+  {
+    "name": "Wyoming Institute for Disabilities — UW (WIND UCEDD)",
+    "address": "1000 E University Avenue, Dept 4298, Laramie, WY 82071",
+    "phone": "(307) 766-2761",
+    "website": "https://www.uwyo.edu/wind",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "Early intervention training",
+      "Inclusive education",
+      "Community living",
+      "Professional development"
+    ],
+    "description": "Wyoming's federally designated UCEDD at the University of Wyoming, connecting evidence-based research and practice with professionals and communities statewide to support individuals with developmental disabilities including autism.",
+    "coordinates": {
+      "lat": 41.315,
+      "lng": -105.573
+    }
+  },
+  {
+    "name": "North Dakota Center for Persons with Disabilities (NDCPD UCEDD)",
+    "address": "500 University Avenue West, Memorial Hall 203, Minot, ND 58707",
+    "phone": "(701) 858-3580",
+    "website": "https://ndcpd.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism training",
+      "Disability research",
+      "Family support",
+      "Community inclusion",
+      "Assistive technology"
+    ],
+    "description": "North Dakota's UCEDD at Minot State University, providing education, research, and community service programs for individuals with developmental disabilities including autism across North Dakota.",
+    "coordinates": {
+      "lat": 48.237,
+      "lng": -101.296
+    }
+  },
+  {
+    "name": "OHSU Institute on Development and Disability (UCEDD)",
+    "address": "707 SW Gaines Street, Portland, OR 97239",
+    "phone": "(503) 494-8364",
+    "website": "https://www.ohsu.edu/institute-on-development-and-disability",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "LEND training",
+      "Developmental pediatrics",
+      "Research",
+      "Community programs"
+    ],
+    "description": "Oregon's federally designated UCEDD at Oregon Health & Science University, providing diagnostic and developmental services, interdisciplinary training, and research to support individuals with autism and developmental disabilities.",
+    "coordinates": {
+      "lat": 45.498,
+      "lng": -122.685
+    }
+  },
+  {
+    "name": "Eunice Kennedy Shriver Center — UMass Chan (UCEDD)",
+    "address": "55 Lake Avenue North, Worcester, MA 01655",
+    "phone": "(774) 455-5433",
+    "website": "https://shriver.umassmed.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism research",
+      "LEND interdisciplinary training",
+      "Community services",
+      "Health disparities research",
+      "Family support"
+    ],
+    "description": "Massachusetts' UCEDD at UMass Chan Medical School, conducting cutting-edge research and training to improve health, well-being, and quality of life for individuals with autism and other developmental disabilities.",
+    "coordinates": {
+      "lat": 42.273,
+      "lng": -71.776
+    }
+  },
+  {
+    "name": "Nevada Center for Excellence in Disabilities — UNR (UCEDD)",
+    "address": "Mail Stop 285, University of Nevada, Reno, NV 89557",
+    "phone": "(775) 784-4921",
+    "website": "https://www.unr.edu/nced",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "LEND training",
+      "Disability policy",
+      "Community inclusion",
+      "Family resources"
+    ],
+    "description": "Nevada's federally designated UCEDD at the University of Nevada, Reno, providing training, research, and technical assistance to improve life outcomes for individuals with autism and developmental disabilities in Nevada.",
+    "coordinates": {
+      "lat": 39.551,
+      "lng": -119.815
+    }
+  },
+  {
+    "name": "Paul V. Sherlock Center on Disabilities — Rhode Island College (UCEDD)",
+    "address": "600 Mount Pleasant Avenue, Providence, RI 02908",
+    "phone": "(401) 456-8072",
+    "website": "https://sherlockcenter.ric.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism training",
+      "Community inclusion",
+      "Employment supports",
+      "Family services",
+      "Policy research"
+    ],
+    "description": "Rhode Island's UCEDD at Rhode Island College, dedicated to building inclusive communities by training future disability professionals, conducting applied research, and providing technical assistance for individuals with autism and developmental disabilities.",
+    "coordinates": {
+      "lat": 41.835,
+      "lng": -71.44
+    }
+  },
+  {
+    "name": "UMaine Center for Community Inclusion and Disability Studies (UCEDD)",
+    "address": "5717 Corbett Hall Room 234, Orono, ME 04469",
+    "phone": "(207) 581-1084",
+    "website": "https://ccids.umaine.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "Disability research",
+      "Inclusive education",
+      "Family resources",
+      "Community training"
+    ],
+    "description": "Maine's federally designated UCEDD at the University of Maine, conducting research and training to promote inclusion, independence, and full participation in community life for individuals with developmental disabilities including autism.",
+    "coordinates": {
+      "lat": 44.889,
+      "lng": -68.672
+    }
+  },
+  {
+    "name": "OU Center for Learning and Leadership (CLL UCEDD)",
+    "address": "800 NE 15th Street, Oklahoma City, OK 73104",
+    "phone": "(405) 271-4500",
+    "website": "https://www.ouhsc.edu/thecenter",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism training",
+      "LEND program",
+      "Leadership development",
+      "Community inclusion",
+      "Family support"
+    ],
+    "description": "Oklahoma's federally designated UCEDD at OU Health Sciences Center, preparing interdisciplinary leaders to improve systems and outcomes for individuals with autism and other developmental disabilities across Oklahoma.",
+    "coordinates": {
+      "lat": 35.479,
+      "lng": -97.508
+    }
+  },
+  {
+    "name": "USC Center for Disability Resources (UCEDD)",
+    "address": "8301 Farrow Road, Columbia, SC 29203",
+    "phone": "(803) 935-5231",
+    "website": "https://sc.edu/study/colleges_schools/medicine/centers_and_institutes_new/center_for_disability_resources",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "LEND training",
+      "Research",
+      "Assistive technology",
+      "Community services"
+    ],
+    "description": "South Carolina's federally designated UCEDD at the University of South Carolina School of Medicine, providing research, training, and services to improve the lives of individuals with developmental disabilities including autism throughout South Carolina.",
+    "coordinates": {
+      "lat": 34.102,
+      "lng": -80.971
+    }
+  },
+  {
+    "name": "University of Arkansas Partners UCEDD",
+    "address": "10809 Executive Center Drive Suite 316, Little Rock, AR 72211",
+    "phone": "(800) 342-2923",
+    "website": "https://uofapartners.uark.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism training",
+      "LEND program",
+      "Disability policy",
+      "Community inclusion",
+      "Family support"
+    ],
+    "description": "Arkansas' federally designated UCEDD at the University of Arkansas, providing research, training, and technical assistance to improve outcomes for individuals with developmental disabilities including autism across the state.",
+    "coordinates": {
+      "lat": 34.725,
+      "lng": -92.358
+    }
+  },
+  {
+    "name": "LSU Human Development Center (UCEDD)",
+    "address": "1900 Gravier Street, New Orleans, LA 70112",
+    "phone": "(504) 568-6760",
+    "website": "https://hdc.lsuhsc.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism evaluation",
+      "LEND interdisciplinary training",
+      "Research",
+      "Community outreach",
+      "Family support"
+    ],
+    "description": "Louisiana's federally designated UCEDD at LSU Health Sciences Center New Orleans, conducting research and training to enhance the quality of life for individuals with autism and developmental disabilities across Louisiana.",
+    "coordinates": {
+      "lat": 29.948,
+      "lng": -90.077
+    }
+  },
+  {
+    "name": "UIC Institute on Disability and Human Development (UCEDD)",
+    "address": "1640 W Roosevelt Road, Chicago, IL 60608",
+    "phone": "(312) 413-1647",
+    "website": "https://idhd.uic.edu",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism policy research",
+      "LEND training",
+      "Disability studies",
+      "Community inclusion",
+      "Technical assistance"
+    ],
+    "description": "Illinois' federally designated UCEDD at the University of Illinois at Chicago, advancing inclusive policies and practices for individuals with autism and developmental disabilities through research, training, and community engagement.",
+    "coordinates": {
+      "lat": 41.865,
+      "lng": -87.661
+    }
+  },
+  {
+    "name": "UVM Center on Disability and Community Inclusion (UCEDD)",
+    "address": "208C Mann Hall, University of Vermont, Burlington, VT 05405",
+    "phone": "(802) 656-4031",
+    "website": "https://www.uvm.edu/cdci",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "Inclusive education research",
+      "Transition services",
+      "Community inclusion",
+      "Family resources"
+    ],
+    "description": "Vermont's federally designated UCEDD at the University of Vermont, promoting the full inclusion of individuals with disabilities including autism through research, training, technical assistance, and community engagement.",
+    "coordinates": {
+      "lat": 44.479,
+      "lng": -73.198
+    }
+  },
+  {
+    "name": "UAA Center for Human Development (UCEDD)",
+    "address": "2210 Arca Drive, Anchorage, AK 99508",
+    "phone": "(907) 272-8270",
+    "website": "https://www.uaa.alaska.edu/academics/college-of-health/departments/center-for-human-development",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism training",
+      "Early intervention",
+      "Rural outreach",
+      "Family resources",
+      "Disability research"
+    ],
+    "description": "Alaska's federally designated UCEDD at the University of Alaska Anchorage, providing training, research, and community services for individuals with developmental disabilities including autism across Alaska's rural and urban communities.",
+    "coordinates": {
+      "lat": 61.181,
+      "lng": -149.858
+    }
+  },
+  {
+    "name": "JFK Partners — CU Anschutz (UCEDD)",
+    "address": "13001 E 17th Place, Aurora, CO 80045",
+    "phone": "(303) 724-7606",
+    "website": "https://jfkpartners.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism diagnosis",
+      "LEND training",
+      "Developmental pediatrics",
+      "Family support",
+      "Community programs"
+    ],
+    "description": "Colorado's federally designated UCEDD at the University of Colorado Anschutz Medical Campus, providing interdisciplinary training, evaluation, and community services for individuals with autism and developmental disabilities throughout Colorado.",
+    "coordinates": {
+      "lat": 39.745,
+      "lng": -104.838
+    }
+  },
+  {
+    "name": "Verbal Beginnings ABA Therapy",
+    "address": "7090 Samuel Morse Drive Suite 100, Columbia, MD 21046",
+    "phone": "(855) 866-9893",
+    "website": "https://www.verbalbeginnings.com",
+    "type": "therapy",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Center-based therapy",
+      "Home-based therapy",
+      "Early intervention",
+      "Social skills groups"
+    ],
+    "description": "Award-winning ABA therapy provider serving children with autism across Maryland, Virginia, Pennsylvania, Delaware, and Washington DC. Verbal Beginnings offers both center-based and home-based services with evidence-based approaches focused on communication and daily living skills.",
+    "coordinates": {
+      "lat": 39.202,
+      "lng": -76.837
+    }
+  },
+  {
+    "name": "Easterseals Southeast Wisconsin",
+    "address": "6737 W Washington Street Suite 4205, West Allis, WI 53214",
+    "phone": "(414) 449-4444",
+    "website": "https://wise.easterseals.com",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "ABA therapy",
+      "Occupational therapy",
+      "Speech therapy",
+      "Child development"
+    ],
+    "description": "Easterseals Southeast Wisconsin provides exceptional services for individuals with autism and other disabilities across six Wisconsin counties, offering ABA therapy, early intervention, adult day programs, and family support services.",
+    "coordinates": {
+      "lat": 43.012,
+      "lng": -88.011
+    }
+  },
+  {
+    "name": "Easterseals Colorado",
+    "address": "393 S Harlan Street Suite 250, Lakewood, CO 80226",
+    "phone": "(303) 233-1666",
+    "website": "https://co.easterseals.com",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "Employment services",
+      "Respite care",
+      "Disability benefits assistance",
+      "Adult day programs"
+    ],
+    "description": "Easterseals Colorado partners with individuals and families to reduce the impact of disability through wellness, employment, and recreation programs, serving individuals with autism and other disabilities throughout the state.",
+    "coordinates": {
+      "lat": 39.713,
+      "lng": -105.081
+    }
+  },
+  {
+    "name": "Easterseals North Georgia",
+    "address": "53 Perimeter Center East Suite 550, Atlanta, GA 30346",
+    "phone": "(404) 943-1070",
+    "website": "https://eastersealsnorthgeorgia.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "The PLAY Project",
+      "Occupational therapy",
+      "Speech therapy",
+      "ABA therapy"
+    ],
+    "description": "Easterseals North Georgia provides a suite of autism-specific services including ABA therapy, the PLAY Project, and speech and occupational therapy across the metro Atlanta region, helping children and families achieve their potential.",
+    "coordinates": {
+      "lat": 33.928,
+      "lng": -84.334
+    }
+  },
+  {
+    "name": "Easterseals South Florida",
+    "address": "1475 NW 14th Avenue, Miami, FL 33125",
+    "phone": "(305) 325-0470",
+    "website": "https://southflorida.easterseals.com",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "Early intervention",
+      "Child development",
+      "Adult day services",
+      "Family support"
+    ],
+    "description": "Easterseals South Florida delivers exceptional services to children and adults with autism and other developmental disabilities in the Greater Miami area, including early intervention, child development programs, and adult day services.",
+    "coordinates": {
+      "lat": 25.783,
+      "lng": -80.221
+    }
+  },
+  {
+    "name": "Easterseals Midwest",
+    "address": "11933 Westline Industrial Drive, St. Louis, MO 63146",
+    "phone": "(314) 394-7100",
+    "website": "https://midwest.easterseals.com",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Autism diagnosis",
+      "Career planning",
+      "Family navigation",
+      "Respite care"
+    ],
+    "description": "Missouri's largest autism services provider, Easterseals Midwest serves more than 2,000 children, teens, and adults with autism annually across Missouri, offering ABA therapy, diagnostic services, adult employment supports, and family resources.",
+    "coordinates": {
+      "lat": 38.659,
+      "lng": -90.448
+    }
+  },
+  {
+    "name": "Easterseals DC MD VA",
+    "address": "1420 Spring Street, Silver Spring, MD 20910",
+    "phone": "(301) 920-0905",
+    "website": "https://dcmdva.easterseals.com",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "Child development",
+      "Adult day services",
+      "Employment support",
+      "Family support"
+    ],
+    "description": "Easterseals DC MD VA serves individuals with autism and other disabilities across the DC, Maryland, and Virginia region through 13 locations, providing child development, early intervention, adult services, and employment programs.",
+    "coordinates": {
+      "lat": 38.998,
+      "lng": -77.028
+    }
+  },
+  {
+    "name": "Easterseals Washington",
+    "address": "200 W Mercer Street Suite 210E, Seattle, WA 98119",
+    "phone": "(206) 281-5700",
+    "website": "https://wa.easterseals.com",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "ABA therapy",
+      "Autism services",
+      "Early intervention",
+      "Adult day programs",
+      "Inclusive childcare"
+    ],
+    "description": "Easterseals Washington empowers individuals with autism and disabilities through therapy, social activities, and workforce development programs, providing ABA therapy for children and day health and social programs for adults throughout Washington State.",
+    "coordinates": {
+      "lat": 47.624,
+      "lng": -122.358
+    }
+  },
+  {
+    "name": "Easterseals-Goodwill Northern Rocky Mountain",
+    "address": "350 S 400 East, Salt Lake City, UT 84111",
+    "phone": "(801) 946-1860",
+    "website": "https://www.esgw.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism supports",
+      "Pediatric therapy",
+      "Employment services",
+      "Adult disability services",
+      "Community integration"
+    ],
+    "description": "Serving Utah, Montana, Idaho, and Wyoming, Easterseals-Goodwill provides employment and job training, children's therapy including autism services, and community integration programs for individuals with disabilities.",
+    "coordinates": {
+      "lat": 40.758,
+      "lng": -111.879
+    }
+  },
+  {
+    "name": "Goodwill-Easter Seals Minnesota",
+    "address": "1270 Energy Lane, Saint Paul, MN 55108",
+    "phone": "(651) 379-5909",
+    "website": "https://www.goodwilleasterseals.org",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Disability services",
+      "Employment training",
+      "Autism supports",
+      "Community inclusion",
+      "Career development"
+    ],
+    "description": "Goodwill-Easter Seals Minnesota is a nonprofit providing disability services and employment training throughout the Twin Cities metro and greater Minnesota, helping individuals with autism and other disabilities achieve greater independence.",
+    "coordinates": {
+      "lat": 44.968,
+      "lng": -93.126
+    }
+  },
+  {
+    "name": "Easterseals Kentucky",
+    "address": "6200 Dutchmans Lane Suite 200, Louisville, KY 40205",
+    "phone": "(502) 250-7700",
+    "website": "https://www.easterseals.com/kentucky",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "Early intervention",
+      "Occupational therapy",
+      "Speech-language therapy",
+      "Physical therapy"
+    ],
+    "description": "Easterseals Kentucky provides exceptional services for individuals with autism and other disabilities across nine locations statewide, offering early intervention, therapeutic services, and the Lori Center for Autism in Paducah.",
+    "coordinates": {
+      "lat": 38.237,
+      "lng": -85.694
+    }
+  },
+  {
+    "name": "Easterseals Blake Foundation (Arizona)",
+    "address": "7750 E Broadway Boulevard Suite A200, Tucson, AZ 85710",
+    "phone": "(520) 327-1529",
+    "website": "https://www.easterseals.com/arizona",
+    "type": "general_support",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism services",
+      "Early intervention",
+      "Child development",
+      "Adult services",
+      "Assistive technology"
+    ],
+    "description": "Easterseals Blake Foundation serves individuals with autism and other disabilities throughout Southern Arizona with early intervention, autism diagnostic services, child development centers, and adult day programs.",
+    "coordinates": {
+      "lat": 32.218,
+      "lng": -110.876
+    }
+  },
+  {
+    "name": "Nathaniel's Hope",
+    "address": "5210 S Orange Avenue, Orlando, FL 32809",
+    "phone": "(407) 857-8224",
+    "website": "https://nathanielshope.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Faith inclusion training",
+      "Church disability ministry",
+      "Community celebrations",
+      "Buddy Break respite",
+      "Family support"
+    ],
+    "description": "Nathaniel's Hope celebrates children and adults with special needs (VIPs) as valued individuals while educating and equipping churches and communities to welcome and serve individuals with autism and other disabilities and their families.",
+    "coordinates": {
+      "lat": 28.487,
+      "lng": -81.38
+    }
+  },
+  {
+    "name": "Joni and Friends",
+    "address": "30009 Ladyface Court, Agoura Hills, CA 91301",
+    "phone": "(818) 707-5664",
+    "website": "https://joniandfriends.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Disability ministry training",
+      "Family retreats",
+      "Wheelchair and equipment ministry",
+      "Church inclusion",
+      "International outreach"
+    ],
+    "description": "Founded by Joni Eareckson Tada, Joni and Friends is a leading disability ministry equipping churches to welcome individuals with autism and other disabilities, while providing family retreats, assistive equipment, and international programs.",
+    "coordinates": {
+      "lat": 34.153,
+      "lng": -118.756
+    }
+  },
+  {
+    "name": "Special Gathering",
+    "address": "P.O. Box 2032, Melbourne, FL 32902",
+    "phone": "(321) 953-9702",
+    "website": "https://specialgathering.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Faith inclusion ministry",
+      "Bible study for adults with disabilities",
+      "Church connection",
+      "Social activities",
+      "Community belonging"
+    ],
+    "description": "Special Gathering is a faith-based ministry providing spiritual community and inclusion for adults with intellectual and developmental disabilities including autism, with chapters across Florida and a national training model for churches.",
+    "coordinates": {
+      "lat": 28.082,
+      "lng": -80.609
+    }
+  },
+  {
+    "name": "Family Voices",
+    "address": "3701 San Mateo Blvd NE Suite 103, Albuquerque, NM 87110",
+    "phone": "(505) 872-4774",
+    "website": "https://familyvoices.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family health advocacy",
+      "Policy engagement",
+      "Family-to-family support",
+      "Special health care needs navigation",
+      "Parent peer support"
+    ],
+    "description": "Family Voices is a national network of 50+ family organizations advocating for partnership with families of children with special health care needs and disabilities including autism, promoting family-centered care across systems.",
+    "coordinates": {
+      "lat": 35.099,
+      "lng": -106.57
+    }
+  },
+  {
+    "name": "Federation of Families for Children's Mental Health",
+    "address": "1101 King Street Suite 420, Alexandria, VA 22314",
+    "phone": "(703) 684-7710",
+    "website": "https://www.ffcmh.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Family mental health advocacy",
+      "Parent peer support",
+      "System change",
+      "Training",
+      "Statewide family network support"
+    ],
+    "description": "A national family-run organization focused on the mental health needs of children and youth including those with autism, providing advocacy, leadership, and technical assistance to family-run organizations across all 50 states.",
+    "coordinates": {
+      "lat": 38.803,
+      "lng": -77.056
+    }
+  },
+  {
+    "name": "Think College",
+    "address": "100 Morrissey Boulevard, Boston, MA 02125",
+    "phone": "(617) 287-4300",
+    "website": "https://thinkcollege.net",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "Postsecondary education database",
+      "Research on college access for IDD",
+      "Technical assistance",
+      "Policy advocacy",
+      "Family resources"
+    ],
+    "description": "Based at UMass Boston's Institute for Community Inclusion, Think College is the national leader in expanding and improving postsecondary education options for students with intellectual disabilities and autism, managing the only national database of inclusive college programs.",
+    "coordinates": {
+      "lat": 42.311,
+      "lng": -71.044
+    }
+  },
+  {
+    "name": "College Autism Network (CAN) — Vanderbilt",
+    "address": "110 21st Avenue South, Nashville, TN 37203",
+    "phone": "(615) 322-7311",
+    "website": "https://www.collegeautismnetwork.org",
+    "type": "education",
+    "source": "National Resources 2026",
+    "services": [
+      "College support program database",
+      "Career readiness for autistic students",
+      "Campus training",
+      "Research",
+      "Advocacy"
+    ],
+    "description": "The College Autism Network, housed at Vanderbilt University's Frist Center for Autism and Innovation, links stakeholders to improve access and outcomes for autistic college students, offering a free database of campus support programs and the ACE career training curriculum.",
+    "coordinates": {
+      "lat": 36.146,
+      "lng": -86.801
+    }
+  },
+  {
+    "name": "AWAARE Collaboration",
+    "address": "",
+    "phone": "",
+    "website": "https://awaare.nationalautismassociation.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Wandering prevention resources",
+      "Safety planning tools",
+      "First responder training kits",
+      "Parent education",
+      "Caregiver toolkits"
+    ],
+    "description": "The Autism Wandering Awareness Alerts Response and Education (AWAARE) Collaboration is a coalition of six national autism nonprofits working to prevent autism-related wandering incidents and deaths through free safety toolkits, first responder training, and public awareness.",
+    "placeless": true
+  },
+  {
+    "name": "HollyRod Foundation",
+    "address": "4640 Admiralty Way Suite 808, Marina del Rey, CA 90292",
+    "phone": "(310) 823-5755",
+    "website": "https://hollyrod.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism family grants",
+      "Therapy support",
+      "Awareness programs",
+      "HollyRod4Kids grants",
+      "Community events"
+    ],
+    "description": "Founded by Holly Robinson Peete and Rodney Peete, whose son RJ has autism, the HollyRod Foundation provides grants for autism therapy, funds for families in need, and public awareness programs to improve the quality of life for individuals with autism.",
+    "coordinates": {
+      "lat": 33.979,
+      "lng": -118.447
+    }
+  },
+  {
+    "name": "ACT Today! (Autism Care and Treatment Today)",
+    "address": "19019 Ventura Boulevard Suite 200, Tarzana, CA 91356",
+    "phone": "(818) 705-1625",
+    "website": "https://act-today.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Treatment grants for families",
+      "Resource navigation",
+      "Financial assistance",
+      "Awareness campaigns",
+      "Caregiver support"
+    ],
+    "description": "ACT Today! is a national nonprofit providing financial assistance for autism treatment to underserved families who cannot afford evidence-based services, awarding grants for ABA therapy, speech therapy, and other interventions to children with autism across the US.",
+    "placeless": true
+  },
+  {
+    "name": "MIND Center — University of Mississippi Medical Center",
+    "address": "2500 N State Street, Jackson, MS 39216",
+    "phone": "(601) 984-6060",
+    "website": "https://www.umc.edu/mind-center",
+    "type": "medical",
+    "source": "National Resources 2026",
+    "services": [
+      "Autism research",
+      "Neuroimaging studies",
+      "Early detection",
+      "Interdisciplinary training",
+      "Community education"
+    ],
+    "description": "The MIND Center at UMMC is a leading autism research center in the Southeast focused on early detection, neuroimaging, and developing evidence-based interventions, training the next generation of autism researchers and serving families across Mississippi.",
+    "coordinates": {
+      "lat": 32.335,
+      "lng": -90.169
+    }
+  },
+  {
+    "name": "Autism-Pittsburgh",
+    "address": "11676 Perry Highway Suite 1200, Wexford, PA 15090",
+    "phone": "(412) 856-7223",
+    "website": "https://www.autismpittsburgh.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Resource navigation",
+      "Support groups",
+      "Community education",
+      "Provider referrals",
+      "Advocacy"
+    ],
+    "description": "Autism-Pittsburgh is a community resource organization serving families of individuals with autism in the Greater Pittsburgh region, offering support groups, resource navigation, community education events, and a provider referral network.",
+    "coordinates": {
+      "lat": 40.622,
+      "lng": -80.058
+    }
+  },
+  {
+    "name": "Autism Society of Middle Tennessee",
+    "address": "955 Woodland Street, Nashville, TN 37206",
+    "phone": "(615) 385-2077",
+    "website": "https://www.autismsocietymiddletn.org",
+    "type": "advocacy",
+    "source": "National Resources 2026",
+    "services": [
+      "Support groups",
+      "Resource navigation",
+      "Community events",
+      "Family advocacy",
+      "Provider directory"
+    ],
+    "description": "A regional chapter of the Autism Society of America serving Middle Tennessee, providing families and individuals with autism support groups, resource navigation, community events, and advocacy separate from the statewide chapter.",
+    "coordinates": {
+      "lat": 36.176,
+      "lng": -86.754
     }
   }
 ];
