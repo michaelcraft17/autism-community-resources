@@ -34,6 +34,9 @@ button{font-family:inherit;cursor:pointer;}
 </style>
 </head>
 <body>
+<div id="top-banner" style="background:var(--harbor-800);color:rgba(255,255,255,.85);text-align:center;padding:8px 24px;font-size:13px;font-family:'Hanken Grotesk',system-ui,sans-serif;letter-spacing:.01em;">
+  A coding geek building AI tools that make communities more accessible. — <strong style="color:#fff;">Michael</strong>
+</div>
 <div id="root"></div>
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
@@ -468,7 +471,7 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(26px,4vw,38px)',color:'#fff',margin:'0 0 14px',letterSpacing:'.02em'}}>SUPPORT THIS PROJECT</h2>
           <p style={{fontSize:16,color:'rgba(255,255,255,.8)',margin:'0 0 32px',lineHeight:1.7}}>This directory is free and built by one person. Your support helps keep it growing — adding more resources, improving the map, and reaching more families who need it.</p>
           <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
-            <a href="https://ko-fi.com/michaelcraft17" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 32px',background:'var(--coral-500)',color:'#fff',borderRadius:12,fontSize:16,fontWeight:700,textDecoration:'none',letterSpacing:'.02em'}}>♥ Donate via Ko-fi</a>
+            <button disabled style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 32px',background:'var(--coral-500)',color:'#fff',borderRadius:12,fontSize:16,fontWeight:700,border:'none',letterSpacing:'.02em',opacity:.7,cursor:'default'}}>♥ Donate — Coming Soon</button>
             <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 28px',background:'rgba(255,255,255,.12)',color:'#fff',border:'1px solid rgba(255,255,255,.25)',borderRadius:12,fontSize:15,fontWeight:600,textDecoration:'none'}}>⭐ Star on GitHub</a>
           </div>
         </div>
@@ -635,7 +638,7 @@ function App() {
       <Header dark={dark} setDark={setDark} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} onLogoClick={goLanding} onChangeLocation={goLanding} showSearch={screen==='results'}/>
       <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results coords={coords} locLabel={locLabel} keyword={keyword} favs={favs} onFav={toggleFav}/>}</main>
       <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
-        <div style={{marginBottom:8,fontSize:13,fontStyle:'italic',color:'var(--text-secondary)'}}>A coding geek building AI tools that make communities more accessible.</div>
+        <div style={{marginBottom:8,fontSize:13,fontStyle:'italic',color:'var(--text-secondary)'}}>A coding geek building AI tools that make communities more accessible. — Michael</div>
         © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
         <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',fontWeight:600}}>GitHub</a>
         {' '}·{' '}
