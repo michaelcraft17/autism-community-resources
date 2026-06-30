@@ -378,9 +378,9 @@ const Header = ({dark, setDark, locLabel, keyword, setKeyword, onLogoClick, onCh
   return (
     <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:200,boxShadow:'0 1px 4px rgba(42,38,30,.06)'}}>
       <div style={{maxWidth:2400,margin:'0 auto',padding:'0 24px',height:62,display:'flex',alignItems:'center',gap:16,position:'relative'}}>
-        <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',pointerEvents:'none',textAlign:'center',whiteSpace:'nowrap'}}>
-          <span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:400,color:'var(--text-secondary)',fontStyle:'italic'}}>A coding geek building AI tools that make communities more accessible. — </span><span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:400,color:'var(--brand)',fontStyle:'italic'}}>Michael</span>
-        </div>
+        {!showSearch && <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',pointerEvents:'none',textAlign:'center',whiteSpace:'nowrap'}}>
+          <span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'#2f93a1'}}>A coding geek building AI tools that make communities more accessible. — </span><span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'#e0846b'}}>Michael</span>
+        </div>}
         <Logo onClick={onLogoClick}/>
         {showSearch && <form onSubmit={e=>e.preventDefault()} style={{flex:1,display:'flex',alignItems:'center',gap:0,border:'2px solid var(--border-focus)',borderRadius:10,overflow:'hidden',height:42,maxWidth:700}}>
           <div style={{flex:1,display:'flex',alignItems:'center',gap:8,padding:'0 14px',background:'var(--surface)'}}>
