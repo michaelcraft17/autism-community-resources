@@ -390,9 +390,14 @@ const Header = ({dark, setDark, locLabel, keyword, setKeyword, onLogoClick, onCh
             <SearchIcon s={16}/>
           </div>
         </form>}
-        <button onClick={()=>setDark(d=>!d)} style={{marginLeft:'auto',display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 14px',background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13}}>
-          {dark?<SunIcon/>:<MoonIcon/>} {dark?'Light':'Dark'}
-        </button>
+        <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
+          <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',background:'var(--coral-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
+            ♥ Donate
+          </a>
+          <button onClick={()=>setDark(d=>!d)} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 14px',background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13}}>
+            {dark?<SunIcon/>:<MoonIcon/>} {dark?'Light':'Dark'}
+          </button>
+        </div>
       </div>
     </header>
   );
@@ -447,6 +452,25 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
         </div>
         <div style={{textAlign:'center',marginTop:18}}>
           <a href="https://www.youtube.com/watch?v=N6Xw5M0fzRo" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,color:'var(--text-link)',fontWeight:600,fontSize:14}}>Watch on YouTube ↗</a>
+        </div>
+        <div style={{marginTop:28,background:'var(--brand-subtle)',borderRadius:14,padding:'22px 28px',border:'1px solid var(--harbor-100)',display:'flex',alignItems:'center',gap:20,flexWrap:'wrap'}}>
+          <div style={{flex:1,minWidth:220}}>
+            <div style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:12,letterSpacing:'.08em',textTransform:'uppercase',color:'var(--brand)',marginBottom:6}}>Featured Resource</div>
+            <div style={{fontWeight:700,fontSize:16,color:'var(--text)',marginBottom:5}}>Federation for Children with Special Needs</div>
+            <div style={{fontSize:13,color:'var(--text-secondary)',lineHeight:1.6}}>A center for parents and parent organizations to work together on behalf of children with disabilities and their families. Offering training, information, and advocacy support since 1974.</div>
+          </div>
+          <a href="https://fcsn1996.org/" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:6,height:42,padding:'0 22px',background:'var(--brand)',color:'#fff',borderRadius:10,fontSize:13,fontWeight:700,textDecoration:'none',whiteSpace:'nowrap',flexShrink:0}}>Visit FCSN ↗</a>
+        </div>
+      </section>
+      <section id="donate-section" style={{background:'var(--harbor-700)',padding:'64px 24px',textAlign:'center'}}>
+        <div style={{maxWidth:580,margin:'0 auto'}}>
+          <div style={{fontSize:36,marginBottom:16}}>❤️</div>
+          <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(26px,4vw,38px)',color:'#fff',margin:'0 0 14px',letterSpacing:'.02em'}}>SUPPORT THIS PROJECT</h2>
+          <p style={{fontSize:16,color:'rgba(255,255,255,.8)',margin:'0 0 32px',lineHeight:1.7}}>This directory is free and built by one person. Your support helps keep it growing — adding more resources, improving the map, and reaching more families who need it.</p>
+          <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
+            <a href="https://ko-fi.com/michaelcraft17" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 32px',background:'var(--coral-500)',color:'#fff',borderRadius:12,fontSize:16,fontWeight:700,textDecoration:'none',letterSpacing:'.02em'}}>♥ Donate via Ko-fi</a>
+            <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 28px',background:'rgba(255,255,255,.12)',color:'#fff',border:'1px solid rgba(255,255,255,.25)',borderRadius:12,fontSize:15,fontWeight:600,textDecoration:'none'}}>⭐ Star on GitHub</a>
+          </div>
         </div>
       </section>
     </div>
@@ -610,10 +634,13 @@ function App() {
     <div>
       <Header dark={dark} setDark={setDark} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} onLogoClick={goLanding} onChangeLocation={goLanding} showSearch={screen==='results'}/>
       <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results coords={coords} locLabel={locLabel} keyword={keyword} favs={favs} onFav={toggleFav}/>}</main>
-      <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'18px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
+      <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
+        <div style={{marginBottom:8,fontSize:13,fontStyle:'italic',color:'var(--text-secondary)'}}>A coding geek building AI tools that make communities more accessible.</div>
         © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
         <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',fontWeight:600}}>GitHub</a>
-        <span style={{display:'block',marginTop:3}}>Always verify information directly with service providers.</span>
+        {' '}·{' '}
+        <a href="#donate-section" onClick={e=>{e.preventDefault();document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{color:'var(--coral-500)',fontWeight:600,cursor:'pointer'}}>Donate ♥</a>
+        <span style={{display:'block',marginTop:4}}>Always verify information directly with service providers.</span>
       </footer>
     </div>
   );
