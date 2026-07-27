@@ -342,10 +342,8 @@ const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
 };
 
 /* ─── Sidebar filters ────────────────────────────────────────── */
-const Sidebar = ({typeFilter, setTypeFilter, radius, setRadius}) => {
-  const suggested = ['Open Now','Accepts Insurance','Wheelchair Accessible','Free Services','Telehealth Available','In-home Services'];
-  const [selSug, setSelSug] = useState([]);
-  const toggleSug = s => setSelSug(a => a.includes(s) ? a.filter(x=>x!==s) : [...a,s]);
+const Sidebar = ({typeFilter, setTypeFilter, radius, setRadius, selSug, toggleSug}) => {
+  const suggested = ['Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
   const sectionStyle = {borderBottom:'1px solid var(--divider)',paddingBottom:18,marginBottom:18};
   const labelStyle = {fontSize:14,fontWeight:700,color:'var(--text)',margin:'0 0 10px',display:'block'};
   const radioStyle = {display:'flex',alignItems:'center',gap:8,fontSize:13,color:'var(--text-secondary)',padding:'3px 0',cursor:'pointer'};
@@ -538,8 +536,10 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
   const [radius, setRadius] = useState(null);
   const [activeId, setActiveId] = useState(null);
   const [page, setPage] = useState(0);
+  const [selSug, setSelSug] = useState([]);
+  const toggleSug = s => setSelSug(a => a.includes(s) ? a.filter(x=>x!==s) : [...a,s]);
   // Reset to first page whenever the result set changes
-  useEffect(() => { setPage(0); }, [typeFilter, radius, keyword, coords]);
+  useEffect(() => { setPage(0); }, [typeFilter, radius, keyword, coords, selSug]);
 
   const kw = keyword.trim().toLowerCase();
   const matchKwType = r =>
@@ -550,15 +550,31 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
       || (TYPE_META[r.type] ? TYPE_META[r.type].label.toLowerCase().includes(kw) : false)) &&
     (!typeFilter || r.type === typeFilter);
 
+  const matchSug = r => {
+    if (selSug.length === 0) return true;
+    const svc = (r.services||[]).join(' ').toLowerCase();
+    const sg = r.suggested || {};
+    return selSug.every(s => {
+      if (s === 'Free / Sliding Scale')       return sg.free_services      || /free|sliding scale/.test(svc);
+      if (s === 'Telehealth Available')        return sg.telehealth         || /telehealth|virtual|online therapy|video/.test(svc);
+      if (s === 'In-home Services')            return sg.in_home            || /in-home|in home|home visit|home-based/.test(svc);
+      if (s === 'Accepts Medicaid')            return sg.accepts_medicaid   || /medicaid|medi-cal/.test(svc);
+      if (s === 'Early Intervention (0–5)') return sg.early_intervention || /early intervention|early start|0-5|infant|toddler|preschool/.test(svc);
+      if (s === 'Bilingual Services')          return sg.bilingual          || /spanish|bilingual|multilingual|arabic|tagalog|mandarin|vietnamese/.test(svc);
+      if (s === 'Wheelchair Accessible')       return sg.wheelchair_accessible || /wheelchair|magical bridge|ada accessible/.test(svc);
+      return true;
+    });
+  };
+
   // Located resources (mapped, distance-filtered) vs. placeless nationwide/virtual ones
   let local = ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
   if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
-  const filtered = local.filter(r => matchKwType(r) && (radius == null || (r.distance != null && r.distance <= radius)));
+  const filtered = local.filter(r => matchKwType(r) && matchSug(r) && (radius == null || (r.distance != null && r.distance <= radius)));
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const safePage = Math.min(page, totalPages - 1);
   const start = safePage * PER_PAGE;
   const shown = filtered.slice(start, start + PER_PAGE);
-  const national = ALL.filter(r => r.placeless && matchKwType(r));
+  const national = ALL.filter(r => r.placeless && matchKwType(r) && matchSug(r));
   const onLastPage = safePage >= totalPages - 1;
 
   return (
@@ -581,7 +597,7 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
         </div>
       </div>
       <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
-        <Sidebar typeFilter={typeFilter} setTypeFilter={setTypeFilter} radius={radius} setRadius={setRadius}/>
+        <Sidebar typeFilter={typeFilter} setTypeFilter={setTypeFilter} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug}/>
         <div style={{flex:'1 1 460px',minWidth:320}}>
           {shown.length === 0 && national.length === 0 ? (
             <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
