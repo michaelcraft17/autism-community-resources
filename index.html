@@ -49,7 +49,6 @@ button{font-family:inherit;cursor:pointer;}
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
-<script src="community_data.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjIaR8sa936xf4hZzQ_-ObzpxCRsCWKIM&loading=async"></script>
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
@@ -73,15 +72,28 @@ const TYPE_META = {
   general_support: { label:'General Support',bg:'var(--type-general-bg)',   fg:'var(--type-general-fg)',   thumb:'#ddd8cf' },
 };
 
-/* ─── Full dataset (community_data.js) + geo helpers ────────── */
-const ALL = (Array.isArray(window.communityData) && window.communityData.length
-  ? window.communityData
-  : RESOURCES
-).map((r,i) => ({
-  id: i+1, name: r.name, type: r.type, address: r.address, phone: r.phone,
-  website: r.website, services: r.services || [], description: r.description || '',
-  coordinates: r.coordinates,
-})).filter(r => r.coordinates && r.coordinates.lat && r.coordinates.lng);
+/* ─── Full dataset (community_data.js) — loaded asynchronously so the
+   page shell renders immediately instead of blocking on a multi-MB file. */
+function shapeAll(raw) {
+  return (Array.isArray(raw) && raw.length ? raw : RESOURCES).map((r,i) => ({
+    id: i+1, name: r.name, type: r.type, address: r.address, phone: r.phone,
+    website: r.website, services: r.services || [], description: r.description || '',
+    coordinates: r.coordinates, suggested: r.suggested,
+  })).filter(r => r.coordinates && r.coordinates.lat && r.coordinates.lng);
+}
+
+function useCommunityData() {
+  const [all, setAll] = useState(null); // null = still loading
+  useEffect(() => {
+    if (window.communityData) { setAll(shapeAll(window.communityData)); return; }
+    const s = document.createElement('script');
+    s.src = 'community_data.js';
+    s.onload = () => setAll(shapeAll(window.communityData));
+    s.onerror = () => setAll(shapeAll(null)); // fall back to sample RESOURCES
+    document.body.appendChild(s);
+  }, []);
+  return all;
+}
 
 function haversine(a, b){
   if (!a || !b) return null;
@@ -531,7 +543,7 @@ const Pager = ({page, totalPages, setPage}) => {
 };
 
 /* ─── Results ────────────────────────────────────────────────── */
-const Results = ({coords, locLabel, keyword, favs, onFav}) => {
+const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
   const [typeFilter, setTypeFilter] = useState('');
   const [radius, setRadius] = useState(null);
   const [activeId, setActiveId] = useState(null);
@@ -565,6 +577,16 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
       return true;
     });
   };
+
+  if (!ALL) {
+    return (
+      <div style={{maxWidth:2400,margin:'0 auto',padding:'96px 24px',textAlign:'center',color:'var(--text-muted)'}}>
+        <div style={{fontSize:32,marginBottom:10}}>⏳</div>
+        <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700,color:'var(--text)'}}>LOADING DIRECTORY…</div>
+        <div style={{fontSize:14,marginTop:6}}>Fetching the full resource list — just a moment.</div>
+      </div>
+    );
+  }
 
   // Located resources (mapped, distance-filtered) vs. placeless nationwide/virtual ones
   let local = ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
@@ -635,6 +657,7 @@ const Results = ({coords, locLabel, keyword, favs, onFav}) => {
 
 /* ─── App ────────────────────────────────────────────────────── */
 function App() {
+  const ALL = useCommunityData();
   const [dark, setDark] = useState(false);
   const [screen, setScreen] = useState('landing');
   const [coords, setCoords] = useState(null);
@@ -671,7 +694,7 @@ function App() {
   return (
     <div>
       <Header dark={dark} setDark={setDark} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} onLogoClick={goLanding} onChangeLocation={goLanding} showSearch={screen==='results'}/>
-      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results coords={coords} locLabel={locLabel} keyword={keyword} favs={favs} onFav={toggleFav}/>}</main>
+      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} favs={favs} onFav={toggleFav}/>}</main>
       <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
         © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
         <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',fontWeight:600}}>GitHub</a>
