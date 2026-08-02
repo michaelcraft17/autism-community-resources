@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"/>
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/opendyslexic"/>
 <style>
 :root{
   --harbor-50:#e6f3f4;--harbor-100:#c9e4e6;--harbor-200:#96c9ce;--harbor-300:#5eb0b8;--harbor-400:#2f93a1;--harbor-500:#1f6e7b;--harbor-600:#175d69;--harbor-700:#124a54;--harbor-800:#0d383f;--harbor-900:#09252a;
@@ -38,6 +39,24 @@
 html,body{margin:0;min-height:100vh;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
 body.dark{--bg:#111a1c;--bg-sunken:#192226;--surface:#1e2d31;--surface-subtle:#253238;--text:#edf3f4;--text-secondary:#a8b8bc;--text-muted:#7a9099;--border:#2d4449;--border-strong:#3a5560;--divider:#2d4449;}
+body.dyslexic, body.dyslexic *{font-family:'OpenDyslexic','Comic Sans MS',var(--font-sans)!important;letter-spacing:.02em;line-height:1.6;}
+body.scheme-blue{
+  --brand:#1c5490;--brand-hover:#164272;--brand-active:#113356;--brand-subtle:#eaf2fb;--brand-on:var(--stone-0);
+  --accent:#f59e0b;--accent-hover:#c97f08;--accent-subtle:#fffaeb;--accent-on:var(--stone-0);
+  --text-link:#1c5490;--border-focus:#2569b3;
+  --ring:0 0 0 3px rgba(28,84,144,.28);--ring-accent:0 0 0 3px rgba(245,158,11,.32);
+}
+body.scheme-blue.dark{
+  --brand:#6aa8e3;--brand-hover:#9fc7ef;--brand-active:#cfe3f7;--brand-subtle:#113356;--brand-on:#0c2338;
+  --accent:#ffc94d;--accent-hover:#ffe085;--accent-subtle:#4a2e02;--accent-on:#4a2e02;
+  --text-link:#9fc7ef;--border-focus:#6aa8e3;
+}
+body.hc{--text-secondary:var(--text);--text-muted:var(--text);--border:var(--stone-500);--border-strong:var(--stone-700);--divider:var(--stone-500);}
+body.hc.dark{--border:#7a9099;--border-strong:#a8b8bc;--divider:#7a9099;}
+body.reduce-motion{--dur-fast:.01ms;--dur-base:.01ms;}
+body.text-small{zoom:.9;}
+body.text-large{zoom:1.15;}
+body.text-largest{zoom:1.3;}
 a{text-decoration:none;color:inherit;}
 button{font-family:inherit;cursor:pointer;}
 ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-thumb{background:var(--stone-300);border-radius:3px;}
@@ -79,6 +98,7 @@ function shapeAll(raw) {
     id: i+1, name: r.name, type: r.type, address: r.address, phone: r.phone,
     website: r.website, services: r.services || [], description: r.description || '',
     coordinates: r.coordinates, suggested: r.suggested,
+    facility_name: r.facility_name, entity_type: r.entity_type,
   })).filter(r => r.coordinates && r.coordinates.lat && r.coordinates.lng);
 }
 
@@ -111,13 +131,49 @@ async function geocode(q){
   return null;
 }
 
+function normalizeAddress(addr) {
+  return (addr || '').trim().toUpperCase().replace(/\s+/g, ' ');
+}
+
+/* ─── Accessibility prefs + favorites persistence (localStorage) ─── */
+const A11Y_PREFS_KEY = 'a11y_prefs';
+const A11Y_FAVS_KEY = 'a11y_favs';
+const DEFAULT_PREFS = { colorScheme:'earthy', theme:'system', textSize:'default', typeface:'default', contrast:'default', motion:'system' };
+
+function loadPrefs() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(A11Y_PREFS_KEY));
+    return raw && typeof raw === 'object' ? { ...DEFAULT_PREFS, ...raw } : { ...DEFAULT_PREFS };
+  } catch { return { ...DEFAULT_PREFS }; }
+}
+function savePrefs(prefs) {
+  try { localStorage.setItem(A11Y_PREFS_KEY, JSON.stringify(prefs)); } catch {}
+}
+function loadFavs() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(A11Y_FAVS_KEY));
+    return Array.isArray(raw) ? raw : [];
+  } catch { return []; }
+}
+function saveFavs(favs) {
+  try { localStorage.setItem(A11Y_FAVS_KEY, JSON.stringify(favs)); } catch {}
+}
+function clearAllStoredData() {
+  try { localStorage.removeItem(A11Y_PREFS_KEY); localStorage.removeItem(A11Y_FAVS_KEY); } catch {}
+}
+
 const DIST_OPTIONS = [["Any distance",null],["Driving (25 mi.)",25],["Nearby (10 mi.)",10],["Close (5 mi.)",5],["Walking (2 mi.)",2]];
+
+const SPECIALTIES = ['ABA / Behavioral Therapy','Child & Adolescent Psychiatry','Pediatric Neurology','Developmental-Behavioral Pediatrics','Neurodevelopmental Disabilities'];
 
 /* ─── Icons ─────────────────────────────────────────────────── */
 const PinIcon = ({s=15}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2"/></svg>;
 const SearchIcon = ({s=18}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const MoonIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/></svg>;
+const FontIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 20L10.5 6h3L18 20M7.5 15h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 const SunIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
+const SlidersIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 6h9M17 6h3M4 12h3M9 12h11M4 18h13M19 18h1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="14" cy="6" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>;
+const XIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const HeartIcon = ({f}) => <svg width="18" height="18" viewBox="0 0 24 24" fill={f?'var(--coral-500)':'none'}><path d="M12 20s-7-4.6-7-9.5A4.5 4.5 0 0112 7a4.5 4.5 0 017 3.5C19 15.4 12 20 12 20z" stroke={f?'var(--coral-500)':'var(--stone-400)'} strokeWidth="2" strokeLinejoin="round"/></svg>;
 const ShareIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" strokeWidth="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 
@@ -152,9 +208,9 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
   return (
     <div
       onMouseEnter={()=>onHover(r.id)} onMouseLeave={()=>onHover(null)}
-      style={{display:'flex',gap:0,background:'var(--surface)',border:`1px solid ${active?'var(--border-focus)':'var(--border)'}`,borderRadius:14,overflow:'hidden',boxShadow:active?'0 4px 16px rgba(23,93,105,.14)':'0 1px 3px rgba(42,38,30,.07)',transition:'box-shadow var(--dur-base) var(--ease-out),border-color var(--dur-fast)',marginBottom:12}}>
+      style={{display:'flex',gap:0,background:active?'var(--brand-subtle)':'transparent',borderBottom:'1px solid var(--divider)',padding:'16px 6px',transition:'background var(--dur-fast) var(--ease-out)'}}>
       <div style={{position:'relative',width:140,flexShrink:0}}>
-        <div style={{width:'100%',height:'100%',minHeight:130,background:t.thumb,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
+        <div style={{width:'100%',height:'100%',minHeight:130,borderRadius:10,overflow:'hidden',background:t.thumb,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
           <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:.13}} viewBox="0 0 140 130" preserveAspectRatio="none">
             {[0,20,40,60,80,100,120,140].map(x=><line key={x} x1={x} y1="0" x2={x} y2="130" stroke={t.fg} strokeWidth="1"/>)}
             {[0,20,40,60,80,100,130].map(y=><line key={y} x1="0" y1={y} x2="140" y2={y} stroke={t.fg} strokeWidth="1"/>)}
@@ -208,6 +264,64 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
   );
 };
 
+/* ─── Grouped card — multiple providers sharing one address ──── */
+const GroupedResourceCard = ({group, idx, active, onHover}) => {
+  const first = group[0];
+  const t = TYPE_META[first.type] || TYPE_META.general_support;
+  const label = first.facility_name || `${group.length} Resources at This Address`;
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      onMouseEnter={()=>onHover(first.id)} onMouseLeave={()=>onHover(null)}
+      style={{display:'flex',gap:0,background:active?'var(--brand-subtle)':'transparent',borderBottom:'1px solid var(--divider)',padding:'16px 6px',transition:'background var(--dur-fast) var(--ease-out)'}}>
+      <div style={{position:'relative',width:140,flexShrink:0}}>
+        <div style={{width:'100%',height:'100%',minHeight:130,borderRadius:10,overflow:'hidden',background:t.thumb,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
+          <svg width="36" height="44" viewBox="0 0 24 32" fill="none" style={{opacity:.5}}>
+            <path d="M12 2C7.6 2 4 5.6 4 10c0 6.4 8 20 8 20s8-13.6 8-20C20 5.6 16.4 2 12 2z" fill={t.fg}/>
+            <circle cx="12" cy="10" r="3.2" fill="#fff"/>
+          </svg>
+        </div>
+        <div style={{position:'absolute',top:10,left:10,width:28,height:28,borderRadius:'50%',background:'var(--coral-500)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:15,boxShadow:'0 2px 6px rgba(200,106,82,.4)'}}>
+          {idx+1}
+        </div>
+      </div>
+      <div style={{flex:1,padding:'14px 16px 14px 18px',display:'flex',flexDirection:'column',gap:6,minWidth:0}}>
+        <div style={{minWidth:0}}>
+          <h3 style={{margin:'0 0 5px',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:19,letterSpacing:'-0.01em',lineHeight:1.15,color:'var(--text)',textWrap:'balance'}}>
+            {label}
+          </h3>
+          <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
+            <TypePill type={first.type} small/>
+            <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:12,color:'var(--text-muted)'}}>
+              <PinIcon s={12}/>{first.address}
+            </span>
+            {first.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--success-fg)'}}>{first.distance.toFixed(1)} mi away</span>}
+          </div>
+        </div>
+        <button onClick={()=>setOpen(o=>!o)} style={{alignSelf:'flex-start',display:'inline-flex',alignItems:'center',gap:6,height:30,padding:'0 12px',background:'var(--surface)',border:'1px solid var(--border-strong)',borderRadius:8,fontSize:12,fontWeight:600,color:'var(--text)',cursor:'pointer'}}>
+          {open ? 'Hide' : 'Show'} {group.length} providers here
+        </button>
+        {open && (
+          <div style={{display:'flex',flexDirection:'column',gap:10,marginTop:4}}>
+            {group.map(r => (
+              <div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,paddingTop:8,borderTop:'1px solid var(--divider)'}}>
+                <div style={{minWidth:0}}>
+                  <div style={{fontWeight:600,fontSize:13,color:'var(--text)'}}>{r.name}</div>
+                  {r.description && <div style={{fontSize:12,color:'var(--text-muted)',marginTop:2}}>"{r.description}"</div>}
+                </div>
+                <div style={{display:'flex',gap:6,flexShrink:0}}>
+                  <a href={`tel:${r.phone}`} style={{height:28,padding:'0 10px',background:'var(--brand)',color:'#fff',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>
+                  <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 10px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 /* ─── Map styling — calm, low-saturation to match palette ───── */
 const MAP_STYLE = [
   { elementType:'geometry', stylers:[{color:'#f4f0e9'}] },
@@ -223,15 +337,28 @@ const MAP_STYLE = [
   { featureType:'transit', stylers:[{visibility:'simplified'}] },
 ];
 
-const HARBOR = '#175d69', CORAL = '#e0846b';
-const pinSymbol = (act) => ({
-  path: 0, // google.maps.SymbolPath.CIRCLE
-  fillColor: act ? CORAL : HARBOR,
+// Teardrop pin: round badge on top, point at the bottom anchored to the exact location.
+const PIN_PATH = 'M 0,0 L -4,-5 A 11,11 0 1,1 4,-5 Z';
+function currentBrandColors() {
+  const cs = getComputedStyle(document.body);
+  return {
+    brand: cs.getPropertyValue('--brand').trim() || '#175d69',
+    accent: cs.getPropertyValue('--accent').trim() || '#e0846b',
+  };
+}
+const pinSymbol = (act) => {
+  const { brand, accent } = currentBrandColors();
+  return {
+  path: PIN_PATH,
+  fillColor: act ? accent : brand,
   fillOpacity: 1,
   strokeColor: '#ffffff',
-  strokeWeight: 2,
-  scale: act ? 15 : 12,
-});
+  strokeWeight: act ? 2.5 : 2,
+  scale: act ? 1.25 : 1,
+  anchor: new google.maps.Point(0, 0),
+  labelOrigin: new google.maps.Point(0, -15),
+  };
+};
 const youSymbol = { path: 0, fillColor: '#3a7ca5', fillOpacity: 1, strokeColor: '#ffffff', strokeWeight: 3, scale: 8 };
 function boundsAround(center, miles){
   const dLat = miles/69;
@@ -243,15 +370,14 @@ function boundsAround(center, miles){
 }
 
 /* ─── Map panel — real Google Map with numbered pins ────────── */
-const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
-  const show = filtered.length > 0 ? filtered : resources;
+const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey}) => {
   const elRef = useRef(null);
   const mapRef = useRef(null);
   const infoRef = useRef(null);
   const markersRef = useRef({});
   const userMarkerRef = useRef(null);
   const [ready, setReady] = useState(0);
-  const showKey = show.map(r=>r.id).join(',');
+  const showKey = groups.map(g=>g.map(r=>r.id).join('+')).join(',');
   const centerKey = center ? center.lat + ',' + center.lng : '';
 
   // init map (wait for Google Maps script to be ready)
@@ -276,31 +402,39 @@ const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !window.google) return;
-    Object.values(markersRef.current).forEach(m => m.setMap(null));
+    Object.values(markersRef.current).forEach(({marker}) => marker.setMap(null));
     markersRef.current = {};
-    const bounds = new google.maps.LatLngBounds();
-    let count = 0;
-    show.forEach(r => {
-      if (!r.coordinates || r.placeless) return;
-      const num = resources.findIndex(x => x.id === r.id) + 1;
+    groups.forEach((g, i) => {
+      const first = g[0];
+      if (!first.coordinates || first.placeless) return;
+      const num = i + 1;
+      const groupKey = normalizeAddress(first.address);
+      const ids = g.map(r => r.id);
+      const isActive = ids.includes(active);
       const marker = new google.maps.Marker({
-        position: r.coordinates, map,
-        icon: pinSymbol(active === r.id),
+        position: first.coordinates, map,
+        icon: pinSymbol(isActive),
         label: { text: String(num), color: '#ffffff', fontSize: '12px', fontWeight: '700', fontFamily: 'Hanken Grotesk, sans-serif' },
-        title: r.name, zIndex: active === r.id ? 999 : 1,
+        title: g.length > 1 ? (g.length + ' providers at this address') : first.name,
+        zIndex: isActive ? 999 : 1,
       });
       marker.addListener('click', () => {
-        infoRef.current.setContent(
-          '<div style="font-family:Hanken Grotesk,sans-serif;max-width:210px;line-height:1.4">' +
-          '<strong style="font-size:14px;color:#175d69">' + r.name + '</strong>' +
-          '<div style="font-size:12px;color:#5c5345;margin:4px 0">' + r.address + '</div>' +
+        const header = g.length > 1
+          ? '<strong style="font-size:14px;color:#175d69">' + (first.facility_name || (g.length + ' Resources at This Address')) + '</strong>' +
+            '<div style="font-size:11px;color:#5c5345;margin:2px 0 6px">' + first.address + '</div>'
+          : '<strong style="font-size:14px;color:#175d69">' + first.name + '</strong>' +
+            '<div style="font-size:12px;color:#5c5345;margin:4px 0">' + first.address + '</div>';
+        const rows = g.map(r =>
+          '<div style="margin-top:6px">' +
+          (g.length > 1 ? '<div style="font-weight:600;font-size:12px">' + r.name + '</div>' : '') +
           '<a href="tel:' + r.phone + '" style="font-size:12px;color:#175d69;font-weight:600">' + r.phone + '</a></div>'
-        );
+        ).join('');
+        infoRef.current.setContent('<div style="font-family:Hanken Grotesk,sans-serif;max-width:220px;line-height:1.4">' + header + rows + '</div>');
         infoRef.current.open(map, marker);
       });
-      marker.addListener('mouseover', () => onHover(r.id));
+      marker.addListener('mouseover', () => onHover(first.id));
       marker.addListener('mouseout', () => onHover(null));
-      markersRef.current[r.id] = marker;
+      markersRef.current[groupKey + ':' + i] = { marker, ids };
     });
 
     // "You are here" marker for the searched location
@@ -315,7 +449,7 @@ const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
     });
 
     // Focus the map tightly around the pins actually shown on this page
-    const pts = show.filter(r => r.coordinates && !r.placeless);
+    const pts = groups.map(g => g[0]).filter(r => r.coordinates && !r.placeless);
     if (center && pts.length > 0) {
       // Fit the searched location + this page's pins (tighter than a fixed radius)
       const b = new google.maps.LatLngBounds();
@@ -335,14 +469,14 @@ const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
     } else if (pts.length === 1) {
       map.setCenter(pts[0].coordinates); map.setZoom(13);
     }
-  }, [showKey, ready, centerKey, radiusMi]);
+  }, [showKey, ready, centerKey, radiusMi, themeKey]);
 
   // highlight active marker without redrawing
   useEffect(() => {
-    Object.entries(markersRef.current).forEach(([id, m]) => {
-      const isA = String(active) === id;
-      m.setIcon(pinSymbol(isA));
-      m.setZIndex(isA ? 999 : 1);
+    Object.values(markersRef.current).forEach(({marker, ids}) => {
+      const isA = ids.includes(active);
+      marker.setIcon(pinSymbol(isA));
+      marker.setZIndex(isA ? 999 : 1);
     });
   }, [active]);
 
@@ -354,18 +488,25 @@ const MapPanel = ({resources, active, filtered, onHover, center, radiusMi}) => {
 };
 
 /* ─── Sidebar filters ────────────────────────────────────────── */
-const Sidebar = ({typeFilter, setTypeFilter, radius, setRadius, selSug, toggleSug}) => {
-  const suggested = ['Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
-  const sectionStyle = {borderBottom:'1px solid var(--divider)',paddingBottom:18,marginBottom:18};
-  const labelStyle = {fontSize:14,fontWeight:700,color:'var(--text)',margin:'0 0 10px',display:'block'};
-  const radioStyle = {display:'flex',alignItems:'center',gap:8,fontSize:13,color:'var(--text-secondary)',padding:'3px 0',cursor:'pointer'};
+const Sidebar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug}) => {
+  const suggested = ['Individual Provider','Organization / Agency','Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
+  const sectionStyle = {borderBottom:'1px solid var(--divider)',paddingBottom:12,marginBottom:12};
+  const labelStyle = {fontSize:18,fontWeight:500,color:'var(--text)',margin:'0 0 6px',display:'block'};
+  const radioStyle = {display:'flex',alignItems:'center',gap:2,fontSize:16,color:'var(--text-secondary)',padding:'1px 0',cursor:'pointer'};
   return (
-    <aside style={{width:220,flexShrink:0,paddingRight:20}}>
+    <aside style={{width:136,flexShrink:0,paddingRight:0}}>
+      <div style={sectionStyle}>
+        <span style={labelStyle}>Search</span>
+        <div style={{display:'flex',alignItems:'center',gap:6,border:'1px solid var(--border-strong)',borderRadius:8,padding:'0 8px',height:34,background:'var(--surface)'}}>
+          <span style={{color:'var(--text-muted)',display:'inline-flex',flexShrink:0}}><SearchIcon s={13}/></span>
+          <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Name, service…" style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:13,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
+        </div>
+      </div>
       <div style={sectionStyle}>
         <span style={labelStyle}>Distance</span>
         {DIST_OPTIONS.map(([d,mi])=>(
           <label key={d} style={radioStyle}>
-            <input type="radio" name="dist" checked={radius===mi} onChange={()=>setRadius(mi)} style={{accentColor:'var(--brand)'}}/>
+            <input type="radio" name="dist" checked={radius===mi} onChange={()=>setRadius(mi)} style={{accentColor:'var(--brand)',width:18,height:18,minWidth:18,minHeight:18,flexShrink:0,cursor:'pointer'}}/>
             {d}
           </label>
         ))}
@@ -374,16 +515,24 @@ const Sidebar = ({typeFilter, setTypeFilter, radius, setRadius, selSug, toggleSu
         <span style={labelStyle}>Category</span>
         {['All types','Advocacy','Therapy','Education','Medical','Social'].map(t=>(
           <button key={t} onClick={()=>setTypeFilter(t==='All types'?'':t.toLowerCase())}
-            style={{display:'block',width:'100%',textAlign:'left',padding:'5px 10px',marginBottom:4,borderRadius:20,border:`1px solid ${typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand)':'var(--border)'}`,background:typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand-subtle)':'transparent',fontSize:13,color:typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand)':'var(--text-secondary)',fontWeight:typeFilter===(t==='All types'?'':t.toLowerCase())?600:400,cursor:'pointer'}}>
+            style={{display:'block',width:'100%',textAlign:'left',padding:'4px 10px',marginBottom:2,borderRadius:20,border:`3px solid ${typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand)':'var(--border)'}`,background:typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand-subtle)':'transparent',fontSize:16,color:typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand)':'var(--text-secondary)',fontWeight:typeFilter===(t==='All types'?'':t.toLowerCase())?600:400,cursor:'pointer'}}>
             {t}
           </button>
         ))}
+      </div>
+      <div style={sectionStyle}>
+        <span style={labelStyle}>Specialty</span>
+        <select value={specialty} onChange={e=>setSpecialty(e.target.value)}
+          style={{width:'100%',height:34,padding:'0 8px',borderRadius:8,border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',fontSize:13,fontFamily:'var(--font-sans)',cursor:'pointer'}}>
+          <option value="">All specialties</option>
+          {SPECIALTIES.map(sp=><option key={sp} value={sp}>{sp}</option>)}
+        </select>
       </div>
       <div>
         <span style={labelStyle}>Suggested</span>
         {suggested.map(s=>(
           <label key={s} style={radioStyle}>
-            <input type="checkbox" checked={selSug.includes(s)} onChange={()=>toggleSug(s)} style={{accentColor:'var(--brand)'}}/>
+            <input type="checkbox" checked={selSug.includes(s)} onChange={()=>toggleSug(s)} style={{accentColor:'var(--brand)',width:18,height:18,minWidth:18,minHeight:18,flexShrink:0,cursor:'pointer',borderRadius:5}}/>
             {s}
           </label>
         ))}
@@ -393,7 +542,13 @@ const Sidebar = ({typeFilter, setTypeFilter, radius, setRadius, selSug, toggleSu
 };
 
 /* ─── Header ─────────────────────────────────────────────────── */
-const Header = ({dark, setDark, locLabel, keyword, setKeyword, onLogoClick, onChangeLocation, showSearch}) => {
+const Header = ({a11yOpen, setA11yOpen, locLabel, onLogoClick, onSearchLocation, onUseMyLocation, showSearch, locBusy, locError}) => {
+  const [locInput, setLocInput] = useState(locLabel === 'My Location' ? '' : locLabel);
+  useEffect(() => { setLocInput(locLabel === 'My Location' ? '' : locLabel); }, [locLabel]);
+  const submitLocation = () => {
+    const q = locInput.trim();
+    if (q && q !== locLabel) onSearchLocation(q);
+  };
   return (
     <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:200,boxShadow:'0 1px 4px rgba(42,38,30,.06)'}}>
       <div style={{maxWidth:2400,margin:'0 auto',padding:'0 24px',height:62,display:'flex',alignItems:'center',gap:16,position:'relative'}}>
@@ -401,29 +556,250 @@ const Header = ({dark, setDark, locLabel, keyword, setKeyword, onLogoClick, onCh
           <span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'#2f93a1'}}>A coding geek building AI tools that make communities more accessible. — </span><span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'#e0846b'}}>Michael</span>
         </div>}
         <Logo onClick={onLogoClick}/>
-        {showSearch && <form onSubmit={e=>e.preventDefault()} style={{flex:1,display:'flex',alignItems:'center',gap:0,border:'2px solid var(--border-focus)',borderRadius:10,overflow:'hidden',height:42,maxWidth:700}}>
-          <div style={{flex:1,display:'flex',alignItems:'center',gap:8,padding:'0 14px',background:'var(--surface)'}}>
-            <span style={{color:'var(--text-muted)',display:'inline-flex'}}><SearchIcon/></span>
-            <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Filter by name, service, or type…" style={{flex:1,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
+        {showSearch && <div style={{flex:1,maxWidth:520,position:'relative'}}>
+        <form onSubmit={e=>e.preventDefault()} style={{display:'flex',alignItems:'center',gap:0,border:'2px solid var(--border-focus)',borderRadius:10,overflow:'hidden',height:42,width:'100%'}}>
+          <div style={{flex:'1 1 auto',display:'flex',alignItems:'center',gap:8,padding:'0 14px',background:'var(--surface)',minWidth:0}}>
+            <span style={{color:'var(--text-muted)',display:'inline-flex'}}><PinIcon s={14}/></span>
+            <input
+              value={locInput}
+              onChange={e=>setLocInput(e.target.value)}
+              onKeyDown={e=>{ if (e.key === 'Enter') { e.preventDefault(); submitLocation(); } }}
+              placeholder="City, ZIP, or address"
+              title="Search a new location"
+              style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}
+            />
           </div>
-          <div style={{width:1,height:28,background:'var(--border)'}}/>
-          <button type="button" onClick={onChangeLocation} title="Change location" style={{display:'flex',alignItems:'center',gap:6,padding:'0 12px',background:'var(--surface)',border:'none',height:'100%',cursor:'pointer',fontSize:13,color:'var(--text-secondary)'}}>
-            <PinIcon s={14}/><span style={{whiteSpace:'nowrap'}}>{locLabel || 'Near you'}</span>
-          </button>
-          <div style={{height:'100%',width:44,background:'var(--brand)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff'}}>
+          <button type="button" onClick={submitLocation} disabled={locBusy} title="Search this location" style={{height:'100%',width:44,background:'var(--brand)',border:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',cursor:locBusy?'wait':'pointer',opacity:locBusy?.7:1}}>
             <SearchIcon s={16}/>
-          </div>
-        </form>}
+          </button>
+        </form>
+        {locError && <div style={{position:'absolute',top:'calc(100% + 6px)',right:0,background:'var(--error-bg)',color:'var(--error-fg)',border:'1px solid var(--error)',borderRadius:8,padding:'6px 10px',fontSize:12,whiteSpace:'nowrap',boxShadow:'0 2px 8px rgba(42,38,30,.12)',zIndex:1}}>{locError}</div>}
+        </div>}
+        {showSearch && <button type="button" onClick={onUseMyLocation} disabled={locBusy} title="Use my current location" style={{display:'flex',alignItems:'center',gap:6,height:36,padding:'0 14px',background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13,cursor:locBusy?'wait':'pointer',flexShrink:0}}>
+          <PinIcon s={14}/> My Location
+        </button>}
         <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
           <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',background:'var(--coral-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
             ♥ Donate
           </a>
-          <button onClick={()=>setDark(d=>!d)} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 14px',background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13}}>
-            {dark?<SunIcon/>:<MoonIcon/>} {dark?'Light':'Dark'}
+          <button onClick={()=>setA11yOpen(o=>!o)} aria-pressed={a11yOpen} aria-haspopup="dialog" style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',background:a11yOpen?'var(--brand-subtle)':'var(--surface-subtle)',border:`1px solid ${a11yOpen?'var(--brand)':'var(--border)'}`,borderRadius:20,color:a11yOpen?'var(--brand)':'var(--text-secondary)',fontSize:13,fontWeight:600,cursor:'pointer'}}>
+            <SlidersIcon/> Accessibility Features
           </button>
         </div>
       </div>
     </header>
+  );
+};
+
+/* ─── Reading aloud ──────────────────────────────────────────── */
+function useReadAloud(readableList) {
+  const [rate, setRate] = useState(1);
+  const [voiceURI, setVoiceURI] = useState('');
+  const [voices, setVoices] = useState([]);
+  const [status, setStatus] = useState('idle'); // idle | playing | paused
+  const listRef = useRef(readableList);
+  listRef.current = readableList;
+
+  useEffect(() => {
+    if (!window.speechSynthesis) return;
+    const load = () => setVoices(window.speechSynthesis.getVoices());
+    load();
+    window.speechSynthesis.addEventListener('voiceschanged', load);
+    return () => window.speechSynthesis.removeEventListener('voiceschanged', load);
+  }, []);
+
+  const stop = () => {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    setStatus('idle');
+  };
+
+  useEffect(() => stop, [readableList]);
+
+  const speakFrom = (i) => {
+    const list = listRef.current;
+    if (!window.speechSynthesis || i >= list.length) { setStatus('idle'); return; }
+    const item = list[i];
+    const u = new SpeechSynthesisUtterance(`${item.label}. ${item.type}. ${item.address}. ${item.description || ''}`);
+    u.rate = rate;
+    const v = voices.find(vv => vv.voiceURI === voiceURI);
+    if (v) u.voice = v;
+    u.onend = () => speakFrom(i + 1);
+    window.speechSynthesis.speak(u);
+  };
+
+  const play = () => {
+    if (!window.speechSynthesis || readableList.length === 0) return;
+    if (status === 'paused') { window.speechSynthesis.resume(); setStatus('playing'); return; }
+    window.speechSynthesis.cancel();
+    setStatus('playing');
+    speakFrom(0);
+  };
+
+  const pause = () => { if (window.speechSynthesis) { window.speechSynthesis.pause(); setStatus('paused'); } };
+
+  return { play, pause, stop, status, rate, setRate, voices, voiceURI, setVoiceURI };
+}
+
+/* ─── Accessibility Features panel ──────────────────────────────── */
+const SegButton = ({active, onClick, children, disabled}) => (
+  <button onClick={onClick} disabled={disabled} aria-pressed={active}
+    style={{flex:1,padding:'8px 6px',borderRadius:8,border:`2px solid ${active?'var(--brand)':'var(--border)'}`,background:active?'var(--brand-subtle)':'var(--surface)',color:disabled?'var(--text-muted)':(active?'var(--brand)':'var(--text-secondary)'),fontSize:13,fontWeight:active?600:400,cursor:disabled?'not-allowed':'pointer',opacity:disabled?.55:1}}>
+    {children}
+  </button>
+);
+
+const A11ySection = ({title, children}) => (
+  <div style={{marginBottom:22}}>
+    <h4 style={{fontFamily:'var(--font-antonio)',fontSize:14,fontWeight:700,letterSpacing:'.04em',textTransform:'uppercase',color:'var(--text)',margin:'0 0 8px'}}>{title}</h4>
+    {children}
+  </div>
+);
+
+const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList, canReadAloud, onDeleteAllData}) => {
+  const ra = useReadAloud(canReadAloud ? readableList : []);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = e => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  useEffect(() => { if (!open) { setConfirmDelete(false); } }, [open]);
+
+  const set = (k, v) => setPrefs(p => ({ ...p, [k]: v }));
+
+  const exportData = () => {
+    const blob = new Blob([JSON.stringify({ preferences: prefs, favorites: favs }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'accessibility-mapper-data.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  if (!open) return null;
+
+  return (
+    <div role="presentation" style={{position:'fixed',inset:0,zIndex:500}}>
+      <div onClick={onClose} style={{position:'absolute',inset:0,background:'var(--overlay)'}}/>
+      <div role="dialog" aria-modal="true" aria-label="Accessibility Features"
+        style={{position:'absolute',top:0,right:0,height:'100%',width:'min(400px,100vw)',background:'var(--surface)',boxShadow:'-4px 0 24px rgba(42,38,30,.18)',overflowY:'auto',padding:'20px 22px 40px'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
+          <h3 style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700,margin:0,color:'var(--text)'}}>Accessibility Features</h3>
+          <button onClick={onClose} aria-label="Close" style={{display:'flex',alignItems:'center',justifyContent:'center',width:32,height:32,borderRadius:8,border:'1px solid var(--border)',background:'var(--surface-subtle)',color:'var(--text-secondary)'}}>
+            <XIcon/>
+          </button>
+        </div>
+
+        <A11ySection title="Color scheme">
+          <div style={{display:'flex',gap:10}}>
+            {[['earthy','Calm & earthy','#175d69','#e0846b'],['blue','Blue & yellow','#1c5490','#f59e0b']].map(([key,label,c1,c2])=>(
+              <button key={key} onClick={()=>set('colorScheme',key)} aria-pressed={prefs.colorScheme===key}
+                style={{flex:1,padding:'10px 8px',borderRadius:10,border:`2px solid ${prefs.colorScheme===key?'var(--brand)':'var(--border)'}`,background:prefs.colorScheme===key?'var(--brand-subtle)':'var(--surface)',cursor:'pointer',textAlign:'left'}}>
+                <div style={{display:'flex',gap:4,marginBottom:6}}>
+                  <span style={{width:16,height:16,borderRadius:'50%',background:c1,display:'inline-block'}}/>
+                  <span style={{width:16,height:16,borderRadius:'50%',background:c2,display:'inline-block'}}/>
+                </div>
+                <span style={{fontSize:12,fontWeight:600,color:'var(--text)'}}>{label}</span>
+              </button>
+            ))}
+          </div>
+        </A11ySection>
+
+        <A11ySection title="Theme">
+          <div style={{display:'flex',gap:6}}>
+            <SegButton active={prefs.theme==='system'} onClick={()=>set('theme','system')}>Match device</SegButton>
+            <SegButton active={prefs.theme==='light'} onClick={()=>set('theme','light')}>Light</SegButton>
+            <SegButton active={prefs.theme==='dark'} onClick={()=>set('theme','dark')}>Dark</SegButton>
+          </div>
+        </A11ySection>
+
+        <A11ySection title="Text size">
+          <div style={{display:'flex',gap:6}}>
+            <SegButton active={prefs.textSize==='small'} onClick={()=>set('textSize','small')}>Small</SegButton>
+            <SegButton active={prefs.textSize==='default'} onClick={()=>set('textSize','default')}>Default</SegButton>
+            <SegButton active={prefs.textSize==='large'} onClick={()=>set('textSize','large')}>Large</SegButton>
+            <SegButton active={prefs.textSize==='largest'} onClick={()=>set('textSize','largest')}>Largest</SegButton>
+          </div>
+        </A11ySection>
+
+        <A11ySection title="Typeface">
+          <div style={{display:'flex',gap:10}}>
+            <button onClick={()=>set('typeface','default')} aria-pressed={prefs.typeface==='default'}
+              style={{flex:1,padding:'10px 8px',borderRadius:10,border:`2px solid ${prefs.typeface==='default'?'var(--brand)':'var(--border)'}`,background:prefs.typeface==='default'?'var(--brand-subtle)':'var(--surface)',color:'var(--text)',fontSize:13,fontWeight:600,cursor:'pointer'}}>
+              Default
+            </button>
+            <button onClick={()=>set('typeface','dyslexic')} aria-pressed={prefs.typeface==='dyslexic'}
+              style={{flex:1,padding:'10px 8px',borderRadius:10,border:`2px solid ${prefs.typeface==='dyslexic'?'var(--brand)':'var(--border)'}`,background:prefs.typeface==='dyslexic'?'var(--brand-subtle)':'var(--surface)',color:'var(--text)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:"'OpenDyslexic','Comic Sans MS',var(--font-sans)"}}>
+              Dyslexia-friendly
+            </button>
+          </div>
+        </A11ySection>
+
+        <A11ySection title="Contrast">
+          <div style={{display:'flex',gap:6}}>
+            <SegButton active={prefs.contrast==='default'} onClick={()=>set('contrast','default')}>Default</SegButton>
+            <SegButton active={prefs.contrast==='high'} onClick={()=>set('contrast','high')}>Higher contrast</SegButton>
+          </div>
+        </A11ySection>
+
+        <A11ySection title="Motion">
+          <div style={{display:'flex',gap:6}}>
+            <SegButton active={prefs.motion==='system'} onClick={()=>set('motion','system')}>Match device</SegButton>
+            <SegButton active={prefs.motion==='reduce'} onClick={()=>set('motion','reduce')}>Reduce motion</SegButton>
+          </div>
+        </A11ySection>
+
+        <A11ySection title="Reading aloud">
+          {!canReadAloud && <p style={{fontSize:12,color:'var(--text-muted)',margin:'0 0 8px'}}>Search for resources first — reading aloud works on the results list.</p>}
+          <div style={{display:'flex',gap:6,marginBottom:10}}>
+            {ra.status === 'playing'
+              ? <SegButton active onClick={ra.pause} disabled={!canReadAloud}>⏸ Pause</SegButton>
+              : <SegButton active={ra.status==='paused'} onClick={ra.play} disabled={!canReadAloud || readableList.length===0}>▶ {ra.status==='paused'?'Resume':'Play'}</SegButton>}
+            <SegButton onClick={ra.stop} disabled={!canReadAloud || ra.status==='idle'}>⏹ Stop</SegButton>
+          </div>
+          <div style={{fontSize:11,color:'var(--text-muted)',marginBottom:4}}>Speed</div>
+          <div style={{display:'flex',gap:6,marginBottom:10}}>
+            <SegButton active={ra.rate===0.8} onClick={()=>ra.setRate(0.8)} disabled={!canReadAloud}>Slower</SegButton>
+            <SegButton active={ra.rate===1} onClick={()=>ra.setRate(1)} disabled={!canReadAloud}>Normal</SegButton>
+            <SegButton active={ra.rate===1.3} onClick={()=>ra.setRate(1.3)} disabled={!canReadAloud}>Faster</SegButton>
+          </div>
+          {ra.voices.length > 0 && (
+            <select value={ra.voiceURI} onChange={e=>ra.setVoiceURI(e.target.value)} disabled={!canReadAloud}
+              style={{width:'100%',height:34,padding:'0 8px',borderRadius:8,border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',fontSize:13,fontFamily:'var(--font-sans)'}}>
+              <option value="">Default voice</option>
+              {ra.voices.map(v => <option key={v.voiceURI} value={v.voiceURI}>{v.name}</option>)}
+            </select>
+          )}
+        </A11ySection>
+
+        <A11ySection title="Your data">
+          <p style={{fontSize:12,color:'var(--text-secondary)',margin:'0 0 10px'}}>
+            {favs.length} saved resource{favs.length!==1?'s':''} · preferences and favorites are stored only on this device, never uploaded anywhere.
+          </p>
+          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+            <button onClick={exportData} style={{padding:'9px 12px',borderRadius:8,border:'1px solid var(--border)',background:'var(--surface-subtle)',color:'var(--text)',fontSize:13,fontWeight:600,cursor:'pointer',textAlign:'left'}}>
+              ⬇ Export a copy
+            </button>
+            {!confirmDelete ? (
+              <button onClick={()=>setConfirmDelete(true)} style={{padding:'9px 12px',borderRadius:8,border:'1px solid var(--error)',background:'var(--error-bg)',color:'var(--error-fg)',fontSize:13,fontWeight:600,cursor:'pointer',textAlign:'left'}}>
+                🗑 Delete all my data
+              </button>
+            ) : (
+              <div style={{padding:10,borderRadius:8,border:'1px solid var(--error)',background:'var(--error-bg)'}}>
+                <p style={{fontSize:12,color:'var(--error-fg)',margin:'0 0 8px'}}>This clears saved preferences and favorites on this device. This can’t be undone.</p>
+                <div style={{display:'flex',gap:8}}>
+                  <button onClick={()=>{onDeleteAllData();setConfirmDelete(false);}} style={{flex:1,padding:'7px 10px',borderRadius:6,border:'none',background:'var(--error)',color:'#fff',fontSize:12,fontWeight:700,cursor:'pointer'}}>Confirm delete</button>
+                  <button onClick={()=>setConfirmDelete(false)} style={{flex:1,padding:'7px 10px',borderRadius:6,border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-secondary)',fontSize:12,cursor:'pointer'}}>Cancel</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </A11ySection>
+      </div>
+    </div>
   );
 };
 
@@ -543,15 +919,16 @@ const Pager = ({page, totalPages, setPage}) => {
 };
 
 /* ─── Results ────────────────────────────────────────────────── */
-const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
+const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, onVisibleChange}) => {
   const [typeFilter, setTypeFilter] = useState('');
+  const [specialty, setSpecialty] = useState('');
   const [radius, setRadius] = useState(null);
   const [activeId, setActiveId] = useState(null);
   const [page, setPage] = useState(0);
   const [selSug, setSelSug] = useState([]);
   const toggleSug = s => setSelSug(a => a.includes(s) ? a.filter(x=>x!==s) : [...a,s]);
   // Reset to first page whenever the result set changes
-  useEffect(() => { setPage(0); }, [typeFilter, radius, keyword, coords, selSug]);
+  useEffect(() => { setPage(0); }, [typeFilter, specialty, radius, keyword, coords, selSug]);
 
   const kw = keyword.trim().toLowerCase();
   const matchKwType = r =>
@@ -560,13 +937,16 @@ const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
       || (r.services||[]).join(' ').toLowerCase().includes(kw)
       || (r.description||'').toLowerCase().includes(kw)
       || (TYPE_META[r.type] ? TYPE_META[r.type].label.toLowerCase().includes(kw) : false)) &&
-    (!typeFilter || r.type === typeFilter);
+    (!typeFilter || r.type === typeFilter) &&
+    (!specialty || (r.services||[]).includes(specialty));
 
   const matchSug = r => {
     if (selSug.length === 0) return true;
     const svc = (r.services||[]).join(' ').toLowerCase();
     const sg = r.suggested || {};
     return selSug.every(s => {
+      if (s === 'Individual Provider')         return r.entity_type === 'individual';
+      if (s === 'Organization / Agency')       return r.entity_type === 'organization';
       if (s === 'Free / Sliding Scale')       return sg.free_services      || /free|sliding scale/.test(svc);
       if (s === 'Telehealth Available')        return sg.telehealth         || /telehealth|virtual|online therapy|video/.test(svc);
       if (s === 'In-home Services')            return sg.in_home            || /in-home|in home|home visit|home-based/.test(svc);
@@ -578,7 +958,45 @@ const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
     });
   };
 
-  if (!ALL) {
+  const loading = !ALL;
+
+  // Located resources (mapped, distance-filtered) vs. placeless nationwide/virtual ones
+  let local = loading ? [] : ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
+  if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
+  const filtered = local.filter(r => matchKwType(r) && matchSug(r) && (radius == null || (r.distance != null && r.distance <= radius)));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const safePage = Math.min(page, totalPages - 1);
+  const start = safePage * PER_PAGE;
+  const shown = filtered.slice(start, start + PER_PAGE);
+  const national = loading ? [] : ALL.filter(r => r.placeless && matchKwType(r) && matchSug(r));
+  const onLastPage = safePage >= totalPages - 1;
+
+  // Multiple providers at the exact same address (e.g. several doctors inside
+  // one medical center) collapse into a single card + a single map pin.
+  const groupMap = new Map();
+  const groups = [];
+  shown.forEach(r => {
+    const key = normalizeAddress(r.address);
+    if (!groupMap.has(key)) { const arr = []; groupMap.set(key, arr); groups.push(arr); }
+    groupMap.get(key).push(r);
+  });
+  const groupsKey = groups.map(g=>g.map(r=>r.id).join('+')).join(',');
+
+  useEffect(() => {
+    if (!onVisibleChange) return;
+    onVisibleChange(groups.map(g => {
+      const first = g[0];
+      const t = TYPE_META[first.type] || TYPE_META.general_support;
+      return {
+        label: g.length > 1 ? (first.facility_name || `${g.length} resources at this address`) : first.name,
+        type: t.label,
+        address: first.address,
+        description: g.length > 1 ? `${g.length} providers at this location` : (first.description || ''),
+      };
+    }));
+  }, [groupsKey, onVisibleChange]);
+
+  if (loading) {
     return (
       <div style={{maxWidth:2400,margin:'0 auto',padding:'96px 24px',textAlign:'center',color:'var(--text-muted)'}}>
         <div style={{fontSize:32,marginBottom:10}}>⏳</div>
@@ -588,19 +1006,8 @@ const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
     );
   }
 
-  // Located resources (mapped, distance-filtered) vs. placeless nationwide/virtual ones
-  let local = ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
-  if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
-  const filtered = local.filter(r => matchKwType(r) && matchSug(r) && (radius == null || (r.distance != null && r.distance <= radius)));
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const safePage = Math.min(page, totalPages - 1);
-  const start = safePage * PER_PAGE;
-  const shown = filtered.slice(start, start + PER_PAGE);
-  const national = ALL.filter(r => r.placeless && matchKwType(r) && matchSug(r));
-  const onLastPage = safePage >= totalPages - 1;
-
   return (
-    <div style={{maxWidth:2400,margin:'0 auto',padding:'24px 24px 64px'}}>
+    <div style={{maxWidth:2400,margin:'0 auto',padding:'24px 1px 64px'}}>
       <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
         <span style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
         <span>›</span>
@@ -618,8 +1025,8 @@ const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
           {` · ${ALL.length} total in directory`}
         </div>
       </div>
-      <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
-        <Sidebar typeFilter={typeFilter} setTypeFilter={setTypeFilter} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug}/>
+      <div style={{display:'flex',gap:10,alignItems:'flex-start',flexWrap:'wrap'}}>
+        <Sidebar keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug}/>
         <div style={{flex:'1 1 460px',minWidth:320}}>
           {shown.length === 0 && national.length === 0 ? (
             <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
@@ -629,8 +1036,10 @@ const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
             </div>
           ) : (
             <React.Fragment>
-              {shown.map((r,i)=>(
-                <ResourceCard key={r.id} r={r} idx={start+i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId}/>
+              {groups.map((g,i)=>(
+                g.length > 1
+                  ? <GroupedResourceCard key={'g'+g[0].id} group={g} idx={i} active={g.some(x=>x.id===activeId)} onHover={setActiveId}/>
+                  : <ResourceCard key={g[0].id} r={g[0]} idx={i} fav={favs.includes(g[0].id)} onFav={onFav} active={activeId===g[0].id} onHover={setActiveId}/>
               ))}
               {totalPages > 1 && (
                 <Pager page={safePage} totalPages={totalPages} setPage={setPage}/>
@@ -647,8 +1056,8 @@ const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
             </React.Fragment>
           )}
         </div>
-        <div style={{flex:'1 1 440px',minWidth:340,marginLeft:0,position:'sticky',top:80,height:'calc(100vh - 100px)'}}>
-          <MapPanel resources={shown} filtered={shown} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius}/>
+        <div style={{flex:'1 1 440px',minWidth:340,marginLeft:0,position:'sticky',top:80,height:'calc(100vh - 48px)'}}>
+          <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey}/>
         </div>
       </div>
     </div>
@@ -658,15 +1067,44 @@ const Results = ({ALL, coords, locLabel, keyword, favs, onFav}) => {
 /* ─── App ────────────────────────────────────────────────────── */
 function App() {
   const ALL = useCommunityData();
-  const [dark, setDark] = useState(false);
+  const [prefs, setPrefs] = useState(loadPrefs);
+  const [systemDark, setSystemDark] = useState(() => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [a11yOpen, setA11yOpen] = useState(false);
   const [screen, setScreen] = useState('landing');
   const [coords, setCoords] = useState(null);
   const [locLabel, setLocLabel] = useState('');
   const [keyword, setKeyword] = useState('');
-  const [favs, setFavs] = useState([]);
+  const [favs, setFavs] = useState(loadFavs);
+  const [readableList, setReadableList] = useState([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  useEffect(() => { document.body.classList.toggle('dark', dark); }, [dark]);
+
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = e => setSystemDark(e.matches);
+    mq.addEventListener ? mq.addEventListener('change', onChange) : mq.addListener(onChange);
+    return () => { mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange); };
+  }, []);
+
+  const isDark = prefs.theme === 'system' ? systemDark : prefs.theme === 'dark';
+
+  useEffect(() => {
+    const b = document.body.classList;
+    b.toggle('dark', isDark);
+    b.toggle('dyslexic', prefs.typeface === 'dyslexic');
+    b.toggle('scheme-blue', prefs.colorScheme === 'blue');
+    b.toggle('hc', prefs.contrast === 'high');
+    b.toggle('reduce-motion', prefs.motion === 'reduce');
+    b.toggle('text-small', prefs.textSize === 'small');
+    b.toggle('text-large', prefs.textSize === 'large');
+    b.toggle('text-largest', prefs.textSize === 'largest');
+    savePrefs(prefs);
+  }, [prefs, isDark]);
+
+  useEffect(() => { saveFavs(favs); }, [favs]);
+
+  const themeKey = `${prefs.colorScheme}-${isDark ? 'dark' : 'light'}`;
 
   const goLanding = () => { setScreen('landing'); setError(''); };
 
@@ -693,8 +1131,18 @@ function App() {
   const toggleFav = id => setFavs(f => f.includes(id) ? f.filter(x=>x!==id) : [...f,id]);
   return (
     <div>
-      <Header dark={dark} setDark={setDark} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} onLogoClick={goLanding} onChangeLocation={goLanding} showSearch={screen==='results'}/>
-      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} favs={favs} onFav={toggleFav}/>}</main>
+      <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'}/>
+      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} favs={favs} onFav={toggleFav} themeKey={themeKey} onVisibleChange={setReadableList}/>}</main>
+      <AccessibilityPanel
+        open={a11yOpen}
+        onClose={() => setA11yOpen(false)}
+        prefs={prefs}
+        setPrefs={setPrefs}
+        favs={favs}
+        readableList={readableList}
+        canReadAloud={screen === 'results'}
+        onDeleteAllData={() => { clearAllStoredData(); setPrefs({ ...DEFAULT_PREFS }); setFavs([]); }}
+      />
       <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
         © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
         <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',fontWeight:600}}>GitHub</a>
