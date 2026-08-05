@@ -1,0 +1,63 @@
+# This site is a free public resource directory for autism and disability
+# support services. We welcome search engines indexing our pages so that
+# families can find us.
+#
+# We do NOT permit automated bulk scraping, downloading, or reproduction of
+# our compiled resource database (community_data.js / community_resources.json).
+# See /TERMS.md for details.
+
+User-agent: *
+Disallow: /community_data.js
+Disallow: /community_resources.json
+Crawl-delay: 5
+
+# Search engines: please index our pages normally, just not the raw database files.
+User-agent: Googlebot
+Allow: /
+Disallow: /community_data.js
+Disallow: /community_resources.json
+
+User-agent: Bingbot
+Allow: /
+Disallow: /community_data.js
+Disallow: /community_resources.json
+
+# Block AI/LLM training crawlers from bulk-harvesting the database.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /

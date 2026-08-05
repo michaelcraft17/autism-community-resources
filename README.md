@@ -159,7 +159,9 @@ Always verify services and information directly with providers. This directory i
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+The source code (site, scripts, and tooling) is open source under the [MIT License](LICENSE).
+
+The compiled resource database (`community_data.js` / `community_resources.json`) is **not** covered by that license — automated scraping, bulk downloading, and redistribution of the database are restricted. See [TERMS.md](TERMS.md).
 
 ---
 
