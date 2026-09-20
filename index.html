@@ -22,45 +22,144 @@
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/opendyslexic"/>
 <style>
 :root{
-  --harbor-50:#e6f3f4;--harbor-100:#c9e4e6;--harbor-200:#96c9ce;--harbor-300:#5eb0b8;--harbor-400:#2f93a1;--harbor-500:#1f6e7b;--harbor-600:#175d69;--harbor-700:#124a54;--harbor-800:#0d383f;--harbor-900:#09252a;
-  --coral-50:#fef4f1;--coral-100:#fce8e2;--coral-200:#f8cfc1;--coral-300:#f2b09b;--coral-400:#ea9077;--coral-500:#e0846b;--coral-600:#c86a52;--coral-700:#a85240;--coral-800:#7d3c2d;--coral-900:#55271e;
+  --harbor-50:#e7f7f4;--harbor-100:#c9efe8;--harbor-200:#a6e4d9;--harbor-300:#6fd3c0;--harbor-400:#40bca8;--harbor-500:#2a7c6f;--harbor-600:#1f6a5e;--harbor-700:#17564c;--harbor-800:#0f413a;--harbor-900:#092a26;
+  --cardinal-50:#fdf0f0;--cardinal-100:#fadcdc;--cardinal-200:#f3b8b8;--cardinal-300:#e98a8a;--cardinal-400:#d65a5a;--cardinal-500:#b4232a;--cardinal-600:#8c1515;--cardinal-700:#6e1010;--cardinal-800:#520c0c;--cardinal-900:#380808;
+  --spark-amber:#f6a21e;--spark-pink:#e5348b;--spark-green:#6bbf3b;--spark-blue:#2e7dd7;
   --stone-0:#ffffff;--stone-50:#faf7f2;--stone-100:#f4f0e9;--stone-200:#eae3d8;--stone-300:#d8cebf;--stone-400:#bcaf9c;--stone-500:#9a8c77;--stone-600:#7a6e5c;--stone-700:#5c5345;--stone-800:#3a352b;--stone-900:#2a261e;
   --success-bg:#e6f0e2;--success:#4f9a52;--success-fg:#2f6a36;--warning-bg:#f7ecd6;--warning:#c68a1a;--warning-fg:#7f5a10;--error-bg:#f4e4e1;--error:#c0564b;--error-fg:#8a3a31;--info-bg:#e2eef4;--info:#3a7ca5;--info-fg:#265775;
   --type-advocacy-bg:#e2eef2;--type-advocacy-fg:#2c6e8a;--type-therapy-bg:#ece6f2;--type-therapy-fg:#6a5191;--type-education-bg:#e6f0e2;--type-education-fg:#3e7a45;--type-medical-bg:#f4e5e2;--type-medical-fg:#a85a4c;--type-social-bg:#fceee9;--type-social-fg:#c06044;--type-general-bg:#ece7de;--type-general-fg:#6b5f4d;
-  --brand:var(--harbor-600);--brand-hover:var(--harbor-700);--brand-active:var(--harbor-800);--brand-subtle:var(--harbor-50);--brand-on:var(--stone-0);--accent:var(--coral-500);--accent-hover:var(--coral-600);--accent-subtle:var(--coral-50);--accent-on:var(--stone-0);
-  --bg:var(--stone-50);--bg-sunken:var(--stone-100);--surface:var(--stone-0);--surface-raised:var(--stone-0);--surface-subtle:var(--stone-100);--overlay:rgba(42,38,30,0.46);
-  --text:var(--stone-900);--text-secondary:var(--stone-600);--text-muted:var(--stone-500);--text-on-brand:var(--stone-0);--text-link:var(--harbor-600);
-  --border:var(--stone-200);--border-strong:var(--stone-300);--border-focus:var(--harbor-500);--divider:var(--stone-200);
-  --ring:0 0 0 3px rgba(31,110,123,0.28);--ring-accent:0 0 0 3px rgba(224,132,107,0.32);
+  --brand:var(--harbor-600);--brand-hover:var(--harbor-700);--brand-active:var(--harbor-800);--brand-subtle:var(--harbor-50);--brand-on:var(--stone-0);--accent:var(--cardinal-500);--accent-hover:var(--cardinal-600);--accent-subtle:var(--cardinal-50);--accent-on:var(--stone-0);
+  --bg:#ffffff;--bg-sunken:#f4f6f6;--surface:var(--stone-0);--surface-raised:var(--stone-0);--surface-subtle:#f4f6f6;--overlay:rgba(9,42,38,0.46);
+  --text:#111315;--text-secondary:#33383b;--text-muted:#575d61;--text-on-brand:var(--stone-0);--text-link:#111315;
+  --border:#cfe3df;--border-strong:#a9cbc4;--border-focus:var(--harbor-500);--divider:#dcebe8;
+  --accent-text:var(--cardinal-500);
+  /* Action color: Call buttons + the header search bar (a softer take on Stanford red; white text 5.0:1) */
+  /* Location orange (the original coral): result-number badges, highlighted rows, and the highlighted map pin */
+  --pin:#e0846b;--pin-on:#2b1408;--pin-subtle:#fdece5;
+  --action:#c2444b;--action-hover:#a8363d;--action-on:#ffffff;
+  --tint-a-bg:#e7f7f4;--tint-a-border:#b9e6dd;--tint-a-label:#1f6a5e;--tint-a-title:#111315;--tint-a-body:#33383b;--tint-a-btn:#1f6a5e;--tint-a-btn-hover:#17564c;--tint-a-btn-text:#fff;--tint-b-btn-text:#fff;
+  --tint-b-bg:#fdf0f0;--tint-b-border:#f3c7c7;--tint-b-label:#b4232a;--tint-b-title:#520c0c;--tint-b-body:#6b3030;--tint-b-btn:#b4232a;--tint-b-btn-hover:#8c1515;
+  --ring:0 0 0 3px rgba(31,106,94,0.30);--ring-accent:0 0 0 3px rgba(180,35,42,0.30);
   --font-antonio:'Antonio',system-ui,sans-serif;--font-sans:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;--font-mono:'DM Mono',ui-monospace,Menlo,monospace;
   --dur-fast:140ms;--dur-base:220ms;--ease-out:cubic-bezier(0.22,0.61,0.36,1);
 }
 *,*::before,*::after{box-sizing:border-box;}
 html,body{margin:0;min-height:100vh;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-body.dark{--bg:#111a1c;--bg-sunken:#192226;--surface:#1e2d31;--surface-subtle:#253238;--text:#edf3f4;--text-secondary:#a8b8bc;--text-muted:#7a9099;--border:#2d4449;--border-strong:#3a5560;--divider:#2d4449;}
-body.dyslexic, body.dyslexic *{font-family:'OpenDyslexic','Comic Sans MS',var(--font-sans)!important;letter-spacing:.02em;line-height:1.6;}
+body.dark{--bg:#0f2622;--bg-sunken:#0b1e1b;--surface:#17332e;--surface-subtle:#1d3d37;--text:#eaf5f2;--text-secondary:#a9c7c0;--text-muted:#86ada5;--border:#2b4a44;--border-strong:#3d6a61;--divider:#2b4a44;
+  --brand:#6fd3c0;--brand-hover:#9be3d5;--brand-active:#c9efe8;--brand-subtle:#17453d;--brand-on:#082722;--text-link:#8fe0d0;--border-focus:#6fd3c0;--accent-text:#f0a0a0;--success-fg:#8fd694;--action:#e0585e;--action-hover:#ea7a7f;--action-on:#2a0808;--pin:#e0846b;--pin-on:#2b1408;--pin-subtle:#3a261e;
+  --tint-a-bg:#12403a;--tint-a-border:#22665b;--tint-a-label:#8fe0d0;--tint-a-title:#e7f7f4;--tint-a-body:#b6d8d1;--tint-a-btn:#40bca8;--tint-a-btn-hover:#6fd3c0;--tint-a-btn-text:#062420;--tint-b-btn-text:#2a0808;
+  --tint-b-bg:#3a1a1c;--tint-b-border:#6a2a2e;--tint-b-label:#f0a0a0;--tint-b-title:#fdecec;--tint-b-body:#e6bcbc;--tint-b-btn:#e0585e;--tint-b-btn-hover:#ea7a7f;}
+body.legible, body.legible *:not(.a11y-panel):not(.a11y-panel *){font-family:Verdana,'Segoe UI',Arial,sans-serif!important;letter-spacing:.01em;}
+body.dyslexic, body.dyslexic *:not(.a11y-panel):not(.a11y-panel *){font-family:'OpenDyslexic','Comic Sans MS',var(--font-sans)!important;letter-spacing:.02em;line-height:1.6;}
 body.scheme-blue{
   --brand:#1c5490;--brand-hover:#164272;--brand-active:#113356;--brand-subtle:#eaf2fb;--brand-on:var(--stone-0);
   --accent:#f59e0b;--accent-hover:#c97f08;--accent-subtle:#fffaeb;--accent-on:var(--stone-0);
-  --text-link:#1c5490;--border-focus:#2569b3;
+  --text-link:#1c5490;--border-focus:#2569b3;--accent-text:#a85a00;--action:#1c5490;--action-hover:#164272;--action-on:#ffffff;--pin:#f59e0b;--pin-on:#2b1a00;--pin-subtle:#fff3d6;
+  --tint-a-bg:#eaf2fb;--tint-a-border:#c3d9f1;--tint-a-label:#1c5490;--tint-a-title:#113356;--tint-a-body:#2c4a6e;--tint-a-btn:#1c5490;--tint-a-btn-hover:#164272;
+  --tint-b-bg:#fff6e0;--tint-b-border:#f6dc9c;--tint-b-label:#a85a00;--tint-b-title:#4a2e02;--tint-b-body:#6b4a12;--tint-b-btn:#b45f06;--tint-b-btn-hover:#8f4a04;
   --ring:0 0 0 3px rgba(28,84,144,.28);--ring-accent:0 0 0 3px rgba(245,158,11,.32);
 }
 body.scheme-blue.dark{
   --brand:#6aa8e3;--brand-hover:#9fc7ef;--brand-active:#cfe3f7;--brand-subtle:#113356;--brand-on:#0c2338;
   --accent:#ffc94d;--accent-hover:#ffe085;--accent-subtle:#4a2e02;--accent-on:#4a2e02;
-  --text-link:#9fc7ef;--border-focus:#6aa8e3;
+  --text-link:#9fc7ef;--border-focus:#6aa8e3;--accent-text:#ffc94d;--action:#6aa8e3;--action-hover:#9fc7ef;--action-on:#0c2338;--pin:#ffc94d;--pin-on:#2b1a00;--pin-subtle:#3a2a05;
+  --tint-a-bg:#12314f;--tint-a-border:#25527f;--tint-a-label:#9fc7ef;--tint-a-title:#eaf2fb;--tint-a-body:#b9cfe6;--tint-a-btn:#6aa8e3;--tint-a-btn-hover:#9fc7ef;--tint-a-btn-text:#0c2338;--tint-b-btn-text:#3a2a05;
+  --tint-b-bg:#3a2a05;--tint-b-border:#6b4d0c;--tint-b-label:#ffc94d;--tint-b-title:#fff6e0;--tint-b-body:#f0d9a0;--tint-b-btn:#ffc94d;--tint-b-btn-hover:#ffe085;
 }
-body.hc{--text-secondary:var(--text);--text-muted:var(--text);--border:var(--stone-500);--border-strong:var(--stone-700);--divider:var(--stone-500);}
-body.hc.dark{--border:#7a9099;--border-strong:#a8b8bc;--divider:#7a9099;}
 body.reduce-motion{--dur-fast:.01ms;--dur-base:.01ms;}
-body.text-small{zoom:.9;}
-body.text-large{zoom:1.15;}
-body.text-largest{zoom:1.3;}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+body.text-small .app-zoom{zoom:.9;}
+body.text-large .app-zoom{zoom:1.15;}
+body.text-largest .app-zoom{zoom:1.3;}
+body.text-huge .app-zoom{zoom:1.5;}
+body.text-giant .app-zoom{zoom:1.75;}
+/* Bigger Text zooms .app-zoom (the page) only; the accessibility menu sits outside it so it keeps its size. */
+
+/* ─── Accessibility menu features (toggled from the panel) ─── */
+body.contrast-dark{--bg:#000;--bg-sunken:#000;--surface:#000;--surface-raised:#000;--surface-subtle:#111;--text:#ff0;--text-secondary:#ff0;--text-muted:#ff0;--border:#ff0;--border-strong:#ff0;--divider:#ff0;--text-link:#0ff;--action:#0ff;--action-hover:#7ff;--action-on:#000;--pin:#ffa500;--pin-on:#000;--pin-subtle:#2a1a00;--brand:#0ff;--brand-subtle:#000;--brand-on:#000;}
+body.contrast-light{--bg:#fff;--bg-sunken:#fff;--surface:#fff;--surface-raised:#fff;--surface-subtle:#fff;--text:#000;--text-secondary:#000;--text-muted:#000;--border:#000;--border-strong:#000;--divider:#000;--text-link:#0000c8;--action:#0000c8;--action-hover:#000090;--action-on:#fff;--pin:#ff9a3c;--pin-on:#000;--pin-subtle:#ffe9d6;--brand:#0000c8;--brand-subtle:#fff;--brand-on:#fff;}
+html.a11y-invert img:not(.gm-style img),html.a11y-invert video,html.a11y-invert .a11y-panel,html.a11y-invert .a11y-tip{filter:invert(1) hue-rotate(180deg);}
+body.hl-links a:not(.a11y-panel *){background:#ff0!important;color:#000!important;text-decoration:underline!important;outline:2px solid #000;}
+body.hide-images img:not(.gm-style img){visibility:hidden!important;}
+body.hide-images [style*="background-image"]{background-image:none!important;}
+/* Line Height applies to reading text only: not the header, buttons, inputs, headings, chips or the menu itself. */
+body.lh-1 :not(.a11y-panel, .a11y-panel *, header, header *, button, button *, input, select, textarea, h1, h2, h3, h4, .ui-chip, .ui-chip *){line-height:1.5!important;}
+body.lh-2 :not(.a11y-panel, .a11y-panel *, header, header *, button, button *, input, select, textarea, h1, h2, h3, h4, .ui-chip, .ui-chip *){line-height:1.75!important;}
+body.lh-3 :not(.a11y-panel, .a11y-panel *, header, header *, button, button *, input, select, textarea, h1, h2, h3, h4, .ui-chip, .ui-chip *){line-height:2!important;}
+/* The header tagline is centered absolutely, so drop it when the bar is too narrow (small screens, or page scaled up by Bigger Text) */
+@media (max-width:1240px){.hdr-tagline{display:none;}}
+body.text-large .hdr-tagline,body.text-largest .hdr-tagline,body.text-huge .hdr-tagline,body.text-giant .hdr-tagline{display:none;}
+body.sp-1 *:not(.a11y-panel):not(.a11y-panel *){letter-spacing:.06em!important;word-spacing:.12em!important;}
+body.sp-2 *:not(.a11y-panel):not(.a11y-panel *){letter-spacing:.12em!important;word-spacing:.24em!important;}
+body.sp-3 *:not(.a11y-panel):not(.a11y-panel *){letter-spacing:.2em!important;word-spacing:.4em!important;}
+body.ta-left *:not(.a11y-panel):not(.a11y-panel *){text-align:left!important;}
+body.ta-center *:not(.a11y-panel):not(.a11y-panel *){text-align:center!important;}
+body.ta-right *:not(.a11y-panel):not(.a11y-panel *){text-align:right!important;}
+body.ta-justify *:not(.a11y-panel):not(.a11y-panel *){text-align:justify!important;}
+body.cursor-black,body.cursor-black *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M5 2l14 10-6 1.5 3.5 7-3 1.5-3.5-7L5 19z' fill='black' stroke='white' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 6 3,auto!important;}
+
+/* ─── Accessibility menu (modeled on the UserWay menu used by stanfordnnea.com) ─── */
+.a11y-panel{--surface:#fff;--surface-subtle:#f4f6fa;--text:#111;--text-secondary:#3d4452;--text-muted:#5b6474;--border:#d3d9e6;--border-strong:#aab3c5;--brand:#0048ff;--brand-hover:#0038cc;--brand-subtle:#e6ecff;--text-link:#0048ff;--border-focus:#0048ff;
+  position:fixed;top:0;right:0;height:100%;width:min(355px,100vw);z-index:500;background:#0048ff;color:#111;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,.28);font-family:var(--font-sans);animation:a11y-slide .22s var(--ease-out);}
+.a11y-panel.big{width:min(520px,100vw);}
+@keyframes a11y-slide{from{transform:translateX(24px);opacity:0;}to{transform:none;opacity:1;}}
+.a11y-head{display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 20px 0 20px;color:#fff;font-weight:600;font-size:14px;flex-shrink:0;}
+.a11y-panel.big .a11y-head{font-size:17px;}
+.a11y-close{width:38px;height:38px;border-radius:50%;border:2px solid #fff;background:#0048ff;color:#fff;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 0 0 3px rgba(255,255,255,.25);}
+.a11y-close:hover{background:#0038cc;}
+.a11y-body{flex:1;overflow-y:auto;background:#eff1f5;border-radius:24px 24px 0 0;padding:20px 20px 32px;}
+.a11y-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:#111;margin-bottom:14px;}
+.a11y-panel.big .a11y-row{font-size:16px;}
+.a11y-switch{width:46px;height:26px;border-radius:13px;border:0;background:#2f3a55;position:relative;padding:0;flex-shrink:0;}
+.a11y-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform var(--dur-fast);}
+.a11y-switch[aria-checked=true]{background:#0048ff;}
+.a11y-switch[aria-checked=true]::after{transform:translateX(20px);}
+.a11y-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.a11y-tile{background:#fff;border:2px solid transparent;border-radius:8px;min-height:114px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:13px;font-weight:700;color:#111;padding:10px 6px 16px;position:relative;text-align:center;line-height:1.25;}
+.a11y-panel.big .a11y-tile{min-height:140px;font-size:16px;}
+.a11y-tile:hover{border-color:#9db4ff;}
+.a11y-tile[aria-pressed=true]{border-color:var(--tc,#0048ff);background:#fff;color:var(--tc,#0048ff);box-shadow:0 0 0 4px color-mix(in srgb,var(--tc,#0048ff) 14%,transparent);}
+.a11y-tile[aria-pressed=true]::after{content:'';position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:var(--tc,#0048ff) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat;}
+.a11y-tile svg{width:32px;height:32px;}
+.a11y-panel.big .a11y-tile svg{width:42px;height:42px;}
+.a11y-steps{position:absolute;bottom:9px;left:12px;right:12px;display:flex;justify-content:center;gap:5px;}
+.a11y-steps i{flex:1;max-width:44px;}
+.a11y-steps i{width:34px;height:4px;border-radius:2px;background:color-mix(in srgb,var(--tc,#0048ff) 26%,#fff);}
+.a11y-steps i.on{background:var(--tc,#0048ff);}
+.a11y-wide{width:100%;display:flex;align-items:center;gap:10px;background:#fff;border:2px solid transparent;border-radius:8px;padding:14px 16px;margin-top:10px;font-size:13px;font-weight:700;color:#111;text-align:left;}
+.a11y-panel.big .a11y-wide{font-size:16px;}
+.a11y-wide:hover{border-color:#9db4ff;}
+.a11y-wide svg{width:20px;height:20px;flex-shrink:0;}
+.a11y-more{margin:26px 0 12px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#5b6474;}
+.a11y-panel button:focus-visible{outline:3px solid #ffbf00;outline-offset:2px;}
+.a11y-tip{position:fixed;z-index:2147483647;display:none;max-width:260px;background:#111;color:#fff;font:600 13px/1.3 var(--font-sans);padding:6px 10px;border-radius:6px;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.35);}
+@media (max-width:420px){.a11y-panel,.a11y-panel.big{width:100vw;}}
 a{text-decoration:none;color:inherit;}
 button{font-family:inherit;cursor:pointer;}
 ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-thumb{background:var(--stone-300);border-radius:3px;}
 @media (prefers-reduced-motion:reduce){:root{--dur-fast:0.01ms;--dur-base:0.01ms;}}
+/* Lively banner background: cerulean base (keeps white text >= 4.5:1) with sky-blue glows at the edges */
+.lively-bg{position:relative;overflow:hidden;--spark-blue:#bfe0ff;background:radial-gradient(760px 380px at 6% -12%,rgba(125,190,255,.55),transparent 70%),radial-gradient(620px 320px at 100% 115%,rgba(90,170,255,.45),transparent 70%),linear-gradient(135deg,#0b5cad 0%,#0a6cc4 55%,#1177d6 100%);}
+.lively-bg>*{position:relative;z-index:1;}
+.lively-bg>.confetti{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.confetti i{position:absolute;border-radius:50%;display:block;opacity:.9;}
+.fbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 0 14px;border-bottom:1px solid var(--divider);margin-bottom:6px;}
+.fbar-sep{width:1px;height:22px;background:var(--border-strong);margin:0 4px;}
+.search-go:hover:not(:disabled){background:var(--action-hover)!important;}
+.call-btn:hover{background:var(--action-hover)!important;}
+.fchip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);color:var(--text);font-size:14px;font-weight:600;white-space:nowrap;}
+.fchip:hover{background:var(--bg-sunken);}
+.fchip.on{border-color:var(--brand);background:var(--brand-subtle);color:var(--text);}
+.fchip .fcount{background:var(--brand);color:var(--brand-on);border-radius:999px;font-size:11px;min-width:18px;height:18px;padding:0 5px;display:inline-flex;align-items:center;justify-content:center;}
+.fpop{position:absolute;top:calc(100% + 6px);left:0;z-index:150;min-width:230px;max-height:min(60vh,420px);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.14);padding:6px;}
+.fopt{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:14px;color:var(--text);cursor:pointer;}
+.fopt:hover{background:var(--bg-sunken);}
+.fopt input{accent-color:var(--brand);width:17px;height:17px;flex-shrink:0;cursor:pointer;}
+.ra-mask{position:fixed;left:0;right:0;z-index:480;background:rgba(0,0,0,.62);pointer-events:none;}
+.ra-guide{position:fixed;left:0;right:0;z-index:480;height:4px;background:#0048ff;box-shadow:0 0 0 1px #fff,0 0 14px rgba(0,72,255,.55);pointer-events:none;}
+.feat-btn{display:inline-flex;align-items:center;gap:6px;height:46px;padding:0 26px;background:var(--fb);color:var(--fbt);border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 0 rgba(0,0,0,.12);transition:background var(--dur-fast),transform var(--dur-fast);}
+.feat-btn:hover{background:var(--fbh);transform:translateY(-1px);}
 </style>
 </head>
 <body>
@@ -83,12 +182,12 @@ const RESOURCES = [
 ];
 
 const TYPE_META = {
-  advocacy:        { label:'Advocacy',       bg:'var(--type-advocacy-bg)',  fg:'var(--type-advocacy-fg)',  thumb:'#c9e4e6' },
-  therapy:         { label:'Therapy',        bg:'var(--type-therapy-bg)',   fg:'var(--type-therapy-fg)',   thumb:'#dfd8ee' },
-  education:       { label:'Education',      bg:'var(--type-education-bg)', fg:'var(--type-education-fg)', thumb:'#cde3cf' },
-  medical:         { label:'Medical',        bg:'var(--type-medical-bg)',   fg:'var(--type-medical-fg)',   thumb:'#f0cbc6' },
-  social:          { label:'Social',         bg:'var(--type-social-bg)',    fg:'var(--type-social-fg)',    thumb:'#f5d5c8' },
-  general_support: { label:'General Support',bg:'var(--type-general-bg)',   fg:'var(--type-general-fg)',   thumb:'#ddd8cf' },
+  advocacy:        { label:'Advocacy',       bg:'var(--type-advocacy-bg)',  fg:'var(--type-advocacy-fg)' },
+  therapy:         { label:'Therapy',        bg:'var(--type-therapy-bg)',   fg:'var(--type-therapy-fg)' },
+  education:       { label:'Education',      bg:'var(--type-education-bg)', fg:'var(--type-education-fg)' },
+  medical:         { label:'Medical',        bg:'var(--type-medical-bg)',   fg:'var(--type-medical-fg)' },
+  social:          { label:'Social',         bg:'var(--type-social-bg)',    fg:'var(--type-social-fg)' },
+  general_support: { label:'General Support',bg:'var(--type-general-bg)',   fg:'var(--type-general-fg)' },
 };
 
 /* ─── Full dataset (community_data.js) — loaded asynchronously so the
@@ -138,12 +237,20 @@ function normalizeAddress(addr) {
 /* ─── Accessibility prefs + favorites persistence (localStorage) ─── */
 const A11Y_PREFS_KEY = 'a11y_prefs';
 const A11Y_FAVS_KEY = 'a11y_favs';
-const DEFAULT_PREFS = { colorScheme:'earthy', theme:'system', textSize:'default', typeface:'default', contrast:'default', motion:'system' };
+const DEFAULT_PREFS = {
+  colorScheme:'earthy', theme:'system', textSize:'default', typeface:'default', contrast:'default', motion:'system',
+  links:'default', spacing:'default', lineHeight:'default', textAlign:'default', saturation:'default',
+  cursor:'default', hideImages:'default', tooltips:'default',
+  oversized:false,
+};
 
 function loadPrefs() {
   try {
     const raw = JSON.parse(localStorage.getItem(A11Y_PREFS_KEY));
-    return raw && typeof raw === 'object' ? { ...DEFAULT_PREFS, ...raw } : { ...DEFAULT_PREFS };
+    const prefs = raw && typeof raw === 'object' ? { ...DEFAULT_PREFS, ...raw } : { ...DEFAULT_PREFS };
+    if (prefs.cursor === 'white') prefs.cursor = 'black';          // white cursor was replaced by Reading Mask / Guide
+    if (prefs.contrast === 'high') prefs.contrast = 'default';   // old "higher contrast" step no longer exists
+    return prefs;
   } catch { return { ...DEFAULT_PREFS }; }
 }
 function savePrefs(prefs) {
@@ -174,90 +281,124 @@ const FontIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="non
 const SunIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const SlidersIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 6h9M17 6h3M4 12h3M9 12h11M4 18h13M19 18h1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="14" cy="6" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>;
 const XIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
-const HeartIcon = ({f}) => <svg width="18" height="18" viewBox="0 0 24 24" fill={f?'var(--coral-500)':'none'}><path d="M12 20s-7-4.6-7-9.5A4.5 4.5 0 0112 7a4.5 4.5 0 017 3.5C19 15.4 12 20 12 20z" stroke={f?'var(--coral-500)':'var(--stone-400)'} strokeWidth="2" strokeLinejoin="round"/></svg>;
+const HeartIcon = ({f}) => <svg width="18" height="18" viewBox="0 0 24 24" fill={f?'var(--cardinal-500)':'none'}><path d="M12 20s-7-4.6-7-9.5A4.5 4.5 0 0112 7a4.5 4.5 0 017 3.5C19 15.4 12 20 12 20z" stroke={f?'var(--cardinal-500)':'var(--stone-400)'} strokeWidth="2" strokeLinejoin="round"/></svg>;
 const ShareIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" strokeWidth="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 
 /* ─── Logo ──────────────────────────────────────────────────── */
-const Logo = ({onClick}) => (
-  <button onClick={onClick} style={{background:'transparent',border:'none',padding:0,display:'flex',alignItems:'center',gap:10,cursor:'pointer'}}>
-    <svg width="32" height="32" viewBox="0 0 60 60" fill="none">
-      <rect x="2" y="2" width="56" height="56" rx="14" fill="var(--harbor-600)"/>
-      <path d="M30 16c-7.2 0-13 5.6-13 12.6 0 8.8 13 18.4 13 18.4s13-9.6 13-18.4C43 21.6 37.2 16 30 16z" fill="#fff"/>
-      <circle cx="30" cy="28.4" r="5.4" fill="var(--coral-500)"/>
+/* Logo mark: a map pin holding four dots in the NNEA-style spark colors (a nod to neurodiversity). */
+const LogoMark = ({size=32, glass=false}) => {
+  const gid = 'lg' + React.useId().replace(/[^a-zA-Z0-9]/g, '');
+  return (
+    <svg width={size} height={size} viewBox="0 0 60 60" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id={gid} x1="6" y1="4" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#3d9bf0"/><stop offset="1" stopColor="#0b4f95"/>
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="56" height="56" rx="16" fill={glass ? 'rgba(255,255,255,.16)' : `url(#${gid})`}/>
+      <path d="M30 14c-7.7 0-14 6-14 13.5C16 37 30 48 30 48s14-11 14-20.5C44 20 37.7 14 30 14z" fill="#fff"/>
+      <circle cx="26.2" cy="24.8" r="3.6" fill="#f6a21e"/>
+      <circle cx="33.8" cy="24.8" r="3.6" fill="#e5348b"/>
+      <circle cx="26.2" cy="32.4" r="3.6" fill="#6bbf3b"/>
+      <circle cx="33.8" cy="32.4" r="3.6" fill="#2e7dd7"/>
     </svg>
+  );
+};
+
+const Logo = ({onClick}) => (
+  <button onClick={onClick} style={{background:'transparent',border:'none',padding:0,display:'flex',alignItems:'center',gap:10,cursor:'pointer',flexShrink:0}}>
+    <LogoMark size={34}/>
     <div style={{display:'flex',flexDirection:'column',lineHeight:1.1}}>
       <span style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:17,letterSpacing:'0.01em',color:'var(--text)'}}>ACCESSIBILITY</span>
-      <span style={{fontFamily:'var(--font-antonio)',fontWeight:500,fontSize:13,letterSpacing:'0.08em',color:'var(--brand)'}}>MAPPER</span>
+      <span style={{fontFamily:'var(--font-antonio)',fontWeight:500,fontSize:13,letterSpacing:'0.08em',color:'var(--text-secondary)'}}>MAPPER</span>
     </div>
   </button>
 );
+
+/* Decorative confetti dots for the lively banners: [left, top, size, spark color] */
+const Confetti = ({dots}) => (
+  <div className="confetti" aria-hidden="true">
+    {dots.map(([x, y, sz, c], i) => <i key={i} style={{left:x, top:y, width:sz, height:sz, background:`var(--spark-${c})`}}/>)}
+  </div>
+);
+const HERO_DOTS = [['5%','20%',21,'amber'],['11%','68%',14,'pink'],['17%','10%',10,'green'],['89%','16%',18,'blue'],['94%','58%',26,'amber'],['82%','82%',12,'green'],['3%','46%',9,'blue'],['74%','8%',10,'pink'],['9%','88%',18,'green'],['91%','36%',10,'pink']];
+const DONATE_DOTS = [['7%','18%',18,'pink'],['14%','72%',24,'amber'],['22%','40%',10,'blue'],['90%','22%',22,'green'],['84%','70%',15,'blue'],['95%','52%',10,'amber'],['3%','52%',12,'green'],['78%','12%',10,'amber']];
 
 /* ─── TypePill ──────────────────────────────────────────────── */
 const TypePill = ({type,small}) => {
   const t = TYPE_META[type] || TYPE_META.general_support;
   return (
-    <span style={{display:'inline-flex',alignItems:'center',gap:5,background:t.bg,color:t.fg,borderRadius:999,padding:small?'3px 9px':'4px 11px',fontSize:small?10:11,fontWeight:700,letterSpacing:'.05em',textTransform:'uppercase',whiteSpace:'nowrap'}}>
+    <span className="ui-chip" style={{display:'inline-flex',alignItems:'center',gap:5,background:t.bg,color:t.fg,borderRadius:999,padding:small?'3px 9px':'4px 11px',fontSize:small?10:11,fontWeight:700,letterSpacing:'.05em',textTransform:'uppercase',whiteSpace:'nowrap'}}>
       <span style={{width:5,height:5,borderRadius:'50%',background:t.fg}}/>{t.label}
     </span>
   );
 };
 
-/* ─── Resource card — Yelp horizontal style ─────────────────── */
+/* ─── Resource card — compact Yelp-style row ───────────────────
+   88px thumbnail, name + save/share on one line, one meta line, a 2-line snippet,
+   then service tags with Call/Website on the same row. */
+const CardThumb = ({fg, badge, badgeBg, badgeColor='var(--pin-on)', badgeSize=13, grid=true}) => (
+  <div style={{position:'relative',width:88,height:88,flexShrink:0}}>
+    <div style={{width:'100%',height:'100%',borderRadius:8,overflow:'hidden',background:'var(--surface)',border:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
+      {grid && (
+        <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:.13}} viewBox="0 0 88 88" preserveAspectRatio="none">
+          {[0,16,32,48,64,80,88].map(v=><g key={v}><line x1={v} y1="0" x2={v} y2="88" stroke={fg} strokeWidth="1"/><line x1="0" y1={v} x2="88" y2={v} stroke={fg} strokeWidth="1"/></g>)}
+        </svg>
+      )}
+      <svg width="24" height="30" viewBox="0 0 24 32" fill="none" style={{opacity:.5}}>
+        <path d="M12 2C7.6 2 4 5.6 4 10c0 6.4 8 20 8 20s8-13.6 8-20C20 5.6 16.4 2 12 2z" fill={fg}/>
+        <circle cx="12" cy="10" r="3.2" fill="#fff"/>
+      </svg>
+    </div>
+    <div style={{position:'absolute',top:5,left:5,width:22,height:22,borderRadius:'50%',background:badgeBg,color:badgeColor,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:badgeSize,boxShadow:'0 1px 4px rgba(9,42,38,.35)'}}>
+      {badge}
+    </div>
+  </div>
+);
+
+const CARD_ROW = {display:'flex',gap:14,alignItems:'flex-start',borderBottom:'1px solid var(--divider)',padding:'10px 8px',transition:'background var(--dur-fast) var(--ease-out)'};
+const CARD_TITLE = {margin:0,fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:17,letterSpacing:'-0.01em',lineHeight:1.15,color:'var(--text)'};
+const MAX_TAGS = 4;
+
 const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
   const t = TYPE_META[r.type] || TYPE_META.general_support;
+  const iconBtn = {width:30,height:30,padding:0,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center'};
+  const tags = r.services.slice(0, MAX_TAGS), extra = r.services.length - tags.length;
+  const tagStyle = {background:'var(--bg-sunken)',color:'var(--text-muted)',fontSize:11,fontWeight:500,padding:'2px 8px',borderRadius:6,border:'1px solid var(--border)'};
   return (
     <div
       onMouseEnter={()=>onHover(r.id)} onMouseLeave={()=>onHover(null)}
-      style={{display:'flex',gap:0,background:active?'var(--brand-subtle)':'transparent',borderBottom:'1px solid var(--divider)',padding:'16px 6px',transition:'background var(--dur-fast) var(--ease-out)'}}>
-      <div style={{position:'relative',width:140,flexShrink:0}}>
-        <div style={{width:'100%',height:'100%',minHeight:130,borderRadius:10,overflow:'hidden',background:t.thumb,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
-          <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:.13}} viewBox="0 0 140 130" preserveAspectRatio="none">
-            {[0,20,40,60,80,100,120,140].map(x=><line key={x} x1={x} y1="0" x2={x} y2="130" stroke={t.fg} strokeWidth="1"/>)}
-            {[0,20,40,60,80,100,130].map(y=><line key={y} x1="0" y1={y} x2="140" y2={y} stroke={t.fg} strokeWidth="1"/>)}
-          </svg>
-          <svg width="36" height="44" viewBox="0 0 24 32" fill="none" style={{opacity:.5}}>
-            <path d="M12 2C7.6 2 4 5.6 4 10c0 6.4 8 20 8 20s8-13.6 8-20C20 5.6 16.4 2 12 2z" fill={t.fg}/>
-            <circle cx="12" cy="10" r="3.2" fill="#fff"/>
-          </svg>
-        </div>
-        <div style={{position:'absolute',top:10,left:10,width:28,height:28,borderRadius:'50%',background:r.placeless?'var(--harbor-600)':'var(--coral-500)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:r.placeless?13:15,boxShadow:'0 2px 6px rgba(200,106,82,.4)'}}>
-          {r.placeless ? '🌐' : idx+1}
-        </div>
-      </div>
-      <div style={{flex:1,padding:'14px 16px 14px 18px',display:'flex',flexDirection:'column',gap:6,minWidth:0}}>
+      style={{...CARD_ROW,background:active?'var(--pin-subtle)':'transparent'}}>
+      <CardThumb fg={t.fg} badge={r.placeless ? '🌐' : idx+1} badgeBg={r.placeless ? 'var(--harbor-600)' : 'var(--pin)'} badgeColor={r.placeless ? '#fff' : 'var(--pin-on)'} badgeSize={r.placeless ? 11 : 13}/>
+      <div style={{flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:4}}>
         <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8}}>
-          <div style={{minWidth:0}}>
-            <h3 style={{margin:'0 0 5px',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:19,letterSpacing:'-0.01em',lineHeight:1.15,color:'var(--text)',textWrap:'balance'}}>{r.name}</h3>
-            <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
-              <TypePill type={r.type} small/>
-              <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:12,color:'var(--text-muted)'}}>
-                <PinIcon s={12}/>{r.address}
-              </span>
-              {r.placeless
-                ? <span style={{fontSize:11,fontWeight:700,color:'var(--info-fg)',background:'var(--info-bg)',padding:'2px 9px',borderRadius:999}}>Nationwide / Virtual</span>
-                : (r.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--success-fg)'}}>{r.distance.toFixed(1)} mi away</span>)}
-            </div>
+          <h3 style={CARD_TITLE}>{r.name}</h3>
+          <div style={{display:'flex',gap:4,flexShrink:0}}>
+            <button onClick={()=>onFav(r.id)} aria-label="Save" style={iconBtn}><HeartIcon f={fav}/></button>
+            <button aria-label="Share" style={iconBtn}><ShareIcon/></button>
           </div>
-          <div style={{display:'flex',gap:2,flexShrink:0}}>
-            <button onClick={()=>onFav(r.id)} aria-label="Save" style={{width:34,height:34,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center'}}>
-              <HeartIcon f={fav}/>
-            </button>
-            <button aria-label="Share" style={{width:34,height:34,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center'}}>
-              <ShareIcon/>
-            </button>
-          </div>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
+          <TypePill type={r.type} small/>
+          {r.placeless
+            ? <span style={{fontSize:11,fontWeight:700,color:'var(--info-fg)',background:'var(--info-bg)',padding:'2px 9px',borderRadius:999}}>Nationwide / Virtual</span>
+            : (r.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--text)'}}>{r.distance.toFixed(1)} mi away</span>)}
+          <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:12,color:'var(--text-muted)'}}>
+            <PinIcon s={12}/>{r.address}
+          </span>
         </div>
         {r.description && (
-          <p style={{margin:0,fontSize:13,color:'var(--text-secondary)',lineHeight:1.5,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>"{r.description}"</p>
+          <p title={r.description} style={{margin:0,fontSize:12.5,color:'var(--text-secondary)',lineHeight:1.4,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>"{r.description}"</p>
         )}
-        <div style={{display:'flex',flexWrap:'wrap',gap:5,marginTop:2}}>
-          {r.services.map((s,i)=>(
-            <span key={i} style={{background:'var(--bg-sunken)',color:'var(--text-muted)',fontSize:11,fontWeight:500,padding:'3px 9px',borderRadius:6,border:'1px solid var(--border)'}}>{s}</span>
-          ))}
-        </div>
-        <div style={{display:'flex',gap:8,marginTop:4}}>
-          <a href={`tel:${r.phone}`} style={{height:32,padding:'0 14px',background:'var(--brand)',color:'#fff',borderRadius:8,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center',gap:5}}>Call</a>
-          <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:32,padding:'0 14px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:8,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,flexWrap:'wrap',marginTop:2}}>
+          <div style={{display:'flex',flexWrap:'wrap',gap:4,minWidth:0}}>
+            {tags.map((sv,i)=><span key={i} className="ui-chip" style={tagStyle}>{sv}</span>)}
+            {extra > 0 && <span className="ui-chip" title={r.services.slice(MAX_TAGS).join(', ')} style={tagStyle}>+{extra}</span>}
+          </div>
+          <div style={{display:'flex',gap:6,flexShrink:0}}>
+            <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 12px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>
+            <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 12px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>
+          </div>
         </div>
       </div>
     </div>
@@ -273,32 +414,22 @@ const GroupedResourceCard = ({group, idx, active, onHover}) => {
   return (
     <div
       onMouseEnter={()=>onHover(first.id)} onMouseLeave={()=>onHover(null)}
-      style={{display:'flex',gap:0,background:active?'var(--brand-subtle)':'transparent',borderBottom:'1px solid var(--divider)',padding:'16px 6px',transition:'background var(--dur-fast) var(--ease-out)'}}>
-      <div style={{position:'relative',width:140,flexShrink:0}}>
-        <div style={{width:'100%',height:'100%',minHeight:130,borderRadius:10,overflow:'hidden',background:t.thumb,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
-          <svg width="36" height="44" viewBox="0 0 24 32" fill="none" style={{opacity:.5}}>
-            <path d="M12 2C7.6 2 4 5.6 4 10c0 6.4 8 20 8 20s8-13.6 8-20C20 5.6 16.4 2 12 2z" fill={t.fg}/>
-            <circle cx="12" cy="10" r="3.2" fill="#fff"/>
-          </svg>
-        </div>
-        <div style={{position:'absolute',top:10,left:10,width:28,height:28,borderRadius:'50%',background:'var(--coral-500)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:15,boxShadow:'0 2px 6px rgba(200,106,82,.4)'}}>
-          {idx+1}
-        </div>
-      </div>
-      <div style={{flex:1,padding:'14px 16px 14px 18px',display:'flex',flexDirection:'column',gap:6,minWidth:0}}>
+      style={{...CARD_ROW,background:active?'var(--pin-subtle)':'transparent'}}>
+      <CardThumb fg={t.fg} badge={idx+1} badgeBg="var(--pin)" grid={false}/>
+      <div style={{flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:4}}>
         <div style={{minWidth:0}}>
-          <h3 style={{margin:'0 0 5px',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:19,letterSpacing:'-0.01em',lineHeight:1.15,color:'var(--text)',textWrap:'balance'}}>
+          <h3 style={{...CARD_TITLE,marginBottom:4}}>
             {label}
           </h3>
           <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
             <TypePill type={first.type} small/>
+            {first.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--text)'}}>{first.distance.toFixed(1)} mi away</span>}
             <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:12,color:'var(--text-muted)'}}>
               <PinIcon s={12}/>{first.address}
             </span>
-            {first.distance != null && <span style={{fontSize:12,fontWeight:600,color:'var(--success-fg)'}}>{first.distance.toFixed(1)} mi away</span>}
           </div>
         </div>
-        <button onClick={()=>setOpen(o=>!o)} style={{alignSelf:'flex-start',display:'inline-flex',alignItems:'center',gap:6,height:30,padding:'0 12px',background:'var(--surface)',border:'1px solid var(--border-strong)',borderRadius:8,fontSize:12,fontWeight:600,color:'var(--text)',cursor:'pointer'}}>
+        <button onClick={()=>setOpen(o=>!o)} style={{alignSelf:'flex-start',display:'inline-flex',alignItems:'center',gap:6,height:28,padding:'0 12px',background:'var(--surface)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:12,fontWeight:600,color:'var(--text)',cursor:'pointer'}}>
           {open ? 'Hide' : 'Show'} {group.length} providers here
         </button>
         {open && (
@@ -310,7 +441,7 @@ const GroupedResourceCard = ({group, idx, active, onHover}) => {
                   {r.description && <div style={{fontSize:12,color:'var(--text-muted)',marginTop:2}}>"{r.description}"</div>}
                 </div>
                 <div style={{display:'flex',gap:6,flexShrink:0}}>
-                  <a href={`tel:${r.phone}`} style={{height:28,padding:'0 10px',background:'var(--brand)',color:'#fff',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>
+                  <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 10px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>
                   <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 10px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>
                 </div>
               </div>
@@ -324,26 +455,78 @@ const GroupedResourceCard = ({group, idx, active, onHover}) => {
 
 /* ─── Map styling — calm, low-saturation to match palette ───── */
 const MAP_STYLE = [
-  { elementType:'geometry', stylers:[{color:'#f4f0e9'}] },
-  { elementType:'labels.text.fill', stylers:[{color:'#7a6e5c'}] },
-  { elementType:'labels.text.stroke', stylers:[{color:'#faf7f2'}] },
-  { featureType:'water', elementType:'geometry', stylers:[{color:'#c9e4e6'}] },
-  { featureType:'landscape.natural', elementType:'geometry', stylers:[{color:'#e6f0e2'}] },
-  { featureType:'poi.park', elementType:'geometry', stylers:[{color:'#d9ead0'}] },
-  { featureType:'road', elementType:'geometry', stylers:[{color:'#ffffff'}] },
-  { featureType:'road.arterial', elementType:'geometry', stylers:[{color:'#f0ebe2'}] },
-  { featureType:'road.highway', elementType:'geometry', stylers:[{color:'#eae3d8'}] },
-  { featureType:'poi', elementType:'labels.icon', stylers:[{saturation:-60}] },
-  { featureType:'transit', stylers:[{visibility:'simplified'}] },
+  // Clean white base (Yelp-like): near-white land, white roads with hairline outlines, soft water/park tints.
+  { elementType:'geometry', stylers:[{color:'#fbfbfb'}] },
+  { elementType:'labels.text.fill', stylers:[{color:'#56666b'}] },
+  { elementType:'labels.text.stroke', stylers:[{color:'#ffffff'},{weight:3}] },
+  { elementType:'labels.icon', stylers:[{visibility:'off'}] },
+  { featureType:'administrative.land_parcel', stylers:[{visibility:'off'}] },
+  { featureType:'administrative.locality', elementType:'labels.text.fill', stylers:[{color:'#2f3f43'}] },
+  { featureType:'administrative.neighborhood', elementType:'labels.text.fill', stylers:[{color:'#8a989c'}] },
+  { featureType:'landscape.natural', elementType:'geometry', stylers:[{color:'#f5f7f6'}] },
+  { featureType:'water', elementType:'geometry', stylers:[{color:'#cde4f4'}] },
+  { featureType:'water', elementType:'labels.text.fill', stylers:[{color:'#6f8fa5'}] },
+  { featureType:'poi.park', elementType:'geometry', stylers:[{color:'#e2f0e5'}] },
+  { featureType:'poi.park', elementType:'labels.text.fill', stylers:[{color:'#4c7a5e'}] },
+  // Keep only the places that matter for this directory; drop shops/restaurants/etc.
+  { featureType:'poi.business', stylers:[{visibility:'off'}] },
+  { featureType:'poi.medical', elementType:'labels.icon', stylers:[{visibility:'on'},{saturation:-30}] },
+  { featureType:'poi.school', elementType:'labels.icon', stylers:[{visibility:'on'},{saturation:-30}] },
+  { featureType:'road', elementType:'geometry.fill', stylers:[{color:'#ffffff'}] },
+  { featureType:'road', elementType:'geometry.stroke', stylers:[{color:'#dde2e5'}] },
+  { featureType:'road.arterial', elementType:'geometry.stroke', stylers:[{color:'#ccd3d8'}] },
+  { featureType:'road.highway', elementType:'geometry.fill', stylers:[{color:'#ffffff'}] },
+  { featureType:'road.highway', elementType:'geometry.stroke', stylers:[{color:'#b6c1c8'}] },
+  { featureType:'road', elementType:'labels.text.fill', stylers:[{color:'#7d8b90'}] },
+  { featureType:'transit', stylers:[{visibility:'off'}] },
 ];
+
+/* The map follows the accessibility menu's "Contrast +" modes (NNEA-style live response).
+   "invert" needs no style of its own: the page-wide invert filter flips the map along with everything else. */
+const MAP_STYLE_LIGHT = MAP_STYLE.concat([
+  { elementType:'geometry', stylers:[{color:'#ffffff'}] },
+  { elementType:'labels.text.fill', stylers:[{color:'#000000'}] },
+  { elementType:'labels.text.stroke', stylers:[{color:'#ffffff'},{weight:4}] },
+  { featureType:'administrative.neighborhood', elementType:'labels.text.fill', stylers:[{color:'#000000'}] },
+  { featureType:'road', elementType:'labels.text.fill', stylers:[{color:'#000000'}] },
+  { featureType:'road', elementType:'geometry.fill', stylers:[{color:'#ffffff'}] },
+  { featureType:'road', elementType:'geometry.stroke', stylers:[{color:'#000000'}] },
+  { featureType:'water', elementType:'geometry', stylers:[{color:'#d6e6ff'}] },
+  { featureType:'water', elementType:'labels.text.fill', stylers:[{color:'#000000'}] },
+  { featureType:'poi.park', elementType:'geometry', stylers:[{color:'#e6f3e6'}] },
+  { featureType:'poi.park', elementType:'labels.text.fill', stylers:[{color:'#000000'}] },
+]);
+// Yellow-on-black, matching the page's "dark contrast" mode
+const MAP_STYLE_DARK = [
+  { elementType:'geometry', stylers:[{color:'#000000'}] },
+  { elementType:'labels.text.fill', stylers:[{color:'#ffff00'}] },
+  { elementType:'labels.text.stroke', stylers:[{color:'#000000'},{weight:4}] },
+  { elementType:'labels.icon', stylers:[{visibility:'off'}] },
+  { featureType:'administrative.land_parcel', stylers:[{visibility:'off'}] },
+  { featureType:'poi.business', stylers:[{visibility:'off'}] },
+  { featureType:'transit', stylers:[{visibility:'off'}] },
+  { featureType:'water', elementType:'geometry', stylers:[{color:'#0b2a5b'}] },
+  { featureType:'water', elementType:'labels.text.fill', stylers:[{color:'#9cc7ff'}] },
+  { featureType:'poi.park', elementType:'geometry', stylers:[{color:'#0f2a12'}] },
+  { featureType:'poi.park', elementType:'labels.text.fill', stylers:[{color:'#a6f5a6'}] },
+  { featureType:'road', elementType:'geometry.fill', stylers:[{color:'#1c1c1c'}] },
+  { featureType:'road', elementType:'geometry.stroke', stylers:[{color:'#ffff00'},{weight:1}] },
+  { featureType:'road.highway', elementType:'geometry.fill', stylers:[{color:'#2e2e2e'}] },
+  { featureType:'road.highway', elementType:'geometry.stroke', stylers:[{color:'#ffff00'},{weight:2}] },
+];
+const mapStyleFor = c => ({ light:MAP_STYLE_LIGHT, dark:MAP_STYLE_DARK }[c] || MAP_STYLE);
+const mapBgFor = c => c === 'dark' ? '#000000' : '#ffffff';
+const pinLabelColor = c => c === 'dark' ? '#000000' : '#ffffff';   // white number on the cyan dark-mode pin is unreadable
+const activeLabelColor = () => currentBrandColors().pinOn;            // dark number on the orange highlighted pin
 
 // Teardrop pin: round badge on top, point at the bottom anchored to the exact location.
 const PIN_PATH = 'M 0,0 L -4,-5 A 11,11 0 1,1 4,-5 Z';
 function currentBrandColors() {
   const cs = getComputedStyle(document.body);
   return {
-    brand: cs.getPropertyValue('--brand').trim() || '#175d69',
-    accent: cs.getPropertyValue('--accent').trim() || '#e0846b',
+    brand: cs.getPropertyValue('--brand').trim() || '#1f6a5e',
+    accent: cs.getPropertyValue('--pin').trim() || '#e0846b',
+    pinOn: cs.getPropertyValue('--pin-on').trim() || '#2b1408',
   };
 }
 const pinSymbol = (act) => {
@@ -370,12 +553,14 @@ function boundsAround(center, miles){
 }
 
 /* ─── Map panel — real Google Map with numbered pins ────────── */
-const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey}) => {
+const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast}) => {
   const elRef = useRef(null);
   const mapRef = useRef(null);
   const infoRef = useRef(null);
   const markersRef = useRef({});
   const userMarkerRef = useRef(null);
+  const activeRef = useRef(active); activeRef.current = active;
+  const contrastRef = useRef(contrast); contrastRef.current = contrast;
   const [ready, setReady] = useState(0);
   const showKey = groups.map(g=>g.map(r=>r.id).join('+')).join(',');
   const centerKey = center ? center.lat + ',' + center.lng : '';
@@ -389,7 +574,7 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey}) => {
       mapRef.current = new google.maps.Map(elRef.current, {
         center: { lat: 37.8, lng: -110 }, zoom: 4,
         mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
-        zoomControl: true, styles: MAP_STYLE, backgroundColor: '#c9e4e6',
+        zoomControl: true, styles: mapStyleFor(contrastRef.current), backgroundColor: mapBgFor(contrastRef.current),
         gestureHandling: 'greedy',
       });
       infoRef.current = new google.maps.InfoWindow();
@@ -414,20 +599,20 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey}) => {
       const marker = new google.maps.Marker({
         position: first.coordinates, map,
         icon: pinSymbol(isActive),
-        label: { text: String(num), color: '#ffffff', fontSize: '12px', fontWeight: '700', fontFamily: 'Hanken Grotesk, sans-serif' },
+        label: { text: String(num), color: isActive ? activeLabelColor() : pinLabelColor(contrastRef.current), fontSize: '12px', fontWeight: '700', fontFamily: 'Hanken Grotesk, sans-serif' },
         title: g.length > 1 ? (g.length + ' providers at this address') : first.name,
         zIndex: isActive ? 999 : 1,
       });
       marker.addListener('click', () => {
         const header = g.length > 1
-          ? '<strong style="font-size:14px;color:#175d69">' + (first.facility_name || (g.length + ' Resources at This Address')) + '</strong>' +
-            '<div style="font-size:11px;color:#5c5345;margin:2px 0 6px">' + first.address + '</div>'
-          : '<strong style="font-size:14px;color:#175d69">' + first.name + '</strong>' +
-            '<div style="font-size:12px;color:#5c5345;margin:4px 0">' + first.address + '</div>';
+          ? '<strong style="font-size:14px;color:#111315">' + (first.facility_name || (g.length + ' Resources at This Address')) + '</strong>' +
+            '<div style="font-size:11px;color:#33383b;margin:2px 0 6px">' + first.address + '</div>'
+          : '<strong style="font-size:14px;color:#111315">' + first.name + '</strong>' +
+            '<div style="font-size:12px;color:#33383b;margin:4px 0">' + first.address + '</div>';
         const rows = g.map(r =>
           '<div style="margin-top:6px">' +
           (g.length > 1 ? '<div style="font-weight:600;font-size:12px">' + r.name + '</div>' : '') +
-          '<a href="tel:' + r.phone + '" style="font-size:12px;color:#175d69;font-weight:600">' + r.phone + '</a></div>'
+          '<a href="tel:' + r.phone + '" style="font-size:12px;color:#111315;font-weight:600;text-decoration:underline">' + r.phone + '</a></div>'
         ).join('');
         infoRef.current.setContent('<div style="font-family:Hanken Grotesk,sans-serif;max-width:220px;line-height:1.4">' + header + rows + '</div>');
         infoRef.current.open(map, marker);
@@ -471,73 +656,102 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey}) => {
     }
   }, [showKey, ready, centerKey, radiusMi, themeKey]);
 
+  // Restyle live when the accessibility "Contrast +" mode changes. Kept separate from the marker effect
+  // above so it never re-fits the map: the user's zoom/pan stays put.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    map.setOptions({ styles: mapStyleFor(contrast), backgroundColor: mapBgFor(contrast) });
+    // Wait one tick so App has updated the body classes / CSS variables that pinSymbol() reads.
+    const id = setTimeout(() => {
+      Object.values(markersRef.current).forEach(({marker, ids}) => {
+        marker.setIcon(pinSymbol(ids.includes(activeRef.current)));
+        const lb = marker.getLabel();
+        if (lb) marker.setLabel({ ...lb, color: ids.includes(activeRef.current) ? activeLabelColor() : pinLabelColor(contrast) });
+      });
+    }, 0);
+    return () => clearTimeout(id);
+  }, [contrast, ready]);
+
   // highlight active marker without redrawing
   useEffect(() => {
     Object.values(markersRef.current).forEach(({marker, ids}) => {
       const isA = ids.includes(active);
       marker.setIcon(pinSymbol(isA));
       marker.setZIndex(isA ? 999 : 1);
+      const lb = marker.getLabel();
+      if (lb) marker.setLabel({ ...lb, color: isA ? activeLabelColor() : pinLabelColor(contrastRef.current) });
     });
   }, [active]);
 
   return (
     <div style={{position:'relative',borderRadius:14,overflow:'hidden',height:'100%',minHeight:480,boxShadow:'0 1px 3px rgba(42,38,30,.1)',border:'1px solid var(--border)'}}>
-      <div ref={elRef} style={{width:'100%',height:'100%',minHeight:480,background:'#c9e4e6'}}/>
+      <div ref={elRef} style={{width:'100%',height:'100%',minHeight:480,background:mapBgFor(contrast)}}/>
     </div>
   );
 };
 
-/* ─── Sidebar filters ────────────────────────────────────────── */
-const Sidebar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug}) => {
-  const suggested = ['Individual Provider','Organization / Agency','Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
-  const sectionStyle = {borderBottom:'1px solid var(--divider)',paddingBottom:12,marginBottom:12};
-  const labelStyle = {fontSize:18,fontWeight:500,color:'var(--text)',margin:'0 0 6px',display:'block'};
-  const radioStyle = {display:'flex',alignItems:'center',gap:2,fontSize:16,color:'var(--text-secondary)',padding:'1px 0',cursor:'pointer'};
+/* ─── Filter bar (Yelp-style): search box, category pills, and dropdown chips ─── */
+const CATEGORIES = ['Advocacy','Therapy','Education','Medical','Social'];
+const SUGGESTED = ['Individual Provider','Organization / Agency','Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
+const Caret = () => <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+
+const FilterChip = ({id, label, active, count, open, onToggle, children}) => (
+  <div style={{position:'relative'}} data-filter-chip>
+    <button type="button" className={`fchip${active?' on':''}`} aria-haspopup="true" aria-expanded={open} onClick={()=>onToggle(id)}>
+      {label}{count > 0 && <span className="fcount">{count}</span>}<Caret/>
+    </button>
+    {open && <div className="fpop" role="group" aria-label={id}>{children}</div>}
+  </div>
+);
+
+const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug}) => {
+  const [openId, setOpenId] = useState(null);
+  const toggle = id => setOpenId(o => o === id ? null : id);
+
+  useEffect(() => {
+    if (!openId) return;
+    const onDown = e => { if (!e.target.closest || !e.target.closest('[data-filter-chip]')) setOpenId(null); };
+    const onKey = e => { if (e.key === 'Escape') setOpenId(null); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
+  }, [openId]);
+
+  const distLabel = (DIST_OPTIONS.find(([, mi]) => mi === radius) || DIST_OPTIONS[0])[0];
+  const anyActive = !!(typeFilter || specialty || radius != null || selSug.length || keyword);
+  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); setKeyword(''); setOpenId(null); };
+
   return (
-    <aside style={{width:136,flexShrink:0,paddingRight:0}}>
-      <div style={sectionStyle}>
-        <span style={labelStyle}>Search</span>
-        <div style={{display:'flex',alignItems:'center',gap:6,border:'1px solid var(--border-strong)',borderRadius:8,padding:'0 8px',height:34,background:'var(--surface)'}}>
-          <span style={{color:'var(--text-muted)',display:'inline-flex',flexShrink:0}}><SearchIcon s={13}/></span>
-          <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Name, service…" style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:13,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
-        </div>
+    <div className="fbar" role="search" aria-label="Filter resources">
+      <div style={{display:'flex',alignItems:'center',gap:6,border:'1px solid var(--border-strong)',borderRadius:999,padding:'0 12px',height:34,background:'var(--surface)',width:210}}>
+        <span style={{color:'var(--text-muted)',display:'inline-flex',flexShrink:0}}><SearchIcon s={14}/></span>
+        <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Name or service…" aria-label="Search by name or service" style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
       </div>
-      <div style={sectionStyle}>
-        <span style={labelStyle}>Distance</span>
-        {DIST_OPTIONS.map(([d,mi])=>(
-          <label key={d} style={radioStyle}>
-            <input type="radio" name="dist" checked={radius===mi} onChange={()=>setRadius(mi)} style={{accentColor:'var(--brand)',width:18,height:18,minWidth:18,minHeight:18,flexShrink:0,cursor:'pointer'}}/>
-            {d}
-          </label>
+      <span className="fbar-sep" aria-hidden="true"/>
+      <button type="button" className={`fchip${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All types</button>
+      {CATEGORIES.map(c => {
+        const v = c.toLowerCase();
+        return <button key={c} type="button" className={`fchip${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>{c}</button>;
+      })}
+      <span className="fbar-sep" aria-hidden="true"/>
+      <FilterChip id="Distance" label={radius == null ? 'Distance' : distLabel} active={radius != null} open={openId==='Distance'} onToggle={toggle}>
+        {DIST_OPTIONS.map(([d, mi]) => (
+          <label key={d} className="fopt"><input type="radio" name="dist" checked={radius===mi} onChange={()=>{setRadius(mi); setOpenId(null);}}/>{d}</label>
         ))}
-      </div>
-      <div style={sectionStyle}>
-        <span style={labelStyle}>Category</span>
-        {['All types','Advocacy','Therapy','Education','Medical','Social'].map(t=>(
-          <button key={t} onClick={()=>setTypeFilter(t==='All types'?'':t.toLowerCase())}
-            style={{display:'block',width:'100%',textAlign:'left',padding:'4px 10px',marginBottom:2,borderRadius:20,border:`3px solid ${typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand)':'var(--border)'}`,background:typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand-subtle)':'transparent',fontSize:16,color:typeFilter===(t==='All types'?'':t.toLowerCase())?'var(--brand)':'var(--text-secondary)',fontWeight:typeFilter===(t==='All types'?'':t.toLowerCase())?600:400,cursor:'pointer'}}>
-            {t}
-          </button>
+      </FilterChip>
+      <FilterChip id="Specialty" label={specialty || 'Specialty'} active={!!specialty} open={openId==='Specialty'} onToggle={toggle}>
+        {['', ...SPECIALTIES].map(sp => (
+          <label key={sp || 'all'} className="fopt"><input type="radio" name="spec" checked={specialty===sp} onChange={()=>{setSpecialty(sp); setOpenId(null);}}/>{sp || 'All specialties'}</label>
         ))}
-      </div>
-      <div style={sectionStyle}>
-        <span style={labelStyle}>Specialty</span>
-        <select value={specialty} onChange={e=>setSpecialty(e.target.value)}
-          style={{width:'100%',height:34,padding:'0 8px',borderRadius:8,border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',fontSize:13,fontFamily:'var(--font-sans)',cursor:'pointer'}}>
-          <option value="">All specialties</option>
-          {SPECIALTIES.map(sp=><option key={sp} value={sp}>{sp}</option>)}
-        </select>
-      </div>
-      <div>
-        <span style={labelStyle}>Suggested</span>
-        {suggested.map(s=>(
-          <label key={s} style={radioStyle}>
-            <input type="checkbox" checked={selSug.includes(s)} onChange={()=>toggleSug(s)} style={{accentColor:'var(--brand)',width:18,height:18,minWidth:18,minHeight:18,flexShrink:0,cursor:'pointer',borderRadius:5}}/>
-            {s}
-          </label>
+      </FilterChip>
+      <FilterChip id="More filters" label="More filters" active={selSug.length > 0} count={selSug.length} open={openId==='More filters'} onToggle={toggle}>
+        {SUGGESTED.map(sg => (
+          <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
         ))}
-      </div>
-    </aside>
+      </FilterChip>
+      {anyActive && <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:14,fontWeight:600,padding:'0 6px',cursor:'pointer'}}>Clear all</button>}
+    </div>
   );
 };
 
@@ -551,13 +765,13 @@ const Header = ({a11yOpen, setA11yOpen, locLabel, onLogoClick, onSearchLocation,
   };
   return (
     <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:200,boxShadow:'0 1px 4px rgba(42,38,30,.06)'}}>
-      <div style={{maxWidth:2400,margin:'0 auto',padding:'0 24px',height:62,display:'flex',alignItems:'center',gap:16,position:'relative'}}>
-        {!showSearch && <div style={{position:'absolute',left:'50%',transform:'translateX(-50%)',pointerEvents:'none',textAlign:'center',whiteSpace:'nowrap'}}>
-          <span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'#2f93a1'}}>A coding geek building AI tools that make communities more accessible. — </span><span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'#e0846b'}}>Michael</span>
+      <div style={{maxWidth:2400,margin:'0 auto',padding:'6px 24px',minHeight:62,display:'flex',flexWrap:'wrap',alignItems:'center',columnGap:16,rowGap:6,position:'relative'}}>
+        {!showSearch && <div className="hdr-tagline" style={{position:'absolute',left:'50%',transform:'translateX(-50%)',pointerEvents:'none',textAlign:'center',whiteSpace:'nowrap'}}>
+          <span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'var(--text)'}}>A coding geek building AI tools that make communities more accessible. — </span><span style={{fontFamily:'var(--font-sans)',fontSize:17,fontWeight:500,color:'var(--accent-text)'}}>Michael</span>
         </div>}
         <Logo onClick={onLogoClick}/>
-        {showSearch && <div style={{flex:1,maxWidth:520,position:'relative'}}>
-        <form onSubmit={e=>e.preventDefault()} style={{display:'flex',alignItems:'center',gap:0,border:'2px solid var(--border-focus)',borderRadius:10,overflow:'hidden',height:42,width:'100%'}}>
+        {showSearch && <div style={{flex:'1 1 240px',maxWidth:520,position:'relative'}}>
+        <form onSubmit={e=>e.preventDefault()} style={{display:'flex',alignItems:'center',gap:0,border:'2px solid var(--action)',borderRadius:10,overflow:'hidden',height:42,width:'100%'}}>
           <div style={{flex:'1 1 auto',display:'flex',alignItems:'center',gap:8,padding:'0 14px',background:'var(--surface)',minWidth:0}}>
             <span style={{color:'var(--text-muted)',display:'inline-flex'}}><PinIcon s={14}/></span>
             <input
@@ -569,20 +783,20 @@ const Header = ({a11yOpen, setA11yOpen, locLabel, onLogoClick, onSearchLocation,
               style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}
             />
           </div>
-          <button type="button" onClick={submitLocation} disabled={locBusy} title="Search this location" style={{height:'100%',width:44,background:'var(--brand)',border:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',cursor:locBusy?'wait':'pointer',opacity:locBusy?.7:1}}>
+          <button type="button" onClick={submitLocation} disabled={locBusy} title="Search this location" className="search-go" style={{height:'100%',width:44,background:'var(--action)',border:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--action-on)',cursor:locBusy?'wait':'pointer',opacity:locBusy?.7:1}}>
             <SearchIcon s={16}/>
           </button>
         </form>
         {locError && <div style={{position:'absolute',top:'calc(100% + 6px)',right:0,background:'var(--error-bg)',color:'var(--error-fg)',border:'1px solid var(--error)',borderRadius:8,padding:'6px 10px',fontSize:12,whiteSpace:'nowrap',boxShadow:'0 2px 8px rgba(42,38,30,.12)',zIndex:1}}>{locError}</div>}
         </div>}
-        {showSearch && <button type="button" onClick={onUseMyLocation} disabled={locBusy} title="Use my current location" style={{display:'flex',alignItems:'center',gap:6,height:36,padding:'0 14px',background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13,cursor:locBusy?'wait':'pointer',flexShrink:0}}>
+        {showSearch && <button type="button" onClick={onUseMyLocation} disabled={locBusy} title="Use my current location" style={{display:'flex',alignItems:'center',gap:6,height:36,padding:'0 14px',whiteSpace:'nowrap',flexShrink:0,background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13,cursor:locBusy?'wait':'pointer',flexShrink:0}}>
           <PinIcon s={14}/> My Location
         </button>}
         <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
-          <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',background:'var(--coral-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
+          <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:'var(--cardinal-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
             ♥ Donate
           </a>
-          <button onClick={()=>setA11yOpen(o=>!o)} aria-pressed={a11yOpen} aria-haspopup="dialog" style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',background:a11yOpen?'var(--brand-subtle)':'var(--surface-subtle)',border:`1px solid ${a11yOpen?'var(--brand)':'var(--border)'}`,borderRadius:20,color:a11yOpen?'var(--brand)':'var(--text-secondary)',fontSize:13,fontWeight:600,cursor:'pointer'}}>
+          <button onClick={()=>setA11yOpen(o=>!o)} aria-pressed={a11yOpen} aria-haspopup="dialog" style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:a11yOpen?'var(--brand-subtle)':'var(--surface-subtle)',border:`1px solid ${a11yOpen?'var(--brand)':'var(--border)'}`,borderRadius:20,color:a11yOpen?'var(--brand)':'var(--text-secondary)',fontSize:13,fontWeight:600,cursor:'pointer'}}>
             <SlidersIcon/> Accessibility Features
           </button>
         </div>
@@ -640,7 +854,11 @@ function useReadAloud(readableList) {
   return { play, pause, stop, status, rate, setRate, voices, voiceURI, setVoiceURI };
 }
 
-/* ─── Accessibility Features panel ──────────────────────────────── */
+/* ─── Accessibility menu ─────────────────────────────────────────
+   Layout and feature set modeled on the UserWay menu used by stanfordnnea.com:
+   blue header, "Oversized Widget" switch, 2-column grid of feature tiles
+   (each toggles on/off or cycles through steps), and Reset All.
+   Ctrl+U opens/closes it. */
 const SegButton = ({active, onClick, children, disabled}) => (
   <button onClick={onClick} disabled={disabled} aria-pressed={active}
     style={{flex:1,padding:'8px 6px',borderRadius:8,border:`2px solid ${active?'var(--brand)':'var(--border)'}`,background:active?'var(--brand-subtle)':'var(--surface)',color:disabled?'var(--text-muted)':(active?'var(--brand)':'var(--text-secondary)'),fontSize:13,fontWeight:active?600:400,cursor:disabled?'not-allowed':'pointer',opacity:disabled?.55:1}}>
@@ -650,25 +868,205 @@ const SegButton = ({active, onClick, children, disabled}) => (
 
 const A11ySection = ({title, children}) => (
   <div style={{marginBottom:22}}>
-    <h4 style={{fontFamily:'var(--font-antonio)',fontSize:14,fontWeight:700,letterSpacing:'.04em',textTransform:'uppercase',color:'var(--text)',margin:'0 0 8px'}}>{title}</h4>
+    <h4 style={{fontSize:13,fontWeight:700,color:'var(--text)',margin:'0 0 8px'}}>{title}</h4>
     {children}
   </div>
 );
 
+const tileSvg = (children) => <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>;
+const TILE_ICONS = {
+  contrast: tileSvg(<><circle cx="16" cy="16" r="11"/><path d="M16 5a11 11 0 010 22z" fill="currentColor"/></>),
+  links: tileSvg(<><path d="M13 10h-3a6 6 0 000 12h3M19 10h3a6 6 0 010 12h-3M11 16h10"/></>),
+  textSize: tileSvg(<><path d="M3 9h11M8.5 9v14M14 9v0M15 6h14M22 6v18"/></>),
+  spacing: tileSvg(<path d="M4 16h24M4 16l4-4M4 16l4 4M28 16l-4-4M28 16l-4 4" strokeDasharray="3 3"/>),
+  motion: tileSvg(<><circle cx="16" cy="16" r="6" /><path d="M14 13v6M18 13v6"/><path d="M16 3v3M16 26v3M3 16h3M26 16h3M7 7l2 2M23 23l2 2M7 25l2-2M23 9l2-2"/></>),
+  hideImages: tileSvg(<><path d="M4 8h14M4 8v18h22v-9"/><path d="M4 22l6-6 5 5 3-3 8 7"/><path d="M22 4l6 6M28 4l-6 6"/></>),
+  typeface: <svg viewBox="0 0 32 32" aria-hidden="true"><text x="16" y="23" textAnchor="middle" fontSize="20" fontWeight="700" fill="currentColor" fontFamily="Georgia,serif">Df</text></svg>,
+  cursor: tileSvg(<path d="M8 4l16 12-7 1.5 4 7-3.5 1.8-4-7L8 22z"/>),
+  tooltips: tileSvg(<><path d="M5 6h22v16H16l-6 5v-5H5z"/><path d="M16 11v1M16 15v4"/></>),
+  lineHeight: tileSvg(<><path d="M6 4v24M6 4l-3 4M6 4l3 4M6 28l-3-4M6 28l3-4M14 8h14M14 14h14M14 20h14M14 26h14"/></>),
+  textAlign: tileSvg(<path d="M4 7h24M4 13h16M4 19h24M4 25h16"/>),
+  saturation: tileSvg(<path d="M16 4s9 10 9 16a9 9 0 01-18 0c0-6 9-16 9-16zM16 4v25" fill="none"/>),
+};
+
+// Per-step labels/icons (UserWay/NNEA behavior: a tile renames itself and swaps its icon on each click).
+const monitorIcon = (screen) => tileSvg(<>{screen}<path d="M16 22v5M11 27h10"/></>);
+// Crisp vector icons for the two "size" tiles (drawn as strokes, not font glyphs, so they look the same at every step).
+// Bigger Text: a small and a large slab-serif "T" that both grow with each level.
+const slabT = (x, top, w, h, sw) => {
+  const tick = Math.min(2.4, h * 0.25);
+  return <path strokeWidth={sw} strokeLinecap="butt" strokeLinejoin="miter"
+    d={`M${x} ${top}h${w}M${x} ${top}v${tick}M${x+w} ${top}v${tick}M${x+w/2} ${top}v${h}M${x+w/2-w*0.2} ${top+h}h${w*0.4}`}/>;
+};
+const textSizeIcon = ([ws, hs, wb, hb]) => {
+  const gap = 2, x0 = (32 - (ws + gap + wb)) / 2, base = 28;
+  return tileSvg(<>{slabT(x0, base - hs, ws, hs, 1.9)}{slabT(x0 + ws + gap, base - hb, wb, hb, 2.2)}</>);
+};
+const TEXT_SIZE_LEVELS = [[6,8,12,16],[7.5,10,14.5,20],[9,12,16,22],[9.5,13,17,24]];
+// Line Height: the double arrow always spans exactly the block of lines, so it stretches as the spacing grows.
+const lineHeightIcon = (sp) => {
+  const H = 3 * sp, top = 16 - H / 2, bot = 16 + H / 2;
+  return tileSvg(<>
+    <path strokeWidth="2.2" d={`M6 ${top-1}v${H+2}M6 ${top-1}l-3 3.5M6 ${top-1}l3 3.5M6 ${bot+1}l-3-3.5M6 ${bot+1}l3-3.5`}/>
+    {[0,1,2,3].map(k => <path key={k} d={`M13 ${top + k*sp}h16`}/>)}
+  </>);
+};
+const DROP = "M16 4s9 10 9 16a9 9 0 01-18 0c0-6 9-16 9-16z";
+const ICONS_ON = {
+  contrast: {
+    invert: monitorIcon(<><rect x="3" y="5" width="26" height="17" rx="2"/><path d="M5 5h24L3 22V7a2 2 0 012-2z" fill="currentColor"/><circle cx="16" cy="13.5" r="3.2" fill="#fff"/></>),
+    dark:   monitorIcon(<><rect x="3" y="5" width="26" height="17" rx="2" fill="currentColor"/><circle cx="16" cy="13.5" r="3.2" fill="#fff" stroke="none"/></>),
+    light:  monitorIcon(<><rect x="3" y="5" width="26" height="17" rx="2"/><circle cx="16" cy="13.5" r="3.2" fill="currentColor" stroke="none"/></>),
+  },
+  // "tT" letters grow with each of the 4 levels
+  textSize: Object.fromEntries(['large','largest','huge','giant'].map((v, i) => [v, textSizeIcon(TEXT_SIZE_LEVELS[i])])),
+  // dashed double arrow widens with each step
+  spacing: Object.fromEntries([['1',7],['2',10],['3',13.5]].map(([v, w]) => [v,
+    tileSvg(<><path d={`M${16-w} 16h${2*w}`} strokeDasharray="3 3"/><path d={`M${16-w} 16l4-4M${16-w} 16l4 4M${16+w} 16l-4-4M${16+w} 16l-4 4`}/></>)])),
+  motion: { reduce: tileSvg(<><circle cx="16" cy="16" r="6.5"/><path d="M14 12.5l6 3.5-6 3.5z" fill="currentColor"/><path d="M16 3v3M16 26v3M3 16h3M26 16h3M7 7l2 2M23 23l2 2M7 25l2-2M23 9l2-2"/></>) },
+  typeface: { legible: <svg viewBox="0 0 32 32" aria-hidden="true"><text x="16" y="23" textAnchor="middle" fontSize="19" fontWeight="600" fill="currentColor" fontFamily="Verdana,Arial,sans-serif">Ab</text></svg> },
+  cursor: {
+    mask:  tileSvg(<><rect x="4" y="6" width="24" height="20" rx="2"/><rect x="4" y="6" width="24" height="6" fill="currentColor"/><rect x="4" y="20" width="24" height="6" fill="currentColor"/></>),
+    guide: tileSvg(<><rect x="4" y="6" width="24" height="20" rx="2"/><rect x="4" y="13" width="24" height="6" fill="currentColor"/></>),
+  },
+  // line spacing (and the arrow) grows with each step
+  lineHeight: Object.fromEntries([['1',4],['2',6.5],['3',9]].map(([v, sp]) => [v, lineHeightIcon(sp)])),
+  textAlign: {
+    left:    tileSvg(<path d="M5 7h22M5 13h14M5 19h22M5 25h14"/>),
+    right:   tileSvg(<path d="M5 7h22M13 13h14M5 19h22M13 25h14"/>),
+    center:  tileSvg(<path d="M5 7h22M9 13h14M5 19h22M9 25h14"/>),
+    justify: tileSvg(<path d="M5 7h22M5 13h22M5 19h22M5 25h22"/>),
+  },
+  saturation: {
+    low:  tileSvg(<><path d={DROP}/><path d="M16 4C13 8 7 14 7 20a9 9 0 009 9z" fill="currentColor"/></>),
+    high: tileSvg(<><path d={DROP} fill="currentColor"/><path d="M11.5 20a4.6 4.6 0 002.6 4.2" stroke="#fff" strokeWidth="1.6"/></>),
+    mono: tileSvg(<><path d={DROP}/><path d="M11 16.5h10M9.5 20.5h13M10 24.5h12" strokeWidth="1.6"/></>),
+  },
+};
+const ICON_OFF_OVERRIDES = {
+  textSize: textSizeIcon([7,9,13.5,18]),
+  lineHeight: lineHeightIcon(5.5),
+  spacing: tileSvg(<><path d="M7 16h18" strokeDasharray="3 3"/><path d="M6 16l4-4M6 16l4 4M26 16l-4-4M26 16l-4 4"/></>),
+  saturation: tileSvg(<><path d={DROP} fill="currentColor"/><path d="M11.5 20a4.6 4.6 0 002.6 4.2" stroke="#fff" strokeWidth="1.6"/></>),
+};
+const LABELS_ON = {
+  contrast:   { invert:'Invert Colors', dark:'Dark Contrast', light:'Light Contrast' },
+  spacing:    { '1':'Light Spacing', '2':'Moderate Spacing', '3':'Heavy Spacing' },
+  motion:     { reduce:'Play Animations' },
+  hideImages: { on:'Hide images enabled' },
+  typeface:   { legible:'Legible Fonts' },
+  cursor:     { black:'Big Cursor', mask:'Reading Mask', guide:'Reading Guide' },
+  lineHeight: { '1':'Line Height (1.5x)', '2':'Line Height (1.75x)', '3':'Line Height (2x)' },
+  textAlign:  { left:'Align Left', right:'Align Right', center:'Align Center', justify:'Justify' },
+  saturation: { low:'Low Saturation', high:'High Saturation', mono:'Desaturate' },
+};
+// Saturation steps get their own accent (navy for low, grey for desaturate), like NNEA
+const TONES_ON = { saturation: { low:'#3c4f9c', mono:'#5b616e' } };
+
+// steps: values a tile cycles through (after 'default'); a single step makes it an on/off toggle.
+const A11Y_TILES = [
+  { key:'contrast',   label:'Contrast +',       steps:['invert','dark','light'] },
+  { key:'links',      label:'Highlight Links',  steps:['on'] },
+  { key:'textSize',   label:'Bigger Text',      steps:['large','largest','huge','giant'] },
+  { key:'spacing',    label:'Text Spacing',     steps:['1','2','3'] },
+  { key:'motion',     label:'Pause Animations', steps:['reduce'] },
+  { key:'hideImages', label:'Hide Images',      steps:['on'] },
+  { key:'typeface',   label:'Dyslexia Friendly',steps:['dyslexic','legible'] },
+  { key:'cursor',     label:'Cursor',           steps:['black','mask','guide'] },
+  { key:'tooltips',   label:'Tooltips',         steps:['on'] },
+  { key:'lineHeight', label:'Line Height',      steps:['1','2','3'] },
+  { key:'textAlign',  label:'Text Align',       steps:['left','right','center','justify'] },
+  { key:'saturation', label:'Saturation',       steps:['low','high','mono'] },
+];
+const TILE_DEFAULTS = { motion:'system', typeface:'default' };
+const tileOff = key => TILE_DEFAULTS[key] || 'default';
+
+const ResetIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.7 3M3 4v5h5"/></svg>;
+
+/* Reading Mask (dims everything except a band around the pointer) and Reading Guide (a line that follows the pointer). */
+const ReadingAid = ({mode}) => {
+  const topRef = useRef(null), botRef = useRef(null), guideRef = useRef(null);
+  useEffect(() => {
+    if (mode !== 'mask' && mode !== 'guide') return;
+    const BAND = 120;
+    const move = y => {
+      if (mode === 'mask' && topRef.current) {
+        topRef.current.style.height = Math.max(0, y - BAND/2) + 'px';
+        botRef.current.style.top = (y + BAND/2) + 'px';
+      } else if (guideRef.current) guideRef.current.style.top = (y - 2) + 'px';
+    };
+    const onMouse = e => move(e.clientY);
+    const onTouch = e => e.touches[0] && move(e.touches[0].clientY);
+    move(window.innerHeight / 2);
+    window.addEventListener('mousemove', onMouse, {passive:true});
+    window.addEventListener('touchmove', onTouch, {passive:true});
+    return () => { window.removeEventListener('mousemove', onMouse); window.removeEventListener('touchmove', onTouch); };
+  }, [mode]);
+  if (mode === 'mask') return <><div ref={topRef} className="ra-mask" style={{top:0}} aria-hidden="true"/><div ref={botRef} className="ra-mask" style={{bottom:0}} aria-hidden="true"/></>;
+  if (mode === 'guide') return <div ref={guideRef} className="ra-guide" aria-hidden="true"/>;
+  return null;
+};
+
+/* Tooltips feature: shows a label for whatever link/button/image is hovered or focused. */
+function useTooltips(enabled) {
+  useEffect(() => {
+    if (!enabled) return;
+    const tip = document.createElement('div');
+    tip.className = 'a11y-tip';
+    tip.setAttribute('aria-hidden', 'true');
+    document.documentElement.appendChild(tip);
+    const hide = () => { tip.style.display = 'none'; };
+    const show = e => {
+      const el = e.target.closest && e.target.closest('a,button,img,input,select,textarea,[role=button],[aria-label],[title]');
+      if (!el || el.closest('.a11y-panel')) { hide(); return; }
+      const text = (el.getAttribute('aria-label') || el.getAttribute('title') || el.getAttribute('alt') || el.getAttribute('placeholder') || el.textContent || '').trim().replace(/\s+/g, ' ');
+      if (!text) { hide(); return; }
+      tip.textContent = text.length > 160 ? text.slice(0, 157) + '…' : text;
+      tip.style.display = 'block';
+      const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+      const left = Math.min(Math.max(8, r.left + r.width / 2 - t.width / 2), window.innerWidth - t.width - 8);
+      const top = r.bottom + 8 + t.height > window.innerHeight ? Math.max(8, r.top - t.height - 8) : r.bottom + 8;
+      tip.style.left = left + 'px'; tip.style.top = top + 'px';
+    };
+    document.addEventListener('mouseover', show);
+    document.addEventListener('focusin', show);
+    document.addEventListener('mouseout', hide);
+    document.addEventListener('focusout', hide);
+    return () => {
+      document.removeEventListener('mouseover', show); document.removeEventListener('focusin', show);
+      document.removeEventListener('mouseout', hide); document.removeEventListener('focusout', hide);
+      tip.remove();
+    };
+  }, [enabled]);
+}
+
 const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList, canReadAloud, onDeleteAllData}) => {
   const ra = useReadAloud(canReadAloud ? readableList : []);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const closeRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
+    const opener = document.activeElement;
+    closeRef.current && closeRef.current.focus();
     const onKey = e => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      if (opener && opener.focus && document.contains(opener)) opener.focus();
+    };
   }, [open, onClose]);
 
   useEffect(() => { if (!open) { setConfirmDelete(false); } }, [open]);
 
   const set = (k, v) => setPrefs(p => ({ ...p, [k]: v }));
+
+  const cycle = ({key, steps}) => setPrefs(p => {
+    const i = steps.indexOf(p[key]);            // -1 = off (or an older stored value)
+    return { ...p, [key]: i + 1 < steps.length ? steps[i + 1] : tileOff(key) };
+  });
+
+  const resetAll = () => setPrefs({ ...DEFAULT_PREFS });
 
   const exportData = () => {
     const blob = new Blob([JSON.stringify({ preferences: prefs, favorites: favs }, null, 2)], { type: 'application/json' });
@@ -682,20 +1080,47 @@ const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList,
   if (!open) return null;
 
   return (
-    <div role="presentation" style={{position:'fixed',inset:0,zIndex:500}}>
-      <div onClick={onClose} style={{position:'absolute',inset:0,background:'var(--overlay)'}}/>
-      <div role="dialog" aria-modal="true" aria-label="Accessibility Features"
-        style={{position:'absolute',top:0,right:0,height:'100%',width:'min(400px,100vw)',background:'var(--surface)',boxShadow:'-4px 0 24px rgba(42,38,30,.18)',overflowY:'auto',padding:'20px 22px 40px'}}>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
-          <h3 style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700,margin:0,color:'var(--text)'}}>Accessibility Features</h3>
-          <button onClick={onClose} aria-label="Close" style={{display:'flex',alignItems:'center',justifyContent:'center',width:32,height:32,borderRadius:8,border:'1px solid var(--border)',background:'var(--surface-subtle)',color:'var(--text-secondary)'}}>
-            <XIcon/>
-          </button>
+    <div role="dialog" aria-label="Accessibility Menu" className={`a11y-panel${prefs.oversized?' big':''}`}>
+      <div className="a11y-head">
+        <span>Accessibility Menu (CTRL+U)</span>
+        <button ref={closeRef} type="button" className="a11y-close" onClick={onClose} aria-label="Close accessibility menu">
+          <XIcon/>
+        </button>
+      </div>
+
+      <div className="a11y-body">
+        <div className="a11y-row">
+          <span id="a11y-oversized-label">Oversized Widget</span>
+          <button type="button" role="switch" className="a11y-switch" aria-checked={!!prefs.oversized} aria-labelledby="a11y-oversized-label" onClick={()=>set('oversized', !prefs.oversized)}/>
         </div>
+
+        <div className="a11y-grid">
+          {A11Y_TILES.map(t => {
+            const val = prefs[t.key];
+            const i = t.steps.indexOf(val);
+            const on = i >= 0;
+            const label = (on && LABELS_ON[t.key] && LABELS_ON[t.key][val]) || t.label;
+            const icon = (on && ICONS_ON[t.key] && ICONS_ON[t.key][val]) || ICON_OFF_OVERRIDES[t.key] || TILE_ICONS[t.key];
+            const tone = on && TONES_ON[t.key] && TONES_ON[t.key][val];
+            return (
+              <button key={t.key} type="button" className="a11y-tile" aria-pressed={on} style={tone ? {'--tc': tone} : undefined}
+                aria-label={t.steps.length > 1 ? `${label}${on ? `, step ${i+1} of ${t.steps.length}` : ', off'}` : label}
+                onClick={()=>cycle(t)}>
+                {icon}
+                <span>{label}</span>
+                {on && t.steps.length > 1 && <span className="a11y-steps" aria-hidden="true">{t.steps.map((_, n) => <i key={n} className={n <= i ? 'on' : ''}/>)}</span>}
+              </button>
+            );
+          })}
+        </div>
+
+        <button type="button" className="a11y-wide" onClick={resetAll}><ResetIcon/> Reset All Accessibility Settings</button>
+
+        <div className="a11y-more">More settings</div>
 
         <A11ySection title="Color scheme">
           <div style={{display:'flex',gap:10}}>
-            {[['earthy','Calm & earthy','#175d69','#e0846b'],['blue','Blue & yellow','#1c5490','#f59e0b']].map(([key,label,c1,c2])=>(
+            {[['earthy','Cardinal & Teal','#1f6a5e','#b4232a'],['blue','Blue & yellow','#1c5490','#f59e0b']].map(([key,label,c1,c2])=>(
               <button key={key} onClick={()=>set('colorScheme',key)} aria-pressed={prefs.colorScheme===key}
                 style={{flex:1,padding:'10px 8px',borderRadius:10,border:`2px solid ${prefs.colorScheme===key?'var(--brand)':'var(--border)'}`,background:prefs.colorScheme===key?'var(--brand-subtle)':'var(--surface)',cursor:'pointer',textAlign:'left'}}>
                 <div style={{display:'flex',gap:4,marginBottom:6}}>
@@ -713,42 +1138,6 @@ const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList,
             <SegButton active={prefs.theme==='system'} onClick={()=>set('theme','system')}>Match device</SegButton>
             <SegButton active={prefs.theme==='light'} onClick={()=>set('theme','light')}>Light</SegButton>
             <SegButton active={prefs.theme==='dark'} onClick={()=>set('theme','dark')}>Dark</SegButton>
-          </div>
-        </A11ySection>
-
-        <A11ySection title="Text size">
-          <div style={{display:'flex',gap:6}}>
-            <SegButton active={prefs.textSize==='small'} onClick={()=>set('textSize','small')}>Small</SegButton>
-            <SegButton active={prefs.textSize==='default'} onClick={()=>set('textSize','default')}>Default</SegButton>
-            <SegButton active={prefs.textSize==='large'} onClick={()=>set('textSize','large')}>Large</SegButton>
-            <SegButton active={prefs.textSize==='largest'} onClick={()=>set('textSize','largest')}>Largest</SegButton>
-          </div>
-        </A11ySection>
-
-        <A11ySection title="Typeface">
-          <div style={{display:'flex',gap:10}}>
-            <button onClick={()=>set('typeface','default')} aria-pressed={prefs.typeface==='default'}
-              style={{flex:1,padding:'10px 8px',borderRadius:10,border:`2px solid ${prefs.typeface==='default'?'var(--brand)':'var(--border)'}`,background:prefs.typeface==='default'?'var(--brand-subtle)':'var(--surface)',color:'var(--text)',fontSize:13,fontWeight:600,cursor:'pointer'}}>
-              Default
-            </button>
-            <button onClick={()=>set('typeface','dyslexic')} aria-pressed={prefs.typeface==='dyslexic'}
-              style={{flex:1,padding:'10px 8px',borderRadius:10,border:`2px solid ${prefs.typeface==='dyslexic'?'var(--brand)':'var(--border)'}`,background:prefs.typeface==='dyslexic'?'var(--brand-subtle)':'var(--surface)',color:'var(--text)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:"'OpenDyslexic','Comic Sans MS',var(--font-sans)"}}>
-              Dyslexia-friendly
-            </button>
-          </div>
-        </A11ySection>
-
-        <A11ySection title="Contrast">
-          <div style={{display:'flex',gap:6}}>
-            <SegButton active={prefs.contrast==='default'} onClick={()=>set('contrast','default')}>Default</SegButton>
-            <SegButton active={prefs.contrast==='high'} onClick={()=>set('contrast','high')}>Higher contrast</SegButton>
-          </div>
-        </A11ySection>
-
-        <A11ySection title="Motion">
-          <div style={{display:'flex',gap:6}}>
-            <SegButton active={prefs.motion==='system'} onClick={()=>set('motion','system')}>Match device</SegButton>
-            <SegButton active={prefs.motion==='reduce'} onClick={()=>set('motion','reduce')}>Reduce motion</SegButton>
           </div>
         </A11ySection>
 
@@ -780,7 +1169,7 @@ const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList,
             {favs.length} saved resource{favs.length!==1?'s':''} · preferences and favorites are stored only on this device, never uploaded anywhere.
           </p>
           <div style={{display:'flex',flexDirection:'column',gap:8}}>
-            <button onClick={exportData} style={{padding:'9px 12px',borderRadius:8,border:'1px solid var(--border)',background:'var(--surface-subtle)',color:'var(--text)',fontSize:13,fontWeight:600,cursor:'pointer',textAlign:'left'}}>
+            <button onClick={exportData} style={{padding:'9px 12px',borderRadius:8,border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text)',fontSize:13,fontWeight:600,cursor:'pointer',textAlign:'left'}}>
               ⬇ Export a copy
             </button>
             {!confirmDelete ? (
@@ -803,29 +1192,47 @@ const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList,
   );
 };
 
+/* ─── Featured resource card (colors come from the --tint-a / --tint-b tokens so it follows the color scheme and dark mode) ─── */
+const FeaturedResource = ({tone, name, blurb, href, cta}) => {
+  const t = k => `var(--tint-${tone}-${k})`;
+  return (
+    <div style={{marginTop:28,background:t('bg'),borderRadius:14,padding:'28px 32px',border:`1px solid ${t('border')}`,borderLeft:`8px solid ${t('btn')}`,display:'flex',alignItems:'center',gap:24,flexWrap:'wrap',boxShadow:'0 2px 10px rgba(9,42,38,.06)'}}>
+      <div style={{flex:1,minWidth:220}}>
+        <div style={{display:'inline-flex',alignItems:'center',gap:8,fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.08em',textTransform:'uppercase',color:t('label'),marginBottom:8}}>
+          <span aria-hidden="true" style={{width:9,height:9,borderRadius:'50%',background:t('btn')}}/>Featured Resource
+        </div>
+        <div style={{fontWeight:700,fontSize:22,color:t('title'),marginBottom:8}}>{name}</div>
+        <div style={{fontSize:16,color:t('body'),lineHeight:1.65}}>{blurb}</div>
+      </div>
+      <a className="feat-btn" href={href} target="_blank" rel="noopener noreferrer" style={{'--fb':t('btn'),'--fbh':t('btn-hover'),'--fbt':t('btn-text')}}>{cta} ↗</a>
+    </div>
+  );
+};
+
 /* ─── Landing ────────────────────────────────────────────────── */
 const Landing = ({onSearch, onLocate, busy, error}) => {
   const [q, setQ] = useState('');
   return (
     <div>
-      <section style={{background:'var(--harbor-700)',padding:'72px 24px 64px',textAlign:'center'}}>
+      <section className="lively-bg" style={{padding:'72px 24px 64px',textAlign:'center'}}>
+        <Confetti dots={HERO_DOTS}/>
         <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:14,marginBottom:24}}>
-          <svg width="52" height="52" viewBox="0 0 60 60" fill="none"><rect x="2" y="2" width="56" height="56" rx="16" fill="rgba(255,255,255,.15)"/><path d="M30 16c-7.2 0-13 5.6-13 12.6 0 8.8 13 18.4 13 18.4s13-9.6 13-18.4C43 21.6 37.2 16 30 16z" fill="#fff"/><circle cx="30" cy="28.4" r="5.4" fill="var(--coral-400)"/></svg>
+          <LogoMark size={56} glass/>
           <h1 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(36px,5vw,58px)',letterSpacing:'0.02em',color:'#fff',margin:0,lineHeight:1}}>ACCESSIBILITY MAPPER</h1>
         </div>
-        <p style={{fontSize:18,color:'rgba(255,255,255,.8)',margin:'0 auto 36px',maxWidth:'50ch',lineHeight:1.6}}>Find autism &amp; special needs resources near you — therapy, advocacy, education, medical, and more.</p>
+        <p style={{fontSize:18,color:'rgba(255,255,255,.92)',margin:'0 auto 36px',maxWidth:'50ch',lineHeight:1.6}}>Find autism &amp; special needs resources near you — therapy, advocacy, education, medical, and more.</p>
         <form onSubmit={e=>{e.preventDefault();if(q.trim())onSearch(q);}} style={{display:'flex',gap:0,maxWidth:620,margin:'0 auto',borderRadius:12,overflow:'hidden',boxShadow:'0 8px 30px rgba(0,0,0,.2)'}}>
           <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Enter city, zip code, or address…" style={{flex:1,height:54,padding:'0 20px',border:'none',outline:'none',fontSize:16,background:'#fff',color:'#2a261e',fontFamily:'var(--font-sans)'}}/>
-          <button type="submit" disabled={busy} style={{height:54,padding:'0 28px',background:'var(--coral-500)',color:'#fff',border:'none',fontSize:16,fontWeight:700,fontFamily:'var(--font-antonio)',letterSpacing:'.05em',cursor:busy?'wait':'pointer',whiteSpace:'nowrap',opacity:busy?.7:1}}>{busy?'…':'SEARCH'}</button>
+          <button type="submit" disabled={busy} style={{height:54,padding:'0 28px',background:'#f6a21e',color:'#2b1b00',border:'none',fontSize:16,fontWeight:700,fontFamily:'var(--font-antonio)',letterSpacing:'.05em',cursor:busy?'wait':'pointer',whiteSpace:'nowrap',opacity:busy?.7:1}}>{busy?'…':'SEARCH'}</button>
         </form>
-        <button onClick={onLocate} disabled={busy} style={{marginTop:14,background:'transparent',border:'none',color:'rgba(255,255,255,.75)',fontSize:14,cursor:busy?'wait':'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
+        <button onClick={onLocate} disabled={busy} style={{marginTop:14,background:'transparent',border:'none',color:'rgba(255,255,255,.9)',fontSize:14,cursor:busy?'wait':'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
           <PinIcon s={14}/> Use my current location
         </button>
         {error && <div style={{marginTop:14,color:'#ffd9cf',fontSize:14}}>{error}</div>}
       </section>
       <section style={{maxWidth:1500,margin:'56px auto',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:36}}>
-          <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--brand)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Cal Poly Pomona · CS Department</span>
+          <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--text)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Cal Poly Pomona · CS Department</span>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:32,letterSpacing:'.01em',color:'var(--text)',margin:0}}>AI-POWERED RESEARCH PROJECT</h2>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:18}}>
@@ -833,7 +1240,7 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
             <div key={i} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,overflow:'hidden',boxShadow:'0 1px 3px rgba(42,38,30,.06)'}}>
               <img src={img} alt={h} loading="lazy" style={{width:'100%',height:170,objectFit:'cover',display:'block'}}/>
               <div style={{padding:'20px'}}>
-                <div style={{width:36,height:4,background:'var(--coral-500)',borderRadius:999,marginBottom:14}}/>
+                <div style={{width:36,height:4,background:'var(--cardinal-500)',borderRadius:999,marginBottom:14}}/>
                 <h3 style={{margin:'0 0 8px',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:17,letterSpacing:'.01em',color:'var(--text)'}}>{h}</h3>
                 <p style={{margin:0,fontSize:13,color:'var(--text-muted)',lineHeight:1.55}}>{b}</p>
               </div>
@@ -843,7 +1250,7 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
       </section>
       <section style={{maxWidth:1100,margin:'56px auto 72px',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:28}}>
-          <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--brand)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Learn More</span>
+          <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--text)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Learn More</span>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:32,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 8px'}}>AUTISM INFO</h2>
           <p style={{fontSize:15,color:'var(--text-muted)',margin:'0 auto',maxWidth:'60ch',lineHeight:1.6}}>A short introduction to autism — what it is and how to support autistic individuals in your community.</p>
         </div>
@@ -851,33 +1258,22 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
           <iframe src="https://www.youtube.com/embed/N6Xw5M0fzRo" title="Autism Info" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none'}}/>
         </div>
         <div style={{textAlign:'center',marginTop:18}}>
-          <a href="https://www.youtube.com/watch?v=N6Xw5M0fzRo" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,color:'var(--text-link)',fontWeight:600,fontSize:14}}>Watch on YouTube ↗</a>
+          <a href="https://www.youtube.com/watch?v=N6Xw5M0fzRo" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,color:'var(--text-link)',textDecoration:'underline',fontWeight:600,fontSize:14}}>Watch on YouTube ↗</a>
         </div>
-        <div style={{marginTop:28,background:'#fff2e2',borderRadius:14,padding:'28px 32px',border:'1px solid #fdddb0',display:'flex',alignItems:'center',gap:24,flexWrap:'wrap'}}>
-          <div style={{flex:1,minWidth:220}}>
-            <div style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.08em',textTransform:'uppercase',color:'#c2650c',marginBottom:8}}>Featured Resource</div>
-            <div style={{fontWeight:700,fontSize:22,color:'#7c3e0a',marginBottom:8}}>Federation for Children with Special Needs</div>
-            <div style={{fontSize:16,color:'#8a4d15',lineHeight:1.65}}>A center for parents and parent organizations to work together on behalf of children with disabilities and their families. Offering training, information, and advocacy support since 1974.</div>
-          </div>
-          <a href="https://fcsn1996.org/" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:6,height:46,padding:'0 26px',background:'#f97316',color:'#fff',borderRadius:10,fontSize:15,fontWeight:700,textDecoration:'none',whiteSpace:'nowrap',flexShrink:0}}>Visit FCSN ↗</a>
-        </div>
-        <div style={{marginTop:28,background:'#f3ecfd',borderRadius:14,padding:'28px 32px',border:'1px solid #e2d3fa',display:'flex',alignItems:'center',gap:24,flexWrap:'wrap'}}>
-          <div style={{flex:1,minWidth:220}}>
-            <div style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.08em',textTransform:'uppercase',color:'#8447d6',marginBottom:8}}>Featured Resource</div>
-            <div style={{fontWeight:700,fontSize:22,color:'#4c1d8a',marginBottom:8}}>Magical Bridge Playground</div>
-            <div style={{fontSize:16,color:'#5c3499',lineHeight:1.65}}>Inclusive, all-abilities playgrounds where children of every ability play side-by-side. Sensory-rich, universally accessible equipment designed with input from families, therapists, and disability advocates.</div>
-          </div>
-          <a href="https://www.magicalbridge.org/" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:6,height:46,padding:'0 26px',background:'#7c3aed',color:'#fff',borderRadius:10,fontSize:15,fontWeight:700,textDecoration:'none',whiteSpace:'nowrap',flexShrink:0}}>Visit Magical Bridge ↗</a>
-        </div>
+        <FeaturedResource tone="a" name="Federation for Children with Special Needs" href="https://fcsn1996.org/" cta="Visit FCSN"
+          blurb="A center for parents and parent organizations to work together on behalf of children with disabilities and their families. Offering training, information, and advocacy support since 1974."/>
+        <FeaturedResource tone="b" name="Magical Bridge Playground" href="https://www.magicalbridge.org/" cta="Visit Magical Bridge"
+          blurb="Inclusive, all-abilities playgrounds where children of every ability play side-by-side. Sensory-rich, universally accessible equipment designed with input from families, therapists, and disability advocates."/>
       </section>
-      <section id="donate-section" style={{background:'var(--harbor-700)',padding:'64px 24px',textAlign:'center'}}>
+      <section id="donate-section" className="lively-bg" style={{padding:'72px 24px',textAlign:'center'}}>
+        <Confetti dots={DONATE_DOTS}/>
         <div style={{maxWidth:580,margin:'0 auto'}}>
           <div style={{fontSize:36,marginBottom:16}}>❤️</div>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(26px,4vw,38px)',color:'#fff',margin:'0 0 14px',letterSpacing:'.02em'}}>SUPPORT THIS PROJECT</h2>
-          <p style={{fontSize:16,color:'rgba(255,255,255,.8)',margin:'0 0 32px',lineHeight:1.7}}>This directory is free and built by one person. Your support helps keep it growing — adding more resources, improving the map, and reaching more families who need it.</p>
+          <p style={{fontSize:16,color:'rgba(255,255,255,.92)',margin:'0 0 32px',lineHeight:1.7}}>This directory is free and built by one person. Your support helps keep it growing — adding more resources, improving the map, and reaching more families who need it.</p>
           <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
-            <button disabled style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 32px',background:'var(--coral-500)',color:'#fff',borderRadius:12,fontSize:16,fontWeight:700,border:'none',letterSpacing:'.02em',opacity:.7,cursor:'default'}}>♥ Donate — Coming Soon</button>
-            <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 28px',background:'rgba(255,255,255,.12)',color:'#fff',border:'1px solid rgba(255,255,255,.25)',borderRadius:12,fontSize:15,fontWeight:600,textDecoration:'none'}}>⭐ Star on GitHub</a>
+            <button disabled style={{display:'inline-flex',alignItems:'center',gap:10,height:52,padding:'0 26px',background:'#fffefc',color:'#8c1515',borderRadius:12,fontSize:16,fontWeight:800,border:'none',letterSpacing:'.02em',cursor:'default',boxShadow:'0 4px 0 rgba(0,0,0,.18)'}}>♥ Donate <span style={{background:'#8c1515',color:'#fff',borderRadius:999,padding:'3px 10px',fontSize:11,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase'}}>Coming soon</span></button>
+            <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,height:52,padding:'0 28px',background:'rgba(255,255,255,.14)',color:'#fff',border:'2px solid rgba(255,255,255,.55)',borderRadius:12,fontSize:15,fontWeight:600,textDecoration:'none'}}>⭐ Star on GitHub</a>
           </div>
         </div>
       </section>
@@ -919,7 +1315,7 @@ const Pager = ({page, totalPages, setPage}) => {
 };
 
 /* ─── Results ────────────────────────────────────────────────── */
-const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, onVisibleChange}) => {
+const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, contrast, onVisibleChange}) => {
   const [typeFilter, setTypeFilter] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [radius, setRadius] = useState(null);
@@ -1007,16 +1403,16 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
   }
 
   return (
-    <div style={{maxWidth:2400,margin:'0 auto',padding:'24px 1px 64px'}}>
-      <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
+    <div style={{maxWidth:2400,margin:'0 auto',padding:'12px 24px 48px'}}>
+      <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:6,display:'flex',alignItems:'center',gap:6}}>
         <span style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
         <span>›</span>
         <span style={{cursor:'pointer',color:'var(--text-link)'}}>Autism &amp; Special Needs</span>
         <span>›</span>
         <span style={{color:'var(--text-muted)'}}>{locLabel}</span>
       </div>
-      <div style={{marginBottom:20}}>
-        <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(20px,3vw,28px)',margin:'0 0 4px',letterSpacing:'.01em',color:'var(--text)'}}>
+      <div style={{marginBottom:10}}>
+        <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(20px,3vw,26px)',margin:'0 0 2px',letterSpacing:'.01em',color:'var(--text)'}}>
           {filtered.length} Resource{filtered.length!==1?'s':''}{radius!=null?` within ${radius} mi`:''} Near {locLabel}
         </h2>
         <div style={{fontSize:13,color:'var(--text-muted)'}}>
@@ -1025,9 +1421,9 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
           {` · ${ALL.length} total in directory`}
         </div>
       </div>
-      <div style={{display:'flex',gap:10,alignItems:'flex-start',flexWrap:'wrap'}}>
-        <Sidebar keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug}/>
-        <div style={{flex:'1 1 460px',minWidth:320}}>
+      <FilterBar keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])}/>
+      <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
+        <div style={{flex:'3 1 480px',minWidth:320}}>
           {shown.length === 0 && national.length === 0 ? (
             <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
               <div style={{fontSize:32,marginBottom:10}}>🔍</div>
@@ -1056,8 +1452,8 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
             </React.Fragment>
           )}
         </div>
-        <div style={{flex:'1 1 440px',minWidth:340,marginLeft:0,position:'sticky',top:80,height:'calc(100vh - 48px)'}}>
-          <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey}/>
+        <div style={{flex:'2 1 400px',minWidth:340,marginLeft:0,position:'sticky',top:76,height:'calc(100vh - 92px)'}}>
+          <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast}/>
         </div>
       </div>
     </div>
@@ -1091,16 +1487,37 @@ function App() {
 
   useEffect(() => {
     const b = document.body.classList;
+    const h = document.documentElement;
     b.toggle('dark', isDark);
     b.toggle('dyslexic', prefs.typeface === 'dyslexic');
+    b.toggle('legible', prefs.typeface === 'legible');
     b.toggle('scheme-blue', prefs.colorScheme === 'blue');
-    b.toggle('hc', prefs.contrast === 'high');
+    ['dark','light'].forEach(c => b.toggle('contrast-' + c, prefs.contrast === c));
     b.toggle('reduce-motion', prefs.motion === 'reduce');
-    b.toggle('text-small', prefs.textSize === 'small');
-    b.toggle('text-large', prefs.textSize === 'large');
-    b.toggle('text-largest', prefs.textSize === 'largest');
+    ['small','large','largest','huge','giant'].forEach(sz => b.toggle('text-' + sz, prefs.textSize === sz));
+    b.toggle('hl-links', prefs.links === 'on');
+    b.toggle('hide-images', prefs.hideImages === 'on');
+    ['1','2','3'].forEach(n => { b.toggle('sp-' + n, prefs.spacing === n); b.toggle('lh-' + n, prefs.lineHeight === n); });
+    ['left','right','center','justify'].forEach(a => b.toggle('ta-' + a, prefs.textAlign === a));
+    b.toggle('cursor-black', prefs.cursor === 'black');
+    // Invert + saturation are page-wide filters; they must live on <html> (a filter on <body> would break position:fixed).
+    const invert = prefs.contrast === 'invert';
+    h.classList.toggle('a11y-invert', invert);
+    const sat = { low:'saturate(.5)', high:'saturate(2)', mono:'grayscale(1)' }[prefs.saturation];
+    h.style.filter = [invert && 'invert(1) hue-rotate(180deg)', sat].filter(Boolean).join(' ');
     savePrefs(prefs);
   }, [prefs, isDark]);
+
+  useTooltips(prefs.tooltips === 'on');
+
+  // Ctrl+U toggles the accessibility menu (same shortcut as the UserWay menu on stanfordnnea.com).
+  useEffect(() => {
+    const onKey = e => {
+      if (e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === 'u') { e.preventDefault(); setA11yOpen(o => !o); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   useEffect(() => { saveFavs(favs); }, [favs]);
 
@@ -1130,9 +1547,19 @@ function App() {
 
   const toggleFav = id => setFavs(f => f.includes(id) ? f.filter(x=>x!==id) : [...f,id]);
   return (
-    <div>
+    <>
+    <div className="app-zoom">
       <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'}/>
-      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} favs={favs} onFav={toggleFav} themeKey={themeKey} onVisibleChange={setReadableList}/>}</main>
+      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onLocate={useMyLocation} busy={busy} error={error}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} favs={favs} onFav={toggleFav} themeKey={themeKey} contrast={prefs.contrast} onVisibleChange={setReadableList}/>}</main>
+      <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
+        © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
+        <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',textDecoration:'underline',fontWeight:600}}>GitHub</a>
+        {' '}·{' '}
+        <a href="#donate-section" onClick={e=>{e.preventDefault();document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{color:'var(--accent-text)',fontWeight:600,cursor:'pointer'}}>Donate ♥</a>
+        <span style={{display:'block',marginTop:4}}>Always verify information directly with service providers.</span>
+      </footer>
+    </div>
+      <ReadingAid mode={prefs.cursor}/>
       <AccessibilityPanel
         open={a11yOpen}
         onClose={() => setA11yOpen(false)}
@@ -1143,14 +1570,7 @@ function App() {
         canReadAloud={screen === 'results'}
         onDeleteAllData={() => { clearAllStoredData(); setPrefs({ ...DEFAULT_PREFS }); setFavs([]); }}
       />
-      <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
-        © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
-        <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',fontWeight:600}}>GitHub</a>
-        {' '}·{' '}
-        <a href="#donate-section" onClick={e=>{e.preventDefault();document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{color:'var(--coral-500)',fontWeight:600,cursor:'pointer'}}>Donate ♥</a>
-        <span style={{display:'block',marginTop:4}}>Always verify information directly with service providers.</span>
-      </footer>
-    </div>
+    </>
   );
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
