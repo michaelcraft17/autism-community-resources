@@ -79,7 +79,7 @@ body.text-giant .app-zoom{zoom:1.75;}
 /* ─── Accessibility menu features (toggled from the panel) ─── */
 body.contrast-dark{--bg:#000;--bg-sunken:#000;--surface:#000;--surface-raised:#000;--surface-subtle:#111;--text:#ff0;--text-secondary:#ff0;--text-muted:#ff0;--border:#ff0;--border-strong:#ff0;--divider:#ff0;--text-link:#0ff;--action:#0ff;--action-hover:#7ff;--action-on:#000;--pin:#ffa500;--pin-on:#000;--pin-subtle:#2a1a00;--brand:#0ff;--brand-subtle:#000;--brand-on:#000;}
 body.contrast-light{--bg:#fff;--bg-sunken:#fff;--surface:#fff;--surface-raised:#fff;--surface-subtle:#fff;--text:#000;--text-secondary:#000;--text-muted:#000;--border:#000;--border-strong:#000;--divider:#000;--text-link:#0000c8;--action:#0000c8;--action-hover:#000090;--action-on:#fff;--pin:#ff9a3c;--pin-on:#000;--pin-subtle:#ffe9d6;--brand:#0000c8;--brand-subtle:#fff;--brand-on:#fff;}
-html.a11y-invert img:not(.gm-style img),html.a11y-invert video,html.a11y-invert .a11y-panel,html.a11y-invert .a11y-tip{filter:invert(1) hue-rotate(180deg);}
+html.a11y-invert img:not(.gm-style img),html.a11y-invert video,html.a11y-invert .a11y-panel,html.a11y-invert .a11y-tip,html.a11y-invert .ra-guide,html.a11y-invert .ra-mask{filter:invert(1) hue-rotate(180deg);}
 body.hl-links a:not(.a11y-panel *){background:#ff0!important;color:#000!important;text-decoration:underline!important;outline:2px solid #000;}
 body.hide-images img:not(.gm-style img){visibility:hidden!important;}
 body.hide-images [style*="background-image"]{background-image:none!important;}
@@ -157,7 +157,11 @@ button{font-family:inherit;cursor:pointer;}
 .fopt:hover{background:var(--bg-sunken);}
 .fopt input{accent-color:var(--brand);width:17px;height:17px;flex-shrink:0;cursor:pointer;}
 .ra-mask{position:fixed;left:0;right:0;z-index:480;background:rgba(0,0,0,.62);pointer-events:none;}
-.ra-guide{position:fixed;left:0;right:0;z-index:480;height:4px;background:#0048ff;box-shadow:0 0 0 1px #fff,0 0 14px rgba(0,72,255,.55);pointer-events:none;}
+.ra-guide{position:fixed;left:0;top:0;width:512px;height:12px;box-sizing:border-box;background:#000;border:3px solid #fff300;border-radius:5px;z-index:480;pointer-events:none;will-change:transform;}
+/* Arrow above the bar: yellow triangle outlined around a black one (same size/position as the UserWay guide) */
+.ra-guide::before,.ra-guide::after{content:'';position:absolute;left:50%;width:0;height:0;border-style:solid;border-color:transparent;transform:translateX(-50%);}
+.ra-guide::before{top:-17px;border-width:0 14px 14px 14px;border-bottom-color:#fff300;}
+.ra-guide::after{top:-12.8px;border-width:0 12.8px 12.8px 12.8px;border-bottom-color:#000;}
 .feat-btn{display:inline-flex;align-items:center;gap:6px;height:46px;padding:0 26px;background:var(--fb);color:var(--fbt);border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 0 rgba(0,0,0,.12);transition:background var(--dur-fast),transform var(--dur-fast);}
 .feat-btn:hover{background:var(--fbh);transform:translateY(-1px);}
 </style>
@@ -989,21 +993,25 @@ const ReadingAid = ({mode}) => {
   useEffect(() => {
     if (mode !== 'mask' && mode !== 'guide') return;
     const BAND = 120;
-    const move = y => {
+    const move = (x, y) => {
       if (mode === 'mask' && topRef.current) {
         topRef.current.style.height = Math.max(0, y - BAND/2) + 'px';
         botRef.current.style.top = (y + BAND/2) + 'px';
-      } else if (guideRef.current) guideRef.current.style.top = (y - 2) + 'px';
+      } else if (guideRef.current) {
+        guideRef.current.style.transform = `translate(${x - 256}px, ${y - 15}px)`;   // 512px bar centered on the pointer, just above it
+      }
     };
-    const onMouse = e => move(e.clientY);
-    const onTouch = e => e.touches[0] && move(e.touches[0].clientY);
-    move(window.innerHeight / 2);
+    const onMouse = e => move(e.clientX, e.clientY);
+    const onTouch = e => e.touches[0] && move(e.touches[0].clientX, e.touches[0].clientY);
+    move(window.innerWidth / 2, window.innerHeight / 2);
     window.addEventListener('mousemove', onMouse, {passive:true});
     window.addEventListener('touchmove', onTouch, {passive:true});
     return () => { window.removeEventListener('mousemove', onMouse); window.removeEventListener('touchmove', onTouch); };
   }, [mode]);
-  if (mode === 'mask') return <><div ref={topRef} className="ra-mask" style={{top:0}} aria-hidden="true"/><div ref={botRef} className="ra-mask" style={{bottom:0}} aria-hidden="true"/></>;
-  if (mode === 'guide') return <div ref={guideRef} className="ra-guide" aria-hidden="true"/>;
+  // Distinct keys make React build fresh elements when switching modes. Without them it recycles the mask's
+  // <div> as the guide, which keeps the inline height the mask set on it (a giant black box).
+  if (mode === 'mask') return <React.Fragment key="mask"><div ref={topRef} className="ra-mask" style={{top:0}} aria-hidden="true"/><div ref={botRef} className="ra-mask" style={{bottom:0}} aria-hidden="true"/></React.Fragment>;
+  if (mode === 'guide') return <div key="guide" ref={guideRef} className="ra-guide" aria-hidden="true"/>;
   return null;
 };
 
