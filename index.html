@@ -187,6 +187,16 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 .ra-guide::after{top:-12.8px;border-width:0 12.8px 12.8px 12.8px;border-bottom-color:#000;}
 .feat-btn{display:inline-flex;align-items:center;gap:6px;height:46px;padding:0 26px;background:var(--fb);color:var(--fbt);border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 0 rgba(0,0,0,.12);transition:background var(--dur-fast),transform var(--dur-fast);}
 .feat-btn:hover{background:var(--fbh);transform:translateY(-1px);}
+/* Scrolling project-card row: native touch/trackpad/wheel scroll + snap, with prev/next buttons for pointer users */
+.carousel-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 12px;scrollbar-width:thin;}
+.carousel-track::-webkit-scrollbar{height:7px;width:auto;}
+.carousel-track::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px;}
+.scroll-card{flex:0 0 260px;scroll-snap-align:start;}
+.carousel-nav{position:absolute;top:calc(50% - 34px);width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(9,42,38,.16);cursor:pointer;z-index:2;}
+.carousel-nav:hover{background:var(--brand-subtle);color:var(--brand);}
+.carousel-nav.left{left:-18px;}
+.carousel-nav.right{right:-18px;}
+@media (max-width:640px){.carousel-nav{display:none;}.scroll-card{flex-basis:220px;}}
 </style>
 </head>
 <body>
@@ -1456,10 +1466,21 @@ const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList,
 };
 
 /* ─── Featured resource card (colors come from the --tint-a / --tint-b tokens so it follows the color scheme and dark mode) ─── */
-const FeaturedResource = ({tone, name, blurb, href, cta}) => {
+const FeaturedResource = ({tone, name, blurb, href, cta, logo, logoAlt, badge, badgeAlt}) => {
   const t = k => `var(--tint-${tone}-${k})`;
   return (
     <div style={{marginTop:28,background:t('bg'),borderRadius:14,padding:'28px 32px',border:`1px solid ${t('border')}`,borderLeft:`8px solid ${t('btn')}`,display:'flex',alignItems:'center',gap:24,flexWrap:'wrap',boxShadow:'0 2px 10px rgba(9,42,38,.06)'}}>
+      {logo && (
+        <div style={{position:'relative',width:64,height:64,flexShrink:0}}>
+          <div style={{width:'100%',height:'100%',borderRadius:12,background:'#fff',border:'1px solid rgba(0,0,0,.08)',boxShadow:'0 1px 4px rgba(9,42,38,.12)',display:'flex',alignItems:'center',justifyContent:'center',padding:9,overflow:'hidden'}}>
+            <img src={logo} alt={logoAlt || `${name} logo`} loading="lazy" style={{width:'100%',height:'100%',objectFit:'contain'}}/>
+          </div>
+          {badge && (
+            <img src={badge} alt={badgeAlt || ''} title={badgeAlt} loading="lazy"
+              style={{position:'absolute',bottom:-6,right:-6,width:30,height:30,borderRadius:'50%',objectFit:'cover',border:'2px solid var(--surface)',boxShadow:'0 1px 4px rgba(0,0,0,.3)',background:'#fff'}}/>
+          )}
+        </div>
+      )}
       <div style={{flex:1,minWidth:220}}>
         <div style={{display:'inline-flex',alignItems:'center',gap:8,fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.08em',textTransform:'uppercase',color:t('label'),marginBottom:8}}>
           <span aria-hidden="true" style={{width:9,height:9,borderRadius:'50%',background:t('btn')}}/>Featured Resource
@@ -1471,6 +1492,40 @@ const FeaturedResource = ({tone, name, blurb, href, cta}) => {
     </div>
   );
 };
+
+/* ─── Project cards: the "AI-POWERED RESEARCH PROJECT" scrolling row ─── */
+const PROJECT_CARDS = [
+  ['Spectrum Support Criteria','Defining what makes public spaces—schools, libraries, parks—genuinely welcoming for autistic and special-needs visitors.','assets/card-support.jpg'],
+  ['Resources Statewide','Hundreds of therapy, advocacy, education, and medical providers, gathered and plotted on one interactive map.','assets/card-data.jpg'],
+  ['Find Care Near You','Search any city or ZIP to see nearby support sorted by distance, with directions and one-tap contact.','assets/card-ai.jpg'],
+  ['Built for Families','A calm, accessible, easy-to-navigate directory designed for parents, caregivers, and self-advocates.','assets/card-community.jpg'],
+  ['Community-Driven','Grown and refined with on-the-ground input from the families and programs it serves.','assets/card-impact.jpg'],
+  ['Recognized by Dr. Fung','Dr. Fung recognizing my efforts toward accessibility at the Stanford Neurodiversity Summit 2026.','assets/summit-speaking.jpg'],
+  ['Recognized for Impact','My fellow student presenters and I were honored for our neurodiversity projects at the 2026 summit.','assets/summit-award.jpg'],
+];
+
+/* Horizontally scrolling row of cards with prev/next buttons (mouse wheel, trackpad swipe, and
+   keyboard scrolling all work natively too since the track is a focusable, overflow:auto element). */
+const ScrollRow = ({children}) => {
+  const trackRef = useRef(null);
+  const scrollBy = dir => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.querySelector('.scroll-card');
+    const step = (card ? card.getBoundingClientRect().width : 260) + 18;
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  };
+  return (
+    <div style={{position:'relative'}}>
+      <button type="button" aria-label="Scroll left" onClick={()=>scrollBy(-1)} className="carousel-nav left"><ChevronIcon dir="left"/></button>
+      <div ref={trackRef} className="carousel-track" tabIndex={0} role="list" aria-label="Project highlights">
+        {children}
+      </div>
+      <button type="button" aria-label="Scroll right" onClick={()=>scrollBy(1)} className="carousel-nav right"><ChevronIcon dir="right"/></button>
+    </div>
+  );
+};
+const ChevronIcon = ({dir}) => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={dir==='left' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'} stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 
 /* ─── Landing ────────────────────────────────────────────────── */
 const Landing = ({onSearch, onLocate, busy, error}) => {
@@ -1498,9 +1553,9 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
           <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--text)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Cal Poly Pomona · CS Department</span>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:32,letterSpacing:'.01em',color:'var(--text)',margin:0}}>AI-POWERED RESEARCH PROJECT</h2>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:18}}>
-          {[['Spectrum Support Criteria','Defining what makes public spaces—schools, libraries, parks—genuinely welcoming for autistic and special-needs visitors.','assets/card-support.jpg'],['Resources Statewide','Hundreds of therapy, advocacy, education, and medical providers, gathered and plotted on one interactive map.','assets/card-data.jpg'],['Find Care Near You','Search any city or ZIP to see nearby support sorted by distance, with directions and one-tap contact.','assets/card-ai.jpg'],['Built for Families','A calm, accessible, easy-to-navigate directory designed for parents, caregivers, and self-advocates.','assets/card-community.jpg'],['Community-Driven','Grown and refined with on-the-ground input from the families and programs it serves.','assets/card-impact.jpg']].map(([h,b,img],i)=>(
-            <div key={i} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,overflow:'hidden',boxShadow:'0 1px 3px rgba(42,38,30,.06)'}}>
+        <ScrollRow>
+          {PROJECT_CARDS.map(([h,b,img],i)=>(
+            <div key={i} className="scroll-card" style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,overflow:'hidden',boxShadow:'0 1px 3px rgba(42,38,30,.06)'}}>
               <img src={img} alt={h} loading="lazy" style={{width:'100%',height:170,objectFit:'cover',display:'block'}}/>
               <div style={{padding:'20px'}}>
                 <div style={{width:36,height:4,background:'var(--cardinal-500)',borderRadius:999,marginBottom:14}}/>
@@ -1509,7 +1564,7 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
               </div>
             </div>
           ))}
-        </div>
+        </ScrollRow>
       </section>
       <section style={{maxWidth:1100,margin:'56px auto 72px',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:28}}>
@@ -1523,10 +1578,26 @@ const Landing = ({onSearch, onLocate, busy, error}) => {
         <div style={{textAlign:'center',marginTop:18}}>
           <a href="https://www.youtube.com/watch?v=N6Xw5M0fzRo" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,color:'var(--text-link)',textDecoration:'underline',fontWeight:600,fontSize:14}}>Watch on YouTube ↗</a>
         </div>
-        <FeaturedResource tone="a" name="Federation for Children with Special Needs" href="https://fcsn1996.org/" cta="Visit FCSN"
-          blurb="A center for parents and parent organizations to work together on behalf of children with disabilities and their families. Offering training, information, and advocacy support since 1974."/>
+        <FeaturedResource tone="a" name="Friends of Children with Special Needs" href="https://fcsn1996.org/" cta="Visit FCSN"
+          logo="assets/logo-friends-of-children.png" logoAlt="Friends of Children with Special Needs logo"
+          blurb="A center for parents and parent organizations to work together on behalf of children with disabilities and their families. Offering training, information, and advocacy support since 1996."/>
         <FeaturedResource tone="b" name="Magical Bridge Playground" href="https://www.magicalbridge.org/" cta="Visit Magical Bridge"
+          logo="assets/logo-magical-bridge.png" logoAlt="Magical Bridge logo"
           blurb="Inclusive, all-abilities playgrounds where children of every ability play side-by-side. Sensory-rich, universally accessible equipment designed with input from families, therapists, and disability advocates."/>
+        <div style={{textAlign:'center',margin:'40px 0 20px'}}>
+          <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:20,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 6px'}}>From the Stanford Neurodiversity Summit 2026</h3>
+          <p style={{fontSize:13,color:'var(--text-muted)',margin:0}}>Highlights from the September 19–21, 2026 summit on building strengths through neurodiversity innovation.</p>
+        </div>
+        <FeaturedResource tone="a" name="Stanford Center for Neurodiversity and Human Potential" href="https://stanfordneurodiversityproject.stanford.edu/" cta="Visit the Center"
+          logo="assets/logo-stanford.png" logoAlt="Stanford University logo"
+          blurb="Announced at the 2026 summit: what began as an idea in 2017 and grew into the Stanford Neurodiversity Project is now an established center, led by Lawrence K. Fung, MD, PhD. It continues the project's research, clinical care, and community programs for neurodivergent individuals."/>
+        <FeaturedResource tone="b" name="Microsoft's Neurodiversity Hiring Program" href="https://aka.ms/NDHPguide" cta="Read Microsoft's guide"
+          logo="assets/logo-microsoft.svg" logoAlt="Microsoft logo"
+          badge="assets/badge-microsoft-disability-hiring.png" badgeAlt="Achievement in Accessibility: Disability Hiring Champion"
+          blurb="Also shared at the summit: Microsoft offers executive function coaching to all 220,000 employees, a Disability Hiring Champion badge with training for recruiters and interviewers, and neurodiversity coaching for all 13,000 people managers."/>
+        <FeaturedResource tone="a" name="Stanford Neurodiversity Project – NNEA" href="https://www.stanfordnnea.com/" cta="Visit NNEA"
+          logo="assets/logo-nnea.png" logoAlt="NNEA logo"
+          blurb="The Network for K-12 Neurodiversity Education and Advocacy: a Stanford-affiliated community for K-12 students, parents, and educators to share and discover neurodiversity advocacy efforts, stories, and strength-based approaches."/>
       </section>
       <section id="donate-section" className="lively-bg" style={{padding:'72px 24px',textAlign:'center'}}>
         <Confetti dots={DONATE_DOTS}/>
