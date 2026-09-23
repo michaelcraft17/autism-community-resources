@@ -3,6 +3,19 @@
 # the hundreds of MB).
 tools/npi_scratch/
 
+# Same deal for tools/cqc_uk_fetch.py -- the raw CQC directory CSV is ~19MB and
+# regenerable (the script re-downloads it if missing).
+tools/cqc_scratch/
+
+# Same deal for tools/wikidata_autism_fetch.py -- entities.json is a raw re-fetchable cache.
+tools/wikidata_scratch/
+
+# Harvest outputs from tools/cqc_uk_fetch.py, tools/wikidata_autism_fetch.py, and the
+# GPT-Researcher pipeline, already merged into community_resources.json via
+# tools/merge_new_resources.py. Left on disk for reference but not tracked -- rerun the
+# relevant tool to regenerate any of them.
+new_resources_*.json
+
 # Aider (local-LLM coding agent) runtime files. Aider re-appends the blanket ".aider*"
 # line on every run if it's missing (its own first-run behavior) -- the negation below
 # keeps .aider.conf.yml tracked regardless. Also passing --no-gitignore in the launcher

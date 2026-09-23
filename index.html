@@ -235,9 +235,9 @@ function shapeAll(raw) {
   return (Array.isArray(raw) && raw.length ? raw : RESOURCES).map((r,i) => ({
     id: i+1, name: r.name, type: r.type, address: r.address, phone: r.phone,
     website: r.website, services: r.services || [], description: r.description || '',
-    coordinates: r.coordinates, suggested: r.suggested,
+    coordinates: r.coordinates, suggested: r.suggested, placeless: r.placeless,
     facility_name: r.facility_name, entity_type: r.entity_type,
-  })).filter(r => r.coordinates && r.coordinates.lat && r.coordinates.lng);
+  })).filter(r => r.placeless || (r.coordinates && r.coordinates.lat && r.coordinates.lng));
 }
 
 function useCommunityData() {
