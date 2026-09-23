@@ -1,0 +1,16 @@
+# Local-model config for this repo. Uses qwen2.5-coder via Ollama -- no API key,
+# no token cost. Run `aider` from the repo root and it picks this up automatically.
+model: ollama_chat/qwen2.5-coder:7b
+
+# Ollama's default context window is a tiny 2048 tokens regardless of what the model
+# actually supports -- without raising it, aider silently truncates most real repo
+# context. qwen2.5-coder:7b supports up to 32768; 16384 is a safer default given this
+# machine's 16GB RAM (the KV cache itself eats memory at long context).
+set-env:
+  - "OLLAMA_API_BASE=http://localhost:11434"
+  - "OLLAMA_CONTEXT_LENGTH=16384"
+
+# 7B models are much more literal than Claude -- these keep aider's own repo-map/edit
+# overhead smaller so more of the context budget goes to the actual files.
+map-tokens: 1024
+auto-commits: false
