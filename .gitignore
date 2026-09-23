@@ -1,0 +1,4 @@
+# Working files from tools/npi_taxonomy_*.py — regenerate with the pipeline
+# in tools/npi_taxonomy_fetch.py's docstring, never commit these (some run into
+# the hundreds of MB).
+tools/npi_scratch/
