@@ -2,3 +2,13 @@
 # in tools/npi_taxonomy_fetch.py's docstring, never commit these (some run into
 # the hundreds of MB).
 tools/npi_scratch/
+
+# Aider (local-LLM coding agent) runtime files. Aider re-appends the blanket ".aider*"
+# line on every run if it's missing (its own first-run behavior) -- the negation below
+# keeps .aider.conf.yml tracked regardless. Also passing --no-gitignore in the launcher
+# script so it stops touching this file at all.
+.aider.chat.history.md
+.aider.input.history
+.aider.tags.cache.v*/
+.aider*
+!.aider.conf.yml
