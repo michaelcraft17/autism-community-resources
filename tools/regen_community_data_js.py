@@ -1,6 +1,6 @@
 import json, os
 
-REPO = "C:/Users/Lenovo/autism-community-resources"
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 data = json.load(open(f"{REPO}/community_resources.json", encoding="utf-8"))
 js = "window.communityData = " + json.dumps(data, ensure_ascii=False) + ";\n"
