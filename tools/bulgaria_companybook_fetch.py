@@ -57,7 +57,13 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = ("Bulgaria Commercial Register / Register of Non-Profit Legal Entities, via "
           "CompanyBook.bg (republishes official Registry Agency CC-BY open data)")
 
-SEARCH_TERMS = ["аутизъм", "аутизмa", "аутистич"]
+SEARCH_TERMS = ["аутизъм", "аутизмa", "аутистич", "Аспергер"]
+# The API's own name matching is fuzzy/prefix-based, not strict substring (confirmed: querying
+# "Аспергер" also returns "АСПЕР", a 5-letter unrelated company name) -- require the search
+# term as an actual case-insensitive substring of the result name, client-side.
+# Also excludes one confirmed false positive by business type: a transport company that
+# happens to be named after Asperger syndrome coincidentally, not an autism-related resource.
+EXCLUDE_NAME_SUBSTR = ["транспортсервиз"]
 
 
 def api_get(url):
@@ -137,8 +143,18 @@ def main():
     all_hits = {}
     for term in SEARCH_TERMS:
         for h in fetch_term(term):
-            if h.get("status") == "N":  # N = active; L = liquidated
-                all_hits[h["uic"]] = h
+            name_low = (h.get("name") or "").lower()
+            if term.lower() not in name_low:
+                continue  # drop fuzzy/prefix false positives -- require a real substring match
+            if any(x in name_low for x in EXCLUDE_NAME_SUBSTR):
+                continue
+            # API docs only document "L" (liquidated) as an excluded status; "status=true" on
+            # the request already filters server-side, and a confirmed-real, currently-
+            # registered foundation came back with status "E" (undocumented) -- so exclude only
+            # the one documented dead status rather than whitelisting just "N".
+            if h.get("status") == "L":
+                continue
+            all_hits[h["uic"]] = h
         time.sleep(1.1)
     print(f"  {len(all_hits)} unique active entities across all search terms")
 

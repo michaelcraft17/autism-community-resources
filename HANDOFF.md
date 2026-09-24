@@ -133,13 +133,26 @@ government/encyclopedic structured sources were ~95%+ clean):
   for this project was created 2026-09-24 under changcheng875@gmail.com — the credentials
   (email/password) are known to the site owner, not stored in this repo; the API key itself
   is never hardcoded or committed, only ever passed via the `COMPANYBOOK_API_KEY` env var.
-  Added 9 organizations, all active. Two real address-geocoding gotchas fixed here, worth
-  knowing about for any future Bulgarian source: (1) the registry's precise street-level
-  address routinely fails to resolve in Nominatim as one string (same class of issue as
-  Estonia's hierarchical addresses) -- falls back to city-level; (2) the API's own
-  `settlement` field carries a "гр."/"с." (town/village) type-prefix that *also* breaks
-  Nominatim even at the fallback step (e.g. "гр. Панагюрище" resolves to nothing, but plain
-  "Панагюрище" resolves fine) -- stripped explicitly.
+  Added 13 organizations, all active (started at 9, then +4 in a follow-up pass -- see below).
+  Two real address-geocoding gotchas fixed here, worth knowing about for any future Bulgarian
+  source: (1) the registry's precise street-level address routinely fails to resolve in
+  Nominatim as one string (same class of issue as Estonia's hierarchical addresses) -- falls
+  back to city-level; (2) the API's own `settlement` field carries a "гр."/"с." (town/village)
+  type-prefix that *also* breaks Nominatim even at the fallback step (e.g. "гр. Панагюрище"
+  resolves to nothing, but plain "Панагюрище" resolves fine) -- stripped explicitly.
+  Two more real bugs found and fixed in a follow-up pass: (3) the search API's own status
+  filter (`status=true` in the request) doesn't mean "status field equals N" -- a confirmed-
+  real, currently-registered foundation ("Фондация Аспергери") came back with an undocumented
+  status "E", which the first version of this script's client-side `== "N"` check wrongly
+  dropped. Only the one documented dead status ("L", liquidated) is excluded now, not a
+  whitelist of "N" alone -- this alone recovered 3 more real organizations. (4) the name
+  search is fuzzy/prefix-based, not strict substring, same class of issue as Norway's
+  "autist"-matches-"August" -- confirmed by querying "Аспергер" (Asperger) and getting back
+  "АСПЕР", an unrelated 5-letter company name; a client-side substring check on the result
+  name was added. Also added "Аспергер" itself as a search term (Asperger's, now considered
+  part of the autism spectrum, wasn't covered by the original autism-root terms) after finding
+  it via a follow-up "is there more here?" pass -- worth remembering for other countries too:
+  searching only the literal word "autism" in the local language misses Asperger-named orgs.
 - `greece_gemi_fetch.py` — Greece's GEMI (General Commercial Registry), via its public
   "Publicity" search portal (`publicity.businessportal.gr`) — a completely different, working
   domain from every Greek domain previously ruled out (`data.gov.gr`, `opendata-api.
@@ -412,7 +425,7 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Current state
 
-- 72,523 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
+- 72,527 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
   ago; 72,375 as of commit `2d9dffc`). The 2026-09-23/24 European push (Autism-Europe full
   directory + France RNA + Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's
   RNA registry was the single biggest addition this project has made from any one source. A
@@ -425,7 +438,7 @@ government/encyclopedic structured sources were ~95%+ clean):
   legal-entity register; round 3 added Greece (+3) and, the second-deepest addition of this
   whole pass, **Slovakia (+33)** via its current unified legal-entity registry (RPO); rounds 4
   and 5 found no new data but ruled out the remaining 6 with much more specific evidence each
-  (see "Ruled out"); a final round added **Bulgaria (+9)** via a third-party API
+  (see "Ruled out"); a final round added **Bulgaria (+13, after a follow-up pass found 4 more)** via a third-party API
   (`bulgaria_companybook_fetch.py`) that republishes Bulgaria's own official CC-BY open data —
   the one source in this whole pass that needed a free account sign-up, done with the site
   owner's explicit go-ahead. Only 5 of the original 19 (Lithuania, Andorra, Croatia,
