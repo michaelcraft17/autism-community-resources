@@ -64,6 +64,26 @@ government/encyclopedic structured sources were ~95%+ clean):
 - NDIS (Australia) — public API only exposes aggregate provider *counts*, not a named/
   addressed provider list, without applying for provider-level API access.
 - Free-text GPT-Researcher country reports without a verification pass — see below.
+- China's official NGO registry, `xxgs.chinanpo.mca.gov.cn` (Ministry of Civil Affairs'
+  National Social Organization Credit Information Disclosure Platform) — `curl` can't even
+  resolve the hostname, confirmed both from this project's sandbox *and* from the site
+  owner's own residential network (`curl: (6) Could not resolve host`). This is the correct
+  official source in principle (would beat Wikidata's near-zero China coverage), but it's
+  DNS-unreachable, not just JS-rendered — no scraping/API-discovery technique fixes an
+  unresolvable hostname. Would need testing from a network inside mainland China, or a VPN
+  with a China exit node, neither of which this project has. `cdpf.org.cn` (China Disabled
+  Persons' Federation's public-disclosure portal) untested from a real network yet — same
+  domain-family risk, check before investing time.
+- GPT-Researcher for China/Russia specifically (2026-09-23 run, both verified via
+  `verify_report.py`): 0 usable net-new orgs from either query. China: all 4 named orgs
+  (ASC/ARTI/ASN/ACF) were fully fabricated — dead URLs, and searching the real names
+  surfaces unrelated entities (a US government agency, an Indian dictionary site, etc.).
+  Russia: every "match" verdict was a same-name-different-country collision (US ABA
+  providers "Advanced Autism Services"/"Kids ClubABA" that happen to have blogged about
+  autism in Russia, not Russian orgs), and the two Russia-sounding names were hallucinated
+  near-duplicates of orgs already correctly sourced from the Autism-Europe PDF (see below).
+  Don't re-run this exact query shape without a different angle (e.g. a more specific
+  region/city, or asking for regulatory registries by name instead of "major organizations").
 
 ### Local AI tooling (outside token budget, free to rerun)
 
