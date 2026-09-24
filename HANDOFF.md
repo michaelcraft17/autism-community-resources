@@ -1,0 +1,147 @@
+# Handoff notes — autism-community-resources
+
+Operational/engineering reference for whoever (human or Claude) picks this project up next.
+The public-facing feature overview is in `README.md`; this file is about how the project
+actually works under the hood and what to watch out for.
+
+## What this is
+
+A single-file React app (`index.html`, in-browser Babel, no build step) that maps and lists
+autism/special-needs community resources worldwide. Deployed via GitHub Pages from `main` at
+**autismcommunityorg.org**. Repo: `github.com/michaelcraft17/autism-community-resources`.
+
+## Data pipeline
+
+```
+community_resources.json  (canonical flat JSON array, ~70k entries)
+        │  node gen_community_data.js
+        ▼
+community_data.js          (window.communityData = [...], loaded via <script> tag)
+        │  read by useCommunityData() / shapeAll() in index.html
+        ▼
+the live app
+```
+
+**Always regenerate `community_data.js` after editing `community_resources.json`:**
+```
+node gen_community_data.js
+```
+It must emit `window.communityData = [...]` (a global, not a bare `const`) — index.html loads
+it as a classic script and reads `window.communityData` off it. A bare `const` silently fails
+and the site falls back to 6 hardcoded sample resources with no visible error. This exact bug
+took the site down once already (fixed in commit `f3ae20e`); `tools/regen_community_data_js.py`
+does the same thing in Python if that's more convenient, and has the same requirement.
+
+### Data harvesting tools (all in `tools/`, all free/local, no API keys)
+
+Preference order, most to least reliable — **official structured datasets beat LLM narration
+every time**, verified concretely this session (LLM narration had a ~50%+ fabricated-URL rate;
+government/encyclopedic structured sources were ~95%+ clean):
+
+- `npi_taxonomy_fetch.py` → `_prefilter.py` → `_geocode.py` → `_merge.py` — 4-step, resumable
+  pipeline against the US NPI Registry (npiregistry.cms.hhs.gov). Read the docstring in
+  `npi_taxonomy_fetch.py` first; it documents real gotchas (taxonomy_description matching
+  quirks, the 1000-result API ceiling, a known "whole chunk silently dropped on geocoder
+  timeout" issue and its workaround).
+- `cqc_uk_fetch.py` — UK's official Care Quality Commission care directory (free CSV,
+  updated weekly, Open Government Licence). Only covers England; Scotland/Wales/NI have
+  separate regulators (Care Inspectorate, CIW, RQIA) with presumably similar open data,
+  not yet built.
+- `wikidata_autism_fetch.py` — searches Wikidata for real-world autism/disability orgs across
+  ~6 organization classes (nonprofit, NGO, charity, advocacy group, foundation, disability
+  association), globally, in one pass. Broad but shallow (only orgs notable enough for a
+  Wikidata entry) — complements a country registry like the CQC one rather than replacing it.
+- `merge_new_resources.py` — generic merge step: dedupes any `new_resources_*.json` file in
+  the repo root against `community_resources.json` (by normalized name and website domain)
+  and appends the rest. Run this after any of the fetchers above, then regenerate
+  `community_data.js`.
+
+**Ruled out, don't re-attempt without a new angle:**
+- OpenStreetMap Overpass API — theoretically the most "global" option, but the public
+  instance can't handle whole-country or bbox-scoped name-regex searches at any reasonable
+  timeout (confirmed via 5+ separate timeouts across France/Japan/bbox attempts). Would need
+  per-region tiling (like the NPI pipeline does per-state) to ever be viable — untested.
+- NDIS (Australia) — public API only exposes aggregate provider *counts*, not a named/
+  addressed provider list, without applying for provider-level API access.
+- Free-text GPT-Researcher country reports without a verification pass — see below.
+
+### Local AI tooling (outside token budget, free to rerun)
+
+- **Ollama + Aider**, set up in this repo: `.aider.conf.yml` (model: `ollama_chat/qwen2.5-coder:7b`),
+  `.aiderignore` (blocks the two huge data files from ever entering chat context —
+  **never** add `community_resources.json` or `community_data.js` to an Aider chat, it
+  blows the model's context and Aider will ask to proceed anyway; decline). Launch via
+  `tools/aider-local.sh`. Works fine on small/medium files; **cannot handle `index.html`**
+  (~35k tokens alone vs. the model's 32k context) — that one still needs Claude.
+- **GPT-Researcher + Ollama + DuckDuckGo**, set up *outside* this repo at
+  `~/gpt-researcher-local/` (not tracked here). Free local web research via
+  `python3 research.py "query"`. It's genuinely good at finding real organizations by name,
+  but qwen2.5-coder:7b reliably **fabricates plausible-but-wrong citation URLs** in its
+  References section, and in at least one observed case, copy-pasted one org's entire
+  Services/Impact section onto a second org's name with zero citation. `verify_report.py` in
+  that same directory auto-checks every citation URL against a fresh independent search after
+  each run and flags mismatches — never merge a GPT-Researcher report's URLs (or any of its
+  specific factual claims) without running that check and spot-verifying the flagged ones.
+  Full workflow: `~/gpt-researcher-local/WORKFLOW.md`.
+
+## Known site-behavior gotchas (already fixed, but good to know the shape of the bug class)
+
+- `shapeAll()` in `index.html` used to silently drop any entry without `coordinates.lat/lng`,
+  *and* never propagated the `placeless` field to the app's working dataset — meaning the
+  "reach from anywhere" nationwide-orgs list has never actually shown data, ever, including
+  the entries that predate this session. Fixed in `70ed78b`: `placeless` entries now skip the
+  coordinate requirement and the field is copied through. If you add a new UI feature keyed
+  off a data field, double check `shapeAll()`'s field allowlist actually includes it.
+- The location geocoder (`geocode()` in index.html) used to hardcode `countrycodes=us`,
+  so searching "London" would silently resolve to a US town. Removed in `ccd840e`. If you
+  ever need to scope geocoding again, scope it per-feature, not globally — this site now
+  covers many countries.
+- Any dropdown/overlay rendered inside `.lively-bg` (the landing hero) gets clipped — that
+  section has `overflow:hidden` to contain its confetti background. Render such things via
+  `ReactDOM.createPortal(..., document.body)` instead of inline, positioned from the real
+  anchor element's `getBoundingClientRect()`. See `SuggestDropdown` in index.html for the
+  working pattern.
+
+## Standing operational rules (established by the site owner, still apply)
+
+- **Never push to `main` without an explicit, separate "push" instruction** — "commit" alone
+  does not imply push.
+- **Never commit international/non-US data files without being asked specifically** to
+  include them (this has since been done for the batch that's live now, but don't assume
+  future harvests should auto-merge).
+- Git identity isn't configured in this repo — every commit needs
+  `git -c user.name="michaelcraft17" -c user.email="michaelcraft17@gmail.com" commit ...`.
+- Test locally before committing: `python3 -m http.server 8765` from the repo root, then
+  `http://localhost:8765`. Check port 8765 isn't already in use first (`lsof -i :8765 -t`)
+  — it often already is from a prior session.
+- After pushing, verify the GitHub Pages build actually finished before declaring done:
+  `gh api repos/michaelcraft17/autism-community-resources/pages/builds/latest --jq '.status+" "+(.commit[0:7])'`,
+  then spot-check the live file with `curl -sk`.
+- `new_resources_*.json` files in the repo root are gitignored scratch/output from the
+  fetch tools — present on disk for reference, safe to regenerate or delete, never committed
+  directly (their content goes into `community_resources.json` via `merge_new_resources.py`
+  instead).
+
+## Current state (as of commit `ccd840e`)
+
+- 69,841 total resources (was 48,664 at the start of this thread of work).
+- Location search has Google-Maps-style autocomplete (debounced Nominatim, portal-rendered
+  dropdown, keyboard + mouse nav) on both the landing page and header search bars.
+- `tools/preview/` (gitignored) is a standalone local debug map — loads whatever's in
+  `tools/wikidata_scratch/_added_preview.json` or similar and plots it with Leaflet, useful
+  for eyeballing a batch of newly-merged pins before trusting them. Not wired to anything
+  automatically; regenerate its data file by hand when needed (diff current vs. a prior git
+  commit's `community_resources.json` by normalized name, same approach used this session).
+
+## Natural next steps (not started, no commitment implied)
+
+- Scotland/Wales/Northern Ireland care registries, same pattern as `cqc_uk_fetch.py`.
+- Wider Wikidata org-class coverage, or non-English "autis-root" search terms for
+  non-Latin-script countries (Japan, China, Korea, Arabic-speaking countries) — explicitly
+  deferred this session in favor of the simpler English-root search.
+- Tiled/per-region OpenStreetMap Overpass harvesting, if someone wants to invest the time to
+  make it politeness-compliant with the public instance's rate limits.
+- Germany/France/Japan/South Africa GPT-Researcher reports exist in
+  `~/gpt-researcher-local/reports/` but were low-yield on verification and discarded —
+  a from-scratch structured-dataset approach (a national registry, if one exists and is
+  findable) would likely beat re-running the LLM narration approach on these.
