@@ -10,6 +10,12 @@ tools/cqc_scratch/
 # Same deal for tools/wikidata_autism_fetch.py -- entities.json is a raw re-fetchable cache.
 tools/wikidata_scratch/
 
+# Same deal for tools/france_rna_fetch.py -- raw_records.json is a raw re-fetchable cache.
+tools/france_rna_scratch/
+
+# Generic catch-all so future tools/<name>_scratch/ dirs don't need a new line here.
+tools/*_scratch/
+
 # Local-only debug map for eyeballing newly-merged pins before/after a merge -- not part
 # of the site, regenerate with: see conversation history for the diff-and-copy steps.
 tools/preview/
