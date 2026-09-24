@@ -20,7 +20,13 @@ MAIN_PATH = os.path.join(REPO, "community_resources.json")
 
 
 def norm_name(name):
-    return re.sub(r"[^a-z0-9]", "", (name or "").lower())
+    # Unicode-aware: str.isalnum() recognizes non-Latin letters (Cyrillic,
+    # Greek, CJK, ...) too, unlike an ASCII-only [^a-z0-9] regex, which
+    # silently collapsed every non-Latin-script name to an empty or
+    # near-empty key -- confirmed to have dropped real, distinct
+    # organizations as false "duplicates" for both Ukraine (Cyrillic) and
+    # Cyprus (Greek) entries before this fix.
+    return "".join(c for c in (name or "").lower() if c.isalnum())
 
 
 def norm_domain(url):
