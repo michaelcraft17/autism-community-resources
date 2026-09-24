@@ -46,15 +46,33 @@ ORG_CLASSES = {
 }
 
 # P17 (country) QID -> (label, native-language autism-root search terms that
-# uniquely signal that country; Sweden has none since Swedish "autism" is
-# spelled the same as English, so it relies entirely on the P17 claim check
-# against the generic "autism" sweep below).
+# uniquely signal that country; Sweden/Romania have none listed since their
+# native "autism" spelling matches English closely enough that it relies
+# entirely on the P17 claim check against the generic "autism" sweep below).
 COUNTRIES = {
-    "Q183": ("Germany", ["autismus"]),
+    "Q183": ("Germany", ["autismus", "autist"]),
     "Q159": ("Russia", ["аутизм", "аутист"]),
     "Q34": ("Sweden", []),
     "Q148": ("China", ["自闭症", "孤独症"]),
     "Q37": ("Lithuania", ["autizmas"]),
+    # 2026-09-24 round: countries with exactly one prior listing (the
+    # Autism-Europe PDF's national umbrella org) where the country's own
+    # government registry is unreachable from this sandbox (Denmark, Germany
+    # re-checked) or has no bulk/search API at all (the rest) -- see
+    # HANDOFF.md for what was tried and ruled out for each.
+    "Q35": ("Denmark", ["autisme"]),
+    "Q224": ("Croatia", ["autizam"]),
+    "Q41": ("Greece", ["αυτισμός"]),
+    "Q189": ("Iceland", ["einhverfa"]),
+    "Q32": ("Luxembourg", ["autisme", "autismus"]),
+    "Q403": ("Serbia", ["аутизам", "autizam"]),
+    "Q214": ("Slovakia", ["autizmus"]),
+    "Q219": ("Bulgaria", ["аутизъм"]),
+    "Q229": ("Cyprus", ["αυτισμός"]),
+    "Q218": ("Romania", []),
+    "Q43": ("Turkey", ["otizm"]),
+    "Q212": ("Ukraine", ["аутизм", "аутизму"]),
+    "Q228": ("Andorra", ["autisme"]),
 }
 
 

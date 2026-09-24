@@ -72,6 +72,41 @@ government/encyclopedic structured sources were ~95%+ clean):
   schema, just name/alias/city/website, so entries are city-centroid geocoded. Worth checking
   whether other EU countries have an equivalent official charity-tax registry before assuming
   France's RNA scale is typical — it may not be.
+- `czech_ares_fetch.py` — Czech Republic's ARES (Administrative Register of Economic
+  Subjects), a modern free REST/JSON search API, no key. Added 7 clean organizations,
+  including the national "Národní ústav pro autismus." Response includes a pre-formatted
+  address string (`sidlo.textovaAdresa`), so no address assembly needed.
+- `estonia_ariregister_fetch.py` — Estonia's e-Business Register (Ariregister, run by RIK),
+  free JSON autocomplete API. Added 8 organizations including the national federation and
+  several regional associations — unusually deep coverage for a country of 1.3M. Needs a
+  descriptive User-Agent header or the endpoint 403s (a basic bot filter, not a real block).
+  Its address format (county/parish/village hierarchy, e.g. "Harju maakond, Tallinn,
+  Kesklinna linnaosa, Jõe tn 5") is too granular for Nominatim as one string — the script
+  retries with progressively fewer trailing comma-segments until one resolves.
+- `latvia_ur_fetch.py` — Latvia's Register of Enterprises (Uzņēmumu reģistrs) open-data bulk
+  CSV of every association/foundation (regcode;name;type;area_of_activity). A genuine full
+  registry dump, found via data.gov.lv's CKAN dataset catalog rather than a name-search API.
+  Added 7 organizations. Same false-positive class as Belgium/Netherlands: Latvian
+  "starptautisks" (international) contains "autis" as a coincidental substring
+  ("st-ARPT-AUTIS-ka") — excluded explicitly. No street address in the dataset; a few
+  entries name a city in their own org name (e.g. "Daugavpils autisma centrs"), geocoded to
+  that city, the rest are placeless.
+- `slovenia_ajpes_fetch.py` — Slovenia's AJPES ePRS business register. Its real search
+  endpoint (`ajax.asp?method=getNaziv`) was found the same way Belgium's KBO param set was —
+  driving the live search form once with Playwright and reading the network log. It's a
+  *prefix* autocomplete, not substring search, which matters for a heavily-declined language:
+  the dictionary form "avtizem" finds nothing, since the one real match is named starting
+  with a declined form ("AVTIZMU..."). Only one organization found for the whole country;
+  shipped as a hand-authored placeless entry rather than building out full detail-page
+  scraping for a single result.
+- `wikidata_country_fetch.py` — expanded 2026-09-24 from 5 to 18 target countries (added
+  Denmark, Croatia, Greece, Iceland, Luxembourg, Serbia, Slovakia, Bulgaria, Cyprus, Romania,
+  Turkey, Ukraine, Andorra) to backfill countries whose own government registry is either
+  unreachable from this sandbox or has no free search/bulk-export API. Net new: Denmark
+  (+1, with real coordinates), Germany (+1). No new hits for the other 11 added countries —
+  a real finding (Wikidata simply has no notability-threshold org tagged to them yet), not a
+  bug; don't re-run this exact sweep expecting different results without a genuinely
+  different technique.
 - `norway_brreg_fetch.py` — Norway's Bronnoysund Register Centre (Enhetsregisteret), the
   official national registry of every business/association/foundation in Norway. Free, no key.
   Deepest single-country win since France's RNA: captured the national autism association
@@ -91,6 +126,29 @@ government/encyclopedic structured sources were ~95%+ clean):
   `community_data.js`.
 
 **Ruled out, don't re-attempt without a new angle:**
+- 2026-09-24 "single-listing countries" pass — reachability tested via both plain `curl` and
+  a real Playwright browser (since the browser's network stack occasionally succeeds where
+  curl gets a `000`, as happened for Latvia's `data.gov.lv`):
+  - Genuinely unreachable from this sandbox (DNS/TLS timeout or connection refused, both via
+    curl and Playwright): Germany's `vereinsregister.de`, Denmark's `distribution.virk.dk`
+    and `datacvr.virk.dk` (also returned an explicit 403 from Playwright — a real WAF, not
+    just unreachable), Croatia's `registri.uprava.hr`, Serbia's `pretraga2.apr.gov.rs`,
+    Cyprus's `businessregistrations.gov.cy`, Greece's `opendata-api.businessportal.gr`,
+    Turkey's `dernekler.gov.tr`. Same class of finding as China's DNS-unreachable registry —
+    would need testing from a different network to know if it's a sandbox-specific block or a
+    real geo-restriction.
+  - Reachable but no usable free API found on a real attempt (not just untried): Bulgaria's
+    company-verification portal (`portal.registryagency.bg`) sits behind an OAuth login flow
+    for anything beyond a bare landing page; Iceland's `skatturinn.is` company search requires
+    a browser session/cookie (plain `curl` gets redirected) and, once driven live via
+    Playwright, the bare dictionary term "einhverfa" (autism) returned zero results anyway —
+    low priority given the population (~380K) even if the session-cookie friction were solved;
+    Romania's `just.ro` and Luxembourg's `data.public.lu`/LBR open-data search returned real
+    200s but no dataset resembling a full association/NGO registry with names, only unrelated
+    catalog entries.
+  - Andorra: reachable (`govern.ad`, HTTP 500) but no dedicated business/association registry
+    open-data source found at all — very small country (~80K people), likely minimal digital
+    registry infrastructure to begin with.
 - OpenStreetMap Overpass API — theoretically the most "global" option, but the public
   instance can't handle whole-country or bbox-scoped name-regex searches at any reasonable
   timeout (confirmed via 5+ separate timeouts across France/Japan/bbox attempts). Would need
@@ -178,17 +236,28 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Current state
 
-- 72,409 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
+- 72,433 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
   ago; 72,375 as of commit `2d9dffc`). The 2026-09-23/24 European push (Autism-Europe full
   directory + France RNA + Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's
   RNA registry was the single biggest addition this project has made from any one source. A
   follow-up pass added Norway (Bronnoysund register, 32 net-new after deduping one national-org
   collision against the existing Autism-Europe entry) and Finland (YTJ register, 2 net-new).
-  One dedup gap found and fixed by hand: `merge_new_resources.py`'s name-normalization strips
-  all non-alphanumeric characters, so "Autismeforeningen I Norge" and "Autismeforeningen I
-  Norge (A.I.N.)" don't collapse to the same key (the parenthetical acronym gets concatenated
-  onto the name with no separator) — worth knowing about if a future merge silently produces a
-  near-duplicate pin for the same org under a slightly different name suffix.
+  A third pass (2026-09-24, "build out the single-listing countries") targeted the 19 countries
+  that had exactly one resource — added Czech Republic (+7), Estonia (+8), Latvia (+7), Slovenia
+  (+1, see below), plus Denmark (+1) and Germany (+1) via an expanded Wikidata sweep. 11 of the
+  19 (Lithuania, Andorra, Croatia, Greece, Luxembourg, Serbia, Slovakia, Bulgaria, Cyprus,
+  Romania, Ukraine) are still effectively single-entry — see "Ruled out" below for what was
+  tried and why each didn't pan out.
+  One dedup gap found and fixed by hand *twice* now: `merge_new_resources.py`'s name-
+  normalization strips all non-alphanumeric characters, so "Autismeforeningen I Norge" and
+  "Autismeforeningen I Norge (A.I.N.)" don't collapse to the same key (the parenthetical
+  acronym gets concatenated onto the name with no separator). Fixed once by removing the
+  duplicate from `community_resources.json` directly, then re-introduced a session later
+  because the stale `new_resources_norway.json` scratch file on disk still had it and got
+  re-merged — **removed that scratch file for good this time**, and as a general rule, any
+  entry manually excluded from `community_resources.json` should also be deleted from its
+  source `new_resources_*.json` file (or the file deleted outright once merged), not just
+  removed from the merged output.
 - `tools/belgium_kbo_fetch.py` and `tools/italy_runts_fetch.py` joined this session. Belgium's
   KBO has a PDF-export endpoint that works with plain `requests` once the right (undocumented)
   param set is used — found by driving the HTML form once with Playwright to capture it, then
