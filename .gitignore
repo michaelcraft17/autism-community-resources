@@ -29,3 +29,4 @@ new_resources_*.json
 .aider.tags.cache.v*/
 .aider*
 !.aider.conf.yml
+__pycache__/
