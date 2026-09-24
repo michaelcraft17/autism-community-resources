@@ -120,6 +120,26 @@ government/encyclopedic structured sources were ~95%+ clean):
   official registry. Much smaller country, much smaller yield (2 net-new active orgs: the
   Autism Foundation and the national Autism Spectrum Association) — Finland doesn't appear to
   register regional chapters as separate legal entities the way Norway does.
+- `greece_gemi_fetch.py` — Greece's GEMI (General Commercial Registry), via its public
+  "Publicity" search portal (`publicity.businessportal.gr`) — a completely different, working
+  domain from every Greek domain previously ruled out (`data.gov.gr`, `opendata-api.
+  businessportal.gr`, `businessregistry.gr`, `www.gemi.gr` itself, all unreachable). Two free
+  JSON endpoints found via one-time Playwright discovery: `/api/autocomplete/<term>` for name
+  search, `/api/company/details` (POST `{"query":{"arGEMI":"<id>"},"token":null}`) for the
+  full record including a real street address. The page preloads a reCAPTCHA script, which
+  looked like it might gate the details call — it doesn't; `"token":null` works fine and no
+  challenge ever triggered. Added 3 organizations.
+- `slovakia_rpo_fetch.py` — Slovakia's RPO (Register of Legal Persons, run by the
+  Statistical Office), the *current* unified master registry — a different, working system
+  from the one HANDOFF previously ruled out (the open-data catalog's "Register neziskových
+  organizácií" dataset points to `ives.minv.sk`, a legacy portal that 503s consistently; RPO
+  at `rpo.statistics.sk` is separate and current). Needs a session cookie first — a plain
+  request 401s until you POST to `/rpo/rest/auth/user`, which mints a `JSESSIONID`, same
+  pattern as a browser's own first-load handshake. Its full-text search matches an org's
+  stated purpose, not just its name. Added **33 organizations** — a genuinely deep national
+  support network (many are regional branches of "Spoločnosť na pomoc osobám s autizmom,"
+  one per city), the second-deepest addition of this whole "single-listing countries" effort
+  after Ukraine.
 - `cyprus_registry_fetch.py` — Cyprus's official Register of Associations, Foundations,
   Federations and Unions, published as a CSV on data.gov.cy (found via the portal's own
   Drupal `/search?s=<term>` endpoint, not a CKAN API — this portal isn't CKAN, and
@@ -156,57 +176,61 @@ government/encyclopedic structured sources were ~95%+ clean):
   under-yielding, this class of bug is worth checking for again.
 
 **Ruled out, don't re-attempt without a new angle:**
-- 2026-09-24 "single-listing countries" pass, two rounds. Reachability tested via both plain
+- 2026-09-24 "single-listing countries" pass, three rounds. Reachability tested via both plain
   `curl` and a real Playwright browser (the browser's network stack occasionally succeeds
   where curl gets a `000`, as happened for Latvia's `data.gov.lv` and Croatia's/Cyprus's
-  `data.gov.hr`/`data.gov.cy` open-data portals, both of which turned into real wins on
-  round 2 — always retry a `000` with a real browser before ruling a source out).
-  - **Cyprus and Ukraine are no longer single-listing** (round 2) — see
-    `cyprus_registry_fetch.py`/`ukraine_edr_fetch.py` above. Their own live-portal search UIs
-    (`businessregistrations.gov.cy`, direct EDR search) are still unreachable/not found, but
-    each had a real bulk/CSV open-data alternative that worked.
-  - Genuinely unreachable from this sandbox (DNS/TLS timeout or connection refused, both via
-    curl and Playwright, confirmed twice for Croatia/Greece): Germany's `vereinsregister.de`,
-    Denmark's `distribution.virk.dk` and `datacvr.virk.dk` (also an explicit 403 from
-    Playwright — a real WAF), Croatia's live registry `registri.uprava.hr` (its open-data
-    portal `data.gov.hr` *is* reachable, see below), Serbia's `pretraga2.apr.gov.rs` and
-    `data.gov.rs`, Greece's `opendata-api.businessportal.gr`, `data.gov.gr`, and
-    `businessregistry.gr` (every Greek domain tried across both rounds), Turkey's
-    `dernekler.gov.tr`. Same class of finding as China's DNS-unreachable registry — would
-    need testing from a different network to know if it's sandbox-specific or a real
-    geo-restriction.
+  `data.gov.hr`/`data.gov.cy` open-data portals — always retry a `000` with a real browser
+  before ruling a source out). Also learned: a country ruled out because its *one obvious*
+  registry was dead/unreachable can still have a second, completely different official system
+  that works (Ukraine, Slovakia) — check for a second domain/agency before giving up.
+  - **Cyprus, Ukraine, Greece, and Slovakia are no longer single-listing** — see their fetch
+    scripts above (`cyprus_registry_fetch.py`, `ukraine_edr_fetch.py`, `greece_gemi_fetch.py`,
+    `slovakia_rpo_fetch.py`). Greece in particular had *every* domain tried in round 2 turn
+    out unreachable (`data.gov.gr`, `opendata-api.businessportal.gr`, `businessregistry.gr`,
+    `www.gemi.gr`) before `publicity.businessportal.gr` — a differently-named domain for the
+    same GEMI registry — worked cleanly in round 3.
+  - Genuinely unreachable from this sandbox, confirmed with an explicit WAF block page (not
+    just a timeout) where noted: Germany's `vereinsregister.de`, Denmark's
+    `distribution.virk.dk`/`datacvr.virk.dk` (explicit 403 from Playwright), Croatia's live
+    registry `registri.uprava.hr` (its open-data portal `data.gov.hr` *is* reachable, see
+    below), Serbia's `pretraga2.apr.gov.rs` and `www.apr.gov.rs` (explicit "The URL you
+    requested has been blocked" page), Turkey's `dernekler.gov.tr`, and **Lithuania's**
+    `data.gov.lt`/`get.data.gov.lt` (same explicit block page/message as Serbia — confirmed
+    via both curl, which showed a plain 500, and Playwright, which showed the real block-page
+    title) and `www.registrucentras.lt` (403). Same class of finding as China's DNS-
+    unreachable registry — would need testing from a different network to know if it's
+    sandbox-specific or a real geo-restriction.
   - Reachable, real registry dataset found, but missing the field needed to search or geocode
     by name: **Croatia**'s `data.gov.hr` (correct CKAN path is `/ckan/api/3/action/...`, not
     `/api/3/action/...` — worth remembering for other CKAN-based portals) hosts an official
     "Registar udruga Republike Hrvatske" dataset, but its published resources are only
     "Djelatnosti" (activity codes keyed by an internal ID), "Osobe" (representatives' names),
     and "CTS" (classification tree) — the organization *name* field itself isn't in the open
-    data, only on the unreachable live portal. **Slovakia**'s open-data catalog
-    (`data.slovensko.sk`, a React SPA behind a `/datasets/search` POST endpoint, not a simple
-    GET) correctly points to the real "Register neziskových organizácií," but that dataset's
-    only listed distribution is a link to `ives.minv.sk`'s live ASP.NET search portal, which
-    returned a consistent 503 across 3 retries (real server-side unavailability, not a
-    block).
+    data, only on the unreachable live portal. Checked FINA (fina.hr, Croatia's financial
+    agency, which runs the actual non-profit financial-reporting register) too — no
+    name-searchable NPO registry link found on its main site nav.
   - Reachable, explicit block/CAPTCHA (no evasion attempted, ruled out on principle):
     **Romania**'s ONRC (`www.onrc.ro`) returns an explicit WAF rejection page ("The requested
-    URL was rejected... support ID: ..." — an F5 BIG-IP-style block). **Luxembourg**'s LBR
-    company search (`lbr.lu/mjrcs-web-front`) is gated behind a live CAPTCHA
-    (`global.frcapi.com/api/v2/captcha/...`, Friendly Captcha) as soon as a search is
-    submitted.
+    URL was rejected... support ID: ..." — an F5 BIG-IP-style block; `data.gov.ro` also times
+    out). **Luxembourg**'s LBR company search (`lbr.lu/mjrcs-web-front`) is gated behind a
+    live CAPTCHA (`global.frcapi.com/api/v2/captcha/...`, Friendly Captcha) as soon as a
+    search is submitted; its open-data catalog (`data.public.lu`) has no NGO-registry dataset.
   - Reachable but no usable free API found despite a real attempt (not just untried):
     **Bulgaria**'s registry portal (`portal.registryagency.bg`) has two dead ends: its
     "VerificationPersonOrg" tool sits behind an OAuth login flow, and its one apparently-free
-    search box (`sKey` param, reached from several different nav paths) turns out to search
-    the *portal's own content* (news/help pages/templates), not the entity registry itself —
-    "Намерени са 0 резултата" for every real company-name query, confirmed by reading the
-    actual response categories. **Iceland**'s `skatturinn.is` company search requires a
-    browser session/cookie (plain `curl` gets redirected) and, once driven live via
+    search box (`sKey` param, reached from several different nav paths, including the
+    "Справки"/Reports section) turns out to search the *portal's own content* (news/help
+    pages/templates), not the entity registry itself — "Намерени са 0 резултата" for every
+    real company-name query, confirmed by reading the actual response categories.
+    `data.egov.bg`/`opendata.government.bg` both return a 403 even with a real browser UA
+    (Cloudflare-style block, not a naive filter). **Iceland**'s `skatturinn.is` company search
+    requires a browser session/cookie (plain `curl` gets redirected) and, once driven live via
     Playwright, the bare dictionary term "einhverfa" (autism) returned zero results anyway —
-    low priority given the population (~380K) even if the session-cookie friction were
-    solved.
-  - Andorra: reachable (`govern.ad`, HTTP 500) but no dedicated business/association registry
-    open-data source found at all — very small country (~80K people), likely minimal digital
-    registry infrastructure to begin with.
+    low priority given the population (~380K) even if the session-cookie friction were solved.
+  - Andorra: reachable (`govern.ad`, HTTP 500/302 on different paths) but no dedicated
+    business/association registry open-data source found at all — very small country (~80K
+    people), likely minimal digital registry infrastructure to begin with. Lowest remaining
+    priority of the 6 still-single-entry countries.
 - OpenStreetMap Overpass API — theoretically the most "global" option, but the public
   instance can't handle whole-country or bbox-scoped name-regex searches at any reasonable
   timeout (confirmed via 5+ separate timeouts across France/Japan/bbox attempts). Would need
@@ -294,19 +318,24 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Current state
 
-- 72,478 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
+- 72,514 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
   ago; 72,375 as of commit `2d9dffc`). The 2026-09-23/24 European push (Autism-Europe full
   directory + France RNA + Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's
   RNA registry was the single biggest addition this project has made from any one source. A
   follow-up pass added Norway (Bronnoysund register, 32 net-new after deduping one national-org
   collision against the existing Autism-Europe entry) and Finland (YTJ register, 2 net-new).
-  A third pass (2026-09-24, "build out the single-listing countries," two rounds) targeted the
-  19 countries that had exactly one resource — round 1 added Czech Republic (+7), Estonia (+8),
-  Latvia (+7), Slovenia (+1), Denmark (+1), Germany (+1); round 2 added Cyprus (+4) and, by far
-  the largest single addition of this pass, **Ukraine (+41)** via its full national legal-entity
-  register. 9 of the 19 (Lithuania, Andorra, Croatia, Greece, Luxembourg, Serbia, Slovakia,
-  Bulgaria, Romania) are still effectively single-entry — see "Ruled out" below for what was
-  tried and why each didn't pan out.
+  A third pass (2026-09-24, "build out the single-listing countries," three rounds) targeted
+  the 19 countries that had exactly one resource — round 1 added Czech Republic (+7), Estonia
+  (+8), Latvia (+7), Slovenia (+1), Denmark (+1), Germany (+1); round 2 added Cyprus (+4) and
+  Ukraine (+41) via its full national legal-entity register; round 3 added Greece (+3) and, the
+  second-deepest addition of this whole pass, **Slovakia (+33)** via its current unified legal-
+  entity registry (RPO). Only 6 of the original 19 (Lithuania, Andorra, Croatia, Luxembourg,
+  Bulgaria, Romania) remain effectively single-entry — see "Ruled out" below for what was tried
+  and why each didn't pan out. Two rounds in a row turned up a real, working source for a
+  country previously marked as a dead end (Ukraine's live registry vs. its DNS-unreachable
+  official site; Slovakia's RPO vs. the dead `ives.minv.sk` portal its open-data catalog
+  pointed to) — worth re-checking a "ruled out" entry for a genuinely different domain/system
+  before accepting it as final.
   One dedup gap found and fixed by hand *twice* now: `merge_new_resources.py`'s name-
   normalization strips all non-alphanumeric characters, so "Autismeforeningen I Norge" and
   "Autismeforeningen I Norge (A.I.N.)" don't collapse to the same key (the parenthetical
