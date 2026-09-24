@@ -61,3 +61,5 @@ Disallow: /
 
 User-agent: Omgilibot
 Disallow: /
+
+Sitemap: https://autismcommunityorg.org/sitemap.xml

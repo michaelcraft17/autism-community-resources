@@ -1,169 +1,98 @@
-# Autism & Special Needs Community Resources
+# Accessibility Mapper — Autism & Special Needs Community Resources
 
-A comprehensive directory and interactive map of community resources for autism and special needs support services.
+A free, interactive directory of autism and special needs resources — over 72,000 of them,
+across 30+ countries.
 
-## 🌐 Live Website
-Visit the directory: (https://michaelcraft17.github.io/autism-community-resources/)
+## Live site
 
-## 📋 Features
+**[autismcommunityorg.org](https://autismcommunityorg.org/)**
 
-### Resource Directory
-- **Search & Filter**: Find resources by name, location, or service type with debounced search
-- **Contact Information**: Direct phone numbers and website links
-- **Service Categories**: Advocacy, Therapy, Education, Medical, Social Support
-- **Mobile Responsive**: Works on all devices
-- **Favorites**: Save and bookmark your preferred resources locally
-- **Export Data**: Download search results as CSV for offline use
-- **Print-Friendly**: Print resource listings with optimized layout
+## Why this is different from Google Maps or Apple Maps
 
-### Interactive Map
-- **Visual Mapping**: See resources plotted on an interactive map
-- **Location Search**: Find resources near specific addresses
-- **Click-to-Call**: Direct access to contact information
-- **Geolocation**: Find resources near your current location
-- **Distance Calculation**: See how far each resource is from your location
+Anyone can add or edit a listing on Google Maps or Apple Maps. Nobody can here. Every resource
+in this directory comes from a source we can point to: a government registry, a national
+health or disability database, an official membership directory, or an organization's own
+published records. If we can't verify where a listing came from, it doesn't go in.
 
-### Accessibility & User Experience
-- **Dark Mode**: Toggle between light and dark themes (preference saved)
-- **Keyboard Navigation**: Full keyboard accessibility with visible focus indicators
-- **Screen Reader Support**: ARIA labels and semantic HTML for assistive technologies
-- **Skip Links**: Quick navigation to main content
-- **Loading States**: Visual feedback during data fetching
-- **Error Handling**: Clear, helpful error messages
+That means:
+- No fake or spammed listings
+- No businesses that closed years ago still showing as open
+- Every entry has a real, checkable source behind it
 
-## 🎯 Resource Types
+## What's in it
 
-- **🗣️ Advocacy**: Organizations providing support and advocacy services
-- **🩺 Therapy**: ABA, speech, occupational, and other therapeutic services
-- **🎓 Education**: Special education support and IEP assistance
-- **🏥 Medical**: Diagnostic and medical treatment services
-- **👥 Social**: Support groups and community programs
-- **💡 General Support**: Comprehensive community resources
+- **72,000+ resources**: advocacy groups, therapy providers, schools, medical clinics, and
+  support organizations
+- **30+ countries**: built out from the US and UK to cover most of Europe, plus Canada,
+  Australia, New Zealand, and Ireland
+- **An interactive map**: search any city, ZIP code, or address and see what's nearby, sorted
+  by distance
+- **Accessibility built in**: dark mode, keyboard navigation, screen reader support, a reading
+  guide, and adjustable contrast/motion settings
 
-## 📱 How to Use
+## Where the data comes from
 
-### Finding Resources
-1. **Set Your Location**:
-   - Click "Use My Location" for GPS-based search
-   - Or enter a zip code, address, or city manually
+Resources are pulled from official, structured sources — never scraped indiscriminately and
+never written by an AI guessing at what might exist. Sources used so far include:
 
-2. **Browse & Search**:
-   - View resources sorted by distance from your location
-   - Use the search bar to find specific services
-   - Filter by resource type using the dropdown
+- Government registries: the UK's Care Quality Commission directory, France's national
+  association registry (RNA), Belgium's business register (KBO/BCE), Italy's national
+  third-sector register (RUNTS), the Netherlands' ANBI tax-status register, and the US NPI
+  Registry
+- Wikidata, for internationally notable autism and disability organizations
+- Official membership directories, like Autism-Europe's own list of national member
+  associations
+- State and regional resource lists compiled by hand and checked against each organization's
+  own site
 
-3. **Save Favorites**:
-   - Click the heart icon (🤍) on any resource to save it
-   - Access saved resources with the "Favorites" button
-   - Favorites persist across browser sessions
+Every source is documented in the data-collection scripts in [`tools/`](tools/), so anyone can
+see exactly where a batch of listings came from.
 
-4. **Export & Share**:
-   - Click "Export Results" to download a CSV file
-   - Use "Print" for a printer-friendly view
-   - Share resource information with family and friends
+## How to use it
 
-5. **Customize Experience**:
-   - Toggle dark mode with the 🌙 button
-   - Your preference is automatically saved
-   - Works great in low-light environments
+1. Enter your city, ZIP code, or address — or click "Use my current location"
+2. Browse resources sorted by distance, or search by keyword
+3. Filter by type: advocacy, therapy, education, medical, or social support
+4. Save favorites, get directions, or call directly from a listing
+5. Turn on dark mode or adjust accessibility settings from the menu — your preferences are
+   saved on your device
 
-### Interactive Map
-1. View all resources on an interactive map
-2. Click markers for detailed popup information
-3. Resources are color-coded by type
-4. Map automatically fits to show all results
+## Built with
 
-## 🛠️ Technical Details
+Plain HTML, CSS, and JavaScript (React via in-browser Babel — no build step), Leaflet for the
+map, and OpenStreetMap for tiles and geocoding. The data pipeline is a set of Python scripts
+in `tools/` that pull from official APIs and open datasets, documented individually.
 
-### Built With
-- **HTML5** - Semantic markup with ARIA accessibility attributes
-- **CSS3** - Responsive design, dark mode, print styles
-- **JavaScript** - Interactive functionality with performance optimizations
-- **Leaflet.js** - Interactive mapping capabilities
-- **OpenStreetMap** - Geocoding and map tiles
-- **Python** - Web scraping and data collection
+## Contributing
 
-### Performance Optimizations
-- **Debounced Search**: 300ms debounce to reduce unnecessary filtering
-- **Lazy Map Loading**: Map initializes only when needed
-- **LocalStorage Caching**: Favorites and preferences stored locally
-- **Efficient Rendering**: DOM updates only when necessary
+Know of a resource that should be listed, or an official data source we haven't used yet?
+Open an issue with the details — including where the information comes from. We don't accept
+direct edits to the resource database itself, since every listing needs to trace back to a
+verifiable source.
 
-### Accessibility Features (WCAG 2.1 Compliant)
-- Semantic HTML5 structure with proper heading hierarchy
-- ARIA labels and roles throughout
-- Keyboard navigation support
-- Focus visible indicators for all interactive elements
-- Screen reader announcements for dynamic content
-- Skip navigation links
-- High contrast mode support
-- Reduced motion support
+Code contributions (bug fixes, accessibility improvements, new features) are welcome — fork
+the repo and open a pull request.
 
-### Data Sources
-Resources are collected through web scraping from:
-- Autism Society of America
-- Autism Speaks
-- Local community organizations
-- Healthcare providers
-- Educational institutions
+## Disclaimer
 
-## 📊 Data Structure
+Information can change. Always confirm details directly with a provider before relying on
+them, especially for anything time-sensitive like intake availability or insurance
+acceptance.
 
-Resources include:
-```json
-{
-  "name": "Resource Name",
-  "address": "Full Address",
-  "phone": "(XXX) XXX-XXXX",
-  "website": "https://example.com",
-  "type": "therapy|advocacy|education|medical|social",
-  "description": "Service description",
-  "coordinates": {"lat": 40.7128, "lng": -74.0060}
-}
-```
-
-## 🚀 Contributing
-
-This project aims to help families find autism and special needs resources in their communities.
-
-### Adding Resources
-Know of a resource that should be included? Resources can be added by:
-1. Updating the `community_resources.json` file
-2. Running the web scraper on additional sites
-3. Submitting an issue with resource details
-
-### Improving the Code
-- Fork the repository
-- Make your improvements
-- Submit a pull request
-
-### Feature Roadmap
-Future enhancements being considered:
-- [ ] User reviews and ratings
-- [ ] Multi-language support
-- [ ] Advanced filtering (insurance accepted, age ranges)
-- [ ] Resource availability calendar
-- [ ] Mobile app version
-- [ ] Share individual resources via social media
-- [ ] Email resource lists
-
-## 📞 Emergency Resources
+## Emergency resources
 
 - **Autism Society**: 1-800-328-8476
 - **Crisis Text Line**: Text HOME to 741741
-- **National Suicide Prevention**: 988
+- **National Suicide Prevention Lifeline**: 988
 
-## ⚠️ Disclaimer
+## License
 
-Always verify services and information directly with providers. This directory is for informational purposes and resources may change without notice.
+The source code (site, scripts, tooling) is open source under the [MIT License](LICENSE).
 
-## 📄 License
-
-The source code (site, scripts, and tooling) is open source under the [MIT License](LICENSE).
-
-The compiled resource database (`community_data.js` / `community_resources.json`) is **not** covered by that license — automated scraping, bulk downloading, and redistribution of the database are restricted. See [TERMS.md](TERMS.md).
+The compiled resource database (`community_data.js` / `community_resources.json`) is **not**
+covered by that license. Automated scraping, bulk downloading, and redistribution of the
+database are restricted — see [TERMS.md](TERMS.md).
 
 ---
 
-
-**Made with ❤️ for the autism and special needs community**
+Built by a Cal Poly Pomona Computer Science student, one verified source at a time.
