@@ -29,6 +29,9 @@ just its name, so a few hits won't have "autiz-" in the name itself
 matching, since the API is doing the matching, not a loose substring
 guess. Entries with `orgTerminationDate` set are excluded (dissolved).
 
+Also searches "asperger" (part of the autism spectrum, not covered by the
+autism-root terms above) -- found a real match, "ASPERGER KLUB".
+
 Only `addrMunicipality` (no street address) is available from search;
 geocoded at the municipality level.
 
@@ -60,7 +63,7 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 
 SOURCE = "Slovakia RPO (Register of Legal Persons, Statistical Office) - official national entity registry"
 
-SEARCH_TERMS = ["autizmus", "autisti", "autistick", "autizmom"]
+SEARCH_TERMS = ["autizmus", "autisti", "autistick", "autizmom", "asperger"]
 
 # The search endpoint needs a JSESSIONID cookie, minted by POSTing to
 # auth/user first -- a plain unauthenticated urllib request 401s otherwise.

@@ -24,6 +24,15 @@ tools/belgium_kbo_fetch.py and tools/netherlands_anbi_fetch.py.
 Entities whose current registration has an endDate (dissolved, merged, or
 renamed into a successor already covered by a live query) are excluded.
 
+Also searches "asperger" (Asperger's is now considered part of the autism
+spectrum, but wasn't covered by the autism-root terms above) -- this
+surfaced a real match, "NeuroMental Oy," whose *current* primary name
+doesn't contain "asperger" at all, but whose registered auxiliary/trade
+name ("Helsingin Asperger Center") does. YTJ tracks these separately per
+company (name `type` != "1"), so matching now checks every registered
+name for a company, not just the primary one -- worth remembering for any
+future term added here.
+
 Usage:
     python3 tools/finland_ytj_fetch.py
 
@@ -48,8 +57,8 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 
 SOURCE = "Finland PRH Business Information System (YTJ) - official national entity registry"
 
-SEARCH_TERMS = ["autismi", "autismisäätiö", "autismiyhdistys", "autismikirjo"]
-KEEP_SUBSTR = ["autis"]
+SEARCH_TERMS = ["autismi", "autismisäätiö", "autismiyhdistys", "autismikirjo", "asperger"]
+KEEP_SUBSTR = ["autis", "asperger"]
 EXCLUDE_SUBSTR = ["nautis"]
 # real-estate holding subsidiary of the Autism Foundation, not itself a
 # service-providing resource
@@ -106,10 +115,15 @@ def main():
         if not names:
             continue
         current = names[0]
+        # Check every registered name, not just the primary one: YTJ tracks auxiliary/trade
+        # names (type != "1") separately, and a company can be a real match even when only its
+        # auxiliary name contains the keyword (found via "NeuroMental Oy", whose current
+        # primary name doesn't contain "asperger" at all, but whose registered auxiliary name
+        # "Helsingin Asperger Center" does -- confirmed real via the API's own search).
+        if not any(any(k in (n.get("name","").lower()) for k in KEEP_SUBSTR) for n in names):
+            continue
         name = current.get("name", "")
         low = name.lower()
-        if not any(k in low for k in KEEP_SUBSTR):
-            continue
         if any(k in low for k in EXCLUDE_SUBSTR):
             continue
         if any(k in low for k in EXCLUDE_NAMES):

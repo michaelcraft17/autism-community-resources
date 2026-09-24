@@ -18,6 +18,18 @@ surfaces 8 real active organizations (national federation, regional
 associations, a foundation, and specialist centers), no false
 positives.
 
+A follow-up pass found the original term list was too narrow: it missed
+other Estonian grammatical forms of "autist" (person with autism) --
+"autistide" (genitive/partitive) turned up two more real, active
+organizations including the actual national federation ("Eesti Autistide
+Liit," which the original "autism"/"autismi" terms missed entirely
+despite it being the umbrella body), and "autist" alone (which the API
+matches as a fuzzy/broad prefix) turned up "Sihtasutus AUTISTIKA," a real
+day center for autistic adults. One ambiguous match, "Autist OÜ" (a
+private limited company with no corroborating evidence of being autism-
+related, unlike the confirmed MTÜ/foundation matches), is excluded --
+same discipline as excluding Bulgaria's "АСПЕР" false positive.
+
 Usage:
     python3 tools/estonia_ariregister_fetch.py
 
@@ -42,7 +54,8 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 
 SOURCE = "Estonia e-Business Register (Ariregister, RIK) - official national entity registry"
 
-SEARCH_TERMS = ["autism", "autismi", "autistlik"]
+SEARCH_TERMS = ["autism", "autismi", "autistlik", "autist", "autistide"]
+EXCLUDE_NAMES = ["autist oü"]  # ambiguous, no corroborating evidence -- see docstring
 
 
 def fetch_term(term):
@@ -94,8 +107,11 @@ def main():
     all_entities = {}
     for term in SEARCH_TERMS:
         for e in fetch_term(term):
-            if e.get("status") == "R":  # "Registrisse kantud" - actively registered, not dissolved
-                all_entities[e["reg_code"]] = e
+            if e.get("status") != "R":  # "Registrisse kantud" - actively registered, not dissolved
+                continue
+            if (e.get("name") or "").strip().lower() in EXCLUDE_NAMES:
+                continue
+            all_entities[e["reg_code"]] = e
         time.sleep(1.1)
     print(f"  {len(all_entities)} unique active entities across all search terms")
 

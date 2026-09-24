@@ -30,6 +30,12 @@ full street addresses. Entities under bankruptcy (konkurs) or winding-up
 belgium_kbo_fetch.py (struck-off entities) and netherlands_anbi_fetch.py
 ("in liquidatie").
 
+Also searches "asperger" (part of the autism spectrum, not covered by the
+autism-root terms above) and checks each entity's `historiskeNavn`
+(historical name) list, not just its current name -- Brreg tracks name
+changes per entity, same class of gotcha found in Finland's registry with
+auxiliary trade names.
+
 Usage:
     python3 tools/norway_brreg_fetch.py
 
@@ -54,8 +60,8 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 
 SOURCE = "Norway Bronnoysund Register Centre (Enhetsregisteret) - official national entity registry"
 
-SEARCH_TERMS = ["autisme", "autistisk", "autist", "autismeforeningen"]
-KEEP_SUBSTR = ["autis"]
+SEARCH_TERMS = ["autisme", "autistisk", "autist", "autismeforeningen", "asperger"]
+KEEP_SUBSTR = ["autis", "asperger"]
 EXCLUDE_SUBSTR = ["nautisk", "nautisch", "dødsbo"]  # "dødsbo" = sole proprietor deceased, estate in probate
 
 
@@ -105,9 +111,13 @@ def main():
     matches = []
     for e in all_entities.values():
         name = e.get("navn", "")
-        low = name.lower()
-        if not any(k in low for k in KEEP_SUBSTR):
+        historical = [h.get("navn", "") for h in (e.get("historiskeNavn") or [])]
+        all_names_low = [n.lower() for n in [name] + historical]
+        # Check current name AND any historical name (Brreg tracks name-change history per
+        # entity, same class of gotcha found in Finland's registry with auxiliary trade names).
+        if not any(any(k in n for k in KEEP_SUBSTR) for n in all_names_low):
             continue
+        low = name.lower()
         if any(k in low for k in EXCLUDE_SUBSTR):
             continue
         if e.get("konkurs") or e.get("underAvvikling") or e.get("underTvangsavviklingEllerTvangsopplosning"):

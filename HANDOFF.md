@@ -82,7 +82,15 @@ government/encyclopedic structured sources were ~95%+ clean):
   descriptive User-Agent header or the endpoint 403s (a basic bot filter, not a real block).
   Its address format (county/parish/village hierarchy, e.g. "Harju maakond, Tallinn,
   Kesklinna linnaosa, Jõe tn 5") is too granular for Nominatim as one string — the script
-  retries with progressively fewer trailing comma-segments until one resolves.
+  retries with progressively fewer trailing comma-segments until one resolves. Expanded +4 in
+  a follow-up pass: the original term list ("autism"/"autismi"/"autistlik") turned out too
+  narrow, missing other Estonian grammatical forms of "autist" (person with autism) —
+  "autistide" (genitive/partitive) surfaced **a second national organization entirely missed
+  the first time**, "Eesti Autistide Liit" (genuinely distinct from the already-found "Eesti
+  Autismiliit" — the former traces back to a self-advocacy group formerly named "Eesti
+  Aspergerite Ühing," found via a web search after an ambiguous registry hit, not the registry
+  search itself). One ambiguous match ("Autist OÜ," a private company with no corroborating
+  evidence of relevance) excluded by name, same discipline as Bulgaria's "АСПЕР" exclusion.
 - `latvia_ur_fetch.py` — Latvia's Register of Enterprises (Uzņēmumu reģistrs) open-data bulk
   CSV of every association/foundation (regcode;name;type;area_of_activity). A genuine full
   registry dump, found via data.gov.lv's CKAN dataset catalog rather than a name-search API.
@@ -115,11 +123,18 @@ government/encyclopedic structured sources were ~95%+ clean):
   Belgium/Netherlands ("autist" as a query returns hundreds of unrelated "AUGUST ..." names via
   edit-distance matching, not substring) — filtered client-side. Also excludes entities flagged
   bankrupt/winding-up, and a Norwegian-specific dead-entity pattern: sole-proprietorships whose
-  owner died ("... Inngår I Dødsbo" — estate in probate).
+  owner died ("... Inngår I Dødsbo" — estate in probate). Expanded in a follow-up "Asperger
+  sweep" pass (+3: "Aspergerforeningen I Norge," "Aspergerforeldre," and an individual
+  practitioner) after adding "asperger" as a search term and checking each entity's
+  `historiskeNavn` (historical name) list, not just its current name.
 - `finland_ytj_fetch.py` — Finland's PRH Business Information System (YTJ), same tier of
   official registry. Much smaller country, much smaller yield (2 net-new active orgs: the
   Autism Foundation and the national Autism Spectrum Association) — Finland doesn't appear to
-  register regional chapters as separate legal entities the way Norway does.
+  register regional chapters as separate legal entities the way Norway does. Expanded +1 in the
+  same follow-up pass: "NeuroMental Oy," a real diagnostic clinic whose *current* name doesn't
+  contain "asperger" at all, but whose registered auxiliary/trade name ("Helsingin Asperger
+  Center") does -- YTJ tracks these separately per company, so matching now checks every
+  registered name, not just the primary one.
 - `bulgaria_companybook_fetch.py` — Bulgaria's Commercial Register / Register of Non-Profit
   Legal Entities, via a **third-party API** (CompanyBook.bg), not a direct government source
   — the first and so far only fetcher in this project to use one. Justified because
@@ -172,7 +187,8 @@ government/encyclopedic structured sources were ~95%+ clean):
   stated purpose, not just its name. Added **33 organizations** — a genuinely deep national
   support network (many are regional branches of "Spoločnosť na pomoc osobám s autizmom,"
   one per city), the second-deepest addition of this whole "single-listing countries" effort
-  after Ukraine.
+  after Ukraine. Expanded +1 in a follow-up pass: "ASPERGER KLUB," found after adding
+  "asperger" as a search term.
 - `cyprus_registry_fetch.py` — Cyprus's official Register of Associations, Foundations,
   Federations and Unions, published as a CSV on data.gov.cy (found via the portal's own
   Drupal `/search?s=<term>` endpoint, not a CKAN API — this portal isn't CKAN, and
@@ -425,7 +441,7 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Current state
 
-- 72,527 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
+- 72,537 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
   ago; 72,375 as of commit `2d9dffc`). The 2026-09-23/24 European push (Autism-Europe full
   directory + France RNA + Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's
   RNA registry was the single biggest addition this project has made from any one source. A
@@ -441,7 +457,20 @@ government/encyclopedic structured sources were ~95%+ clean):
   (see "Ruled out"); a final round added **Bulgaria (+13, after a follow-up pass found 4 more)** via a third-party API
   (`bulgaria_companybook_fetch.py`) that republishes Bulgaria's own official CC-BY open data —
   the one source in this whole pass that needed a free account sign-up, done with the site
-  owner's explicit go-ahead. Only 5 of the original 19 (Lithuania, Andorra, Croatia,
+  owner's explicit go-ahead.
+  A follow-up "Asperger sweep" (2026-09-24) went back through every already-built fetcher and
+  added "asperger" (Asperger's, now considered part of the autism spectrum) as an extra search
+  term, since the original autism-root terms never covered it. Real yield across 10 countries
+  tested: Estonia +4 (including a second national organization the original terms missed
+  entirely, via a different grammatical form of "autist," not "asperger" itself), Norway +3,
+  Finland +1, Slovakia +1, Bulgaria +4 (already counted above) — **13 net-new entries**, plus
+  two real code bugs fixed along the way (Finland/Norway both track name-change history
+  separately from an entity's current name, and weren't being searched). Czech Republic,
+  Latvia, Slovenia, Ukraine, Cyprus tested and confirmed zero real matches. Worth re-running
+  this same sweep for Greece (a live retest kept timing out, unrelated to this project) and
+  worth trying on any future non-English-speaking country's fetcher as a standard extra term,
+  not just a one-off for Bulgaria.
+  Only 5 of the original 19 (Lithuania, Andorra, Croatia,
   Luxembourg, Romania) remain effectively single-entry — see "Ruled out" below for what was
   tried and why each didn't pan out. Three rounds in this pass each turned up a real, working
   source for a country previously marked as a dead end (Ukraine, Slovakia, Bulgaria) —
