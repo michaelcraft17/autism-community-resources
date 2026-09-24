@@ -12,10 +12,34 @@
 </script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Find autism and special needs support services, therapy centers, advocacy organizations, and community resources near you. Interactive Google map directory."/>
-<title>Accessibility Mapper — Autism & Special Needs Directory</title>
+<meta name="description" content="72,000+ autism and special needs resources worldwide — therapy, advocacy, education, and medical providers. Every listing comes from an official registry or verified source, not user submissions."/>
+<title>Accessibility Mapper — Autism &amp; Special Needs Directory</title>
+<link rel="canonical" href="https://autismcommunityorg.org/"/>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="apple-touch-icon" href="favicon.svg"/>
+
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://autismcommunityorg.org/"/>
+<meta property="og:site_name" content="Accessibility Mapper"/>
+<meta property="og:title" content="Accessibility Mapper — Autism &amp; Special Needs Directory"/>
+<meta property="og:description" content="72,000+ autism and special needs resources worldwide, all sourced from official registries and verified organizations — not user submissions."/>
+<meta property="og:image" content="https://autismcommunityorg.org/assets/card-data.jpg"/>
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Accessibility Mapper — Autism &amp; Special Needs Directory"/>
+<meta name="twitter:description" content="72,000+ autism and special needs resources worldwide, all sourced from official registries and verified organizations — not user submissions."/>
+<meta name="twitter:image" content="https://autismcommunityorg.org/assets/card-data.jpg"/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Accessibility Mapper",
+  "alternateName": "Autism Community Resources",
+  "url": "https://autismcommunityorg.org/",
+  "description": "A free directory of autism and special needs resources worldwide, sourced from official government registries and verified organizations."
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"/>
@@ -1592,7 +1616,7 @@ const FeaturedResource = ({tone, name, blurb, href, cta, logo, logoAlt, badge, b
 /* ─── Project cards: the "AI-POWERED RESEARCH PROJECT" scrolling row ─── */
 const PROJECT_CARDS = [
   ['Spectrum Support Criteria','Defining what makes public spaces—schools, libraries, parks—genuinely welcoming for autistic and special-needs visitors.','assets/card-support.jpg'],
-  ['Resources Nationwide','More than 50,000 therapy, advocacy, education, and medical providers, gathered and plotted on one interactive map.','assets/card-data.jpg'],
+  ['Resources Worldwide','More than 72,000 therapy, advocacy, education, and medical providers across dozens of countries, gathered and plotted on one interactive map.','assets/card-data.jpg'],
   ['Find Care Near You','Search any city or ZIP to see nearby support sorted by distance, with directions and one-tap contact.','assets/card-ai.jpg'],
   ['Built for Families','A calm, accessible, easy-to-navigate directory designed for parents, caregivers, and self-advocates.','assets/card-community.jpg'],
   ['Community-Driven','Grown and refined with on-the-ground input from the families and programs it serves.','assets/card-impact.jpg'],
@@ -1667,6 +1691,30 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error}) => {
           <PinIcon s={14}/> Use my current location
         </button>
         {error && <div style={{marginTop:14,color:'#ffd9cf',fontSize:14}}>{error}</div>}
+      </section>
+      <section style={{maxWidth:900,margin:'56px auto',padding:'0 24px',textAlign:'center'}}>
+        <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--text)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Why Trust This List</span>
+        <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:28,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 14px'}}>EVERY LISTING IS FROM A REAL, CHECKED SOURCE</h2>
+        <p style={{fontSize:15,color:'var(--text-muted)',margin:'0 auto 32px',maxWidth:'62ch',lineHeight:1.7}}>
+          On Google Maps or Apple Maps, anyone can add or edit a listing. Here, nobody can. Every
+          resource on this site comes from an official source — a government registry, a national
+          health or disability database, or an organization's own published records. If a source
+          isn't verifiable, it doesn't go in.
+        </p>
+        <div style={{display:'flex',gap:24,justifyContent:'center',flexWrap:'wrap'}}>
+          <div style={{minWidth:150}}>
+            <div style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:30,color:'var(--text)'}}>72,000+</div>
+            <div style={{fontSize:13,color:'var(--text-muted)'}}>verified resources</div>
+          </div>
+          <div style={{minWidth:150}}>
+            <div style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:30,color:'var(--text)'}}>30+</div>
+            <div style={{fontSize:13,color:'var(--text-muted)'}}>countries covered</div>
+          </div>
+          <div style={{minWidth:150}}>
+            <div style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:30,color:'var(--text)'}}>0</div>
+            <div style={{fontSize:13,color:'var(--text-muted)'}}>user-submitted listings</div>
+          </div>
+        </div>
       </section>
       <section style={{maxWidth:1500,margin:'56px auto',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:36}}>
