@@ -163,12 +163,23 @@ government/encyclopedic structured sources were ~95%+ clean):
   directly (their content goes into `community_resources.json` via `merge_new_resources.py`
   instead).
 
-## Current state (as of commit `3207d39`)
+## Current state (as of commit `2d9dffc`)
 
-- 72,253 total resources (was 48,664 at the start of this thread of work; 69,841 as of the
-  previous handoff). The 2026-09-23 European push (Autism-Europe full directory + France RNA
-  + Netherlands ANBI) alone added ~2,400 — France's RNA registry was the single biggest
-  addition this project has made from any one source.
+- 72,375 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
+  ago). The 2026-09-23/24 European push (Autism-Europe full directory + France RNA +
+  Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's RNA registry was the
+  single biggest addition this project has made from any one source.
+- `tools/belgium_kbo_fetch.py` and `tools/italy_runts_fetch.py` joined this session. Belgium's
+  KBO has a PDF-export endpoint that works with plain `requests` once the right (undocumented)
+  param set is used — found by driving the HTML form once with Playwright to capture it, then
+  confirmed to work via plain curl afterward, no Playwright needed at request time. Italy's
+  RUNTS has no API or export at all — a legacy ASP.NET WebForms/UpdatePanel portal, driven live
+  with Playwright, and its AJAX pagination turned out to be genuinely flaky (intermittent full
+  page reloads mid-scrape). That entry is a documented partial capture (89 of ~244 raw matches
+  across 3 search terms) — see the script's docstring before assuming it's exhaustive.
+  Spain's equivalent registry search page returned an HTTP 403 (real WAF, not attempted
+  further) and Germany's Vereinsregister has no free bulk/open dataset — both are dead ends
+  for now, not just untried.
 - Location search has Google-Maps-style autocomplete (debounced Nominatim, portal-rendered
   dropdown, keyboard + mouse nav) on both the landing page and header search bars.
 - `tools/preview/` (gitignored) is a standalone local debug map — loads whatever's in
@@ -179,13 +190,17 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Natural next steps (not started, no commitment implied)
 
-- Other EU countries' national association/charity registries, same pattern as
-  `france_rna_fetch.py`/`netherlands_anbi_fetch.py` — worth checking whether Germany
-  (Transparenzregister/Vereinsregister), Spain (Registro de Entidades), Italy (RUNTS), or
-  Belgium (Banque-Carrefour des Entreprises) expose something similarly queryable. Not
-  checked yet this session — France and Netherlands were the two tried, in that order of
-  yield (France's RNA has a real search API and no keyword-search alternative was found for
-  the others yet).
+- More EU national association/charity registries, same pattern as `france_rna_fetch.py`/
+  `netherlands_anbi_fetch.py`/`belgium_kbo_fetch.py`/`italy_runts_fetch.py`. Tried so far, best
+  to worst yield: France (real search API, 2,383 hits), Italy (no API, Playwright-driven, 89
+  captured but pagination was flaky — worth a clean re-run), Belgium (PDF export works via
+  plain curl once you have the right params, 34 hits), Netherlands (bulk XML, name-only
+  filtering, 21 hits). Ruled out: Spain's Ministry of Interior search page (`interior.gob.es`)
+  returned a real HTTP 403 (WAF) — not pursued further per the no-evasion policy; Germany's
+  Vereinsregister has no free bulk/open dataset, only per-court paid extracts. Not yet tried:
+  Poland, Portugal, other Nordics, Central/Eastern Europe — worth the same check (does an
+  official registry expose a search API or bulk export) before assuming any particular
+  country is a dead end.
 - Scotland/Wales/Northern Ireland care registries, same pattern as `cqc_uk_fetch.py`.
 - Wider Wikidata org-class coverage, or non-English "autis-root" search terms for
   non-Latin-script countries (Japan, China, Korea, Arabic-speaking countries) — explicitly
