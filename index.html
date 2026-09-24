@@ -626,8 +626,8 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
             {extra > 0 && <span className="ui-chip" title={r.services.slice(MAX_TAGS).join(', ')} style={tagStyle}>+{extra}</span>}
           </div>
           <div style={{display:'flex',gap:6,flexShrink:0}}>
-            <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 12px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>
-            <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 12px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>
+            {r.phone && <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 12px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>}
+            {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 12px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>}
           </div>
         </div>
       </div>
@@ -671,8 +671,8 @@ const GroupedResourceCard = ({group, idx, active, onHover}) => {
                   {r.description && <div style={{fontSize:12,color:'var(--text-muted)',marginTop:2}}>"{r.description}"</div>}
                 </div>
                 <div style={{display:'flex',gap:6,flexShrink:0}}>
-                  <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 10px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>
-                  <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 10px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>
+                  {r.phone && <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 10px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>}
+                  {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 10px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>}
                 </div>
               </div>
             ))}
@@ -995,7 +995,8 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
         const rows = g.map(r =>
           '<div style="margin-top:6px">' +
           (g.length > 1 ? '<div style="font-weight:600;font-size:12px">' + r.name + '</div>' : '') +
-          '<a href="tel:' + r.phone + '" style="font-size:12px;color:#111315;font-weight:600;text-decoration:underline">' + r.phone + '</a></div>'
+          (r.phone ? '<a href="tel:' + r.phone + '" style="font-size:12px;color:#111315;font-weight:600;text-decoration:underline">' + r.phone + '</a>' : '') +
+          '</div>'
         ).join('');
         infoRef.current.setContent('<div style="font-family:Hanken Grotesk,sans-serif;max-width:220px;line-height:1.4">' + header + rows + '</div>');
         infoRef.current.open(map, marker);
