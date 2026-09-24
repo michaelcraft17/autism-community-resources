@@ -120,6 +120,26 @@ government/encyclopedic structured sources were ~95%+ clean):
   official registry. Much smaller country, much smaller yield (2 net-new active orgs: the
   Autism Foundation and the national Autism Spectrum Association) — Finland doesn't appear to
   register regional chapters as separate legal entities the way Norway does.
+- `bulgaria_companybook_fetch.py` — Bulgaria's Commercial Register / Register of Non-Profit
+  Legal Entities, via a **third-party API** (CompanyBook.bg), not a direct government source
+  — the first and so far only fetcher in this project to use one. Justified because
+  CompanyBook's own FAQ states its data "comes from the daily publications of the Registry
+  Agency, uploaded to the [Ministry of e-Governance] open data website... under the CC-BY
+  license" (i.e. it republishes official government open data), and every direct path to
+  Bulgaria's own systems was independently confirmed dead — see HANDOFF's "Ruled out" section
+  (`data.egov.bg` 403s even for Googlebot/Bingbot; the Registry Agency's own portal has no
+  free entity search). Requires a free API key via `COMPANYBOOK_API_KEY` (sign up at
+  companybook.bg; 100 req/day free tier, easily enough for this script). The account used
+  for this project was created 2026-09-24 under changcheng875@gmail.com — the credentials
+  (email/password) are known to the site owner, not stored in this repo; the API key itself
+  is never hardcoded or committed, only ever passed via the `COMPANYBOOK_API_KEY` env var.
+  Added 9 organizations, all active. Two real address-geocoding gotchas fixed here, worth
+  knowing about for any future Bulgarian source: (1) the registry's precise street-level
+  address routinely fails to resolve in Nominatim as one string (same class of issue as
+  Estonia's hierarchical addresses) -- falls back to city-level; (2) the API's own
+  `settlement` field carries a "гр."/"с." (town/village) type-prefix that *also* breaks
+  Nominatim even at the fallback step (e.g. "гр. Панагюрище" resolves to nothing, but plain
+  "Панагюрище" resolves fine) -- stripped explicitly.
 - `greece_gemi_fetch.py` — Greece's GEMI (General Commercial Registry), via its public
   "Publicity" search portal (`publicity.businessportal.gr`) — a completely different, working
   domain from every Greek domain previously ruled out (`data.gov.gr`, `opendata-api.
@@ -285,10 +305,13 @@ government/encyclopedic structured sources were ~95%+ clean):
       republishes official government open data, not scraped). Confirmed via its own API docs:
       real endpoint `GET https://api.companybook.bg/api/v2/companies/search`, but **requires a
       free account sign-up** to get an API key (100 req/day free tier) — no anonymous access.
-      Not used without asking first, since it means creating an account on a third-party site
-      on the project's behalf. Separately reconfirmed `data.egov.bg` (Bulgaria's own open-data
-      portal) is blocked even for Googlebot/Bingbot per an independent source, not just this
-      sandbox — a genuine site-wide restriction, not something worth re-testing later.
+      Separately reconfirmed `data.egov.bg` (Bulgaria's own open-data portal) is blocked even
+      for Googlebot/Bingbot per an independent source, not just this sandbox — a genuine
+      site-wide restriction, not something worth re-testing later.
+      **Resolved in a follow-up round**: the site owner authorized the sign-up, so this is no
+      longer a dead end — see `bulgaria_companybook_fetch.py` above (+9). Bulgaria is out of
+      this ruled-out list; left the trail above intact since it explains why a third party was
+      used at all and documents the actual data provenance.
     - **Romania**: web search turned up a second official NGO-adjacent register — "Registrul
       de evidență a asociațiilor și fundațiilor" at the Ministry of Finance
       (`mfinante.gov.ro`) — but that domain is unreachable from this sandbox (connection
@@ -389,24 +412,28 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Current state
 
-- 72,514 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
+- 72,523 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
   ago; 72,375 as of commit `2d9dffc`). The 2026-09-23/24 European push (Autism-Europe full
   directory + France RNA + Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's
   RNA registry was the single biggest addition this project has made from any one source. A
   follow-up pass added Norway (Bronnoysund register, 32 net-new after deduping one national-org
   collision against the existing Autism-Europe entry) and Finland (YTJ register, 2 net-new).
-  A third pass (2026-09-24, "build out the single-listing countries," three rounds) targeted
-  the 19 countries that had exactly one resource — round 1 added Czech Republic (+7), Estonia
-  (+8), Latvia (+7), Slovenia (+1), Denmark (+1), Germany (+1); round 2 added Cyprus (+4) and
-  Ukraine (+41) via its full national legal-entity register; round 3 added Greece (+3) and, the
-  second-deepest addition of this whole pass, **Slovakia (+33)** via its current unified legal-
-  entity registry (RPO). Only 6 of the original 19 (Lithuania, Andorra, Croatia, Luxembourg,
-  Bulgaria, Romania) remain effectively single-entry — see "Ruled out" below for what was tried
-  and why each didn't pan out. Two rounds in a row turned up a real, working source for a
-  country previously marked as a dead end (Ukraine's live registry vs. its DNS-unreachable
-  official site; Slovakia's RPO vs. the dead `ives.minv.sk` portal its open-data catalog
-  pointed to) — worth re-checking a "ruled out" entry for a genuinely different domain/system
-  before accepting it as final.
+  A third pass (2026-09-24, "build out the single-listing countries," now five research rounds
+  plus a sixth to actually implement the last one) targeted the 19 countries that had exactly
+  one resource — round 1 added Czech Republic (+7), Estonia (+8), Latvia (+7), Slovenia (+1),
+  Denmark (+1), Germany (+1); round 2 added Cyprus (+4) and Ukraine (+41) via its full national
+  legal-entity register; round 3 added Greece (+3) and, the second-deepest addition of this
+  whole pass, **Slovakia (+33)** via its current unified legal-entity registry (RPO); rounds 4
+  and 5 found no new data but ruled out the remaining 6 with much more specific evidence each
+  (see "Ruled out"); a final round added **Bulgaria (+9)** via a third-party API
+  (`bulgaria_companybook_fetch.py`) that republishes Bulgaria's own official CC-BY open data —
+  the one source in this whole pass that needed a free account sign-up, done with the site
+  owner's explicit go-ahead. Only 5 of the original 19 (Lithuania, Andorra, Croatia,
+  Luxembourg, Romania) remain effectively single-entry — see "Ruled out" below for what was
+  tried and why each didn't pan out. Three rounds in this pass each turned up a real, working
+  source for a country previously marked as a dead end (Ukraine, Slovakia, Bulgaria) —
+  worth re-checking a "ruled out" entry for a genuinely different domain/system, or a
+  legitimately-sourced third party, before accepting it as final.
   One dedup gap found and fixed by hand *twice* now: `merge_new_resources.py`'s name-
   normalization strips all non-alphanumeric characters, so "Autismeforeningen I Norge" and
   "Autismeforeningen I Norge (A.I.N.)" don't collapse to the same key (the parenthetical
