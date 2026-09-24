@@ -262,6 +262,46 @@ government/encyclopedic structured sources were ~95%+ clean):
       national business registers via the EU's BRIS interconnection system — would have been a
       single fix for Croatia/Bulgaria/Romania/Luxembourg/Lithuania if it worked, but it returns
       an explicit 403 from this sandbox, confirmed via both curl and Playwright.
+  - **2026-09-24 round 5** — used live web search (not just guessing domain names) to find
+    each country's *actual current* system, one level deeper than round 4. Landed on a
+    specific, confirmed blocker for every remaining country, not just "untried":
+    - **Croatia**: web search surfaced the real current domain — the ministry was renamed and
+      the register moved to `registri-npo-mpu.gov.hr` (found via `mpudt.gov.hr`, "Ministarstvo
+      pravosuđa, uprave i digitalne transformacije"), a different, working URL from
+      `registri.uprava.hr`. It's a slow-loading Vaadin app (needs ~9s wait, not just a
+      timeout) but does load and has a real "Naziv udruge" (association name) search field.
+      Submitting a search shows a genuine distorted-text CAPTCHA ("Prepišite kontrolni broj") —
+      confirmed with a screenshot. Ruled out on principle, no evasion attempted. This is the
+      closest any of the 6 has come to working — worth revisiting if a CAPTCHA-solving service
+      the user explicitly authorizes ever becomes in-scope for this project (it currently
+      isn't).
+    - **Luxembourg**: confirmed the LBR does operate a real open-data API separate from the
+      CAPTCHA'd consumer search UI, but it's distributed through "i-Hub," a B2B platform aimed
+      at fiduciaries/banks/public authorities (per LBR's own press materials) — not a public,
+      anonymous, sign-up-and-go API. No public developer-portal URL found on lbr.lu itself.
+    - **Bulgaria**: found a legitimate *third-party* option — `companybook.bg`, whose FAQ
+      states its data comes from "the daily publications of the Registry Agency, uploaded to
+      the [Ministry of e-Governance] open data website... under the CC-BY license" (i.e. it
+      republishes official government open data, not scraped). Confirmed via its own API docs:
+      real endpoint `GET https://api.companybook.bg/api/v2/companies/search`, but **requires a
+      free account sign-up** to get an API key (100 req/day free tier) — no anonymous access.
+      Not used without asking first, since it means creating an account on a third-party site
+      on the project's behalf. Separately reconfirmed `data.egov.bg` (Bulgaria's own open-data
+      portal) is blocked even for Googlebot/Bingbot per an independent source, not just this
+      sandbox — a genuine site-wide restriction, not something worth re-testing later.
+    - **Romania**: web search turned up a second official NGO-adjacent register — "Registrul
+      de evidență a asociațiilor și fundațiilor" at the Ministry of Finance
+      (`mfinante.gov.ro`) — but that domain is unreachable from this sandbox (connection
+      failure via both curl and Playwright). Also confirmed via multiple independent sources
+      that Romania's actual NGO registry (RAF, held at the Ministry of Justice) has **no online
+      search or extract at all as a matter of policy** — extracts must be requested by mail, in
+      person, or courier with payment. This isn't a technical block to route around; there is
+      no online access to route to.
+    - **Lithuania**: reconfirmed the WAF block on the official `get.data.gov.lt` gateway
+      mentioned in third-party API docs — same exact block-page title as before.
+    - **Andorra**: the government's own "Registre d'Associacions" page is a pure navigation
+      stub — no embedded list, table, or download link of any kind, confirmed by reading its
+      raw HTML directly.
 - OpenStreetMap Overpass API — theoretically the most "global" option, but the public
   instance can't handle whole-country or bbox-scoped name-regex searches at any reasonable
   timeout (confirmed via 5+ separate timeouts across France/Japan/bbox attempts). Would need
