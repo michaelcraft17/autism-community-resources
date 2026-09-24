@@ -231,6 +231,37 @@ government/encyclopedic structured sources were ~95%+ clean):
     business/association registry open-data source found at all — very small country (~80K
     people), likely minimal digital registry infrastructure to begin with. Lowest remaining
     priority of the 6 still-single-entry countries.
+  - **2026-09-24 round 4** — all 6 remaining countries re-checked with a "find a second,
+    different official system" lens (the exact technique that worked for Ukraine/Slovakia/
+    Greece). No new wins this round, but each got a genuinely different angle tried and ruled
+    out, not a repeat of the same dead domain:
+    - **Croatia**: tried the *other* national registry — `sudreg.pravosudje.hr`, the Ministry
+      of Justice's commercial COURT register (separate system from the udruga/association
+      register). It's reachable and has a real working search form (Oracle APEX, field
+      `#P1_NAZIV`), but its "Pravni oblik" (legal form) dropdown only lists company types
+      (d.o.o., dioničko društvo, zadruga, etc.) — no "udruga" — and a live search for "autiz"
+      correctly returns zero results. Associations genuinely aren't in this register at all;
+      they only exist in the unreachable `registri.uprava.hr` system. Confirms Croatia needs
+      that exact system reachable, not a workaround.
+    - **Romania**: tried ANAF (the tax authority, `www.anaf.ro`, reachable) as a possible
+      third angle beyond ONRC/data.gov.ro — but ANAF's public tools are CUI/VAT-lookup by
+      already-known fiscal code, not a name-search registry; no bulk NGO dataset found.
+      `reonge.just.ro` and `www.just.ro/registrul-national-ong/` (guessed URLs for the
+      National NGO Registry) are both dead (connection failure / 404).
+    - **Bulgaria**: tried the Ministry of Justice's own domains (`mjs.bg`, `www.justice.
+      government.bg`) as a system separate from the Registry Agency portal already ruled out
+      — both return a genuine HTTP 500. The Registry Agency's own `/CR/services` page (which
+      does list "regisтър на юридическите лица с нестопанска цел" / NPO register as part of
+      the same system) renders no bulk-export or distinct search link when read directly.
+    - **Lithuania**: no new angle found beyond the already-confirmed WAF block.
+    - **Luxembourg**: confirmed via `data.public.lu`'s own search API that querying "RCS" or
+      "registre commerce societes" returns zero datasets — there's no bulk alternative to the
+      CAPTCHA'd live search.
+    - **EU-level fallback tried and ruled out for all remaining EU members at once**: the
+      European e-Justice Portal's "Find a company" tool (`e-justice.europa.eu`), which proxies
+      national business registers via the EU's BRIS interconnection system — would have been a
+      single fix for Croatia/Bulgaria/Romania/Luxembourg/Lithuania if it worked, but it returns
+      an explicit 403 from this sandbox, confirmed via both curl and Playwright.
 - OpenStreetMap Overpass API — theoretically the most "global" option, but the public
   instance can't handle whole-country or bbox-scoped name-regex searches at any reasonable
   timeout (confirmed via 5+ separate timeouts across France/Japan/bbox attempts). Would need
