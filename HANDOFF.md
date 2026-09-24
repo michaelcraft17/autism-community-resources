@@ -72,6 +72,19 @@ government/encyclopedic structured sources were ~95%+ clean):
   schema, just name/alias/city/website, so entries are city-centroid geocoded. Worth checking
   whether other EU countries have an equivalent official charity-tax registry before assuming
   France's RNA scale is typical — it may not be.
+- `norway_brreg_fetch.py` — Norway's Bronnoysund Register Centre (Enhetsregisteret), the
+  official national registry of every business/association/foundation in Norway. Free, no key.
+  Deepest single-country win since France's RNA: captured the national autism association
+  (Autismeforeningen i Norge) plus all ~19 of its regional chapters (Lokallag/Fylkeslag) as
+  separate registered legal entities, with full street addresses. Same fuzzy-search quirk as
+  Belgium/Netherlands ("autist" as a query returns hundreds of unrelated "AUGUST ..." names via
+  edit-distance matching, not substring) — filtered client-side. Also excludes entities flagged
+  bankrupt/winding-up, and a Norwegian-specific dead-entity pattern: sole-proprietorships whose
+  owner died ("... Inngår I Dødsbo" — estate in probate).
+- `finland_ytj_fetch.py` — Finland's PRH Business Information System (YTJ), same tier of
+  official registry. Much smaller country, much smaller yield (2 net-new active orgs: the
+  Autism Foundation and the national Autism Spectrum Association) — Finland doesn't appear to
+  register regional chapters as separate legal entities the way Norway does.
 - `merge_new_resources.py` — generic merge step: dedupes any `new_resources_*.json` file in
   the repo root against `community_resources.json` (by normalized name and website domain)
   and appends the rest. Run this after any of the fetchers above, then regenerate
@@ -163,12 +176,19 @@ government/encyclopedic structured sources were ~95%+ clean):
   directly (their content goes into `community_resources.json` via `merge_new_resources.py`
   instead).
 
-## Current state (as of commit `2d9dffc`)
+## Current state
 
-- 72,375 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
-  ago). The 2026-09-23/24 European push (Autism-Europe full directory + France RNA +
-  Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's RNA registry was the
-  single biggest addition this project has made from any one source.
+- 72,409 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
+  ago; 72,375 as of commit `2d9dffc`). The 2026-09-23/24 European push (Autism-Europe full
+  directory + France RNA + Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's
+  RNA registry was the single biggest addition this project has made from any one source. A
+  follow-up pass added Norway (Bronnoysund register, 32 net-new after deduping one national-org
+  collision against the existing Autism-Europe entry) and Finland (YTJ register, 2 net-new).
+  One dedup gap found and fixed by hand: `merge_new_resources.py`'s name-normalization strips
+  all non-alphanumeric characters, so "Autismeforeningen I Norge" and "Autismeforeningen I
+  Norge (A.I.N.)" don't collapse to the same key (the parenthetical acronym gets concatenated
+  onto the name with no separator) — worth knowing about if a future merge silently produces a
+  near-duplicate pin for the same org under a slightly different name suffix.
 - `tools/belgium_kbo_fetch.py` and `tools/italy_runts_fetch.py` joined this session. Belgium's
   KBO has a PDF-export endpoint that works with plain `requests` once the right (undocumented)
   param set is used — found by driving the HTML form once with Playwright to capture it, then
@@ -191,16 +211,23 @@ government/encyclopedic structured sources were ~95%+ clean):
 ## Natural next steps (not started, no commitment implied)
 
 - More EU national association/charity registries, same pattern as `france_rna_fetch.py`/
-  `netherlands_anbi_fetch.py`/`belgium_kbo_fetch.py`/`italy_runts_fetch.py`. Tried so far, best
-  to worst yield: France (real search API, 2,383 hits), Italy (no API, Playwright-driven, 89
-  captured but pagination was flaky — worth a clean re-run), Belgium (PDF export works via
-  plain curl once you have the right params, 34 hits), Netherlands (bulk XML, name-only
-  filtering, 21 hits). Ruled out: Spain's Ministry of Interior search page (`interior.gob.es`)
-  returned a real HTTP 403 (WAF) — not pursued further per the no-evasion policy; Germany's
-  Vereinsregister has no free bulk/open dataset, only per-court paid extracts. Not yet tried:
-  Poland, Portugal, other Nordics, Central/Eastern Europe — worth the same check (does an
-  official registry expose a search API or bulk export) before assuming any particular
-  country is a dead end.
+  `netherlands_anbi_fetch.py`/`belgium_kbo_fetch.py`/`italy_runts_fetch.py`/
+  `norway_brreg_fetch.py`/`finland_ytj_fetch.py`. Tried so far, best to worst yield: France
+  (real search API, 2,383 hits), Italy (no API, Playwright-driven, 89 captured but pagination
+  was flaky — worth a clean re-run), Norway (real search API, 32 hits incl. regional chapters),
+  Belgium (PDF export works via plain curl once you have the right params, 34 hits), Netherlands
+  (bulk XML, name-only filtering, 21 hits), Finland (real search API, only 2 hits — small
+  country, no separate regional-chapter registrations). Ruled out: Spain's Ministry of Interior
+  search page (`interior.gob.es`) returned a real HTTP 403 (WAF) — not pursued further per the
+  no-evasion policy; Germany's Vereinsregister has no free bulk/open dataset, only per-court
+  paid extracts. Checked this round but not pursued: Denmark's official CVR data is only
+  distributed via a complex Elasticsearch-based bulk service requiring registration
+  (`distribution.virk.dk`) — a free unofficial wrapper (`cvrapi.dk`) works for one-off lookups
+  but is rate-limited and not an official source, so building against it wasn't a clean win;
+  Switzerland's Zefix company registry API requires authentication (401 without credentials) —
+  untried further; Poland's KRS/dane.gov.pl and Portugal's RNPC didn't yield an obvious
+  name-search API on a quick check — worth real investigation, not a dead end. Not yet tried:
+  Czech Republic, Austria, other Central/Eastern Europe.
 - Scotland/Wales/Northern Ireland care registries, same pattern as `cqc_uk_fetch.py`.
 - Wider Wikidata org-class coverage, or non-English "autis-root" search terms for
   non-Latin-script countries (Japan, China, Korea, Arabic-speaking countries) — explicitly
