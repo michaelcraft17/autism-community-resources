@@ -10,6 +10,10 @@ tools/cqc_scratch/
 # Same deal for tools/wikidata_autism_fetch.py -- entities.json is a raw re-fetchable cache.
 tools/wikidata_scratch/
 
+# Local-only debug map for eyeballing newly-merged pins before/after a merge -- not part
+# of the site, regenerate with: see conversation history for the diff-and-copy steps.
+tools/preview/
+
 # Harvest outputs from tools/cqc_uk_fetch.py, tools/wikidata_autism_fetch.py, and the
 # GPT-Researcher pipeline, already merged into community_resources.json via
 # tools/merge_new_resources.py. Left on disk for reference but not tracked -- rerun the
