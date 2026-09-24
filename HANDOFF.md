@@ -47,10 +47,31 @@ government/encyclopedic structured sources were ~95%+ clean):
   updated weekly, Open Government Licence). Only covers England; Scotland/Wales/NI have
   separate regulators (Care Inspectorate, CIW, RQIA) with presumably similar open data,
   not yet built.
-- `wikidata_autism_fetch.py` — searches Wikidata for real-world autism/disability orgs across
-  ~6 organization classes (nonprofit, NGO, charity, advocacy group, foundation, disability
-  association), globally, in one pass. Broad but shallow (only orgs notable enough for a
-  Wikidata entry) — complements a country registry like the CQC one rather than replacing it.
+- `wikidata_autism_fetch.py` (+ `wikidata_country_fetch.py` for a specific country list via
+  native-language search terms) — searches Wikidata for real-world autism/disability orgs
+  across ~6 organization classes (nonprofit, NGO, charity, advocacy group, foundation,
+  disability association), globally, in one pass. Broad but shallow (only orgs notable enough
+  for a Wikidata entry) — complements a country registry like the CQC one rather than
+  replacing it.
+- `autism_europe_members_fetch.py` — Autism-Europe's own 2023 member-directory PDF,
+  hand-transcribed (no API exists), covering ~35 European countries' national/regional
+  umbrella organizations. Not deep (one or a handful of orgs per country) but a solid,
+  official floor for any European country before reaching for anything else.
+- `france_rna_fetch.py` — France's RNA (Répertoire National des Associations), the
+  Ministry of Interior's official registry of all 2.26M declared associations, queried via
+  its Opendatasoft mirror's real search API (the raw data.gouv.fr files are only bulk ZIPs,
+  no keyword search). Added 2,328 active associations matching autisme/autiste/autistes in
+  one pass — by far the deepest single source this project has used for any country outside
+  the US/UK. Comes with pre-computed coordinates, no separate geocoding needed. Known quirk:
+  ~37% of description text has an upstream accented-character encoding artifact in older
+  records — see the script's docstring, not worth chasing a fix.
+- `netherlands_anbi_fetch.py` — Netherlands' ANBI tax-status register (Belastingdienst,
+  CC-0, ~55K orgs, weekly-refreshed bulk XML download, not an API). Much narrower than
+  France's RNA (ANBI is a specific tax election, not "any declared association") — only
+  ~20 real autism-keyword matches — and has no street address or purpose/mission text in the
+  schema, just name/alias/city/website, so entries are city-centroid geocoded. Worth checking
+  whether other EU countries have an equivalent official charity-tax registry before assuming
+  France's RNA scale is typical — it may not be.
 - `merge_new_resources.py` — generic merge step: dedupes any `new_resources_*.json` file in
   the repo root against `community_resources.json` (by normalized name and website domain)
   and appends the rest. Run this after any of the fetchers above, then regenerate
@@ -142,9 +163,12 @@ government/encyclopedic structured sources were ~95%+ clean):
   directly (their content goes into `community_resources.json` via `merge_new_resources.py`
   instead).
 
-## Current state (as of commit `ccd840e`)
+## Current state (as of commit `3207d39`)
 
-- 69,841 total resources (was 48,664 at the start of this thread of work).
+- 72,253 total resources (was 48,664 at the start of this thread of work; 69,841 as of the
+  previous handoff). The 2026-09-23 European push (Autism-Europe full directory + France RNA
+  + Netherlands ANBI) alone added ~2,400 — France's RNA registry was the single biggest
+  addition this project has made from any one source.
 - Location search has Google-Maps-style autocomplete (debounced Nominatim, portal-rendered
   dropdown, keyboard + mouse nav) on both the landing page and header search bars.
 - `tools/preview/` (gitignored) is a standalone local debug map — loads whatever's in
@@ -155,6 +179,13 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Natural next steps (not started, no commitment implied)
 
+- Other EU countries' national association/charity registries, same pattern as
+  `france_rna_fetch.py`/`netherlands_anbi_fetch.py` — worth checking whether Germany
+  (Transparenzregister/Vereinsregister), Spain (Registro de Entidades), Italy (RUNTS), or
+  Belgium (Banque-Carrefour des Entreprises) expose something similarly queryable. Not
+  checked yet this session — France and Netherlands were the two tried, in that order of
+  yield (France's RNA has a real search API and no keyword-search alternative was found for
+  the others yet).
 - Scotland/Wales/Northern Ireland care registries, same pattern as `cqc_uk_fetch.py`.
 - Wider Wikidata org-class coverage, or non-English "autis-root" search terms for
   non-Latin-script countries (Japan, China, Korea, Arabic-speaking countries) — explicitly
