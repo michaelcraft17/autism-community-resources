@@ -208,11 +208,13 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
    visitor isn't scrolling past a wall of controls before the first result card. ─── */
 .hdr-menu-btn{display:none;}
 .hdr-filters-btn{display:none;}
+.hdr-viewtoggle-btn{display:none;}
 @media (max-width:640px){
   .hdr-full-btn{display:none!important;}
   .hdr-menu-btn{display:inline-flex!important;}
   .fbar-desktop-filters{display:none!important;}
   .hdr-filters-btn{display:inline-flex!important;}
+  .hdr-viewtoggle-btn{display:inline-flex!important;}
   .fsearch{width:100%!important;}
   .fbar-summary{flex-basis:100%!important;margin-left:0!important;text-align:left!important;}
   .hide-mobile{display:none!important;}
@@ -221,6 +223,19 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 .hdr-menu-pop button,.hdr-menu-pop a{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border-radius:8px;border:none;background:transparent;color:var(--text);font-size:14px;font-weight:600;text-align:left;text-decoration:none;cursor:pointer;}
 .hdr-menu-pop button:hover,.hdr-menu-pop a:hover{background:var(--bg-sunken);}
 .hdr-menu-pop button:focus-visible,.hdr-menu-pop a:focus-visible{outline:2px solid var(--border-focus);outline-offset:-2px;background:var(--bg-sunken);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.fsheet-fieldset{border:none;margin:0 0 20px;padding:0;}
+.fsheet-fieldset legend{padding:0;font-size:13px;font-weight:700;color:var(--text);margin:0 0 8px;}
+.afchip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 6px 0 12px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface-subtle);color:var(--text);font-size:13px;font-weight:600;white-space:nowrap;}
+.afchip button{width:20px;height:20px;border-radius:50%;border:none;background:transparent;color:var(--text-muted);display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer;}
+.afchip button:hover{background:var(--bg-sunken);color:var(--text);}
+.card-action-btn{height:28px;padding:0 12px;border-radius:7px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;}
+.card-icon-btn{width:30px;height:30px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;}
+@media (max-width:640px){
+  .card-action-btn{height:40px;padding:0 14px;font-size:13px;}
+  .card-icon-btn{width:40px;height:40px;}
+  .card-thumb{width:64px!important;height:64px!important;}
+}
 .ra-mask{position:fixed;left:0;right:0;z-index:480;background:rgba(0,0,0,.62);pointer-events:none;}
 .ra-guide{position:fixed;left:0;top:0;width:512px;height:12px;box-sizing:border-box;background:#000;border:3px solid #fff300;border-radius:5px;z-index:480;pointer-events:none;will-change:transform;}
 /* Arrow above the bar: yellow triangle outlined around a black one (same size/position as the UserWay guide) */
@@ -345,10 +360,19 @@ function haversine(a, b){
   return R*2*Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
 }
 
+// A bare 5-digit (or ZIP+4) string is a US ZIP code in every real case this directory
+// sees; Nominatim has no way to know that and happily matches the same digits against a
+// postal code in another country (e.g. "95112" alone resolves to Klaipeda, Lithuania) --
+// confirmed live during the mobile-redesign research session. Scoping to US only for
+// this exact shape doesn't affect city/place-name search, which still covers every
+// country per the note below.
+const US_ZIP_RE = /^\d{5}(-\d{4})?$/;
+
 async function geocode(q){
   // No countrycodes filter -- the directory now covers many countries, and hard-locking
   // this to "us" used to silently resolve e.g. "London" to a US town of the same name.
-  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q);
+  const countryHint = US_ZIP_RE.test(q.trim()) ? '&countrycodes=us' : '';
+  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q) + countryHint;
   const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
   const data = await res.json();
   if (data && data.length) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
@@ -376,7 +400,7 @@ function useLocationSuggestions(query) {
     let cancelled = false;
     const t = setTimeout(async () => {
       try {
-        const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&q=' + encodeURIComponent(q);
+        const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&q=' + encodeURIComponent(q) + (US_ZIP_RE.test(q) ? '&countrycodes=us' : '');
         const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
         const data = await res.json();
         if (!cancelled) setSuggestions(data || []);
@@ -588,7 +612,7 @@ const TypePill = ({type,small}) => {
    88px thumbnail, name + save/share on one line, one meta line, a 2-line snippet,
    then service tags with Call/Website on the same row. */
 const CardThumb = ({fg, badge, badgeBg, badgeColor='var(--pin-on)', badgeSize=13, grid=true, size=88}) => (
-  <div style={{position:'relative',width:size,height:size,flexShrink:0}}>
+  <div className="card-thumb" style={{position:'relative',width:size,height:size,flexShrink:0}}>
     <div style={{width:'100%',height:'100%',borderRadius:8,overflow:'hidden',background:'var(--surface)',border:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
       {grid && (
         <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:.13}} viewBox="0 0 88 88" preserveAspectRatio="none">
@@ -610,11 +634,28 @@ const CARD_ROW = {display:'flex',gap:14,alignItems:'flex-start',borderBottom:'1p
 const CARD_TITLE = {margin:0,fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:17,letterSpacing:'-0.01em',lineHeight:1.15,color:'var(--text)'};
 const MAX_TAGS = 4;
 
-const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
+/* Shares a resource via the Web Share API where available (mobile browsers, mainly);
+   falls back to copying a plain-text summary to the clipboard, with a brief inline
+   confirmation, since there's no per-resource URL on this static site to share instead. */
+async function shareResource(r) {
+  const text = [r.name, r.address, r.phone, r.website].filter(Boolean).join(' — ');
+  if (navigator.share) {
+    try { await navigator.share({ title: r.name, text, url: r.website || undefined }); return true; }
+    catch (e) { if (e && e.name === 'AbortError') return false; }
+  }
+  if (navigator.clipboard) {
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch (e) {}
+  }
+  return false;
+}
+
+const ResourceCard = ({r, idx, fav, onFav, active, onHover, compact}) => {
   const t = TYPE_META[r.type] || TYPE_META.general_support;
-  const iconBtn = {width:30,height:30,padding:0,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center'};
-  const tags = r.services.slice(0, MAX_TAGS), extra = r.services.length - tags.length;
+  const [copied, setCopied] = useState(false);
+  const tags = r.services.slice(0, compact ? 2 : MAX_TAGS), extra = r.services.length - tags.length;
   const tagStyle = {background:'var(--bg-sunken)',color:'var(--text-muted)',fontSize:11,fontWeight:500,padding:'2px 8px',borderRadius:6,border:'1px solid var(--border)'};
+  const doShare = async () => { const ok = await shareResource(r); if (ok) { setCopied(true); setTimeout(()=>setCopied(false), 1500); } };
   return (
     <div
       data-rid={r.id} onMouseEnter={()=>onHover(r.id)} onMouseLeave={()=>onHover(null)}
@@ -624,8 +665,8 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
         <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8}}>
           <h3 style={CARD_TITLE}>{r.name}</h3>
           <div style={{display:'flex',gap:4,flexShrink:0}}>
-            <button onClick={()=>onFav(r.id)} aria-label={fav ? `Remove ${r.name} from saved` : `Save ${r.name}`} aria-pressed={!!fav} style={iconBtn}><HeartIcon f={fav}/></button>
-            <button aria-label="Share" style={iconBtn}><ShareIcon/></button>
+            <button className="card-icon-btn" onClick={()=>onFav(r.id)} aria-label={fav ? `Remove ${r.name} from saved` : `Save ${r.name}`} aria-pressed={!!fav} style={{border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)'}}><HeartIcon f={fav}/></button>
+            <button className="card-icon-btn" onClick={doShare} aria-label={`Share ${r.name}`} style={{border:'1px solid var(--border)',background:'var(--surface)',color:copied?'var(--success)':'var(--text-muted)'}}>{copied ? <BadgeCheckIcon s={16}/> : <ShareIcon/>}</button>
           </div>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
@@ -643,11 +684,11 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover}) => {
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,flexWrap:'wrap',marginTop:2}}>
           <div style={{display:'flex',flexWrap:'wrap',gap:4,minWidth:0}}>
             {tags.map((sv,i)=><span key={i} className="ui-chip" style={tagStyle}>{sv}</span>)}
-            {extra > 0 && <span className="ui-chip" title={r.services.slice(MAX_TAGS).join(', ')} style={tagStyle}>+{extra}</span>}
+            {extra > 0 && <span className="ui-chip" title={r.services.slice(r.services.length - extra).join(', ')} style={tagStyle}>+{extra}</span>}
           </div>
           <div style={{display:'flex',gap:6,flexShrink:0}}>
-            {r.phone && <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 12px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>}
-            {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 12px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>}
+            {r.phone && <a href={`tel:${r.phone}`} aria-label={`Call ${r.name}`} className="call-btn card-action-btn" style={{background:'var(--action)',color:'var(--action-on)'}}>Call</a>}
+            {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" aria-label={`Website for ${r.name} (opens in new tab)`} className="card-action-btn" style={{background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)'}}>Website</a>}
           </div>
         </div>
       </div>
@@ -869,7 +910,7 @@ const PinTip = ({tip, center, width, minY = 0}) => {
   );
 };
 
-const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast}) => {
+const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast, mobileFull}) => {
   const elRef = useRef(null);
   const mapRef = useRef(null);
   const infoRef = useRef(null);
@@ -903,6 +944,7 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
   const userMarkerRef = useRef(null);
   const activeRef = useRef(active); activeRef.current = active;
   const contrastRef = useRef(contrast); contrastRef.current = contrast;
+  const mobileFullRef = useRef(mobileFull); mobileFullRef.current = mobileFull;
   const [ready, setReady] = useState(0);
   const showKey = groups.map(g=>g.map(r=>r.id).join('+')).join(',');
   const centerKey = center ? center.lat + ',' + center.lng : '';
@@ -1007,6 +1049,7 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
       });
       marker.__ids = ids; marker.__z = 100 - i;
       marker.addListener('click', () => {
+        if (mobileFullRef.current) { onHover(first.id); return; }
         const header = g.length > 1
           ? '<strong style="font-size:14px;color:#111315">' + (first.facility_name || (g.length + ' Resources at This Address')) + '</strong>' +
             '<div style="font-size:11px;color:#33383b;margin:2px 0 6px">' + first.address + '</div>'
@@ -1076,17 +1119,37 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
     return () => clearTimeout(id);
   }, [contrast, ready]);
 
-  // highlight active marker without redrawing
+  // highlight active marker without redrawing; on the mobile map-first layout, also pan to
+  // it so keyboard/screen-reader users stepping through results via Previous/Next (which sets
+  // `active` without ever touching the map) actually see the pin they're on.
   useEffect(() => {
+    let panTarget = null;
     Object.values(markersRef.current).forEach(({marker, ids}) => {
       const isA = ids.includes(active);
       marker.setIcon(pinSymbol(isA));
       marker.setZIndex(isA ? 999 : (marker.__z || 1));
       const lb = marker.getLabel();
       if (lb) marker.setLabel({ ...lb, color: isA ? activeLabelColor() : pinLabelColor(contrastRef.current) });
+      if (isA) panTarget = marker.getPosition();
     });
+    if (panTarget && mobileFull && mapRef.current) mapRef.current.panTo(panTarget);
     styleClusters(contrastRef.current);
-  }, [active]);
+  }, [active, mobileFull]);
+
+  if (mobileFull) {
+    return (
+      <div ref={rootRef} style={{position:'absolute',inset:0}}>
+        <div ref={elRef} style={{width:'100%',height:'100%',background:mapBgFor(contrast)}}/>
+        {away && pinPts.length > 0 && (
+          <button type="button" onClick={fitToPins} aria-label="Show all pins on the map" className="hbtn pc pc-cardinal"
+            style={{position:'absolute',left:12,bottom:12,zIndex:15,height:40,padding:'0 16px',gap:8,fontSize:15,boxShadow:'0 2px 10px rgba(0,0,0,.28)'}}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Show all pins
+          </button>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div ref={winRef} className="map-win" style={{flex:1,position:'relative',borderRadius:14}}>
@@ -1147,7 +1210,6 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
 
   if (!open) return null;
   const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); };
-  const sectionTitle = {fontSize:13,fontWeight:700,color:'var(--text)',margin:'0 0 8px'};
   return ReactDOM.createPortal(
     <div style={{position:'fixed',inset:0,zIndex:1000,display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
       <div onClick={onClose} aria-hidden="true" style={{position:'absolute',inset:0,background:'var(--overlay)'}}/>
@@ -1156,8 +1218,8 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
           <h2 id="filter-sheet-title" style={{margin:0,fontSize:18,fontFamily:'var(--font-antonio)',color:'var(--text)'}}>Filters</h2>
           <button ref={closeRef} type="button" onClick={onClose} aria-label="Close filters" style={{width:34,height:34,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}><XIcon/></button>
         </div>
-        <div style={{marginBottom:20}}>
-          <h3 style={sectionTitle}>Type</h3>
+        <div role="group" aria-label="Type" style={{marginBottom:20}}>
+          <h3 style={{fontSize:13,fontWeight:700,color:'var(--text)',margin:'0 0 8px'}}>Type</h3>
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
             <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All types</button>
             {CATEGORIES.map(c => {
@@ -1166,30 +1228,30 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
             })}
           </div>
         </div>
-        <div style={{marginBottom:20}}>
-          <h3 style={sectionTitle}>Distance</h3>
+        <fieldset className="fsheet-fieldset">
+          <legend>Distance</legend>
           <div style={{display:'flex',flexDirection:'column'}}>
             {DIST_OPTIONS.map(([d, mi]) => (
               <label key={d} className="fopt"><input type="radio" name="dist-sheet" checked={radius===mi} onChange={()=>setRadius(mi)}/>{d}</label>
             ))}
           </div>
-        </div>
-        <div style={{marginBottom:20}}>
-          <h3 style={sectionTitle}>Specialty</h3>
+        </fieldset>
+        <fieldset className="fsheet-fieldset">
+          <legend>Specialty</legend>
           <div style={{display:'flex',flexDirection:'column'}}>
             {['', ...SPECIALTIES].map(sp => (
               <label key={sp || 'all'} className="fopt"><input type="radio" name="spec-sheet" checked={specialty===sp} onChange={()=>setSpecialty(sp)}/>{sp || 'All specialties'}</label>
             ))}
           </div>
-        </div>
-        <div style={{marginBottom:8}}>
-          <h3 style={sectionTitle}>More filters</h3>
+        </fieldset>
+        <fieldset className="fsheet-fieldset" style={{marginBottom:8}}>
+          <legend>More filters</legend>
           <div style={{display:'flex',flexDirection:'column'}}>
             {SUGGESTED.map(sg => (
               <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
             ))}
           </div>
-        </div>
+        </fieldset>
         <div style={{display:'flex',gap:10,marginTop:14,position:'sticky',bottom:-16,background:'var(--surface)',paddingTop:12,paddingBottom:4,borderTop:'1px solid var(--divider)'}}>
           <button type="button" onClick={clearAll} style={{flex:'0 0 auto',height:44,padding:'0 18px',borderRadius:10,border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',fontSize:14,fontWeight:600,cursor:'pointer'}}>Clear all</button>
           <button type="button" onClick={onClose} className="hbtn pc pc-cardinal" style={{flex:1,justifyContent:'center',height:44,border:'none',fontSize:14,fontWeight:700}}>Show {resultCount} result{resultCount!==1?'s':''}</button>
@@ -1200,11 +1262,38 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
   );
 };
 
-const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, summary, resultCount}) => {
+/* Removable chips summarizing every active structured filter (Baymard: showing applied
+   filters up front, with a one-tap way to remove each, speeds up refinement and avoids the
+   "what's even filtered right now?" confusion of chips that only live inside a closed sheet). */
+const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearAll}) => {
+  const chips = [];
+  if (typeFilter) chips.push({ key:'type', label: TYPE_META[typeFilter] ? TYPE_META[typeFilter].label : typeFilter, onRemove:()=>setTypeFilter('') });
+  if (radius != null) chips.push({ key:'radius', label:`Within ${radius} mi`, onRemove:()=>setRadius(null) });
+  if (specialty) chips.push({ key:'specialty', label:specialty, onRemove:()=>setSpecialty('') });
+  selSug.forEach(s => chips.push({ key:'sug-'+s, label:s, onRemove:()=>toggleSug(s) }));
+  if (!chips.length) return null;
+  return (
+    <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flexBasis:'100%',marginTop:2}}>
+      {chips.map(c => (
+        <span key={c.key} className="afchip">
+          {c.label}
+          <button type="button" onClick={c.onRemove} aria-label={`Remove filter: ${c.label}`}><XIcon/></button>
+        </span>
+      ))}
+      <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:13,fontWeight:600,padding:'0 4px',cursor:'pointer'}}>Clear all</button>
+    </div>
+  );
+};
+
+const ListIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
+
+const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, summary, resultCount, sheetState, onToggleView}) => {
   const [openId, setOpenId] = useState(null);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const filtersBtnRef = useRef(null);
   const toggle = id => setOpenId(o => o === id ? null : id);
   const activeCount = (typeFilter?1:0) + (specialty?1:0) + (radius!=null?1:0) + selSug.length;
+  const closeSheet = () => { setSheetOpen(false); filtersBtnRef.current && filtersBtnRef.current.focus(); };
 
   useEffect(() => {
     if (!openId) return;
@@ -1216,11 +1305,11 @@ const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, s
   }, [openId]);
 
   const distLabel = (DIST_OPTIONS.find(([, mi]) => mi === radius) || DIST_OPTIONS[0])[0];
-  const anyActive = !!(typeFilter || specialty || radius != null || selSug.length || keyword);
   const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); setKeyword(''); setOpenId(null); };
 
   return (
     <div className="fbar" role="search" aria-label="Filter resources">
+      <div aria-live="polite" className="sr-only">{resultCount} result{resultCount!==1?'s':''}</div>
       <div className="fsearch" style={{display:'flex',alignItems:'center',gap:6,border:'1px solid var(--border-strong)',borderRadius:999,padding:'0 12px',height:34,background:'var(--surface)',width:210}}>
         <span style={{color:'var(--brand)',display:'inline-flex',flexShrink:0}}><SearchIcon s={14}/></span>
         <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Name or service…" aria-label="Search by name or service" style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
@@ -1248,13 +1337,19 @@ const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, s
             <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
           ))}
         </FilterChip>
-        {anyActive && <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:14,fontWeight:600,padding:'0 6px',cursor:'pointer'}}>Clear all</button>}
+        {/* "Clear all" lives in ActiveFilterChips below now, alongside the removable per-filter
+           chips, instead of duplicating it here -- keeping keyword-only clears simple (just
+           edit the search box) rather than showing two "Clear all" controls at once. */}
       </div>
-      <button type="button" className="hdr-filters-btn fchip pc pc-cardinal" aria-haspopup="dialog" onClick={()=>setSheetOpen(true)}>
+      <button ref={filtersBtnRef} type="button" className="hdr-filters-btn fchip pc pc-cardinal" aria-haspopup="dialog" aria-label={activeCount > 0 ? `Filters, ${activeCount} applied` : 'Filters'} onClick={()=>setSheetOpen(true)}>
         <SlidersIcon/> Filters{activeCount > 0 && <span className="fcount">{activeCount}</span>}
       </button>
+      {onToggleView && <button type="button" className="hdr-viewtoggle-btn fchip pc pc-blue" onClick={onToggleView} aria-label={sheetState==='full' ? 'Show map' : 'Show list'}>
+        {sheetState==='full' ? <PinIcon s={14}/> : <ListIcon/>} {sheetState==='full' ? 'Map' : 'List'}
+      </button>}
+      <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll}/>
       {summary && <div className="fbar-summary" style={{flex:'1 1 240px',marginLeft:'auto',textAlign:'right',minWidth:0}}>{summary}</div>}
-      <FilterSheet open={sheetOpen} onClose={()=>setSheetOpen(false)} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>
+      <FilterSheet open={sheetOpen} onClose={closeSheet} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>
     </div>
   );
 };
@@ -2291,6 +2386,150 @@ const Pager = ({page, totalPages, setPage}) => {
 };
 
 /* ─── Results ────────────────────────────────────────────────── */
+function useIsMobile(bp = 640) {
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia ? window.matchMedia(`(max-width:${bp}px)`).matches : false);
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const mq = window.matchMedia(`(max-width:${bp}px)`);
+    const onChange = e => setIsMobile(e.matches);
+    mq.addEventListener ? mq.addEventListener('change', onChange) : mq.addListener(onChange);
+    return () => { mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange); };
+  }, [bp]);
+  return isMobile;
+}
+
+/* Keeps the mobile map/list sheet's state in the URL hash (#view=map / #view=list) so the
+   browser Back button restores it, matching Yelp/Zillow -- confirmed live during the mobile
+   redesign research as the dominant pattern for a map<->list toggle. Scoped to just the view,
+   not full search state (location/filters/page), by deliberate choice this round. */
+function useSheetView() {
+  const parse = () => (window.location.hash.includes('view=list') ? 'full' : 'peek');
+  const [state, setState] = useState(parse);
+  useEffect(() => {
+    const onChange = () => setState(parse());
+    window.addEventListener('popstate', onChange);
+    window.addEventListener('hashchange', onChange);
+    return () => { window.removeEventListener('popstate', onChange); window.removeEventListener('hashchange', onChange); };
+  }, []);
+  const setView = next => {
+    setState(next);
+    const target = next === 'full' ? 'view=list' : 'view=map';
+    if (window.location.hash.replace('#', '') !== target) history.pushState(null, '', '#' + target);
+  };
+  return [state, setView];
+}
+
+/* Floating card above the sheet's peek strip, showing whichever result is "active" (tapped
+   on the map, or stepped to via Prev/Next). It's always present while peeking -- not only
+   after a pin tap -- because Google Maps markers aren't focusable DOM elements, so a
+   keyboard/screen-reader user could otherwise never reach a single result while the map is
+   showing. Prev/Next give that user a real, non-drag way to move through every result. */
+const MobilePinPreview = ({group, idx, total, onPrev, onNext, bottom}) => {
+  const first = group[0];
+  const t = TYPE_META[first.type] || TYPE_META.general_support;
+  const many = group.length > 1;
+  const name = many ? (first.facility_name || `${group.length} Resources at This Address`) : first.name;
+  return (
+    <div role="region" aria-label={`Selected result, ${idx + 1} of ${total}`} style={{position:'absolute',left:12,right:12,bottom,zIndex:12,background:'var(--surface)',border:'1px solid var(--border-strong)',borderRadius:14,boxShadow:'0 8px 24px rgba(0,0,0,.28)',padding:'14px 12px 12px',display:'flex',gap:10,alignItems:'flex-start'}}>
+      <CardThumb fg={t.fg} badge={idx + 1} badgeBg="var(--pin-fill)" badgeColor="var(--pin-fill-on)" grid={!many} size={56}/>
+      <div style={{flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:3}}>
+        <h3 style={{...CARD_TITLE,fontSize:15}}>{name}</h3>
+        <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+          <TypePill type={first.type} small/>
+          {first.distance != null && <span style={{fontSize:11,fontWeight:600,color:'var(--text)'}}>{first.distance.toFixed(1)} mi</span>}
+        </div>
+        <div style={{display:'flex',gap:6,marginTop:2}}>
+          {first.phone && <a href={`tel:${first.phone}`} aria-label={`Call ${name}`} className="call-btn card-action-btn" style={{background:'var(--action)',color:'var(--action-on)'}}>Call</a>}
+          {first.website && <a href={first.website} target="_blank" rel="noopener noreferrer" aria-label={`Website for ${name} (opens in new tab)`} className="card-action-btn" style={{background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)'}}>Website</a>}
+        </div>
+      </div>
+      {total > 1 && (
+        <div style={{position:'absolute',top:-15,left:0,right:0,display:'flex',justifyContent:'space-between',padding:'0 6px'}}>
+          <button type="button" onClick={onPrev} aria-label={`Previous result (${idx===0?total:idx} of ${total})`} style={{width:30,height:30,borderRadius:'50%',border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',display:'inline-flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 6px rgba(0,0,0,.2)',fontSize:16}}>‹</button>
+          <button type="button" onClick={onNext} aria-label={`Next result (${idx+2>total?1:idx+2} of ${total})`} style={{width:30,height:30,borderRadius:'50%',border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',display:'inline-flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 6px rgba(0,0,0,.2)',fontSize:16}}>›</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ─── Mobile map-first results layout (<=640px) ──────────────────
+   Chosen over "map below the list" (the old layout, confirmed unreachable in practice --
+   it sat ~2,860px down the page on a phone) and over a floating pill toggle: the map fills
+   the screen behind a draggable sheet holding the list, Airbnb/Google-style. Dragging the
+   handle is optional -- the "Show list"/"Show map" button in FilterBar (always in normal
+   tab order, never requires a pointer) is the real, WCAG-2.5.7-compliant way to switch. */
+const SHEET_PEEK = 132;
+
+const MobileMapSheet = ({groups, listContent, coords, radius, themeKey, contrast, activeId, setActiveId, sheetState, setSheetState, resultCount}) => {
+  const shellRef = useRef(null);
+  const [shellH, setShellH] = useState(0);
+  useEffect(() => {
+    const measure = () => { if (shellRef.current) setShellH(shellRef.current.clientHeight); };
+    measure();
+    const ro = window.ResizeObserver ? new ResizeObserver(measure) : null;
+    if (ro && shellRef.current) ro.observe(shellRef.current);
+    window.addEventListener('resize', measure);
+    return () => { if (ro) ro.disconnect(); window.removeEventListener('resize', measure); };
+  }, []);
+
+  const [dragOffset, setDragOffset] = useState(null);
+  const dragStartY = useRef(0);
+  const dragStartOffset = useRef(0);
+  const maxOffset = Math.max(0, shellH - SHEET_PEEK);
+  const restOffset = sheetState === 'full' ? 0 : maxOffset;
+  const offset = dragOffset != null ? dragOffset : restOffset;
+
+  const onHandlePointerDown = e => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragStartY.current = e.clientY;
+    dragStartOffset.current = offset;
+    setDragOffset(offset);
+  };
+  const onHandlePointerMove = e => {
+    if (dragOffset == null) return;
+    const dy = e.clientY - dragStartY.current;
+    setDragOffset(Math.min(maxOffset, Math.max(0, dragStartOffset.current + dy)));
+  };
+  const onHandlePointerUp = () => {
+    if (dragOffset == null) return;
+    const next = dragOffset > maxOffset / 2 ? 'peek' : 'full';
+    setDragOffset(null);
+    setSheetState(next);
+  };
+
+  const activeGroupIdx = groups.length ? Math.max(0, groups.findIndex(g => g.some(r => r.id === activeId))) : -1;
+  const stepPreview = delta => {
+    if (!groups.length) return;
+    const cur = activeGroupIdx === -1 ? 0 : activeGroupIdx;
+    setActiveId(groups[(cur + delta + groups.length) % groups.length][0].id);
+  };
+
+  return (
+    <div ref={shellRef} style={{position:'sticky',top:76,height:'calc(100vh - 92px)',minHeight:420,overflow:'hidden',borderRadius:14,border:'1px solid var(--border)'}}>
+      <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast} mobileFull/>
+      {sheetState === 'peek' && groups.length > 0 && (
+        <MobilePinPreview group={groups[activeGroupIdx]} idx={activeGroupIdx} total={groups.length}
+          onPrev={()=>stepPreview(-1)} onNext={()=>stepPreview(1)} bottom={SHEET_PEEK + 12}/>
+      )}
+      <div style={{position:'absolute',left:0,right:0,top:0,bottom:0,zIndex:5,background:'var(--surface)',borderRadius:'16px 16px 0 0',boxShadow:'0 -6px 24px rgba(0,0,0,.18)',display:'flex',flexDirection:'column',
+          transform:`translateY(${offset}px)`, transition: dragOffset == null ? 'transform 280ms var(--ease-out)' : 'none'}}>
+        <div
+          onPointerDown={onHandlePointerDown} onPointerMove={onHandlePointerMove} onPointerUp={onHandlePointerUp} onPointerCancel={onHandlePointerUp}
+          style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:6,padding:'10px 16px 8px',touchAction:'none',cursor:'grab'}}>
+          <span aria-hidden="true" style={{width:40,height:4,borderRadius:999,background:'var(--border-strong)'}}/>
+          <span style={{fontSize:12,fontWeight:600,color:'var(--text-muted)'}}>{resultCount} result{resultCount!==1?'s':''}</span>
+        </div>
+        {sheetState === 'full' && (
+          <div style={{flex:1,overflowY:'auto',padding:'0 12px 24px',WebkitOverflowScrolling:'touch'}}>
+            {listContent}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, contrast, onVisibleChange}) => {
   const [typeFilter, setTypeFilter] = useState('');
   const [specialty, setSpecialty] = useState('');
@@ -2299,6 +2538,8 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
   const [page, setPage] = useState(0);
   const [selSug, setSelSug] = useState([]);
   const toggleSug = s => setSelSug(a => a.includes(s) ? a.filter(x=>x!==s) : [...a,s]);
+  const isMobile = useIsMobile();
+  const [sheetState, setSheetState] = useSheetView();
   // Reset to first page whenever the result set changes
   useEffect(() => { setPage(0); }, [typeFilter, specialty, radius, keyword, coords, selSug]);
 
@@ -2399,41 +2640,48 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
             <span className="hide-mobile">{` · ${ALL.length} total in directory`}</span>
           </div>
         </React.Fragment>
-      } keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])}/>
-      <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
-        <div style={{flex:'3 1 480px',minWidth:320}}>
-          {shown.length === 0 && national.length === 0 ? (
-            <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
-              <div style={{fontSize:32,marginBottom:10}}>🔍</div>
-              <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700}}>NO RESULTS FOUND</div>
-              <div style={{fontSize:14,marginTop:6}}>Try widening the distance or clearing filters</div>
+      } keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])} sheetState={sheetState} onToggleView={()=>setSheetState(sheetState==='full'?'peek':'full')}/>
+      {(() => {
+        const listContent = shown.length === 0 && national.length === 0 ? (
+          <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
+            <div style={{fontSize:32,marginBottom:10}}>🔍</div>
+            <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700}}>NO RESULTS FOUND</div>
+            <div style={{fontSize:14,marginTop:6}}>Try widening the distance or clearing filters</div>
+          </div>
+        ) : (
+          <React.Fragment>
+            {groups.map((g,i)=>(
+              g.length > 1
+                ? <GroupedResourceCard key={'g'+g[0].id} group={g} idx={i} active={g.some(x=>x.id===activeId)} onHover={setActiveId}/>
+                : <ResourceCard key={g[0].id} r={g[0]} idx={i} fav={favs.includes(g[0].id)} onFav={onFav} active={activeId===g[0].id} onHover={setActiveId} compact={isMobile}/>
+            ))}
+            {totalPages > 1 && (
+              <Pager page={safePage} totalPages={totalPages} setPage={setPage}/>
+            )}
+            {onLastPage && national.length > 0 && (
+              <div style={{marginTop:24}}>
+                <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.06em',textTransform:'uppercase',color:'var(--text-secondary)',margin:'0 0 4px',borderTop:'1px solid var(--divider)',paddingTop:18}}>Available Nationwide &amp; Virtual</h3>
+                <p style={{fontSize:12,color:'var(--text-muted)',margin:'0 0 14px'}}>{national.length} service{national.length!==1?'s':''} you can reach from anywhere — no fixed location.</p>
+                {national.map((r,i)=>(
+                  <ResourceCard key={r.id} r={r} idx={filtered.length+i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId} compact={isMobile}/>
+                ))}
+              </div>
+            )}
+          </React.Fragment>
+        );
+
+        return isMobile ? (
+          <MobileMapSheet groups={groups} listContent={listContent} coords={coords} radius={radius} themeKey={themeKey} contrast={contrast}
+            activeId={activeId} setActiveId={setActiveId} sheetState={sheetState} setSheetState={setSheetState} resultCount={filtered.length}/>
+        ) : (
+          <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
+            <div style={{flex:'3 1 480px',minWidth:320}}>{listContent}</div>
+            <div style={{flex:'2 1 400px',minWidth:340,alignSelf:'stretch',minHeight:'calc(100vh - 92px)',display:'flex',flexDirection:'column'}}>
+              <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast}/>
             </div>
-          ) : (
-            <React.Fragment>
-              {groups.map((g,i)=>(
-                g.length > 1
-                  ? <GroupedResourceCard key={'g'+g[0].id} group={g} idx={i} active={g.some(x=>x.id===activeId)} onHover={setActiveId}/>
-                  : <ResourceCard key={g[0].id} r={g[0]} idx={i} fav={favs.includes(g[0].id)} onFav={onFav} active={activeId===g[0].id} onHover={setActiveId}/>
-              ))}
-              {totalPages > 1 && (
-                <Pager page={safePage} totalPages={totalPages} setPage={setPage}/>
-              )}
-              {onLastPage && national.length > 0 && (
-                <div style={{marginTop:24}}>
-                  <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.06em',textTransform:'uppercase',color:'var(--text-secondary)',margin:'0 0 4px',borderTop:'1px solid var(--divider)',paddingTop:18}}>Available Nationwide &amp; Virtual</h3>
-                  <p style={{fontSize:12,color:'var(--text-muted)',margin:'0 0 14px'}}>{national.length} service{national.length!==1?'s':''} you can reach from anywhere — no fixed location.</p>
-                  {national.map((r,i)=>(
-                    <ResourceCard key={r.id} r={r} idx={filtered.length+i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId}/>
-                  ))}
-                </div>
-              )}
-            </React.Fragment>
-          )}
-        </div>
-        <div style={{flex:'2 1 400px',minWidth:340,alignSelf:'stretch',minHeight:'calc(100vh - 92px)',display:'flex',flexDirection:'column'}}>
-          <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast}/>
-        </div>
-      </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };
