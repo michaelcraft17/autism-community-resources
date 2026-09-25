@@ -469,6 +469,104 @@ government/encyclopedic structured sources were ~95%+ clean):
   Don't re-run this exact query shape without a different angle (e.g. a more specific
   region/city, or asking for regulatory registries by name instead of "major organizations").
 
+### 2026-09-25 "in-depth API research" pass — new sources, disability-scope layer
+
+A separate research-only session produced ~/Desktop/autism-registry-sources-2026-09-25.md
+(verified endpoints, not merged) plus a matching memory note
+(`project-autism-registry-research-2026-09`). This section covers what a follow-up build
+pass actually merged from that note. The note also documents a scope decision from the
+site owner: **general disability is now in scope**, not just autism — autism stays the
+core/default layer, with neurodevelopmental (ADHD, dyslexia, Down syndrome,
+intellectual/developmental disability, cerebral palsy) and general disability as two
+further, filterable layers.
+
+**Schema addition: `disability_scope` field.** Existing ~72,600 entries are left
+untouched — no field means "autism" (the implicit scope the whole directory was already
+built around). New entries from the neurodevelopmental/general-disability layers get an
+explicit `"disability_scope": "neurodevelopmental"` or `"disability_scope": "general"`.
+This was a deliberate minimal-schema choice over backfilling the field onto every
+existing row, which would have been a large, low-value rewrite. `index.html`'s
+`shapeAll()`/`TYPE_META` were NOT touched in this pass — there's no filter UI for this
+field yet, which is a separate follow-up decision, not made here.
+
+- `germany_zer_fetch.py` — Germany's BZSt Zuwendungsempfaengerregister (federal
+  tax-exempt non-profit register), zer.bzst.de. Not real gzip: each bulk file is zlib
+  bytes written out as comma-separated decimal text
+  (`zlib.decompress(bytes(int(x) for x in text.split(",")))`), decoding to
+  `{"P": [string pool], "_": [one value per row]}` with `"p:<base36>"` pool refs. Verified
+  this matches the research note's documented format exactly. 512,206 orgs nationwide,
+  **177 autism/asperger name matches** (177 vs. the note's estimated 178 — consistent).
+  No street address in source, so city-level geocoded via Nominatim. Confirmed false-
+  positive guard works: "Asperger" as the town Asperg (e.g. "... Asperger Weingärtner")
+  is excluded via a dedicated regex, not just word-boundary matching. Disability-purpose
+  codes (~8,800 raw rows, per the note) were deliberately NOT built this pass — that's a
+  much bigger geocoding job, left as a documented follow-up (`INCLUDE_DISABILITY=1` env
+  var already wired into the script for a future run).
+- `uk_charity_regulators_fetch.py` — England & Wales Charity Commission (CCEW, full
+  register bulk TSV) + Northern Ireland CCNI (CSV export). A genuinely different registry
+  type from the CQC data already in this repo (charity status, not care-facility
+  licensing) — deduped cleanly against it (41 skipped as true dupes out of 526 raw).
+  Matches both charity name AND the `charity_activities` free-text field, not just name —
+  this is why the yield (507 CCEW matches) is well above the research note's name-only
+  estimate of 177: spot-checked several activities-only hits by hand (e.g. "Guideposts
+  Trust Limited", "The Society of Clinical Psychiatrists Research Fund") and confirmed
+  each activities description genuinely mentions autism/Asperger's, not a false positive —
+  same purpose-text-matching precedent already used for Catalonia/Serbia. Geocoded via
+  postcodes.io (UK-specific, free, bulk, keyless) rather than Nominatim, specifically to
+  avoid adding UK-scale request volume to the shared Nominatim budget every other
+  country's fetcher in this pipeline also depends on. **Scotland (OSCR) not completed** —
+  its charity-register download moved since the research note was written (the note's URL
+  404s now); the current page (`/about-charities/search-the-register/download-the-scottish-
+  charity-register/`) loads but a quick Playwright network-request capture didn't surface
+  the actual file URL (no direct download link in the static HTML, likely a JS-driven
+  fetch) in the time available this pass — needs the same live-driven discovery technique
+  already used for Belgium/Slovenia/Ohio DODD, not yet done.
+- `irs_bmf_ntee_fetch.py` — IRS Exempt Organizations Business Master File
+  (irs.gov/pub/irs-soi/eo1-4.csv, keyless, ~1.96M orgs, confirmed live and matching the
+  note's row count). Filters `NTEE_CD` for G84/H84 (autism). The note flagged this as the
+  single biggest documented autism gap in the whole pipeline — hundreds of NTEE-tagged
+  autism orgs whose name doesn't contain "autism" at all, which the existing
+  ProPublica-name-search-based pipeline misses entirely. City-level geocoded (cached by
+  unique city/state pair rather than per-org, to keep Nominatim call volume down — ~9,700
+  raw disability-code rows exist too but are gated behind `INCLUDE_DISABILITY=1` for the
+  same reason as Germany's, deliberately not run this pass).
+- `spain_regional_fetch.py` — Spain has no single national registry (interior.gob.es
+  403s). Covers 4 of the note's 6 verified regions: Catalonia (Socrata SoQL API),
+  Basque Country (flat JSON with lat/lon already in the source), Madrid (CKAN CSV),
+  Canarias (CKAN CSV). Matches both name and purpose/activity/category text, tagging
+  `disability_scope: "general"` for category-only disability hits (e.g. Catalonia's
+  `classificacio_especifica` containing "Discapacitats", Basque `asoGoalType` containing
+  "Minusválidos"/"Disminuídos Psíquicos"). **Galicia and Aragón not covered** — Galicia's
+  CSV endpoint has a broken TLS intermediate-certificate chain (same class of issue as
+  Serbia's `openapi.apr.gov.rs`, documented in the research note), and Aragón's API is a
+  custom paginated BRSCGI format needing per-province base codes; both need real fix work
+  (supply the missing cert / build the paginator), not disabling TLS verification, so left
+  as a follow-up rather than rushed.
+
+**Explicitly skipped, per the no-evasion policy (unchanged from earlier rounds):**
+Hungary's NAV list (reCAPTCHA v3 token on the download URL — the note says a one-time
+manual browser download is the clean path, not scripted), Denmark (needs a signed data-
+access agreement), BACB's certificant registry (Cloudflare Turnstile).
+
+**Continuation queue, in the note's priority order, for whoever picks this back up:**
+4. California AG charity API + NY Medicaid Licensed Behavior Analyst list (dedupe the
+   latter against existing NPI entries by NPI number, not name).
+5. Sweden (SCB/Bolagsverket bulk TSV, Latin-1, `JurForm` 61/72), Serbia (`openapi.apr.gov.rs`
+   — same broken-TLS-chain issue as Galicia), Moldova, Montenegro.
+6. Remaining US state registries (NY, PA, TX, CO, OR Socrata portals) — dedupe hard
+   against ProPublica per the note's explicit warning that these overlap heavily.
+7. Disability-layer service directories (NY OPWDD, Ohio DODD) as the third
+   `disability_scope: "general"` layer, tagged accordingly rather than mixed into
+   autism-tagged results.
+8. Galicia (fix the TLS chain properly) and Aragón (build the paginator) to complete
+   the Spain regional set.
+9. OSCR (Scotland) via live Playwright request-capture, same technique as Belgium/
+   Slovenia/Ohio DODD.
+10. `INCLUDE_DISABILITY=1` reruns of the Germany and IRS fetchers for their much larger
+    disability-code layers (~8,800 and ~9,700 raw rows respectively) once there's a plan
+    for the geocoding time budget (each is likely 2+ hours of real, polite Nominatim
+    traffic at city-level caching).
+
 ### Local AI tooling (outside token budget, free to rerun)
 
 - **Ollama + Aider**, set up in this repo: `.aider.conf.yml` (model: `ollama_chat/qwen2.5-coder:7b`),
@@ -636,6 +734,12 @@ persistence guardrail, so cron was used instead.
 
 ## Current state
 
+- **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
+  research" build pass (see its own section above, under Data harvesting tools) added
+  Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
+  Business Master File (NTEE autism codes) and Spain's 4 covered regions were built and
+  verified live but are still mid-run (geocoding) as of this exact count — see that
+  section's "continuation queue" for what's next and what's still pending merge.
 - **72,577 total resources** (was 72,537 as of the last handoff). This session's 2026-09-25
   additions: France Asperger-sweep round 2 (+21), Switzerland's new Zefix fetcher (+12, one of
   13 found was already in the dataset), plus 5 incidental adds from `new_resources_uk_cqc.json`/
