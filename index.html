@@ -203,6 +203,24 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 .fopt{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:14px;color:var(--text);cursor:pointer;}
 .fopt:hover{background:var(--bg-sunken);}
 .fopt input{accent-color:var(--brand);width:17px;height:17px;flex-shrink:0;cursor:pointer;}
+/* ─── Mobile header nav + filter bar (<=640px): collapse the 4 header buttons into a
+   hamburger menu, and the filter-chip row into a "Filters" bottom sheet, so a phone
+   visitor isn't scrolling past a wall of controls before the first result card. ─── */
+.hdr-menu-btn{display:none;}
+.hdr-filters-btn{display:none;}
+@media (max-width:640px){
+  .hdr-full-btn{display:none!important;}
+  .hdr-menu-btn{display:inline-flex!important;}
+  .fbar-desktop-filters{display:none!important;}
+  .hdr-filters-btn{display:inline-flex!important;}
+  .fsearch{width:100%!important;}
+  .fbar-summary{flex-basis:100%!important;margin-left:0!important;text-align:left!important;}
+  .hide-mobile{display:none!important;}
+}
+.hdr-menu-pop{position:fixed;z-index:9999;min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 32px rgba(0,0,0,.22);padding:6px;display:flex;flex-direction:column;gap:2px;}
+.hdr-menu-pop button,.hdr-menu-pop a{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border-radius:8px;border:none;background:transparent;color:var(--text);font-size:14px;font-weight:600;text-align:left;text-decoration:none;cursor:pointer;}
+.hdr-menu-pop button:hover,.hdr-menu-pop a:hover{background:var(--bg-sunken);}
+.hdr-menu-pop button:focus-visible,.hdr-menu-pop a:focus-visible{outline:2px solid var(--border-focus);outline-offset:-2px;background:var(--bg-sunken);}
 .ra-mask{position:fixed;left:0;right:0;z-index:480;background:rgba(0,0,0,.62);pointer-events:none;}
 .ra-guide{position:fixed;left:0;top:0;width:512px;height:12px;box-sizing:border-box;background:#000;border:3px solid #fff300;border-radius:5px;z-index:480;pointer-events:none;will-change:transform;}
 /* Arrow above the bar: yellow triangle outlined around a black one (same size/position as the UserWay guide) */
@@ -462,6 +480,7 @@ const FontIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="non
 const SunIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const SlidersIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 6h9M17 6h3M4 12h3M9 12h11M4 18h13M19 18h1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="14" cy="6" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>;
 const XIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
+const MenuIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const HeartIcon = ({f}) => <svg width="18" height="18" viewBox="0 0 24 24" fill={f?'var(--cardinal-500)':'none'}><path d="M12 20s-7-4.6-7-9.5A4.5 4.5 0 0112 7a4.5 4.5 0 017 3.5C19 15.4 12 20 12 20z" stroke={f?'var(--cardinal-500)':'var(--stone-400)'} strokeWidth="2" strokeLinejoin="round"/></svg>;
 const ShareIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" strokeWidth="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 
@@ -1100,9 +1119,92 @@ const FilterChip = ({id, label, active, count, open, onToggle, tone, children}) 
   </div>
 );
 
-const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, summary}) => {
+/* ─── Mobile "Filters" bottom sheet ──────────────────────────────
+   Below 640px the 7 always-visible filter chips (5 categories + Distance + Specialty,
+   plus the "More filters" chip) were pushing every result card below the fold on a phone
+   — confirmed on a real 390px screenshot. They collapse into this single sheet, opened from
+   a "Filters" button that carries an active-count badge (same .fcount style as the chips). */
+const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, resultCount}) => {
+  const dialogRef = useRef(null);
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => closeRef.current && closeRef.current.focus(), 0);
+    const onKey = e => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const f = dialogRef.current.querySelectorAll('button, input, a[href]');
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => { clearTimeout(t); window.removeEventListener('keydown', onKey); };
+  }, [open]);
+
+  if (!open) return null;
+  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); };
+  const sectionTitle = {fontSize:13,fontWeight:700,color:'var(--text)',margin:'0 0 8px'};
+  return ReactDOM.createPortal(
+    <div style={{position:'fixed',inset:0,zIndex:1000,display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
+      <div onClick={onClose} aria-hidden="true" style={{position:'absolute',inset:0,background:'var(--overlay)'}}/>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="filter-sheet-title" style={{position:'relative',background:'var(--surface)',borderRadius:'16px 16px 0 0',width:'100%',maxWidth:520,maxHeight:'85vh',overflowY:'auto',boxShadow:'0 -8px 32px rgba(0,0,0,.28)',padding:'18px 18px 16px'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
+          <h2 id="filter-sheet-title" style={{margin:0,fontSize:18,fontFamily:'var(--font-antonio)',color:'var(--text)'}}>Filters</h2>
+          <button ref={closeRef} type="button" onClick={onClose} aria-label="Close filters" style={{width:34,height:34,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}><XIcon/></button>
+        </div>
+        <div style={{marginBottom:20}}>
+          <h3 style={sectionTitle}>Type</h3>
+          <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+            <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All types</button>
+            {CATEGORIES.map(c => {
+              const v = c.toLowerCase();
+              return <button key={c} type="button" className={`fchip pc pc-${v}${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>{c}</button>;
+            })}
+          </div>
+        </div>
+        <div style={{marginBottom:20}}>
+          <h3 style={sectionTitle}>Distance</h3>
+          <div style={{display:'flex',flexDirection:'column'}}>
+            {DIST_OPTIONS.map(([d, mi]) => (
+              <label key={d} className="fopt"><input type="radio" name="dist-sheet" checked={radius===mi} onChange={()=>setRadius(mi)}/>{d}</label>
+            ))}
+          </div>
+        </div>
+        <div style={{marginBottom:20}}>
+          <h3 style={sectionTitle}>Specialty</h3>
+          <div style={{display:'flex',flexDirection:'column'}}>
+            {['', ...SPECIALTIES].map(sp => (
+              <label key={sp || 'all'} className="fopt"><input type="radio" name="spec-sheet" checked={specialty===sp} onChange={()=>setSpecialty(sp)}/>{sp || 'All specialties'}</label>
+            ))}
+          </div>
+        </div>
+        <div style={{marginBottom:8}}>
+          <h3 style={sectionTitle}>More filters</h3>
+          <div style={{display:'flex',flexDirection:'column'}}>
+            {SUGGESTED.map(sg => (
+              <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
+            ))}
+          </div>
+        </div>
+        <div style={{display:'flex',gap:10,marginTop:14,position:'sticky',bottom:-16,background:'var(--surface)',paddingTop:12,paddingBottom:4,borderTop:'1px solid var(--divider)'}}>
+          <button type="button" onClick={clearAll} style={{flex:'0 0 auto',height:44,padding:'0 18px',borderRadius:10,border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',fontSize:14,fontWeight:600,cursor:'pointer'}}>Clear all</button>
+          <button type="button" onClick={onClose} className="hbtn pc pc-cardinal" style={{flex:1,justifyContent:'center',height:44,border:'none',fontSize:14,fontWeight:700}}>Show {resultCount} result{resultCount!==1?'s':''}</button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
+
+const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, summary, resultCount}) => {
   const [openId, setOpenId] = useState(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const toggle = id => setOpenId(o => o === id ? null : id);
+  const activeCount = (typeFilter?1:0) + (specialty?1:0) + (radius!=null?1:0) + selSug.length;
 
   useEffect(() => {
     if (!openId) return;
@@ -1123,30 +1225,36 @@ const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, s
         <span style={{color:'var(--brand)',display:'inline-flex',flexShrink:0}}><SearchIcon s={14}/></span>
         <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Name or service…" aria-label="Search by name or service" style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
       </div>
-      <span className="fbar-sep" aria-hidden="true"/>
-      <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All types</button>
-      {CATEGORIES.map(c => {
-        const v = c.toLowerCase();
-        return <button key={c} type="button" className={`fchip pc pc-${v}${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>{c}</button>;
-      })}
-      <span className="fbar-sep" aria-hidden="true"/>
-      <FilterChip tone="blue" id="Distance" label={radius == null ? 'Distance' : distLabel} active={radius != null} open={openId==='Distance'} onToggle={toggle}>
-        {DIST_OPTIONS.map(([d, mi]) => (
-          <label key={d} className="fopt"><input type="radio" name="dist" checked={radius===mi} onChange={()=>{setRadius(mi); setOpenId(null);}}/>{d}</label>
-        ))}
-      </FilterChip>
-      <FilterChip tone="amber" id="Specialty" label={specialty || 'Specialty'} active={!!specialty} open={openId==='Specialty'} onToggle={toggle}>
-        {['', ...SPECIALTIES].map(sp => (
-          <label key={sp || 'all'} className="fopt"><input type="radio" name="spec" checked={specialty===sp} onChange={()=>{setSpecialty(sp); setOpenId(null);}}/>{sp || 'All specialties'}</label>
-        ))}
-      </FilterChip>
-      <FilterChip tone="pink" id="More filters" label="More filters" active={selSug.length > 0} count={selSug.length} open={openId==='More filters'} onToggle={toggle}>
-        {SUGGESTED.map(sg => (
-          <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
-        ))}
-      </FilterChip>
-      {anyActive && <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:14,fontWeight:600,padding:'0 6px',cursor:'pointer'}}>Clear all</button>}
-      {summary && <div style={{flex:'1 1 240px',marginLeft:'auto',textAlign:'right',minWidth:0}}>{summary}</div>}
+      <span className="fbar-sep hide-mobile" aria-hidden="true"/>
+      <div className="fbar-desktop-filters" style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8}}>
+        <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All types</button>
+        {CATEGORIES.map(c => {
+          const v = c.toLowerCase();
+          return <button key={c} type="button" className={`fchip pc pc-${v}${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>{c}</button>;
+        })}
+        <span className="fbar-sep" aria-hidden="true"/>
+        <FilterChip tone="blue" id="Distance" label={radius == null ? 'Distance' : distLabel} active={radius != null} open={openId==='Distance'} onToggle={toggle}>
+          {DIST_OPTIONS.map(([d, mi]) => (
+            <label key={d} className="fopt"><input type="radio" name="dist" checked={radius===mi} onChange={()=>{setRadius(mi); setOpenId(null);}}/>{d}</label>
+          ))}
+        </FilterChip>
+        <FilterChip tone="amber" id="Specialty" label={specialty || 'Specialty'} active={!!specialty} open={openId==='Specialty'} onToggle={toggle}>
+          {['', ...SPECIALTIES].map(sp => (
+            <label key={sp || 'all'} className="fopt"><input type="radio" name="spec" checked={specialty===sp} onChange={()=>{setSpecialty(sp); setOpenId(null);}}/>{sp || 'All specialties'}</label>
+          ))}
+        </FilterChip>
+        <FilterChip tone="pink" id="More filters" label="More filters" active={selSug.length > 0} count={selSug.length} open={openId==='More filters'} onToggle={toggle}>
+          {SUGGESTED.map(sg => (
+            <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
+          ))}
+        </FilterChip>
+        {anyActive && <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:14,fontWeight:600,padding:'0 6px',cursor:'pointer'}}>Clear all</button>}
+      </div>
+      <button type="button" className="hdr-filters-btn fchip pc pc-cardinal" aria-haspopup="dialog" onClick={()=>setSheetOpen(true)}>
+        <SlidersIcon/> Filters{activeCount > 0 && <span className="fcount">{activeCount}</span>}
+      </button>
+      {summary && <div className="fbar-summary" style={{flex:'1 1 240px',marginLeft:'auto',textAlign:'right',minWidth:0}}>{summary}</div>}
+      <FilterSheet open={sheetOpen} onClose={()=>setSheetOpen(false)} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>
     </div>
   );
 };
@@ -1353,8 +1461,64 @@ const SuggestModal = ({open, onClose}) => {
   );
 };
 
+/* ─── Header mobile overflow menu ───────────────────────────────
+   Below 640px the header's 4 buttons (Donate / Suggest a Resource / Saved / Accessibility)
+   no longer fit in one row without clipping (confirmed on a real 390px viewport — "Saved"
+   was cut mid-word and "Accessibility" pushed off-screen). Donate/Suggest/Saved collapse into
+   this menu; Accessibility stays visible on its own since it's the site's core feature.
+   Portaled to document.body (same pattern as SuggestDropdown) so it isn't affected by any
+   ancestor's overflow, and positioned from the trigger button's own rect. */
+const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest, savedOpen, savedCount, onToggleSaved}) => {
+  const [rect, setRect] = useState(null);
+  const popRef = useRef(null);
+
+  useEffect(() => {
+    if (!open || !anchorRef.current) { setRect(null); return; }
+    const update = () => setRect(anchorRef.current.getBoundingClientRect());
+    update();
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update); };
+  }, [open, anchorRef]);
+
+  useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => { const first = popRef.current && popRef.current.querySelector('button, a[href]'); first && first.focus(); }, 0);
+    const onKey = e => {
+      if (e.key === 'Escape') { onClose(); anchorRef.current && anchorRef.current.focus(); return; }
+      if (e.key === 'Tab' && popRef.current) {
+        const items = popRef.current.querySelectorAll('button, a[href]');
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    const onDown = e => { if (popRef.current && !popRef.current.contains(e.target) && anchorRef.current && !anchorRef.current.contains(e.target)) onClose(); };
+    window.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onDown);
+    return () => { clearTimeout(t); window.removeEventListener('keydown', onKey); document.removeEventListener('mousedown', onDown); };
+  }, [open]);
+
+  if (!open || !rect) return null;
+  return ReactDOM.createPortal(
+    <div ref={popRef} role="menu" aria-label="More actions" className="hdr-menu-pop" style={{top:rect.bottom+8, right:Math.max(8, window.innerWidth - rect.right)}}>
+      <a role="menuitem" href="#donate" onClick={e=>{e.preventDefault();onClose();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}}>
+        <span aria-hidden="true" style={{color:'var(--cardinal-500)'}}>♥</span> Donate
+      </a>
+      <button role="menuitem" type="button" onClick={()=>{onClose();onSuggest();}}><PlusCircleIcon s={16}/> Suggest a Resource</button>
+      <button role="menuitem" type="button" onClick={()=>{onClose();onToggleSaved();}} aria-pressed={savedOpen}>
+        <HeartIcon f={savedCount>0 && !savedOpen}/> Saved{savedCount>0 && ` (${savedCount})`}
+      </button>
+    </div>,
+    document.body
+  );
+};
+
 /* ─── Header ─────────────────────────────────────────────────── */
 const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, onSuggest, locLabel, onLogoClick, onSearchLocation, onSelectSuggestion, onUseMyLocation, showSearch, locBusy, locError}) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const menuBtnRef = useRef(null);
   const [locInput, setLocInput] = useState(locLabel === 'My Location' ? '' : locLabel);
   useEffect(() => { setLocInput(locLabel === 'My Location' ? '' : locLabel); }, [locLabel]);
   const [open, setOpen] = useState(false);
@@ -1411,20 +1575,25 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
           <PinIcon s={14}/> My Location
         </button>}
         <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
-          <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:'var(--cardinal-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
+          <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} className="hdr-full-btn" style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:'var(--cardinal-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
             ♥ Donate
           </a>
-          <button type="button" onClick={onSuggest} aria-haspopup="dialog" title="Suggest a resource to add" className="hbtn pc pc-cardinal">
+          <button type="button" onClick={onSuggest} aria-haspopup="dialog" title="Suggest a resource to add" className="hdr-full-btn hbtn pc pc-cardinal">
             <PlusCircleIcon s={16}/> Suggest a Resource
           </button>
-          <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title="Your saved resources" className={`hbtn pc pc-cardinal${savedOpen?' on':''}`}>
+          <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title="Your saved resources" className={`hdr-full-btn hbtn pc pc-cardinal${savedOpen?' on':''}`}>
             <HeartIcon f={savedCount>0 && !savedOpen}/> Saved{savedCount>0 && <span style={{fontWeight:700}}>({savedCount})</span>}
           </button>
-          <button type="button" onClick={()=>setA11yOpen(o=>!o)} aria-pressed={a11yOpen} aria-haspopup="dialog" className={`hbtn pc pc-teal${a11yOpen?' on':''}`}>
-            <SlidersIcon/> Accessibility
+          <button ref={menuBtnRef} type="button" onClick={()=>setMobileMenuOpen(o=>!o)} aria-haspopup="menu" aria-expanded={mobileMenuOpen} aria-label={`More actions${savedCount>0 ? `, ${savedCount} saved` : ''}`} className="hdr-menu-btn hbtn pc pc-cardinal" style={{position:'relative'}}>
+            <MenuIcon/>
+            {savedCount>0 && <span aria-hidden="true" style={{position:'absolute',top:-5,right:-5,minWidth:16,height:16,borderRadius:999,background:'var(--cardinal-500)',color:'#fff',fontSize:10,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px'}}>{savedCount}</span>}
+          </button>
+          <button type="button" onClick={()=>setA11yOpen(o=>!o)} aria-pressed={a11yOpen} aria-haspopup="dialog" aria-label="Accessibility settings" className={`hbtn pc pc-teal${a11yOpen?' on':''}`}>
+            <SlidersIcon/> <span className="hide-mobile">Accessibility</span>
           </button>
         </div>
       </div>
+      <HeaderMobileMenu open={mobileMenuOpen} onClose={()=>setMobileMenuOpen(false)} anchorRef={menuBtnRef} onSuggest={onSuggest} savedOpen={savedOpen} savedCount={savedCount} onToggleSaved={onToggleSaved}/>
     </header>
   );
 };
@@ -2212,14 +2381,14 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
   return (
     <div style={{maxWidth:2400,margin:'0 auto',padding:'12px 24px 48px'}}>
       <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:6,display:'flex',alignItems:'center',flexWrap:'wrap',gap:6}}>
-        <span style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
-        <span>›</span>
-        <span style={{cursor:'pointer',color:'var(--text-link)'}}>Autism &amp; Special Needs</span>
-        <span>›</span>
-        <span style={{color:'var(--text-muted)'}}>{locLabel}</span>
-        <span style={{marginLeft:'auto'}}>Questions or feedback? <a href={`mailto:${CONTACT_EMAIL}`} style={{color:'var(--text-link)',fontWeight:600,textDecoration:'underline'}}>{CONTACT_EMAIL}</a></span>
+        <span className="hide-mobile" style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
+        <span className="hide-mobile">›</span>
+        <span className="hide-mobile" style={{cursor:'pointer',color:'var(--text-link)'}}>Autism &amp; Special Needs</span>
+        <span className="hide-mobile">›</span>
+        <span style={{color:'var(--text-muted)',fontWeight:600}}>{locLabel}</span>
+        <span className="hide-mobile" style={{marginLeft:'auto'}}>Questions or feedback? <a href={`mailto:${CONTACT_EMAIL}`} style={{color:'var(--text-link)',fontWeight:600,textDecoration:'underline'}}>{CONTACT_EMAIL}</a></span>
       </div>
-      <FilterBar summary={
+      <FilterBar resultCount={filtered.length} summary={
         <React.Fragment>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(18px,2.2vw,22px)',margin:'0 0 2px',letterSpacing:'.01em',color:'var(--text)'}}>
             {filtered.length} Resource{filtered.length!==1?'s':''}{radius!=null?` within ${radius} mi`:''} Near {locLabel}
@@ -2227,7 +2396,7 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
           <div style={{fontSize:12,color:'var(--text-muted)'}}>
             {coords ? 'Sorted by distance' : 'Browse all'}
             {filtered.length > 0 ? ` · showing ${start + 1}–${start + shown.length} of ${filtered.length}` : ''}
-            {` · ${ALL.length} total in directory`}
+            <span className="hide-mobile">{` · ${ALL.length} total in directory`}</span>
           </div>
         </React.Fragment>
       } keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])}/>
