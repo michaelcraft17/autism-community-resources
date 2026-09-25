@@ -135,6 +135,23 @@ government/encyclopedic structured sources were ~95%+ clean):
   contain "asperger" at all, but whose registered auxiliary/trade name ("Helsingin Asperger
   Center") does -- YTJ tracks these separately per company, so matching now checks every
   registered name, not just the primary one.
+- `switzerland_zefix_fetch.py` — Switzerland's Zefix (Zentraler Firmenindex), the federal
+  commercial registry, via an unauthenticated JSON endpoint the public `www.zefix.ch` search UI
+  itself calls (`POST /ZefixREST/api/v1/firm/search.json`, `GET /ZefixREST/api/v1/firm/<id>.json`)
+  — a genuinely new find 2026-09-25, not documented before. HANDOFF previously said Zefix
+  "requires authentication (401 without credentials)"; that's true of the separate *documented*
+  developer API at `www.zefix.admin.ch`, but the live site's own endpoint, on a different host
+  (`www.zefix.ch`), works with a plain request and a descriptive User-Agent — same class of
+  discovery as Belgium's KBO PDF export or Greece's GEMI publicity API (the public site's own
+  real endpoint, not the gated admin one). `searchType: "exact"` is misleadingly named — it's
+  actually a substring match. Querying the German/French/English shared root "autis" plus
+  "asperger" separately (Italian "autismo," German "autistisch," French "autistique" all
+  returned zero) gave 18 raw hits; excluded 3 real false positives after checking each one's
+  registered `purpose` text (a car-trade business named "Autisä," a clothing brand named
+  "AUTISM," and an HR-consultancy "asperger gmbh" unrelated to Asperger's) and 2 entities in
+  `IN_AUFLOESUNG` (liquidation) status — same exclusion class as Norway's `konkurs`/
+  `underAvvikling`. Net: **13 active, genuinely autism/Asperger-related Swiss entities**, full
+  street addresses from the detail endpoint, no separate address-assembly gotcha.
 - `bulgaria_companybook_fetch.py` — Bulgaria's Commercial Register / Register of Non-Profit
   Legal Entities, via a **third-party API** (CompanyBook.bg), not a direct government source
   — the first and so far only fetcher in this project to use one. Justified because
@@ -208,6 +225,50 @@ government/encyclopedic structured sources were ~95%+ clean):
   `merge_new_resources.py` below) and a real gotcha: naive `bytes.lower()` does not
   Unicode-case-fold multi-byte UTF-8 Cyrillic, so an early version of the keyword match
   silently found only 1 of 43 raw hits — fixed by decoding to `str` before `.lower()`.
+- **Asperger-sweep round 2 (2026-09-25)** — went back through the fetchers the first sweep
+  (2026-09-24) hadn't reached yet:
+  - `france_rna_fetch.py`: added "asperger" to the OR-combined query (was "autisme OR autiste
+    OR autistes", now adds "OR asperger"). "asperger" alone returns 111 raw hits on the RNA's
+    Opendatasoft API; 21 are net-new active associations not already matched by the autism-root
+    terms (real dedicated orgs: "ASPERGER VOSGES," "ASPERGER ACCUEIL," "APIPA-ASPERGER-TSA," a
+    few others whose connection is looser but kept, same tolerance as the root query's own
+    false-positive rate). **+21**.
+  - `netherlands_anbi_fetch.py`: added "asperger"/"aspergers" to `KEYWORDS`. Confirmed by
+    parsing the cached `anbi.xml` directly: **zero** matches of any kind for either term in the
+    whole ~55K-org register — a real negative finding (unlike France/Norway/Finland/Belgium/
+    Switzerland, no Dutch ANBI-registered charity has "asperger" anywhere in its name or alias),
+    not a bug; ANBI already had no separate historical-name field to miss a match through.
+  - `belgium_kbo_fetch.py`: **not swept**. The PDF-export param set that made the original
+    "autisme" query work (`FIXED_PARAMS` mentioned in the docstring) was never saved to the
+    script itself — it was captured once via a live Playwright session and used directly, not
+    preserved as reusable code. Several plausible param guesses (`actionLu=Zoeken`,
+    `submit=Zoeken`, `nummerType=`) all returned the plain search *form* page, not a PDF, for
+    `searchWord=asperger` — meaning a required param is still missing. Needs a fresh Playwright
+    session to re-capture the working param set (unavailable in this sandbox this round, no
+    `playwright` package installed) before this can be sept.
+  - `italy_runts_fetch.py`: **not swept**. Same root cause as Belgium — RUNTS has no JSON API,
+    only a ViewState-bound ASP.NET postback form, and needs a live Playwright session to drive
+    it. Not attempted without Playwright available.
+  - `greece_gemi_fetch.py`: retried plain (no query changes) — still unreachable from this
+    sandbox, 3/3 timeouts (`curl` exit 28, connect timeout). Consistent with the prior session's
+    "intermittently unreachable" note; not yet confirmed as a real block, just still flaky from
+    here. Worth another retry later, still not ruled out.
+  - Czech Republic, Latvia, Slovenia, Ukraine, Cyprus, Estonia, Norway, Finland, Slovakia,
+    Bulgaria were already swept in the first round (see "Current state" below) — all 15 built
+    country fetchers have now had an Asperger-sweep attempt, 4 successfully expanded
+    (France, Norway, Finland, Slovakia this round/last), 1 confirmed zero-yield (Netherlands),
+    2 still blocked pending Playwright (Belgium, Italy), 1 still network-flaky (Greece).
+- New country investigated and added 2026-09-25: **Switzerland** (Zefix, +13 — see fetcher
+  entry above). Poland, Portugal, and Austria investigated and ruled out (see "Ruled out" below).
+- `tools/scheduled_refresh.sh` — new unattended-refresh script (2026-09-25). Re-runs the 12
+  cheapest official-registry fetchers (excludes Italy's flaky Playwright scrape, Ukraine's
+  ~3.2GB bulk download, and Bulgaria's API-key-gated one unless `COMPANYBOOK_API_KEY` is set),
+  then `merge_new_resources.py` and `node gen_community_data.js`, and logs to
+  `tools/logs/refresh_<timestamp>.log`. **Never commits or pushes** — leaves the working-tree
+  diff for a human/Claude to review and commit by hand, per this repo's standing rule. Zero
+  LLM/token cost per run (plain HTTP + JSON parsing). Not yet wired to any actual scheduler
+  (cron/launchd) — that's a deliberate choice left to the site owner, since it would create
+  uncommitted local changes unattended if run on a timer without someone reviewing the diff.
 - `merge_new_resources.py` — generic merge step: dedupes any `new_resources_*.json` file in
   the repo root against `community_resources.json` (by normalized name and website domain)
   and appends the rest. Run this after any of the fetchers above, then regenerate
@@ -354,6 +415,32 @@ government/encyclopedic structured sources were ~95%+ clean):
     - **Andorra**: the government's own "Registre d'Associacions" page is a pure navigation
       stub — no embedded list, table, or download link of any kind, confirmed by reading its
       raw HTML directly.
+- **Poland, Portugal, Austria** (2026-09-25 investigation, alongside Switzerland's real win
+  above — same "confirm with curl, don't assume" discipline):
+  - **Poland**: KRS (Krajowy Rejestr Sądowy)'s official free API
+    (`api-krs.ms.gov.pl/api/krs/OdpisAktualny/<krsNumber>`) is a lookup-by-known-number API
+    only (confirmed: returns HTTP 400 without a valid KRS number, no name-search parameter
+    exists) — not usable for keyword search. The consumer search portal
+    (`wyszukiwarka-krs.ms.gov.pl`) is behind Incapsula, confirmed via a real 403 block response
+    (`X-Iinfo`/`_Incapsula_Resource` markers), same WAF class as other ruled-out registries —
+    no evasion attempted. `dane.gov.pl` (Poland's open-data portal) has no bulk KRS/association
+    export dataset (searched via its own API, nothing relevant found).
+  - **Portugal**: the RNPC name-check tool (`registo.justica.gov.pt/Empresas/
+    Pesquisar-nomes-firmas-ou-denominacoes-existentes`) is reachable but is the same class of
+    legacy ASP.NET WebForms page as Italy's RUNTS — `__VIEWSTATE`/`__EVENTVALIDATION`-bound
+    postback, no JSON API, needs a live browser session to drive (confirmed by reading the raw
+    HTML directly: real hidden form fields present, no discoverable REST endpoint). Not pursued
+    without Playwright available this round — same blocker as Belgium/Italy above. Also worth
+    noting for later: this specific tool is designed for "is this exact name available"
+    name-reservation checking, not general full-text keyword search — even once drivable, it
+    may not surface orgs the way a real search API would.
+  - **Austria**: the ZVR (Zentrales Vereinsregister)'s public search explicitly states, in its
+    own documentation, "only individual queries are permitted; bulk queries... are not
+    possible" for data-protection reasons — a stated *policy* restriction, not just a technical
+    one. Treated the same as Romania's "no online access as a matter of policy" finding: ruled
+    out on principle rather than run even a handful of scripted queries against an explicitly
+    no-bulk-queries service. No separate open-data/bulk export found on `data.gv.at` either (a
+    quick dataset search turned up nothing at the expected path).
 - OpenStreetMap Overpass API — theoretically the most "global" option, but the public
   instance can't handle whole-country or bbox-scoped name-regex searches at any reasonable
   timeout (confirmed via 5+ separate timeouts across France/Japan/bbox attempts). Would need
@@ -441,6 +528,15 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 ## Current state
 
+- **72,577 total resources** (was 72,537 as of the last handoff). This session's 2026-09-25
+  additions: France Asperger-sweep round 2 (+21), Switzerland's new Zefix fetcher (+12, one of
+  13 found was already in the dataset), plus 5 incidental adds from `new_resources_uk_cqc.json`/
+  `new_resources_canada_national.json`/`new_resources_canada_bc_territories.json` that turned
+  out to still have unmerged entries on disk from an earlier session (+1/+1/+5) — found only
+  because this session's `merge_new_resources.py` run swept every `new_resources_*.json` file
+  in the repo root, not something newly fetched this session. Net this session: **+40**.
+  See the France/Netherlands/Switzerland fetcher entries and the "Poland, Portugal, Austria"
+  ruled-out entry above for what was actually attempted and found this round.
 - 72,537 total resources (was 48,664 at the start of this thread of work; 69,841 two handoffs
   ago; 72,375 as of commit `2d9dffc`). The 2026-09-23/24 European push (Autism-Europe full
   directory + France RNA + Netherlands ANBI + Belgium KBO + Italy RUNTS) added ~2,530 — France's
@@ -509,22 +605,30 @@ government/encyclopedic structured sources were ~95%+ clean):
 
 - More EU national association/charity registries, same pattern as `france_rna_fetch.py`/
   `netherlands_anbi_fetch.py`/`belgium_kbo_fetch.py`/`italy_runts_fetch.py`/
-  `norway_brreg_fetch.py`/`finland_ytj_fetch.py`. Tried so far, best to worst yield: France
-  (real search API, 2,383 hits), Italy (no API, Playwright-driven, 89 captured but pagination
-  was flaky — worth a clean re-run), Norway (real search API, 32 hits incl. regional chapters),
-  Belgium (PDF export works via plain curl once you have the right params, 34 hits), Netherlands
-  (bulk XML, name-only filtering, 21 hits), Finland (real search API, only 2 hits — small
-  country, no separate regional-chapter registrations). Ruled out: Spain's Ministry of Interior
-  search page (`interior.gob.es`) returned a real HTTP 403 (WAF) — not pursued further per the
-  no-evasion policy; Germany's Vereinsregister has no free bulk/open dataset, only per-court
-  paid extracts. Checked this round but not pursued: Denmark's official CVR data is only
-  distributed via a complex Elasticsearch-based bulk service requiring registration
-  (`distribution.virk.dk`) — a free unofficial wrapper (`cvrapi.dk`) works for one-off lookups
-  but is rate-limited and not an official source, so building against it wasn't a clean win;
-  Switzerland's Zefix company registry API requires authentication (401 without credentials) —
-  untried further; Poland's KRS/dane.gov.pl and Portugal's RNPC didn't yield an obvious
-  name-search API on a quick check — worth real investigation, not a dead end. Not yet tried:
-  Czech Republic, Austria, other Central/Eastern Europe.
+  `norway_brreg_fetch.py`/`finland_ytj_fetch.py`/`switzerland_zefix_fetch.py`. Tried so far,
+  best to worst yield: France (real search API, 2,404 hits after the 2026-09-25 Asperger-sweep
+  expansion), Italy (no API, Playwright-driven, 89 captured but pagination was flaky — worth a
+  clean re-run, needs Playwright installed), Norway (real search API, 36 hits incl. regional
+  chapters), Belgium (PDF export works via plain curl once you have the right params, 34 hits —
+  the working param set wasn't preserved in the script and needs re-capturing via Playwright),
+  Switzerland (undocumented but unauthenticated JSON endpoint on the public site, 13 hits),
+  Netherlands (bulk XML, name-only filtering, 21 hits), Finland (real search API, only 3 hits —
+  small country, no separate regional-chapter registrations). Ruled out: Spain's Ministry of
+  Interior search page (`interior.gob.es`) returned a real HTTP 403 (WAF) — not pursued further
+  per the no-evasion policy; Germany's Vereinsregister has no free bulk/open dataset, only
+  per-court paid extracts; **Poland** (KRS's free API is lookup-by-known-number only, consumer
+  search portal is behind Incapsula/403, no bulk dane.gov.pl dataset), **Austria** (ZVR's own
+  documentation states bulk/scripted queries aren't permitted, a stated policy restriction —
+  ruled out on principle, not attempted) — see the "Ruled out" entry above for the full
+  evidence on both, added 2026-09-25. Checked this round but not pursued: Denmark's official
+  CVR data is only distributed via a complex Elasticsearch-based bulk service requiring
+  registration (`distribution.virk.dk`) — a free unofficial wrapper (`cvrapi.dk`) works for
+  one-off lookups but is rate-limited and not an official source, so building against it wasn't
+  a clean win. **Portugal**'s RNPC name-check tool is reachable but needs a live Playwright
+  session to drive (ASP.NET WebForms postback, no JSON API) — same blocker as Belgium/Italy,
+  worth revisiting once Playwright is available in this environment. Not yet tried: Czech
+  Republic (as a *deeper* pass — it's already in the dataset via ARES), other
+  Central/Eastern Europe.
 - Scotland/Wales/Northern Ireland care registries, same pattern as `cqc_uk_fetch.py`.
 - Wider Wikidata org-class coverage, or non-English "autis-root" search terms for
   non-Latin-script countries (Japan, China, Korea, Arabic-speaking countries) — explicitly
