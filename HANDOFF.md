@@ -734,6 +734,36 @@ persistence guardrail, so cron was used instead.
 
 ## Current state
 
+- **Legacy-source audit (2026-09-25), `tools/audit_legacy_sources.py` +
+  `tools/recheck_unverified_legacy.py`: no removals, official-source share now ~99.9%.**
+  The 521 entries carrying a vague pre-registry-discipline `source` label ("National
+  Resources 2026", "State Resources 2025 - <State>", "California Resources 2025",
+  "university", etc. — all US-addressed, no overlap with the AU/NZ/CA/IE hand-curated
+  entries mentioned elsewhere) were individually re-verified: real HTTP check of the
+  entry's own website (reachable, not a parking/aggregator page per the same blocklist
+  `find_websites_by_address.py` uses, org name actually present in the page content) with
+  a real independent web search as a fallback for anything that failed the direct check
+  or had no website on file. **517 of 521 (99.2%) independently confirmed real and
+  current; 0 removed.** The first pass left 23 as ambiguous, but most of that turned out
+  to be this machine's own tooling noise, not real doubt — no CA bundle configured for
+  Python's default SSL context (spurious cert-verify failures on real sites) and 10
+  concurrent requests triggering ordinary per-site rate-limiting (429s) that looked like
+  dead sites. A second, patient/sequential pass with a proper CA bundle and backoff
+  recovered 19 of those 23 (including well-known real orgs like Autism Speaks' national
+  HQ and the Golden Steps ABA chain, which any reasonable person would already know are
+  real — the first pass's "unverified" tag on them was a false negative, not a finding).
+  **Only 4 entries remain genuinely unverified** (Building Bridges Behavior Therapy–NJ,
+  National Autism Association, Boston Children's Hospital Autism Spectrum Center, Autism
+  Learning Partners–Albuquerque) — left in the dataset untouched per the audit's
+  bias-against-removal design; these are very likely also real (two are well-known
+  institutions) but just didn't independently confirm against this script's specific
+  checks. **Recomputed official-source share under this project's 3-tier standard**
+  (first-party government registry, government data via a transparent republisher, or an
+  organization's own official/verified records): of 73,238 total, only Wikidata's 39
+  entries and these 4 still-unverified legacy entries don't clearly qualify — **73,195 /
+  73,238 = 99.94%.** This treats an independently-verified match against an org's own
+  live website as satisfying the "organization's own official records" tier, which is a
+  judgment call worth knowing about if a stricter standard is ever wanted.
 - **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
   research" build pass (see its own section above, under Data harvesting tools) added
   Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
