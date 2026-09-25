@@ -479,6 +479,7 @@ const BadgeCheckIcon = lucideIcon(<><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 
 const LandmarkIcon = lucideIcon(<><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></>);
 const SearchCheckIcon = lucideIcon(<><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>);
 const MapPinLineIcon = lucideIcon(<><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></>);
+const PlusCircleIcon = lucideIcon(<><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></>);
 
 /* ─── Scroll-reveal + count-up hooks (respect reduceMotion: shows final state instantly) ─── */
 function useRevealOnce(reduceMotion) {
@@ -1213,8 +1214,147 @@ const SavedPanel = ({open, onClose, favs, ALL, coords, onFav}) => {
   );
 };
 
+/* ─── Suggest-a-resource modal — opens a prefilled GitHub issue, no backend needed
+   for a static GitHub Pages site. Reviewed by hand via tools/import_github_issues.py. ─── */
+const RESOURCE_TYPE_OPTIONS = Object.entries(TYPE_META).map(([value, meta]) => ({value, label: meta.label}));
+
+function isLikelyUrl(v) {
+  if (!v.trim()) return true;
+  try { return new URL(/^https?:\/\//i.test(v) ? v : `https://${v}`).hostname.includes('.'); }
+  catch { return false; }
+}
+
+function buildGithubIssueUrl(f) {
+  const body = [
+    `**Name:** ${f.name}`,
+    `**Type:** ${TYPE_META[f.type] ? TYPE_META[f.type].label : f.type}`,
+    `**Country:** ${f.country}`,
+    f.address.trim() && `**Address/City:** ${f.address}`,
+    f.website.trim() && `**Website:** ${f.website}`,
+    f.phone.trim() && `**Phone:** ${f.phone}`,
+    `**Description:** ${f.description}`,
+    '_Submitted via the "Suggest a Resource" form on autismcommunityorg.org._',
+  ].filter(Boolean).join('\n\n');
+  const params = new URLSearchParams({ title: `Resource suggestion: ${f.name}`, body, labels: 'resource-suggestion' });
+  return `https://github.com/michaelcraft17/autism-community-resources/issues/new?${params.toString()}`;
+}
+
+const SG_EMPTY = { name:'', website:'', phone:'', address:'', country:'', type:'advocacy', description:'' };
+
+const SuggestModal = ({open, onClose}) => {
+  const [fields, setFields] = useState(SG_EMPTY);
+  const [errors, setErrors] = useState({});
+  const [sent, setSent] = useState(false);
+  const dialogRef = useRef(null);
+  const firstFieldRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    setFields(SG_EMPTY); setErrors({}); setSent(false);
+    const t = setTimeout(() => firstFieldRef.current && firstFieldRef.current.focus(), 0);
+    const onKey = e => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const f = dialogRef.current.querySelectorAll('button, input, select, textarea, a[href]');
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => { clearTimeout(t); window.removeEventListener('keydown', onKey); };
+  }, [open]);
+
+  if (!open) return null;
+
+  const set = k => e => setFields(f => ({...f, [k]: e.target.value}));
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const errs = {};
+    if (!fields.name.trim()) errs.name = 'Name is required.';
+    if (!fields.country.trim()) errs.country = 'Country is required.';
+    if (!fields.description.trim()) errs.description = 'A short description is required.';
+    if (!isLikelyUrl(fields.website)) errs.website = 'That doesn’t look like a valid website.';
+    setErrors(errs);
+    if (Object.keys(errs).length) return;
+    window.open(buildGithubIssueUrl(fields), '_blank', 'noopener,noreferrer');
+    setSent(true);
+  };
+
+  const inputStyle = {width:'100%',padding:'9px 12px',border:'1px solid var(--border)',borderRadius:8,fontSize:14,color:'var(--text)',background:'var(--surface)',fontFamily:'var(--font-sans)'};
+  const labelStyle = {display:'block',fontSize:13,fontWeight:700,color:'var(--text-secondary)',marginBottom:4};
+  const errStyle = {fontSize:12,color:'var(--error-fg)',marginTop:4};
+
+  return ReactDOM.createPortal(
+    <div style={{position:'fixed',inset:0,zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:16}}>
+      <div onClick={onClose} aria-hidden="true" style={{position:'absolute',inset:0,background:'var(--overlay)'}}/>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="suggest-modal-title" style={{position:'relative',background:'var(--surface)',borderRadius:14,maxWidth:520,width:'100%',maxHeight:'90vh',overflowY:'auto',boxShadow:'0 20px 60px rgba(0,0,0,.3)',padding:24}}>
+        <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:4,gap:12}}>
+          <h2 id="suggest-modal-title" style={{margin:0,fontSize:19,fontFamily:'var(--font-antonio)',color:'var(--text)'}}>Suggest a Resource</h2>
+          <button type="button" onClick={onClose} aria-label="Close" style={{width:32,height:32,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}><XIcon/></button>
+        </div>
+        <p style={{margin:'0 0 18px',fontSize:13,color:'var(--text-muted)'}}>Know an autism/disability resource that’s missing? Fill this in — it opens a GitHub issue for our team to review before it’s added.</p>
+
+        {sent ? (
+          <div style={{padding:16,borderRadius:10,background:'var(--success-bg)',color:'var(--success-fg)',fontSize:14}}>
+            Opened a new tab to finish submitting on GitHub (a free account may be required). You can close this window.
+            <div style={{marginTop:12}}>
+              <button type="button" onClick={onClose} className="hbtn pc pc-teal" style={{border:'none'}}>Done</button>
+            </div>
+          </div>
+        ) : (
+        <form onSubmit={handleSubmit} noValidate>
+          <div style={{marginBottom:14}}>
+            <label style={labelStyle} htmlFor="sg-name">Name *</label>
+            <input ref={firstFieldRef} id="sg-name" value={fields.name} onChange={set('name')} style={inputStyle} aria-required="true" aria-invalid={!!errors.name}/>
+            {errors.name && <div style={errStyle}>{errors.name}</div>}
+          </div>
+          <div style={{display:'flex',gap:12,marginBottom:14,flexWrap:'wrap'}}>
+            <div style={{flex:'1 1 200px'}}>
+              <label style={labelStyle} htmlFor="sg-website">Website</label>
+              <input id="sg-website" value={fields.website} onChange={set('website')} placeholder="https://" style={inputStyle} aria-invalid={!!errors.website}/>
+              {errors.website && <div style={errStyle}>{errors.website}</div>}
+            </div>
+            <div style={{flex:'1 1 140px'}}>
+              <label style={labelStyle} htmlFor="sg-phone">Phone</label>
+              <input id="sg-phone" value={fields.phone} onChange={set('phone')} style={inputStyle}/>
+            </div>
+          </div>
+          <div style={{display:'flex',gap:12,marginBottom:14,flexWrap:'wrap'}}>
+            <div style={{flex:'1 1 200px'}}>
+              <label style={labelStyle} htmlFor="sg-address">Address / City</label>
+              <input id="sg-address" value={fields.address} onChange={set('address')} style={inputStyle}/>
+            </div>
+            <div style={{flex:'1 1 140px'}}>
+              <label style={labelStyle} htmlFor="sg-country">Country *</label>
+              <input id="sg-country" value={fields.country} onChange={set('country')} style={inputStyle} aria-required="true" aria-invalid={!!errors.country}/>
+              {errors.country && <div style={errStyle}>{errors.country}</div>}
+            </div>
+          </div>
+          <div style={{marginBottom:14}}>
+            <label style={labelStyle} htmlFor="sg-type">Category</label>
+            <select id="sg-type" value={fields.type} onChange={set('type')} style={inputStyle}>
+              {RESOURCE_TYPE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          </div>
+          <div style={{marginBottom:18}}>
+            <label style={labelStyle} htmlFor="sg-desc">Short description *</label>
+            <textarea id="sg-desc" value={fields.description} onChange={set('description')} rows={3} style={{...inputStyle,resize:'vertical',fontFamily:'var(--font-sans)'}} aria-required="true" aria-invalid={!!errors.description}/>
+            {errors.description && <div style={errStyle}>{errors.description}</div>}
+          </div>
+          <button type="submit" className="hbtn pc pc-cardinal" style={{border:'none',width:'100%',justifyContent:'center',height:42,fontSize:14}}>Continue on GitHub →</button>
+        </form>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
+};
+
 /* ─── Header ─────────────────────────────────────────────────── */
-const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, locLabel, onLogoClick, onSearchLocation, onSelectSuggestion, onUseMyLocation, showSearch, locBusy, locError}) => {
+const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, onSuggest, locLabel, onLogoClick, onSearchLocation, onSelectSuggestion, onUseMyLocation, showSearch, locBusy, locError}) => {
   const [locInput, setLocInput] = useState(locLabel === 'My Location' ? '' : locLabel);
   useEffect(() => { setLocInput(locLabel === 'My Location' ? '' : locLabel); }, [locLabel]);
   const [open, setOpen] = useState(false);
@@ -1274,6 +1414,9 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, lo
           <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:'var(--cardinal-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
             ♥ Donate
           </a>
+          <button type="button" onClick={onSuggest} aria-haspopup="dialog" title="Suggest a resource to add" className="hbtn pc pc-cardinal">
+            <PlusCircleIcon s={16}/> Suggest a Resource
+          </button>
           <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title="Your saved resources" className={`hbtn pc pc-cardinal${savedOpen?' on':''}`}>
             <HeartIcon f={savedCount>0 && !savedOpen}/> Saved{savedCount>0 && <span style={{fontWeight:700}}>({savedCount})</span>}
           </button>
@@ -2134,6 +2277,7 @@ function App() {
   const [systemReducedMotion, setSystemReducedMotion] = useState(() => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const [a11yOpen, setA11yOpenRaw] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
+  const [suggestOpen, setSuggestOpen] = useState(false);
   // Only one drawer at a time: opening the accessibility menu closes Saved, and vice versa.
   const setA11yOpen = v => { setA11yOpenRaw(v); setSavedOpen(false); };
   const toggleSaved = () => { setSavedOpen(o => !o); setA11yOpenRaw(false); };
@@ -2240,7 +2384,7 @@ function App() {
   return (
     <>
     <div className="app-zoom">
-      <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} savedOpen={savedOpen} savedCount={favs.length} onToggleSaved={toggleSaved} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onSelectSuggestion={selectSuggestion} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'}/>
+      <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} savedOpen={savedOpen} savedCount={favs.length} onToggleSaved={toggleSaved} onSuggest={() => setSuggestOpen(true)} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onSelectSuggestion={selectSuggestion} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'}/>
       <main>{screen==='landing' ? <Landing onSearch={searchLocation} onSelectSuggestion={selectSuggestion} onLocate={useMyLocation} busy={busy} error={error} reduceMotion={reduceMotion}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} favs={favs} onFav={toggleFav} themeKey={themeKey} contrast={prefs.contrast} onVisibleChange={setReadableList}/>}</main>
       <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
         © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
@@ -2253,6 +2397,7 @@ function App() {
     </div>
       <ReadingAid mode={prefs.cursor}/>
       <SavedPanel open={savedOpen} onClose={() => setSavedOpen(false)} favs={favs} ALL={ALL} coords={coords} onFav={toggleFav}/>
+      <SuggestModal open={suggestOpen} onClose={() => setSuggestOpen(false)}/>
       <AccessibilityPanel
         open={a11yOpen}
         onClose={() => setA11yOpen(false)}
