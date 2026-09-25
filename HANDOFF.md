@@ -517,6 +517,46 @@ commits or pushes on its own. The user wired it into their own crontab
 install was attempted first but blocked by Claude Code's own auto-mode
 persistence guardrail, so cron was used instead.
 
+**Two local-Ollama data-quality tools, added this session:**
+- `tools/classify_categories.py` -- for entries whose `type` field isn't one of
+  the site's real 6 taxonomy values (checked against `TYPE_META` in `index.html`,
+  not invented), asks local qwen2.5-coder:7b to pick the closest real category
+  from a closed list (or "uncertain," left unchanged rather than guessed). Pure
+  classification, not fact generation, so it's safe to auto-apply -- every
+  change is logged to `tools/logs/category_classification_*.log`. Only 40
+  entries in the whole dataset actually needed this (legacy "Nonprofit /
+  Advocacy"-style values from an older batch import); all 40 were spot-checked
+  by hand and applied directly to `community_resources.json`.
+- `tools/find_websites_by_address.py` -- for the 67,594 entries with no
+  website, builds a **deterministic** search query (`name + city + country`,
+  no LLM involved in query generation -- an earlier draft had qwen propose the
+  query, but that step added nothing since the template is just as good and
+  removes an unnecessary Ollama dependency) and runs it through a real
+  DuckDuckGo search (`ddgs` package). Every candidate URL must pass three
+  checks -- reachable/not a parking redirect, not a parking page by content
+  (matched on strong signals like "domain is for sale," not bare substrings
+  like "sedo"/"godaddy" which collide with real site text), and the org's name
+  actually present on the page -- before being accepted.
+  **Real-world precision on a 100-entry test sample was ~50%, not safe to
+  trust or apply.** The 3rd check (name-token-present) cannot distinguish "this
+  page is about the org" from "this page IS the org's own site" -- third-party
+  directory/aggregator sites (`npino.com`, `medicarelist.com`,
+  `ehealthscores.com`, `findabatherapy.org`, `bizapedia.com`,
+  `nonprofitlist.org`, `govserv.org`, and similar) legitimately contain the
+  org's name (that's their whole purpose) and pass all three checks while not
+  being the actual website. This failure was concentrated almost entirely in
+  the NPI/small-provider segment of missing-website entries (roughly 60%+
+  false-positive rate there); the named-org/registry segment (Autism Society
+  state chapters, hospital autism programs, university centers) was much
+  cleaner, closer to 80%+ real precision. **Before this could ever be trusted
+  for bulk use, it needs a 4th check: a blocklist of known directory/aggregator
+  domains** (the ones named above are a good starting list) **or a preference
+  for results whose own domain name lexically matches the org name**, neither
+  of which exists yet. Stays sample-only / manual-review-only until that's
+  built and re-validated -- this is exactly the same "verify before trusting,
+  and verify the verifier" discipline the original ~5,000-URL reachability
+  audit already established for this project (see commit `357d817`).
+
 ## Known site-behavior gotchas (already fixed, but good to know the shape of the bug class)
 
 - `shapeAll()` in `index.html` used to silently drop any entry without `coordinates.lat/lng`,
