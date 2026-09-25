@@ -28,6 +28,15 @@ websites/phone numbers (privacy-scoped registration data), so entries have no
 `website` field -- expected and fine, matches other placeless-tolerant
 entries already in the dataset.
 
+Expanded 2026-09-25 with an "asperger" Asperger-sweep term (same rationale as
+Norway/Finland/Slovakia/Bulgaria: Asperger's is part of the autism spectrum
+but wasn't covered by the autisme/autiste/autistes root). "asperger" alone
+returns 111 hits; 21 are net-new active associations not already matched by
+the autism-root terms (real dedicated orgs like "ASPERGER VOSGES," "ASPERGER
+ACCUEIL," "APIPA-ASPERGER-TSA," plus some the API's own relevance ranking
+pulled in that only mention Asperger's in passing -- kept as-is, same
+tolerance as the autism-root query's own false-positive rate).
+
 Known upstream data quality issue: ~37% of `object` (description) fields for
 older records (pre-2009 declarations, part of the "RNA_import" legacy batch)
 have specific accented characters corrupted (e.g. "acces" renders as
@@ -59,7 +68,7 @@ OUT_PATH = os.path.join(REPO, "new_resources_france_rna.json")
 HEADERS = {"User-Agent": "autism-community-resources-research/1.0 (contact: michaelcraft17@gmail.com)"}
 API = "https://public.opendatasoft.com/api/records/1.0/search/"
 DATASET = "ref-france-association-repertoire-national"
-QUERY = "autisme OR autiste OR autistes"
+QUERY = "autisme OR autiste OR autistes OR asperger"
 PAGE_SIZE = 1000
 
 SOURCE = "France RNA (Repertoire National des Associations) - official government open data, data.gouv.fr"

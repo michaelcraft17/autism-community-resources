@@ -25,6 +25,16 @@ is also much narrower than France's RNA (ANBI is a specific tax-status
 election, not "any declared association"), so the yield is a few dozen
 organizations, not thousands -- expected, not a bug.
 
+Expanded 2026-09-25 with an Asperger-sweep keyword ("asperger"/"aspergers" --
+Asperger's is part of the autism spectrum but wasn't covered by the original
+autisme-root terms). Checked both `naam` and `aliasNaam` already (ANBI has
+no separate historical-name field like Norway/Finland's registries), so no
+matching-logic bug to fix here, just a missing term -- 0 matches of any kind
+for "asperger"/"aspergers" in the whole ~55K-org register (confirmed by
+parsing the cached XML directly, not just "0 net-new"). A real negative
+finding, not a bug: unlike France/Norway/Finland/Belgium, no Dutch ANBI-
+registered charity has "asperger" anywhere in its name or alias.
+
 Usage:
     python3 tools/netherlands_anbi_fetch.py
 
@@ -54,7 +64,7 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 
 SOURCE = "Netherlands ANBI register - official Belastingdienst (Tax Administration) open data"
 
-KEYWORDS = ["autisme", "autistisch", "autistische", "autisten", "autist"]
+KEYWORDS = ["autisme", "autistisch", "autistische", "autisten", "autist", "asperger", "aspergers"]
 EXCLUDE_SUBSTR = ["in liquidatie"]  # being wound down, not operating
 
 
