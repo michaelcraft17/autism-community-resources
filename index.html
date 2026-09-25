@@ -218,6 +218,14 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
   .fsearch{width:100%!important;}
   .fbar-summary{flex-basis:100%!important;margin-left:0!important;text-align:left!important;}
   .hide-mobile{display:none!important;}
+  /* 34px touch targets on the two buttons that carry all of mobile navigation between the
+     map and the results list -- bumped to the same >=40px floor as the rest of this pass. */
+  .hdr-filters-btn.fchip,.hdr-viewtoggle-btn.fchip{height:40px;}
+  /* Keeps the chip's x at its current small visual size (it reads as a dense filter chip,
+     not a standalone button) while giving it a real >=40px hit target via an invisible
+     enlarged hit area, rather than growing the circle itself. */
+  .afchip button{position:relative;}
+  .afchip button::after{content:'';position:absolute;inset:-10px;}
 }
 .hdr-menu-pop{position:fixed;z-index:9999;min-width:220px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 32px rgba(0,0,0,.22);padding:6px;display:flex;flex-direction:column;gap:2px;}
 .hdr-menu-pop button,.hdr-menu-pop a{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border-radius:8px;border:none;background:transparent;color:var(--text);font-size:14px;font-weight:600;text-align:left;text-decoration:none;cursor:pointer;}
@@ -306,7 +314,7 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjIaR8sa936xf4hZzQ_-ObzpxCRsCWKIM&loading=async"></script>
 <script src="https://unpkg.com/@googlemaps/markerclusterer@2.5.3/dist/index.min.js" crossorigin="anonymous"></script>
 <script type="text/babel">
-const { useState, useEffect, useRef, useMemo } = React;
+const { useState, useEffect, useLayoutEffect, useRef, useMemo } = React;
 const CONTACT_EMAIL = 'changcheng875@gmail.com';
 
 /* ─── Data (real coordinates from community_resources.json) ──── */
@@ -635,27 +643,39 @@ const CARD_TITLE = {margin:0,fontFamily:'var(--font-antonio)',fontWeight:700,fon
 const MAX_TAGS = 4;
 
 /* Shares a resource via the Web Share API where available (mobile browsers, mainly);
-   falls back to copying a plain-text summary to the clipboard, with a brief inline
-   confirmation, since there's no per-resource URL on this static site to share instead. */
+   falls back to copying a plain-text summary to the clipboard, since there's no per-resource
+   URL on this static site to share instead. Returns a status rather than a boolean so the
+   caller can tell a real failure (blocked clipboard permission, confirmed in QA testing) apart
+   from success and from the user simply dismissing the native share sheet. */
 async function shareResource(r) {
   const text = [r.name, r.address, r.phone, r.website].filter(Boolean).join(' — ');
   if (navigator.share) {
-    try { await navigator.share({ title: r.name, text, url: r.website || undefined }); return true; }
-    catch (e) { if (e && e.name === 'AbortError') return false; }
+    try { await navigator.share({ title: r.name, text, url: r.website || undefined }); return 'shared'; }
+    catch (e) { if (e && e.name === 'AbortError') return 'cancelled'; }
   }
   if (navigator.clipboard) {
-    try { await navigator.clipboard.writeText(text); return true; }
+    try { await navigator.clipboard.writeText(text); return 'copied'; }
     catch (e) {}
   }
-  return false;
+  return 'failed';
 }
 
 const ResourceCard = ({r, idx, fav, onFav, active, onHover, compact}) => {
   const t = TYPE_META[r.type] || TYPE_META.general_support;
-  const [copied, setCopied] = useState(false);
+  const [shareStatus, setShareStatus] = useState(null); // null | {ok, message, text?}
   const tags = r.services.slice(0, compact ? 2 : MAX_TAGS), extra = r.services.length - tags.length;
   const tagStyle = {background:'var(--bg-sunken)',color:'var(--text-muted)',fontSize:11,fontWeight:500,padding:'2px 8px',borderRadius:6,border:'1px solid var(--border)'};
-  const doShare = async () => { const ok = await shareResource(r); if (ok) { setCopied(true); setTimeout(()=>setCopied(false), 1500); } };
+  // Success used to be shown only by an icon swap -- no announcement, and failure (e.g. a
+  // denied clipboard permission, which QA's test browser did) did nothing visible at all.
+  const doShare = async () => {
+    const result = await shareResource(r);
+    if (result === 'shared' || result === 'cancelled') return;
+    const text = [r.name, r.address, r.phone, r.website].filter(Boolean).join(' — ');
+    setShareStatus(result === 'copied'
+      ? { ok: true, message: 'Copied details to clipboard' }
+      : { ok: false, message: "Couldn't share automatically — here are the details to copy:", text });
+    setTimeout(() => setShareStatus(null), result === 'copied' ? 2500 : 8000);
+  };
   return (
     <div
       data-rid={r.id} onMouseEnter={()=>onHover(r.id)} onMouseLeave={()=>onHover(null)}
@@ -663,12 +683,22 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover, compact}) => {
       <CardThumb fg={t.fg} badge={r.placeless ? '🌐' : idx+1} badgeBg={r.placeless ? 'var(--harbor-600)' : 'var(--pin-fill)'} badgeColor={r.placeless ? '#fff' : 'var(--pin-fill-on)'} badgeSize={r.placeless ? 11 : 13}/>
       <div style={{flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:4}}>
         <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8}}>
-          <h3 style={CARD_TITLE}>{r.name}</h3>
+          {/* On mobile the 64px thumbnail plus two 40px icon buttons (both grown for their own
+             >=40px touch-target fix in this same pass) leave a narrow title column -- a long
+             name like "Christ International Autism & Mental Disorder Solutions Inc" wrapped to
+             5 lines. Capped at 3 with an ellipsis on mobile only; desktop has the width for it
+             and stays unclamped. */}
+          <h3 style={compact ? {...CARD_TITLE,display:'-webkit-box',WebkitLineClamp:3,WebkitBoxOrient:'vertical',overflow:'hidden'} : CARD_TITLE}>{r.name}</h3>
           <div style={{display:'flex',gap:4,flexShrink:0}}>
             <button className="card-icon-btn" onClick={()=>onFav(r.id)} aria-label={fav ? `Remove ${r.name} from saved` : `Save ${r.name}`} aria-pressed={!!fav} style={{border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)'}}><HeartIcon f={fav}/></button>
-            <button className="card-icon-btn" onClick={doShare} aria-label={`Share ${r.name}`} style={{border:'1px solid var(--border)',background:'var(--surface)',color:copied?'var(--success)':'var(--text-muted)'}}>{copied ? <BadgeCheckIcon s={16}/> : <ShareIcon/>}</button>
+            <button className="card-icon-btn" onClick={doShare} aria-label={`Share ${r.name}`} style={{border:'1px solid var(--border)',background:'var(--surface)',color:shareStatus && shareStatus.ok ? 'var(--success)' : 'var(--text-muted)'}}>{shareStatus && shareStatus.ok ? <BadgeCheckIcon s={16}/> : <ShareIcon/>}</button>
           </div>
         </div>
+        {shareStatus && (
+          <div role="status" aria-live="polite" style={{fontSize:12,color:shareStatus.ok?'var(--success-fg)':'var(--error-fg)',background:shareStatus.ok?'var(--success-bg)':'var(--error-bg)',borderRadius:8,padding:'6px 10px'}}>
+            {shareStatus.message}{shareStatus.text && <div style={{marginTop:3,userSelect:'all',fontFamily:'var(--font-mono)',fontSize:11,wordBreak:'break-word'}}>{shareStatus.text}</div>}
+          </div>
+        )}
         <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
           <TypePill type={r.type} small/>
           {r.placeless
@@ -720,7 +750,7 @@ const GroupedResourceCard = ({group, idx, active, onHover}) => {
             </span>
           </div>
         </div>
-        <button onClick={()=>setOpen(o=>!o)} style={{alignSelf:'flex-start',display:'inline-flex',alignItems:'center',gap:6,height:28,padding:'0 12px',background:'var(--surface)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:12,fontWeight:600,color:'var(--text)',cursor:'pointer'}}>
+        <button onClick={()=>setOpen(o=>!o)} aria-expanded={open} className="card-action-btn" style={{alignSelf:'flex-start',display:'inline-flex',alignItems:'center',gap:6,background:'var(--surface)',border:'1px solid var(--border-strong)',color:'var(--text)',cursor:'pointer'}}>
           {open ? 'Hide' : 'Show'} {group.length} providers here
         </button>
         {open && (
@@ -732,8 +762,8 @@ const GroupedResourceCard = ({group, idx, active, onHover}) => {
                   {r.description && <div style={{fontSize:12,color:'var(--text-muted)',marginTop:2}}>"{r.description}"</div>}
                 </div>
                 <div style={{display:'flex',gap:6,flexShrink:0}}>
-                  {r.phone && <a href={`tel:${r.phone}`} className="call-btn" style={{height:28,padding:'0 10px',background:'var(--action)',color:'var(--action-on)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Call</a>}
-                  {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" style={{height:28,padding:'0 10px',background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)',borderRadius:7,fontSize:11,fontWeight:600,display:'inline-flex',alignItems:'center'}}>Website</a>}
+                  {r.phone && <a href={`tel:${r.phone}`} aria-label={`Call ${r.name}`} className="call-btn card-action-btn" style={{background:'var(--action)',color:'var(--action-on)'}}>Call</a>}
+                  {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" aria-label={`Website for ${r.name} (opens in new tab)`} className="card-action-btn" style={{background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)'}}>Website</a>}
                 </div>
               </div>
             ))}
@@ -910,7 +940,7 @@ const PinTip = ({tip, center, width, minY = 0}) => {
   );
 };
 
-const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast, mobileFull}) => {
+const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast, mobileFull, sheetState}) => {
   const elRef = useRef(null);
   const mapRef = useRef(null);
   const infoRef = useRef(null);
@@ -949,6 +979,19 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
   const showKey = groups.map(g=>g.map(r=>r.id).join('+')).join(',');
   const centerKey = center ? center.lat + ',' + center.lng : '';
 
+  // While the mobile sheet is fully expanded (list view), the map sits behind it, fully
+  // covered -- but its Google Maps controls (zoom, "Show all pins", etc.) were still real,
+  // focusable DOM elements, so Tab silently walked through ~9 invisible controls before
+  // reaching the first result card, and screen readers announced them too (WCAG 2.4.11).
+  // `inert` removes the whole subtree from both the tab order and the accessibility tree in
+  // one step; it's toggled imperatively (not via the `inert` JSX prop) since this file targets
+  // React 18.3 via CDN, where JSX->DOM support for boolean-ish global attributes is uneven.
+  const hiddenInList = mobileFull && sheetState === 'full';
+  useEffect(() => {
+    if (!rootRef.current) return;
+    rootRef.current.inert = hiddenInList;
+    rootRef.current.setAttribute('aria-hidden', hiddenInList ? 'true' : 'false');
+  }, [hiddenInList]);
 
   // init map (wait for Google Maps script to be ready)
   useEffect(() => {
@@ -973,7 +1016,19 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
       ['dragstart', 'zoom_changed'].forEach(ev => mapRef.current.addListener(ev, () => { setTip(null); if (!progRef.current) setAway(true); }));
       setReady(r => r + 1);
     })();
-    return () => { cancelled = true; };
+    // Without this, crossing the 640px breakpoint (e.g. rotating a phone) unmounted this
+    // component but left its markers, clusterer, map instance, and idle/dragstart/zoom_changed
+    // listeners alive and referenced -- a leaked, still-billable Google Maps load every time.
+    return () => {
+      cancelled = true;
+      clearTimeout(progTimer.current);
+      if (clustererRef.current) { clustererRef.current.clearMarkers(); clustererRef.current = null; }
+      Object.values(markersRef.current).forEach(({marker}) => marker.setMap(null));
+      markersRef.current = {};
+      if (userMarkerRef.current) { userMarkerRef.current.setMap(null); userMarkerRef.current = null; }
+      if (window.google && mapRef.current) google.maps.event.clearInstanceListeners(mapRef.current);
+      mapRef.current = null;
+    };
   }, []);
 
   // Frame the searched location plus every pin on this page (also what the "Show all pins" button restores).
@@ -1064,13 +1119,18 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
         infoRef.current.setContent('<div style="font-family:Hanken Grotesk,sans-serif;max-width:220px;line-height:1.4">' + header + rows + '</div>');
         infoRef.current.open(map, marker);
       });
+      // Real touch has no hover, but the sandboxed/desktop-emulated browser used to test this
+      // does fire real mouseover/mouseout on the map -- so on mobile, moving the pointer off a
+      // just-tapped pin was calling onHover(null) and wiping the tapped selection straight back
+      // to "1 of N" (confirmed in QA). Gate both to desktop only.
       marker.addListener('mouseover', () => {
+        if (mobileFullRef.current) return;
         onHover(first.id); scrollCardIntoView(first.id);
         const pr = overlayRef.current && overlayRef.current.getProjection();
         const pt = pr && pr.fromLatLngToContainerPixel(marker.getPosition());
         if (pt) setTip({ x: pt.x, y: pt.y, g, num, hidden: hiddenTop() });
       });
-      marker.addListener('mouseout', () => { onHover(null); setTip(null); });
+      marker.addListener('mouseout', () => { if (mobileFullRef.current) return; onHover(null); setTip(null); });
       markersRef.current[groupKey + ':' + i] = { marker, ids };
       pinMarkers.push(marker);
     });
@@ -1121,7 +1181,9 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
 
   // highlight active marker without redrawing; on the mobile map-first layout, also pan to
   // it so keyboard/screen-reader users stepping through results via Previous/Next (which sets
-  // `active` without ever touching the map) actually see the pin they're on.
+  // `active` without ever touching the map) actually see the pin they're on. Also nudge the
+  // zoom to the clusterer's own maxZoom (16, see algorithmOptions above) when needed, since
+  // panning to a marker that's still inside a cluster bubble left the selected pin invisible.
   useEffect(() => {
     let panTarget = null;
     Object.values(markersRef.current).forEach(({marker, ids}) => {
@@ -1132,7 +1194,10 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
       if (lb) marker.setLabel({ ...lb, color: isA ? activeLabelColor() : pinLabelColor(contrastRef.current) });
       if (isA) panTarget = marker.getPosition();
     });
-    if (panTarget && mobileFull && mapRef.current) mapRef.current.panTo(panTarget);
+    if (panTarget && mobileFull && mapRef.current) {
+      mapRef.current.panTo(panTarget);
+      if (mapRef.current.getZoom() < 16) mapRef.current.setZoom(16);
+    }
     styleClusters(contrastRef.current);
   }, [active, mobileFull]);
 
@@ -1140,9 +1205,13 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
     return (
       <div ref={rootRef} style={{position:'absolute',inset:0}}>
         <div ref={elRef} style={{width:'100%',height:'100%',background:mapBgFor(contrast)}}/>
-        {away && pinPts.length > 0 && (
+        {/* Not rendered at all (rather than just visually repositioned) while the sheet is
+           fully expanded: it used to sit at zIndex 15, above the sheet's own 5, so it floated
+           over the result list. In peek state it sits above the peek strip/preview card
+           instead of at the very bottom, where it used to cover the handle and result count. */}
+        {!hiddenInList && away && pinPts.length > 0 && (
           <button type="button" onClick={fitToPins} aria-label="Show all pins on the map" className="hbtn pc pc-cardinal"
-            style={{position:'absolute',left:12,bottom:12,zIndex:15,height:40,padding:'0 16px',gap:8,fontSize:15,boxShadow:'0 2px 10px rgba(0,0,0,.28)'}}>
+            style={{position:'absolute',left:12,top:12,zIndex:8,height:40,padding:'0 16px',gap:8,fontSize:15,boxShadow:'0 2px 10px rgba(0,0,0,.28)'}}>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             Show all pins
           </button>
@@ -1214,6 +1283,11 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
     <div style={{position:'fixed',inset:0,zIndex:1000,display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
       <div onClick={onClose} aria-hidden="true" style={{position:'absolute',inset:0,background:'var(--overlay)'}}/>
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="filter-sheet-title" style={{position:'relative',background:'var(--surface)',borderRadius:'16px 16px 0 0',width:'100%',maxWidth:520,maxHeight:'85vh',overflowY:'auto',boxShadow:'0 -8px 32px rgba(0,0,0,.28)',padding:'18px 18px 16px'}}>
+        {/* The result count changes here as filters are toggled, but the equivalent live
+           region in FilterBar sits outside this dialog -- some screen readers don't announce
+           updates from outside an aria-modal region while it's open, so this is a second copy
+           scoped to the sheet itself, not just a style duplicate. */}
+        <div aria-live="polite" className="sr-only">{resultCount} result{resultCount!==1?'s':''}</div>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
           <h2 id="filter-sheet-title" style={{margin:0,fontSize:18,fontFamily:'var(--font-antonio)',color:'var(--text)'}}>Filters</h2>
           <button ref={closeRef} type="button" onClick={onClose} aria-label="Close filters" style={{width:34,height:34,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}><XIcon/></button>
@@ -1262,22 +1336,61 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
   );
 };
 
+function useDebounced(value, delay) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;
+}
+
 /* Removable chips summarizing every active structured filter (Baymard: showing applied
    filters up front, with a one-tap way to remove each, speeds up refinement and avoids the
-   "what's even filtered right now?" confusion of chips that only live inside a closed sheet). */
-const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearAll}) => {
+   "what's even filtered right now?" confusion of chips that only live inside a closed sheet).
+   Deliberately kept on both desktop and mobile (not gated to mobile): the individual filter
+   pills above already show their own "on" state, but this row is the only one-tap way to drop
+   a single filter without reopening a popover/sheet, which is worth it on both sizes -- see the
+   commit message for this as an explicit decision, not an oversight.
+   The keyword search box is NOT one of these chips and "Clear all" here does not touch it --
+   it's a separate, always-visible, always-editable field, so a filter-focused "clear" acting on
+   it too was surprising (QA: it also meant this row's "Clear all" and the sheet's own "Clear
+   all" quietly did different things for the exact same button label). */
+const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearAll, filtersBtnRef}) => {
+  const containerRef = useRef(null);
+  const [pendingFocus, setPendingFocus] = useState(null);
   const chips = [];
   if (typeFilter) chips.push({ key:'type', label: TYPE_META[typeFilter] ? TYPE_META[typeFilter].label : typeFilter, onRemove:()=>setTypeFilter('') });
   if (radius != null) chips.push({ key:'radius', label:`Within ${radius} mi`, onRemove:()=>setRadius(null) });
   if (specialty) chips.push({ key:'specialty', label:specialty, onRemove:()=>setSpecialty('') });
   selSug.forEach(s => chips.push({ key:'sug-'+s, label:s, onRemove:()=>toggleSug(s) }));
+
+  // Removing a chip used to drop focus to <body> (the button it lived on was simply gone).
+  // This moves it to whichever chip's x now sits where the removed one was, or the previous
+  // one, or the Filters button once none are left -- resolved after the remaining chips have
+  // actually re-rendered, not by guessing which DOM node React will reuse.
+  useEffect(() => {
+    if (!pendingFocus) return;
+    setPendingFocus(null);
+    if (pendingFocus === 'filters') { filtersBtnRef && filtersBtnRef.current && filtersBtnRef.current.focus(); return; }
+    const el = containerRef.current && containerRef.current.querySelector(`[data-chip-key="${pendingFocus}"] button`);
+    if (el) el.focus();
+    else if (filtersBtnRef && filtersBtnRef.current) filtersBtnRef.current.focus();
+  }, [pendingFocus, chips.length]);
+
   if (!chips.length) return null;
+  const removeChip = key => {
+    const idx = chips.findIndex(c => c.key === key);
+    const target = chips[idx + 1] || chips[idx - 1];
+    setPendingFocus(target ? target.key : 'filters');
+    chips[idx].onRemove();
+  };
   return (
-    <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flexBasis:'100%',marginTop:2}}>
+    <div ref={containerRef} style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flexBasis:'100%',marginTop:2}}>
       {chips.map(c => (
-        <span key={c.key} className="afchip">
+        <span key={c.key} data-chip-key={c.key} className="afchip">
           {c.label}
-          <button type="button" onClick={c.onRemove} aria-label={`Remove filter: ${c.label}`}><XIcon/></button>
+          <button type="button" onClick={()=>removeChip(c.key)} aria-label={`Remove filter: ${c.label}`}><XIcon/></button>
         </span>
       ))}
       <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:13,fontWeight:600,padding:'0 4px',cursor:'pointer'}}>Clear all</button>
@@ -1305,11 +1418,17 @@ const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, s
   }, [openId]);
 
   const distLabel = (DIST_OPTIONS.find(([, mi]) => mi === radius) || DIST_OPTIONS[0])[0];
-  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); setKeyword(''); setOpenId(null); };
+  // Scoped to the structured filters only -- the keyword box is a separate, always-editable
+  // field, not one of the removable chips, so this no longer also wipes it (see the note on
+  // ActiveFilterChips for why that was surprising).
+  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); setOpenId(null); };
+  // Debounced so typing a keyword doesn't fire an announcement on every keystroke -- only once
+  // the result count has actually settled for a moment.
+  const announcedCount = useDebounced(resultCount, 500);
 
   return (
     <div className="fbar" role="search" aria-label="Filter resources">
-      <div aria-live="polite" className="sr-only">{resultCount} result{resultCount!==1?'s':''}</div>
+      <div aria-live="polite" className="sr-only">{announcedCount} result{announcedCount!==1?'s':''}</div>
       <div className="fsearch" style={{display:'flex',alignItems:'center',gap:6,border:'1px solid var(--border-strong)',borderRadius:999,padding:'0 12px',height:34,background:'var(--surface)',width:210}}>
         <span style={{color:'var(--brand)',display:'inline-flex',flexShrink:0}}><SearchIcon s={14}/></span>
         <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Name or service…" aria-label="Search by name or service" style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
@@ -1347,7 +1466,7 @@ const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, s
       {onToggleView && <button type="button" className="hdr-viewtoggle-btn fchip pc pc-blue" onClick={onToggleView} aria-label={sheetState==='full' ? 'Show map' : 'Show list'}>
         {sheetState==='full' ? <PinIcon s={14}/> : <ListIcon/>} {sheetState==='full' ? 'Map' : 'List'}
       </button>}
-      <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll}/>
+      <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll} filtersBtnRef={filtersBtnRef}/>
       {summary && <div className="fbar-summary" style={{flex:'1 1 240px',marginLeft:'auto',textAlign:'right',minWidth:0}}>{summary}</div>}
       <FilterSheet open={sheetOpen} onClose={closeSheet} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>
     </div>
@@ -1372,7 +1491,6 @@ const SavedPanel = ({open, onClose, favs, ALL, coords, onFav}) => {
     return favs.slice().reverse().map(id => byId.get(id)).filter(Boolean);   // most recently saved first
   }, [open, ALL, favs]);
   if (!open) return null;
-  const btnBase = {height:30,padding:'0 12px',borderRadius:7,fontSize:12,fontWeight:600,display:'inline-flex',alignItems:'center'};
   return (
     <div role="dialog" aria-label="Saved resources" className="saved-panel">
       <div className="saved-head">
@@ -1395,7 +1513,7 @@ const SavedPanel = ({open, onClose, favs, ALL, coords, onFav}) => {
             <div key={r.id} className="saved-item">
               <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8}}>
                 <h3 style={CARD_TITLE}>{r.name}</h3>
-                <button type="button" onClick={()=>onFav(r.id)} aria-label={`Remove ${r.name} from saved`} title="Remove from saved" style={{width:30,height:30,padding:0,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,cursor:'pointer'}}><HeartIcon f={true}/></button>
+                <button type="button" onClick={()=>onFav(r.id)} aria-label={`Remove ${r.name} from saved`} title="Remove from saved" className="card-icon-btn" style={{padding:0,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',flexShrink:0,cursor:'pointer'}}><HeartIcon f={true}/></button>
               </div>
               <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
                 <TypePill type={r.type} small/>
@@ -1406,8 +1524,8 @@ const SavedPanel = ({open, onClose, favs, ALL, coords, onFav}) => {
               </div>
               {r.description && <p style={{margin:0,fontSize:14,fontWeight:400,color:'var(--text-desc)',lineHeight:'20px',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>"{r.description}"</p>}
               <div style={{display:'flex',gap:6,marginTop:2}}>
-                {r.phone && <a href={`tel:${r.phone}`} className="call-btn" style={{...btnBase,background:'var(--action)',color:'var(--action-on)'}}>Call</a>}
-                {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" style={{...btnBase,background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)'}}>Website</a>}
+                {r.phone && <a href={`tel:${r.phone}`} aria-label={`Call ${r.name}`} className="call-btn card-action-btn" style={{background:'var(--action)',color:'var(--action-on)'}}>Call</a>}
+                {r.website && <a href={r.website} target="_blank" rel="noopener noreferrer" aria-label={`Website for ${r.name} (opens in new tab)`} className="card-action-btn" style={{background:'var(--surface)',color:'var(--text)',border:'1px solid var(--border-strong)'}}>Website</a>}
               </div>
             </div>
           );
@@ -1563,7 +1681,7 @@ const SuggestModal = ({open, onClose}) => {
    this menu; Accessibility stays visible on its own since it's the site's core feature.
    Portaled to document.body (same pattern as SuggestDropdown) so it isn't affected by any
    ancestor's overflow, and positioned from the trigger button's own rect. */
-const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest, savedOpen, savedCount, onToggleSaved}) => {
+const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest, savedOpen, savedCount, onToggleSaved, onDonate}) => {
   const [rect, setRect] = useState(null);
   const popRef = useRef(null);
 
@@ -1596,13 +1714,17 @@ const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest, savedOpen, saved
   }, [open]);
 
   if (!open || !rect) return null;
+  // Plain disclosure panel (ARIA APG "Disclosure"), not a role="menu" -- a real menu implies
+  // arrow-key/Home/End navigation between items, which this never implemented; mislabeling it
+  // as one gives assistive tech the wrong expectations. Tab-cycling, Escape, and returning
+  // focus to the trigger (all still here) are everything the disclosure pattern requires.
   return ReactDOM.createPortal(
-    <div ref={popRef} role="menu" aria-label="More actions" className="hdr-menu-pop" style={{top:rect.bottom+8, right:Math.max(8, window.innerWidth - rect.right)}}>
-      <a role="menuitem" href="#donate" onClick={e=>{e.preventDefault();onClose();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}}>
+    <div ref={popRef} className="hdr-menu-pop" style={{top:rect.bottom+8, right:Math.max(8, window.innerWidth - rect.right)}}>
+      <a href="#donate" onClick={e=>{e.preventDefault();onClose();onDonate();}}>
         <span aria-hidden="true" style={{color:'var(--cardinal-500)'}}>♥</span> Donate
       </a>
-      <button role="menuitem" type="button" onClick={()=>{onClose();onSuggest();}}><PlusCircleIcon s={16}/> Suggest a Resource</button>
-      <button role="menuitem" type="button" onClick={()=>{onClose();onToggleSaved();}} aria-pressed={savedOpen}>
+      <button type="button" onClick={()=>{onClose();onSuggest();}}><PlusCircleIcon s={16}/> Suggest a Resource</button>
+      <button type="button" onClick={()=>{onClose();onToggleSaved();}} aria-pressed={savedOpen}>
         <HeartIcon f={savedCount>0 && !savedOpen}/> Saved{savedCount>0 && ` (${savedCount})`}
       </button>
     </div>,
@@ -1611,7 +1733,7 @@ const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest, savedOpen, saved
 };
 
 /* ─── Header ─────────────────────────────────────────────────── */
-const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, onSuggest, locLabel, onLogoClick, onSearchLocation, onSelectSuggestion, onUseMyLocation, showSearch, locBusy, locError}) => {
+const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, onSuggest, onDonate, locLabel, onLogoClick, onSearchLocation, onSelectSuggestion, onUseMyLocation, showSearch, locBusy, locError}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuBtnRef = useRef(null);
   const [locInput, setLocInput] = useState(locLabel === 'My Location' ? '' : locLabel);
@@ -1670,7 +1792,7 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
           <PinIcon s={14}/> My Location
         </button>}
         <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
-          <a href="#donate" onClick={e=>{e.preventDefault();window.location.hash='donate';document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} className="hdr-full-btn" style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:'var(--cardinal-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
+          <a href="#donate" onClick={e=>{e.preventDefault();onDonate();}} className="hdr-full-btn" style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:'var(--cardinal-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
             ♥ Donate
           </a>
           <button type="button" onClick={onSuggest} aria-haspopup="dialog" title="Suggest a resource to add" className="hdr-full-btn hbtn pc pc-cardinal">
@@ -1679,7 +1801,7 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
           <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title="Your saved resources" className={`hdr-full-btn hbtn pc pc-cardinal${savedOpen?' on':''}`}>
             <HeartIcon f={savedCount>0 && !savedOpen}/> Saved{savedCount>0 && <span style={{fontWeight:700}}>({savedCount})</span>}
           </button>
-          <button ref={menuBtnRef} type="button" onClick={()=>setMobileMenuOpen(o=>!o)} aria-haspopup="menu" aria-expanded={mobileMenuOpen} aria-label={`More actions${savedCount>0 ? `, ${savedCount} saved` : ''}`} className="hdr-menu-btn hbtn pc pc-cardinal" style={{position:'relative'}}>
+          <button ref={menuBtnRef} type="button" onClick={()=>setMobileMenuOpen(o=>!o)} aria-expanded={mobileMenuOpen} aria-label={`More actions${savedCount>0 ? `, ${savedCount} saved` : ''}`} className="hdr-menu-btn hbtn pc pc-cardinal" style={{position:'relative'}}>
             <MenuIcon/>
             {savedCount>0 && <span aria-hidden="true" style={{position:'absolute',top:-5,right:-5,minWidth:16,height:16,borderRadius:999,background:'var(--cardinal-500)',color:'#fff',fontSize:10,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px'}}>{savedCount}</span>}
           </button>
@@ -1688,7 +1810,7 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
           </button>
         </div>
       </div>
-      <HeaderMobileMenu open={mobileMenuOpen} onClose={()=>setMobileMenuOpen(false)} anchorRef={menuBtnRef} onSuggest={onSuggest} savedOpen={savedOpen} savedCount={savedCount} onToggleSaved={onToggleSaved}/>
+      <HeaderMobileMenu open={mobileMenuOpen} onClose={()=>setMobileMenuOpen(false)} anchorRef={menuBtnRef} onSuggest={onSuggest} savedOpen={savedOpen} savedCount={savedCount} onToggleSaved={onToggleSaved} onDonate={onDonate}/>
     </header>
   );
 };
@@ -2345,8 +2467,22 @@ const PER_PAGE = 10;
 /* ─── Pager ──────────────────────────────────────────────────── */
 const Pager = ({page, totalPages, setPage}) => {
   const [jump, setJump] = useState('');
+  const rootRef = useRef(null);
+  const [announce, setAnnounce] = useState('');
   const submitJump = () => { const n = parseInt(jump, 10); if (!isNaN(n)) { go(n - 1); setJump(''); } };
-  const go = p => { setPage(Math.max(0, Math.min(totalPages - 1, p))); window.scrollTo({top:0,behavior:'smooth'}); };
+  // On the mobile map-first layout the list scrolls inside its own container (the shell
+  // itself doesn't scroll), so `window.scrollTo` was a no-op there and paging left the list
+  // scrolled to wherever it happened to be -- often the bottom, right after the pager that was
+  // just clicked. `closest('[data-scroll-root]')` finds that container when it exists; on
+  // desktop, where the whole page scrolls, nothing matches it and this falls back to window.
+  const go = p => {
+    const next = Math.max(0, Math.min(totalPages - 1, p));
+    setPage(next);
+    const root = rootRef.current && rootRef.current.closest('[data-scroll-root]');
+    if (root) root.scrollTo({top: 0, behavior: 'smooth'});
+    else window.scrollTo({top: 0, behavior: 'smooth'});
+    setAnnounce(`Showing page ${next + 1} of ${totalPages}`);
+  };
   // Build a windowed list of page numbers with ellipses for large ranges
   const nums = [];
   const push = n => nums.push(n);
@@ -2364,7 +2500,8 @@ const Pager = ({page, totalPages, setPage}) => {
     cursor: disabled ? 'default' : 'pointer', opacity: disabled ? .5 : 1,
   });
   return (
-    <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,flexWrap:'wrap',marginTop:28,paddingTop:20,borderTop:'1px solid var(--divider)'}}>
+    <div ref={rootRef} style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,flexWrap:'wrap',marginTop:28,paddingTop:20,borderTop:'1px solid var(--divider)'}}>
+      <div aria-live="polite" className="sr-only">{announce}</div>
       <button onClick={()=>go(page-1)} disabled={page===0} style={btn(false, page===0)}>‹ Prev</button>
       {nums.map((n,i)=> n === '…'
         ? <span key={'e'+i} style={{padding:'0 4px',color:'var(--text-muted)'}}>…</span>
@@ -2398,23 +2535,57 @@ function useIsMobile(bp = 640) {
   return isMobile;
 }
 
+/* The mobile map-first layout needs to know exactly how tall the (variable-height, it wraps
+   at narrow widths) sticky header is, so the results screen below it can fill the rest of the
+   viewport with no page scroll instead of guessing a fixed offset. */
+function useHeaderHeight() {
+  const [h, setH] = useState(0);
+  useEffect(() => {
+    const measure = () => {
+      const el = document.querySelector('header');
+      if (el) setH(Math.round(el.getBoundingClientRect().bottom));
+    };
+    measure();
+    const el = document.querySelector('header');
+    const ro = window.ResizeObserver && el ? new ResizeObserver(measure) : null;
+    if (ro) ro.observe(el);
+    window.addEventListener('resize', measure);
+    return () => { if (ro) ro.disconnect(); window.removeEventListener('resize', measure); };
+  }, []);
+  return h;
+}
+
 /* Keeps the mobile map/list sheet's state in the URL hash (#view=map / #view=list) so the
    browser Back button restores it, matching Yelp/Zillow -- confirmed live during the mobile
    redesign research as the dominant pattern for a map<->list toggle. Scoped to just the view,
-   not full search state (location/filters/page), by deliberate choice this round. */
+   not full search state (location/filters/page), by deliberate choice this round.
+   `parseView` returns null for any hash that isn't ours (e.g. "#donate" from the header) --
+   earlier this defaulted an unrecognized hash to "map", so clicking Donate on the results
+   page silently flipped list view back to map. A null return means "ignore this change". */
+function parseView(hash) {
+  if (hash.includes('view=list')) return 'full';
+  if (hash.includes('view=map')) return 'peek';
+  return null;
+}
 function useSheetView() {
-  const parse = () => (window.location.hash.includes('view=list') ? 'full' : 'peek');
-  const [state, setState] = useState(parse);
+  const [state, setState] = useState(() => parseView(window.location.hash) || 'peek');
   useEffect(() => {
-    const onChange = () => setState(parse());
+    // Seed the hash on first mount (replaceState, not pushState -- this shouldn't be a
+    // history entry of its own) so the URL reflects the default view from the start.
+    if (!parseView(window.location.hash)) history.replaceState(null, '', '#view=map');
+    const onChange = () => { const v = parseView(window.location.hash); if (v) setState(v); };
     window.addEventListener('popstate', onChange);
     window.addEventListener('hashchange', onChange);
     return () => { window.removeEventListener('popstate', onChange); window.removeEventListener('hashchange', onChange); };
   }, []);
+  // Only pushes a history entry when the view actually changes -- a plain tap on the drag
+  // handle (no movement) used to re-set the same state and still push a duplicate, inert
+  // history entry every time, so Back appeared to do nothing.
   const setView = next => {
-    setState(next);
-    const target = next === 'full' ? 'view=list' : 'view=map';
-    if (window.location.hash.replace('#', '') !== target) history.pushState(null, '', '#' + target);
+    setState(prev => {
+      if (next !== prev) history.pushState(null, '', '#' + (next === 'full' ? 'view=list' : 'view=map'));
+      return next;
+    });
   };
   return [state, setView];
 }
@@ -2429,11 +2600,20 @@ const MobilePinPreview = ({group, idx, total, onPrev, onNext, bottom}) => {
   const t = TYPE_META[first.type] || TYPE_META.general_support;
   const many = group.length > 1;
   const name = many ? (first.facility_name || `${group.length} Resources at This Address`) : first.name;
+  // Previously the Prev/Next buttons' own names carried the position ("Next result (3 of
+  // 10)"), which is stale the instant you land on the new result (focus stays on the button
+  // you just pressed, and nothing else announces the change). A live region announces the
+  // actual new selection on every change; the buttons go back to plain, stable names.
+  const announceRef = useRef(null);
+  useEffect(() => {
+    if (announceRef.current) announceRef.current.textContent = `${idx + 1} of ${total}: ${name}`;
+  }, [idx, total, name]);
   return (
     <div role="region" aria-label={`Selected result, ${idx + 1} of ${total}`} style={{position:'absolute',left:12,right:12,bottom,zIndex:12,background:'var(--surface)',border:'1px solid var(--border-strong)',borderRadius:14,boxShadow:'0 8px 24px rgba(0,0,0,.28)',padding:'14px 12px 12px',display:'flex',gap:10,alignItems:'flex-start'}}>
+      <div ref={announceRef} aria-live="polite" className="sr-only"/>
       <CardThumb fg={t.fg} badge={idx + 1} badgeBg="var(--pin-fill)" badgeColor="var(--pin-fill-on)" grid={!many} size={56}/>
       <div style={{flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:3}}>
-        <h3 style={{...CARD_TITLE,fontSize:15}}>{name}</h3>
+        <h3 style={{...CARD_TITLE,fontSize:15,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{name}</h3>
         <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
           <TypePill type={first.type} small/>
           {first.distance != null && <span style={{fontSize:11,fontWeight:600,color:'var(--text)'}}>{first.distance.toFixed(1)} mi</span>}
@@ -2444,28 +2624,47 @@ const MobilePinPreview = ({group, idx, total, onPrev, onNext, bottom}) => {
         </div>
       </div>
       {total > 1 && (
-        <div style={{position:'absolute',top:-15,left:0,right:0,display:'flex',justifyContent:'space-between',padding:'0 6px'}}>
-          <button type="button" onClick={onPrev} aria-label={`Previous result (${idx===0?total:idx} of ${total})`} style={{width:30,height:30,borderRadius:'50%',border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',display:'inline-flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 6px rgba(0,0,0,.2)',fontSize:16}}>‹</button>
-          <button type="button" onClick={onNext} aria-label={`Next result (${idx+2>total?1:idx+2} of ${total})`} style={{width:30,height:30,borderRadius:'50%',border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',display:'inline-flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 6px rgba(0,0,0,.2)',fontSize:16}}>›</button>
+        <div style={{position:'absolute',top:-20,left:0,right:0,display:'flex',justifyContent:'space-between',padding:'0 4px'}}>
+          <button type="button" onClick={onPrev} aria-label="Previous result" className="card-icon-btn" style={{borderRadius:'50%',border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',boxShadow:'0 2px 6px rgba(0,0,0,.2)',fontSize:16}}>‹</button>
+          <button type="button" onClick={onNext} aria-label="Next result" className="card-icon-btn" style={{borderRadius:'50%',border:'1px solid var(--border-strong)',background:'var(--surface)',color:'var(--text)',boxShadow:'0 2px 6px rgba(0,0,0,.2)',fontSize:16}}>›</button>
         </div>
       )}
     </div>
   );
 };
 
+/* No-results equivalent of MobilePinPreview, shown in the same spot while peeking so a
+   "0 resources" search isn't silently invisible in map view (the real message only used to
+   render inside the list, i.e. only reachable from list view). */
+const MobileNoResults = ({bottom}) => (
+  <div role="region" aria-label="No results" style={{position:'absolute',left:12,right:12,bottom,zIndex:12,background:'var(--surface)',border:'1px solid var(--border-strong)',borderRadius:14,boxShadow:'0 8px 24px rgba(0,0,0,.28)',padding:'16px',textAlign:'center',color:'var(--text-muted)'}}>
+    <div style={{fontFamily:'var(--font-antonio)',fontSize:15,fontWeight:700,color:'var(--text)'}}>NO RESULTS FOUND</div>
+    <div style={{fontSize:13,marginTop:4}}>Try widening the distance or clearing filters</div>
+  </div>
+);
+
 /* ─── Mobile map-first results layout (<=640px) ──────────────────
    Chosen over "map below the list" (the old layout, confirmed unreachable in practice --
    it sat ~2,860px down the page on a phone) and over a floating pill toggle: the map fills
    the screen behind a draggable sheet holding the list, Airbnb/Google-style. Dragging the
    handle is optional -- the "Show list"/"Show map" button in FilterBar (always in normal
-   tab order, never requires a pointer) is the real, WCAG-2.5.7-compliant way to switch. */
+   tab order, never requires a pointer) is the real, WCAG-2.5.7-compliant way to switch.
+   The shell fills 100% of its parent -- a fixed-position wrapper in Results sized to exactly
+   the viewport height minus the real (measured) header height -- rather than being sized and
+   positioned itself, which used to leave it taller than the viewport with the page scrolling
+   underneath it (confirmed in QA: 403px of unwanted page scroll at 390x844). */
 const SHEET_PEEK = 132;
 
-const MobileMapSheet = ({groups, listContent, coords, radius, themeKey, contrast, activeId, setActiveId, sheetState, setSheetState, resultCount}) => {
+const MobileMapSheet = ({groups, listContent, noResults, coords, radius, themeKey, contrast, activeId, setActiveId, sheetState, setSheetState, resultCount, reduceMotion}) => {
   const shellRef = useRef(null);
   const [shellH, setShellH] = useState(0);
-  useEffect(() => {
-    const measure = () => { if (shellRef.current) setShellH(shellRef.current.clientHeight); };
+  const [measured, setMeasured] = useState(false);
+  // useLayoutEffect (not useEffect) so the very first paint already has a real height instead
+  // of shellH's 0 default -- otherwise the sheet briefly rendered at its "full" (offset 0)
+  // position, fully covering the map, for about 100ms before this measured and it could jump
+  // to its correct peek/full position (confirmed in QA as a visible slide-on-load flash).
+  useLayoutEffect(() => {
+    const measure = () => { if (shellRef.current) { setShellH(shellRef.current.clientHeight); setMeasured(true); } };
     measure();
     const ro = window.ResizeObserver ? new ResizeObserver(measure) : null;
     if (ro && shellRef.current) ro.observe(shellRef.current);
@@ -2498,7 +2697,14 @@ const MobileMapSheet = ({groups, listContent, coords, radius, themeKey, contrast
     setSheetState(next);
   };
 
-  const activeGroupIdx = groups.length ? Math.max(0, groups.findIndex(g => g.some(r => r.id === activeId))) : -1;
+  const activeGroupIdx = groups.length ? groups.findIndex(g => g.some(r => r.id === activeId)) : -1;
+  // If nothing is selected yet (fresh search, or the previous selection's page no longer
+  // exists), default to the first result -- previously the preview *displayed* "1 of N" as a
+  // fallback while the real active id stayed null, so the map never actually highlighted pin
+  // #1 to match. useLayoutEffect so this resolves before paint, not after a visible flash.
+  useLayoutEffect(() => {
+    if (groups.length > 0 && activeGroupIdx === -1) setActiveId(groups[0][0].id);
+  }, [groups.length, activeGroupIdx]);
   const stepPreview = delta => {
     if (!groups.length) return;
     const cur = activeGroupIdx === -1 ? 0 : activeGroupIdx;
@@ -2506,14 +2712,15 @@ const MobileMapSheet = ({groups, listContent, coords, radius, themeKey, contrast
   };
 
   return (
-    <div ref={shellRef} style={{position:'sticky',top:76,height:'calc(100vh - 92px)',minHeight:420,overflow:'hidden',borderRadius:14,border:'1px solid var(--border)'}}>
-      <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast} mobileFull/>
-      {sheetState === 'peek' && groups.length > 0 && (
-        <MobilePinPreview group={groups[activeGroupIdx]} idx={activeGroupIdx} total={groups.length}
-          onPrev={()=>stepPreview(-1)} onNext={()=>stepPreview(1)} bottom={SHEET_PEEK + 12}/>
+    <div ref={shellRef} style={{position:'relative',height:'100%',overflow:'hidden'}}>
+      <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast} mobileFull sheetState={sheetState}/>
+      {sheetState === 'peek' && (activeGroupIdx !== -1
+        ? <MobilePinPreview group={groups[activeGroupIdx]} idx={activeGroupIdx} total={groups.length}
+            onPrev={()=>stepPreview(-1)} onNext={()=>stepPreview(1)} bottom={SHEET_PEEK + 12}/>
+        : noResults && <MobileNoResults bottom={SHEET_PEEK + 12}/>
       )}
       <div style={{position:'absolute',left:0,right:0,top:0,bottom:0,zIndex:5,background:'var(--surface)',borderRadius:'16px 16px 0 0',boxShadow:'0 -6px 24px rgba(0,0,0,.18)',display:'flex',flexDirection:'column',
-          transform:`translateY(${offset}px)`, transition: dragOffset == null ? 'transform 280ms var(--ease-out)' : 'none'}}>
+          transform:`translateY(${offset}px)`, transition: (dragOffset == null && measured && !reduceMotion) ? 'transform var(--dur-base) var(--ease-out)' : 'none'}}>
         <div
           onPointerDown={onHandlePointerDown} onPointerMove={onHandlePointerMove} onPointerUp={onHandlePointerUp} onPointerCancel={onHandlePointerUp}
           style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:6,padding:'10px 16px 8px',touchAction:'none',cursor:'grab'}}>
@@ -2521,7 +2728,7 @@ const MobileMapSheet = ({groups, listContent, coords, radius, themeKey, contrast
           <span style={{fontSize:12,fontWeight:600,color:'var(--text-muted)'}}>{resultCount} result{resultCount!==1?'s':''}</span>
         </div>
         {sheetState === 'full' && (
-          <div style={{flex:1,overflowY:'auto',padding:'0 12px 24px',WebkitOverflowScrolling:'touch'}}>
+          <div data-scroll-root style={{flex:1,overflowY:'auto',padding:'0 12px 24px',WebkitOverflowScrolling:'touch'}}>
             {listContent}
           </div>
         )}
@@ -2530,16 +2737,27 @@ const MobileMapSheet = ({groups, listContent, coords, radius, themeKey, contrast
   );
 };
 
-const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, contrast, onVisibleChange}) => {
+const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, contrast, onVisibleChange, reduceMotion}) => {
   const [typeFilter, setTypeFilter] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [radius, setRadius] = useState(null);
+  // Two separate ids, not one: `activeId` is the desktop transient hover highlight (set by
+  // mouseenter/mouseleave on a card or a map pin), `selectedId` is the mobile sticky selection
+  // (set by tapping a pin or Prev/Next, and meant to persist). QA found the single shared id
+  // this used to be got reset to null by unrelated hover-out events -- moving the pointer off a
+  // just-tapped pin on mobile, or an in-flight desktop hover ending when resizing crossed the
+  // 640px breakpoint and unmounted the hovered card -- silently reverting the mobile selection
+  // back to result #1 both times. Kept independent, neither can clobber the other.
   const [activeId, setActiveId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [page, setPage] = useState(0);
   const [selSug, setSelSug] = useState([]);
   const toggleSug = s => setSelSug(a => a.includes(s) ? a.filter(x=>x!==s) : [...a,s]);
   const isMobile = useIsMobile();
+  const headerH = useHeaderHeight();
   const [sheetState, setSheetState] = useSheetView();
+  const curId = isMobile ? selectedId : activeId;
+  const setCurId = isMobile ? setSelectedId : setActiveId;
   // Reset to first page whenever the result set changes
   useEffect(() => { setPage(0); }, [typeFilter, specialty, radius, keyword, coords, selSug]);
 
@@ -2619,69 +2837,89 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
     );
   }
 
+  const noResults = shown.length === 0 && national.length === 0;
+  const listContent = noResults ? (
+    <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
+      <div style={{fontSize:32,marginBottom:10}}>🔍</div>
+      <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700}}>NO RESULTS FOUND</div>
+      <div style={{fontSize:14,marginTop:6}}>Try widening the distance or clearing filters</div>
+    </div>
+  ) : (
+    <React.Fragment>
+      {groups.map((g,i)=>(
+        g.length > 1
+          ? <GroupedResourceCard key={'g'+g[0].id} group={g} idx={i} active={g.some(x=>x.id===curId)} onHover={setCurId} compact={isMobile}/>
+          : <ResourceCard key={g[0].id} r={g[0]} idx={i} fav={favs.includes(g[0].id)} onFav={onFav} active={curId===g[0].id} onHover={setCurId} compact={isMobile}/>
+      ))}
+      {totalPages > 1 && (
+        <Pager page={safePage} totalPages={totalPages} setPage={setPage}/>
+      )}
+      {onLastPage && national.length > 0 && (
+        <div style={{marginTop:24}}>
+          <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.06em',textTransform:'uppercase',color:'var(--text-secondary)',margin:'0 0 4px',borderTop:'1px solid var(--divider)',paddingTop:18}}>Available Nationwide &amp; Virtual</h3>
+          <p style={{fontSize:12,color:'var(--text-muted)',margin:'0 0 14px'}}>{national.length} service{national.length!==1?'s':''} you can reach from anywhere — no fixed location.</p>
+          {national.map((r,i)=>(
+            <ResourceCard key={r.id} r={r} idx={filtered.length+i} fav={favs.includes(r.id)} onFav={onFav} active={curId===r.id} onHover={setCurId} compact={isMobile}/>
+          ))}
+        </div>
+      )}
+    </React.Fragment>
+  );
+
+  const filterBar = (
+    <FilterBar resultCount={filtered.length} summary={
+      <React.Fragment>
+        <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(18px,2.2vw,22px)',margin:'0 0 2px',letterSpacing:'.01em',color:'var(--text)'}}>
+          {filtered.length} Resource{filtered.length!==1?'s':''}{radius!=null?` within ${radius} mi`:''} Near {locLabel}
+        </h2>
+        <div style={{fontSize:12,color:'var(--text-muted)'}}>
+          {coords ? 'Sorted by distance' : 'Browse all'}
+          {filtered.length > 0 ? ` · showing ${start + 1}–${start + shown.length} of ${filtered.length}` : ''}
+          <span className="hide-mobile">{` · ${ALL.length} total in directory`}</span>
+        </div>
+      </React.Fragment>
+    } keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])} sheetState={sheetState} onToggleView={()=>setSheetState(sheetState==='full'?'peek':'full')}/>
+  );
+
+  // Mobile: a fixed, viewport-filling column (header height to the bottom of the screen, no
+  // page scroll at all) rather than normal document flow. Previously this content sat in
+  // ordinary flow below the header, so the shell's own `calc(100vh - 92px)` sizing assumed a
+  // roughly fixed header height -- wrong as soon as the header wrapped to more lines (measured
+  // at 137px in QA, not ~76px), leaving the shell taller than the space actually available and
+  // the whole page scrolling underneath it, with the sheet handle and pager ending up below the
+  // fold. Sizing this wrapper from the header's real, measured height and letting the map shell
+  // be the only flexible (flex:1) piece removes page scroll entirely: everything either fits in
+  // its own fixed-height row above the shell, or scrolls inside the shell's own sheet.
+  if (isMobile) {
+    return (
+      <div style={{position:'fixed',top:headerH,left:0,right:0,bottom:0,zIndex:100,display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden'}}>
+        <div style={{padding:'8px 16px 0',flexShrink:0,fontSize:13,color:'var(--text-muted)',fontWeight:600}}>{locLabel}</div>
+        <div style={{padding:'4px 16px 0',flexShrink:0}}>{filterBar}</div>
+        <div style={{flex:'1 1 auto',minHeight:0,padding:'8px 16px'}}>
+          <MobileMapSheet groups={groups} listContent={listContent} noResults={noResults} coords={coords} radius={radius} themeKey={themeKey} contrast={contrast}
+            activeId={curId} setActiveId={setCurId} sheetState={sheetState} setSheetState={setSheetState} resultCount={filtered.length} reduceMotion={reduceMotion}/>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{maxWidth:2400,margin:'0 auto',padding:'12px 24px 48px'}}>
       <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:6,display:'flex',alignItems:'center',flexWrap:'wrap',gap:6}}>
-        <span className="hide-mobile" style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
-        <span className="hide-mobile">›</span>
-        <span className="hide-mobile" style={{cursor:'pointer',color:'var(--text-link)'}}>Autism &amp; Special Needs</span>
-        <span className="hide-mobile">›</span>
+        <span style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
+        <span>›</span>
+        <span style={{cursor:'pointer',color:'var(--text-link)'}}>Autism &amp; Special Needs</span>
+        <span>›</span>
         <span style={{color:'var(--text-muted)',fontWeight:600}}>{locLabel}</span>
-        <span className="hide-mobile" style={{marginLeft:'auto'}}>Questions or feedback? <a href={`mailto:${CONTACT_EMAIL}`} style={{color:'var(--text-link)',fontWeight:600,textDecoration:'underline'}}>{CONTACT_EMAIL}</a></span>
+        <span style={{marginLeft:'auto'}}>Questions or feedback? <a href={`mailto:${CONTACT_EMAIL}`} style={{color:'var(--text-link)',fontWeight:600,textDecoration:'underline'}}>{CONTACT_EMAIL}</a></span>
       </div>
-      <FilterBar resultCount={filtered.length} summary={
-        <React.Fragment>
-          <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(18px,2.2vw,22px)',margin:'0 0 2px',letterSpacing:'.01em',color:'var(--text)'}}>
-            {filtered.length} Resource{filtered.length!==1?'s':''}{radius!=null?` within ${radius} mi`:''} Near {locLabel}
-          </h2>
-          <div style={{fontSize:12,color:'var(--text-muted)'}}>
-            {coords ? 'Sorted by distance' : 'Browse all'}
-            {filtered.length > 0 ? ` · showing ${start + 1}–${start + shown.length} of ${filtered.length}` : ''}
-            <span className="hide-mobile">{` · ${ALL.length} total in directory`}</span>
-          </div>
-        </React.Fragment>
-      } keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])} sheetState={sheetState} onToggleView={()=>setSheetState(sheetState==='full'?'peek':'full')}/>
-      {(() => {
-        const listContent = shown.length === 0 && national.length === 0 ? (
-          <div style={{textAlign:'center',padding:'64px 0',color:'var(--text-muted)'}}>
-            <div style={{fontSize:32,marginBottom:10}}>🔍</div>
-            <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700}}>NO RESULTS FOUND</div>
-            <div style={{fontSize:14,marginTop:6}}>Try widening the distance or clearing filters</div>
-          </div>
-        ) : (
-          <React.Fragment>
-            {groups.map((g,i)=>(
-              g.length > 1
-                ? <GroupedResourceCard key={'g'+g[0].id} group={g} idx={i} active={g.some(x=>x.id===activeId)} onHover={setActiveId}/>
-                : <ResourceCard key={g[0].id} r={g[0]} idx={i} fav={favs.includes(g[0].id)} onFav={onFav} active={activeId===g[0].id} onHover={setActiveId} compact={isMobile}/>
-            ))}
-            {totalPages > 1 && (
-              <Pager page={safePage} totalPages={totalPages} setPage={setPage}/>
-            )}
-            {onLastPage && national.length > 0 && (
-              <div style={{marginTop:24}}>
-                <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.06em',textTransform:'uppercase',color:'var(--text-secondary)',margin:'0 0 4px',borderTop:'1px solid var(--divider)',paddingTop:18}}>Available Nationwide &amp; Virtual</h3>
-                <p style={{fontSize:12,color:'var(--text-muted)',margin:'0 0 14px'}}>{national.length} service{national.length!==1?'s':''} you can reach from anywhere — no fixed location.</p>
-                {national.map((r,i)=>(
-                  <ResourceCard key={r.id} r={r} idx={filtered.length+i} fav={favs.includes(r.id)} onFav={onFav} active={activeId===r.id} onHover={setActiveId} compact={isMobile}/>
-                ))}
-              </div>
-            )}
-          </React.Fragment>
-        );
-
-        return isMobile ? (
-          <MobileMapSheet groups={groups} listContent={listContent} coords={coords} radius={radius} themeKey={themeKey} contrast={contrast}
-            activeId={activeId} setActiveId={setActiveId} sheetState={sheetState} setSheetState={setSheetState} resultCount={filtered.length}/>
-        ) : (
-          <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
-            <div style={{flex:'3 1 480px',minWidth:320}}>{listContent}</div>
-            <div style={{flex:'2 1 400px',minWidth:340,alignSelf:'stretch',minHeight:'calc(100vh - 92px)',display:'flex',flexDirection:'column'}}>
-              <MapPanel groups={groups} active={activeId} onHover={setActiveId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast}/>
-            </div>
-          </div>
-        );
-      })()}
+      {filterBar}
+      <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
+        <div style={{flex:'3 1 480px',minWidth:320}}>{listContent}</div>
+        <div style={{flex:'2 1 400px',minWidth:340,alignSelf:'stretch',minHeight:'calc(100vh - 92px)',display:'flex',flexDirection:'column'}}>
+          <MapPanel groups={groups} active={curId} onHover={setCurId} center={coords} radiusMi={radius} themeKey={themeKey} contrast={contrast}/>
+        </div>
+      </div>
     </div>
   );
 };
@@ -2706,6 +2944,19 @@ function App() {
   const [readableList, setReadableList] = useState([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  // The mobile results screen is a fixed, viewport-filling panel painted above everything else
+  // in normal flow, including the footer right below the header in the (now practically empty)
+  // document flow -- so the footer sits completely hidden behind it, but, without this, stayed
+  // a real focusable/AT-visible target a keyboard user could Tab straight into with no visible
+  // focus indicator anywhere on screen. Same fix as the mobile-map-in-list-view case.
+  const isMobileApp = useIsMobile();
+  const footerRef = useRef(null);
+  const hideFooter = screen === 'results' && isMobileApp;
+  useEffect(() => {
+    if (!footerRef.current) return;
+    footerRef.current.inert = hideFooter;
+    footerRef.current.setAttribute('aria-hidden', hideFooter ? 'true' : 'false');
+  }, [hideFooter]);
 
   useEffect(() => {
     if (!window.matchMedia) return;
@@ -2768,6 +3019,26 @@ function App() {
 
   const goLanding = () => { setScreen('landing'); setError(''); };
 
+  // Donate only has a real target (#donate-section) on the landing page. From results, jumping
+  // straight to "#donate" used to do nothing visible -- confirmed in QA -- so this navigates to
+  // landing first and scrolls once it's actually painted (double rAF: one for the state update's
+  // render, one for layout to settle) rather than racing a fixed setTimeout.
+  const pendingDonateScroll = useRef(false);
+  const scrollToDonate = () => {
+    document.getElementById('donate-section')?.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth'});
+  };
+  const goDonate = () => {
+    window.location.hash = 'donate';
+    if (screen !== 'landing') { pendingDonateScroll.current = true; setScreen('landing'); }
+    else scrollToDonate();
+  };
+  useEffect(() => {
+    if (screen === 'landing' && pendingDonateScroll.current) {
+      pendingDonateScroll.current = false;
+      requestAnimationFrame(() => requestAnimationFrame(scrollToDonate));
+    }
+  }, [screen]);
+
   const searchLocation = async (text, kw = '') => {
     setBusy(true); setError('');
     try {
@@ -2801,13 +3072,13 @@ function App() {
   return (
     <>
     <div className="app-zoom">
-      <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} savedOpen={savedOpen} savedCount={favs.length} onToggleSaved={toggleSaved} onSuggest={() => setSuggestOpen(true)} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onSelectSuggestion={selectSuggestion} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'}/>
-      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onSelectSuggestion={selectSuggestion} onLocate={useMyLocation} busy={busy} error={error} reduceMotion={reduceMotion}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} favs={favs} onFav={toggleFav} themeKey={themeKey} contrast={prefs.contrast} onVisibleChange={setReadableList}/>}</main>
-      <footer style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
+      <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} savedOpen={savedOpen} savedCount={favs.length} onToggleSaved={toggleSaved} onSuggest={() => setSuggestOpen(true)} onDonate={goDonate} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onSelectSuggestion={selectSuggestion} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'}/>
+      <main>{screen==='landing' ? <Landing onSearch={searchLocation} onSelectSuggestion={selectSuggestion} onLocate={useMyLocation} busy={busy} error={error} reduceMotion={reduceMotion}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} favs={favs} onFav={toggleFav} themeKey={themeKey} contrast={prefs.contrast} onVisibleChange={setReadableList} reduceMotion={reduceMotion}/>}</main>
+      <footer ref={footerRef} style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
         © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
         <a href="https://github.com/michaelcraft17/autism-community-resources" target="_blank" rel="noopener noreferrer" style={{color:'var(--text-link)',textDecoration:'underline',fontWeight:600}}>GitHub</a>
         {' '}·{' '}
-        <a href="#donate-section" onClick={e=>{e.preventDefault();document.getElementById('donate-section')?.scrollIntoView({behavior:'smooth'});}} style={{color:'var(--accent-text)',fontWeight:600,cursor:'pointer'}}>Donate ♥</a>
+        <a href="#donate" onClick={e=>{e.preventDefault();goDonate();}} style={{color:'var(--accent-text)',fontWeight:600,cursor:'pointer'}}>Donate ♥</a>
         <span style={{display:'block',marginTop:4}}>Contact: <a href={`mailto:${CONTACT_EMAIL}`} style={{color:'var(--text-link)',textDecoration:'underline',fontWeight:600}}>{CONTACT_EMAIL}</a></span>
         <span style={{display:'block',marginTop:4}}>Always verify information directly with service providers.</span>
       </footer>
