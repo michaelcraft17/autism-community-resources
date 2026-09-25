@@ -20,6 +20,10 @@ tools/*_scratch/
 # of the site, regenerate with: see conversation history for the diff-and-copy steps.
 tools/preview/
 
+# Timestamped run logs from tools/scheduled_refresh.sh -- local operational noise, not
+# part of the project.
+tools/logs/
+
 # Harvest outputs from tools/cqc_uk_fetch.py, tools/wikidata_autism_fetch.py, and the
 # GPT-Researcher pipeline, already merged into community_resources.json via
 # tools/merge_new_resources.py. Left on disk for reference but not tracked -- rerun the

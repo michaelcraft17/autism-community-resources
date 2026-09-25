@@ -488,6 +488,35 @@ government/encyclopedic structured sources were ~95%+ clean):
   specific factual claims) without running that check and spot-verifying the flagged ones.
   Full workflow: `~/gpt-researcher-local/WORKFLOW.md`.
 
+## Community submission intake (2026-09-25)
+
+The site now has a "Suggest a Resource" button in the header (`SuggestModal` in
+index.html, portaled to `document.body` same as `SuggestDropdown`). Since this is a
+static GitHub Pages site with no backend, submitting doesn't POST anywhere -- it
+builds a prefilled `github.com/.../issues/new?...` URL (title/body/`resource-suggestion`
+label) and opens it in a new tab; the visitor finishes the submission on GitHub
+itself (needs a free GitHub account).
+
+`tools/import_github_issues.py` is the intake side: pulls open
+`resource-suggestion`-labeled issues via `gh issue list`, parses the `**Field:**
+value` markdown lines back into the resource-JSON shape, writes
+`new_resources_submissions.json` (gitignored scratch file, same convention as every
+other `new_resources_*.json`). It deliberately does **not** geocode, merge, or
+close issues -- same manual-review discipline as every other source, since an
+anonymous submission is a claim, not a verified official source. Full human
+workflow is in the script's own docstring: review the output, geocode or mark
+`placeless`, run `merge_new_resources.py`, regenerate `community_data.js`, test,
+commit, then close the processed issues by hand.
+
+`tools/scheduled_refresh.sh` (also added this session) reruns the 12 cheapest,
+purely-API-based fetchers (excludes Italy's Playwright-driven one and Ukraine's
+~3.2GB bulk download) + merge + regenerate, on demand or via cron/launchd --
+zero LLM tokens per run since it's just HTTP + JSON/CSV parsing, and it never
+commits or pushes on its own. The user wired it into their own crontab
+(`0 9 1 * * .../tools/scheduled_refresh.sh`, monthly) -- a manual local launchd
+install was attempted first but blocked by Claude Code's own auto-mode
+persistence guardrail, so cron was used instead.
+
 ## Known site-behavior gotchas (already fixed, but good to know the shape of the bug class)
 
 - `shapeAll()` in `index.html` used to silently drop any entry without `coordinates.lat/lng`,
