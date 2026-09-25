@@ -556,6 +556,45 @@ persistence guardrail, so cron was used instead.
   built and re-validated -- this is exactly the same "verify before trusting,
   and verify the verifier" discipline the original ~5,000-URL reachability
   audit already established for this project (see commit `357d817`).
+  **Round 2 (2026-09-25):** built both fixes -- an `AGGREGATOR_DOMAINS`
+  blocklist (rejects a candidate outright, before even fetching it) seeded
+  with the 9 confirmed offenders above, plus a same-category preemptive list
+  (healthgrades.com, zocdoc.com, manta.com, yelp.com, etc.) -- and a ranking
+  heuristic that prefers, among multiple passing candidates, one whose own
+  domain contains a normalized fragment of the org's name. Re-ran the same
+  100-entry-class sample: 81 verified / 19 review (previously 91/9). Manually
+  classified all 81 by URL/domain pattern rather than trusting the script:
+  **real precision only rose to ~54-58%, not the fix this needed.** The
+  reason: this specific niche (small local ABA-therapy providers) turns out
+  to have its own whole ecosystem of directory sites beyond the original 9 --
+  `findaba.net`, `findglocal.com`, `findhealthclinics.org`,
+  `providerspark.com`, `spectrumheart.com`, `abacarenetwork.com`,
+  `abahub.org`, `mentalhealthus.org`, `autismlifeandliving.org`,
+  `raisingbrilliance.org`, `opennpi.com`, `opengovus.com`,
+  `inclusiveprogramsguide.com`, `volunteersanantonio.org`, `atlantaparent.com`,
+  `alabamafamilycentral.org` all showed up as the next-best DDGS result once
+  the first 9 were blocked -- a domain blocklist for this vertical is
+  whack-a-mole, not a bounded list. (Also added `linkedin.com`/`facebook.com`
+  to the blocklist -- social-platform profile pages aren't a "website" field
+  in the sense this project wants, even when they're a real, current presence
+  for the org.) All 25 newly-observed offenders from this round are now in
+  `AGGREGATOR_DOMAINS` for next time, but the script has **not** been
+  re-tested against them yet -- the ~54-58% figure is this round's measured
+  result, before this round's own blocklist additions.
+  The domain-name-match signal is currently only a *tiebreaker* among
+  multiple passing candidates -- it did nothing for the majority of entries,
+  which only ever produced one passing candidate after the other checks ran.
+  **The actual next fix**, not yet built: make domain-name-match a *hard
+  requirement* (not just a tiebreaker) at least for the NPI/small-provider
+  segment specifically, where the web is directory-saturated -- accept a
+  candidate outright if the domain matches the name, otherwise route to
+  manual review instead of accepting on token-presence alone. That will cost
+  recall (fewer auto-verified) but should raise precision a lot further; try
+  it before growing the blocklist more. Note it would have wrongly rejected
+  at least one genuine true positive from this round (`bluesprigautism.com`
+  for "Trumpet Behavioral Health" -- a real corporate-acquisition rename with
+  no lexical overlap), so it needs a manual-review fallback, not an outright
+  drop, for domain-mismatch cases.
 
 ## Known site-behavior gotchas (already fixed, but good to know the shape of the bug class)
 

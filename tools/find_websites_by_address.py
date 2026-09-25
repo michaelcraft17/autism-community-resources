@@ -50,10 +50,62 @@ PARKING_SIGNALS = [
 STOPWORDS = {"the", "of", "for", "and", "inc", "llc", "foundation", "center", "centre",
              "association", "society", "autism", "a", "an"}
 
+# Directory/aggregator/data-broker domains that legitimately contain an org's
+# name (so the name-token check alone can't reject them) but are NOT the org's
+# own site. First block (through govserv.org) is empirically confirmed -- these
+# actually appeared as false "verified" hits in the 2026-09-25 100-entry test
+# run (tools/logs/website_finder_verified_20260925_115616.json), concentrated
+# in the NPI/small-provider segment. The rest is the same category of site
+# (generic business/health/nonprofit directory, not a specific org's registered
+# domain) added preemptively -- same reasoning as npino.com/npidb.org/
+# npiprofile.com all being the same NPI-directory family.
+AGGREGATOR_DOMAINS = {
+    "medicarelist.com", "ehealthscores.com", "npino.com", "findabatherapy.org",
+    "findabaproviders.com", "bizapedia.com", "nonprofitlist.org", "govserv.org",
+    "psychologytoday.com",
+    "npidb.org", "npiprofile.com", "healthgrades.com", "wellness.com",
+    "zocdoc.com", "mapquest.com", "manta.com", "chamberofcommerce.com",
+    "local.com", "superpages.com", "dnb.com", "opencorporates.com",
+    "yelp.com", "yellowpages.com",
+    # Round 2 (2026-09-25): observed live in the re-test after the first
+    # blocklist pass, not caught by it -- this ABA-therapy-provider niche
+    # turns out to have its own whole ecosystem of small-business/health-
+    # provider directory sites, so this list needs to keep growing, not just
+    # be "big enough" once. Removing these alone only moved precision from
+    # ~50% to ~54-58% (see tools/logs and HANDOFF.md), not a full fix.
+    "opennpi.com", "opengovus.com", "findglocal.com", "findaba.net",
+    "findhealthclinics.org", "providerspark.com", "spectrumheart.com",
+    "abacarenetwork.com", "abahub.org", "mentalhealthus.org",
+    "autismlifeandliving.org", "raisingbrilliance.org", "inclusiveprogramsguide.com",
+    "volunteersanantonio.org", "atlantaparent.com", "alabamafamilycentral.org",
+    "linkedin.com", "facebook.com",
+}
+
+
+def is_aggregator(netloc):
+    host = netloc.lower().split(":")[0]
+    if host.startswith("www."):
+        host = host[4:]
+    return any(host == d or host.endswith("." + d) for d in AGGREGATOR_DOMAINS)
+
 
 def distinctive_tokens(name):
     tokens = re.findall(r"[A-Za-z0-9']+", name.lower())
     return [t for t in tokens if t not in STOPWORDS and len(t) > 2]
+
+
+def domain_matches_name(netloc, name):
+    """True if the candidate's own domain contains a fragment of the org's name --
+    aggregators are indexed under their own brand, not the listed org's name, so
+    this is a much stronger positive signal than a name mention in page content."""
+    host = netloc.lower().split(":")[0]
+    if host.startswith("www."):
+        host = host[4:]
+    host_stem = host.split(".")[0].replace("-", "")
+    for t in distinctive_tokens(name):
+        if len(t) > 3 and t in host_stem:
+            return True
+    return False
 
 
 def build_queries(name, address, country):
@@ -81,12 +133,17 @@ def fetch_page(url, timeout=10):
 
 
 def verify_candidate(url, org_name):
+    if is_aggregator(urlparse(url).netloc):
+        return False, f"known aggregator/directory domain: {urlparse(url).netloc}"
+
     try:
         final_url, html = fetch_page(url)
     except Exception as e:
         return False, f"unreachable: {e}"
 
     parsed = urlparse(final_url)
+    if is_aggregator(parsed.netloc):
+        return False, f"redirected to known aggregator/directory domain: {parsed.netloc}"
     if any(bad in parsed.netloc.lower() for bad in ["sedoparking.com", "godaddy.com/domain", "afternic.com", "dan.com"]):
         return False, f"redirected to known parking host: {parsed.netloc}"
 
@@ -106,8 +163,15 @@ def verify_candidate(url, org_name):
 
 
 def find_website(entry):
-    queries = build_queries(entry.get("name", ""), entry.get("address", ""), entry.get("country", ""))
+    """Collect every candidate that passes verify_candidate (across both query
+    variants) instead of returning on the first pass, then rank by whether the
+    candidate's own domain contains a fragment of the org's name -- a much
+    stronger positive signal than a name mention in page content, since
+    aggregators are indexed under their own brand, not the listed org's name."""
+    name = entry.get("name", "")
+    queries = build_queries(name, entry.get("address", ""), entry.get("country", ""))
     tried = []
+    passing = []
     for q in queries:
         try:
             results = DDGS().text(q, max_results=5)
@@ -118,12 +182,17 @@ def find_website(entry):
             url = r.get("href") or r.get("url")
             if not url or not url.startswith("http"):
                 continue
-            ok, detail = verify_candidate(url, entry.get("name", ""))
+            ok, detail = verify_candidate(url, name)
             tried.append({"query": q, "candidate": url, "passed": ok, "detail": detail})
             if ok:
-                return url, tried
+                passing.append(url)
         time.sleep(1)  # be polite between queries
-    return None, tried
+
+    if not passing:
+        return None, tried
+
+    passing.sort(key=lambda u: not domain_matches_name(urlparse(u).netloc, name))
+    return passing[0], tried
 
 
 def main():
