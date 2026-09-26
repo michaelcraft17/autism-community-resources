@@ -764,6 +764,50 @@ persistence guardrail, so cron was used instead.
   73,238 = 99.94%.** This treats an independently-verified match against an org's own
   live website as satisfying the "organization's own official records" tier, which is a
   judgment call worth knowing about if a stricter standard is ever wanted.
+- **Disability-layer expansion, round 1 (2026-09-25): 79,292 -> 119,498 (+40,206).**
+  Per the user's "quantity over autism-specificity" scope decision (include general
+  disability/neurodevelopmental sources and entries, not just autism-named), extended
+  `tools/france_rna_fetch.py` with French disability/neuro terms (handicap, deficience,
+  trisomie, sourd/malentendant, aveugle/malvoyant, dyslexie/dyspraxie/dyscalculie,
+  "infirmité motrice cérébrale") on top of its existing autism-root query, merged the 4
+  Spain regions verified in an earlier pass but held back pending the dedup fix (Madrid,
+  Catalonia, Basque, Canarias), and added `tools/florida_sunbiz_fetch.py` (Sunbiz
+  non-profit bulk data via the state's own published SFTP credentials — see below).
+  New entries carry `disability_scope` = `"neurodevelopmental"` (Down syndrome/dyslexia/
+  dyspraxia/dyscalculia matches) or `"general"` (everything else disability-related);
+  autism matches stay untagged as before. **France alone added 38,049** — by far the
+  largest single-country addition this project has made, and confirms the "cheap big
+  win" the disability-master research note predicted (re-running an existing, working
+  fetcher with a wider term list, no new source discovery needed).
+  **Real gotcha hit and worked around:** the bare term "handicap" alone is 50,108 hits in
+  France's RNA, which exceeds the Opendatasoft search API's hard `start+rows <= 10000`
+  pagination cap (a 400 error, not a timeout — confirmed directly). A `declaration_date`
+  range shard only recovered ~82% (some records have no declaration date). Switched to
+  sharding by `com_code_asso` (commune code) in ten 10,000-wide bins instead — every
+  record has this field, and each bin's count is verified safely under the cap — which
+  recovers the same ~82% (~41,200 of 50,108) via a field with no null-coverage gap.
+  The missing ~18% is a documented partial capture, same class as
+  `tools/italy_runts_fetch.py`'s AJAX-pagination gap — not chased further this round,
+  worth another look if someone wants full coverage (the remaining records likely have a
+  commune code outside the 00000-99999 metropolitan+overseas range this sharding covers,
+  e.g. foreign-registered addresses).
+  Also fixed a real Florida geocoding gap while merging: Nominatim's street-level lookup
+  only resolved ~47% of Florida's addresses (a known TIGER/Line coverage gap on US
+  residential streets, confirmed by hand — the failing addresses were perfectly
+  well-formed, not malformed input). Added a `--geocode-fallback` pass that retries at
+  city+state level for anything still placeless; took coverage to ~99%. Worth applying
+  the same fallback to any other US-address source that geocodes street-level only.
+  **Next in the disability-master build queue** (see `~/Desktop/autism-registry-sources-DISABILITY-MASTER.md`
+  section B): the other ~15 country fetchers that could get the same "add disability
+  terms to an existing working fetcher" treatment (Italy, Norway, Finland, Belgium,
+  Netherlands, Switzerland, Czech Republic, Slovakia, Slovenia, Estonia, Latvia, Cyprus,
+  Greece, Ukraine, Bulgaria, CQC UK's disability service-bands, and the NPI pipeline's
+  additional DD/therapy taxonomy codes) — none of these were touched this round. Section
+  A's biggest new-volume sources (the IRS master file's fuller NTEE disability set, Ohio
+  DODD, NY Medicaid's DD and broad rows) are also still queued, tagged "Broad" tier where
+  the master list calls for it (a `breadth: "core"|"broad"` field doesn't exist in the
+  schema yet — introduce it when the first genuinely Broad-tier source is built, per the
+  user's decision to include Broad but keep it filterable).
 - **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
   research" build pass (see its own section above, under Data harvesting tools) added
   Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
