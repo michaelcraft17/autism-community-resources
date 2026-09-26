@@ -184,6 +184,7 @@ button{font-family:inherit;cursor:pointer;}
 .lively-bg>.confetti{position:absolute;inset:0;z-index:0;pointer-events:none;}
 .confetti i{position:absolute;border-radius:50%;display:block;opacity:.9;}
 .fbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 0 14px;border-bottom:1px solid var(--divider);margin-bottom:6px;}
+.fbar-sep{width:1px;height:22px;background:var(--border-strong);margin:0 4px;}
 .search-go:hover:not(:disabled){background:var(--action-hover)!important;}
 .call-btn:hover{background:var(--action-hover)!important;}
 .fchip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);color:var(--text);font-size:14px;font-weight:600;white-space:nowrap;}
@@ -208,8 +209,8 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 .hdr-icon-btn:hover{background:var(--bg-sunken);}
 .hdr-icon-btn.on{background:var(--brand-subtle);border-color:var(--brand);color:var(--brand);}
 .hdr-icon-btn:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px;}
-.donate-pill{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;white-space:nowrap;flex-shrink:0;background:transparent;color:var(--cardinal-500);border:1.5px solid var(--cardinal-500);border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.02em;text-decoration:none;cursor:pointer;}
-.donate-pill:hover{background:var(--cardinal-50);}
+.donate-pill{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;white-space:nowrap;flex-shrink:0;background:var(--cardinal-500);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.02em;text-decoration:none;cursor:pointer;}
+.donate-pill:hover{background:var(--cardinal-600);}
 .donate-pill:focus-visible{outline:2px solid var(--cardinal-500);outline-offset:2px;}
 /* Category filter chips: neutral outline + a small dot in the category's own accent color,
    rather than tinting the whole chip -- the dot alone carries the color, text stays the
@@ -245,6 +246,7 @@ button.hdr-search-icon:disabled{cursor:wait;opacity:.6;}
 .sortsel-chevron{position:absolute;right:8px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-secondary);display:flex;}
 .fchip.on{border-color:var(--brand);background:var(--brand-subtle);color:var(--text);}
 .fchip .fcount{background:var(--brand);color:var(--brand-on);border-radius:999px;font-size:11px;min-width:18px;height:18px;padding:0 5px;display:inline-flex;align-items:center;justify-content:center;}
+.fpop{position:absolute;top:calc(100% + 6px);left:0;z-index:150;min-width:230px;max-height:min(60vh,420px);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.14);padding:6px;}
 .fopt{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:14px;color:var(--text);cursor:pointer;}
 .fopt:hover{background:var(--bg-sunken);}
 .fopt input{accent-color:var(--brand);width:17px;height:17px;flex-shrink:0;cursor:pointer;}
@@ -1326,6 +1328,20 @@ const CATEGORIES = ['Advocacy','Therapy','Education','Medical','Social'];
 // legend, without touching the text-safe colors used everywhere else (badges, cards).
 const CATEGORY_DOT_COLORS = { advocacy:'#378ADD', therapy:'#7F77DD', education:'#639922', medical:'#D4537E', social:'#D85A30' };
 const SUGGESTED =['Individual Provider','Organization / Agency','Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
+const Caret = () => <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+
+// Desktop keeps Distance/Specialty/More filters as three separate dropdown chips (the
+// pre-redesign look the site owner asked to keep) -- only mobile (`compact`, see FilterBar)
+// collapses them into the single FilterSheet panel below.
+const FilterChip = ({id, label, active, count, open, onToggle, tone, children}) => (
+  <div style={{position:'relative'}} data-filter-chip>
+    <button type="button" className={`fchip pc pc-${tone}${active?' on':''}`} aria-haspopup="true" aria-expanded={open} onClick={()=>onToggle(id)}>
+      {label}{count > 0 && <span className="fcount">{count}</span>}<Caret/>
+    </button>
+    {open && <div className="fpop" role="group" aria-label={id}>{children}</div>}
+  </div>
+);
+
 /* ─── Mobile "Filters" bottom sheet ──────────────────────────────
    Below 640px the 7 always-visible filter chips (5 categories + Distance + Specialty,
    plus the "More filters" chip) were pushing every result card below the fold on a phone
@@ -1488,17 +1504,31 @@ const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, 
 const ListIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 
 // Name/service search now lives only in the header's combined search bar (both mobile and
-// desktop). Category stays its own always-visible chip row on desktop, but on mobile
-// (`compact`) it folds into the same "Filters" panel as Distance/Specialty/More filters --
-// an inline category row there measured out at over half the viewport before the map even
-// started, re-creating the exact "results below the fold" problem the mobile layout was
-// built to avoid. `showType` on FilterSheet is just this `compact` flag.
+// desktop). Category stays its own always-visible chip row on desktop. Distance/Specialty/
+// More filters are back to three separate dropdown chips on desktop (the site owner's
+// preference -- reverted after trying the single-panel consolidation); mobile (`compact`)
+// still collapses Type + those three into one "Filters" sheet, since an inline category row
+// plus three dropdown chips measured out at over half the viewport before the map even
+// started there.
 const FilterBar = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, resultCount, compact}) => {
+  const [openId, setOpenId] = useState(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const filtersBtnRef = useRef(null);
+  const toggle = id => setOpenId(o => o === id ? null : id);
   const activeCount = (specialty?1:0) + (radius!=null?1:0) + selSug.length + (compact && typeFilter ? 1 : 0);
   const closeSheet = () => { setSheetOpen(false); filtersBtnRef.current && filtersBtnRef.current.focus(); };
-  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); };
+  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); setOpenId(null); };
+  const distLabel = (DIST_OPTIONS.find(([, mi]) => mi === radius) || DIST_OPTIONS[0])[0];
+
+  useEffect(() => {
+    if (!openId) return;
+    const onDown = e => { if (!e.target.closest || !e.target.closest('[data-filter-chip]')) setOpenId(null); };
+    const onKey = e => { if (e.key === 'Escape') setOpenId(null); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
+  }, [openId]);
+
   // Debounced so typing a keyword doesn't fire an announcement on every keystroke -- only once
   // the result count has actually settled for a moment.
   const announcedCount = useDebounced(resultCount, 500);
@@ -1519,11 +1549,33 @@ const FilterBar = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, 
           })}
         </div>
       )}
-      <button ref={filtersBtnRef} type="button" className="filters-btn fchip" style={{marginLeft:'auto'}} aria-haspopup="dialog" aria-label={activeCount > 0 ? `Filters, ${activeCount} applied` : 'Filters'} onClick={()=>setSheetOpen(true)}>
-        <SlidersIcon/> Filters{activeCount > 0 && <span className="fcount">{activeCount}</span>}
-      </button>
+      {!compact && (
+        <>
+          <span className="fbar-sep" aria-hidden="true"/>
+          <FilterChip tone="blue" id="Distance" label={radius == null ? 'Distance' : distLabel} active={radius != null} open={openId==='Distance'} onToggle={toggle}>
+            {DIST_OPTIONS.map(([d, mi]) => (
+              <label key={d} className="fopt"><input type="radio" name="dist" checked={radius===mi} onChange={()=>{setRadius(mi); setOpenId(null);}}/>{d}</label>
+            ))}
+          </FilterChip>
+          <FilterChip tone="amber" id="Specialty" label={specialty || 'Specialty'} active={!!specialty} open={openId==='Specialty'} onToggle={toggle}>
+            {['', ...SPECIALTIES].map(sp => (
+              <label key={sp || 'all'} className="fopt"><input type="radio" name="spec" checked={specialty===sp} onChange={()=>{setSpecialty(sp); setOpenId(null);}}/>{sp || 'All specialties'}</label>
+            ))}
+          </FilterChip>
+          <FilterChip tone="pink" id="More filters" label="More filters" active={selSug.length > 0} count={selSug.length} open={openId==='More filters'} onToggle={toggle}>
+            {SUGGESTED.map(sg => (
+              <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
+            ))}
+          </FilterChip>
+        </>
+      )}
+      {compact && (
+        <button ref={filtersBtnRef} type="button" className="filters-btn fchip" style={{marginLeft:'auto'}} aria-haspopup="dialog" aria-label={activeCount > 0 ? `Filters, ${activeCount} applied` : 'Filters'} onClick={()=>setSheetOpen(true)}>
+          <SlidersIcon/> Filters{activeCount > 0 && <span className="fcount">{activeCount}</span>}
+        </button>
+      )}
       <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll} filtersBtnRef={filtersBtnRef}/>
-      <FilterSheet open={sheetOpen} onClose={closeSheet} typeFilter={typeFilter} setTypeFilter={setTypeFilter} showType={compact} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>
+      {compact && <FilterSheet open={sheetOpen} onClose={closeSheet} typeFilter={typeFilter} setTypeFilter={setTypeFilter} showType specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>}
     </div>
   );
 };
@@ -3063,6 +3115,14 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
 
   return (
     <div style={{maxWidth:2400,margin:'0 auto',padding:'12px 24px 48px'}}>
+      <div style={{fontSize:13,color:'var(--text-muted)',marginBottom:6,display:'flex',alignItems:'center',flexWrap:'wrap',gap:6}}>
+        <span style={{cursor:'pointer',color:'var(--text-link)'}}>Community Resources</span>
+        <span>›</span>
+        <span style={{cursor:'pointer',color:'var(--text-link)'}}>Autism &amp; Special Needs</span>
+        <span>›</span>
+        <span style={{color:'var(--text-muted)',fontWeight:600}}>{locLabel}</span>
+        <span style={{marginLeft:'auto'}}>Questions or feedback? <a href={`mailto:${CONTACT_EMAIL}`} style={{color:'var(--text-link)',fontWeight:600,textDecoration:'underline'}}>{CONTACT_EMAIL}</a></span>
+      </div>
       {filterBar}
       {resultsSummary}
       <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
