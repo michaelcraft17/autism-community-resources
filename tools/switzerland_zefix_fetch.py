@@ -83,6 +83,10 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Switzerland Zefix (Zentraler Firmenindex) - official federal commercial registry"
 
 SEARCH_TERMS = ["autis", "asperger"]
+# Disability-master pass (2026-09-25): Swiss is multilingual, so disability
+# terms cross German/French/Italian: Behinderung/behindert (DE), handicap
+# (FR, also works as a loanword in this context), disabil (IT root).
+DISABILITY_TERMS = ["behindert", "handicap", "disabil"]
 EXCLUDE_EHRAID = {920199, 1413729, 1426120}  # Autisä (car trade), AUTISM clothing brand, asperger gmbh (HR consultancy)
 
 
@@ -93,9 +97,15 @@ def search_term(term):
         return json.load(open(cache, encoding="utf-8"))
     body = json.dumps({"name": term, "searchType": "exact"}).encode("utf-8")
     req = urllib.request.Request(SEARCH_API, data=body, headers=HEADERS, method="POST")
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        data = json.load(resp)
-    hits = data.get("list", [])
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.load(resp)
+        hits = data.get("list", [])
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            hits = []  # API returns 404 for a term with zero matches
+        else:
+            raise
     json.dump(hits, open(cache, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     print(f"  {term!r}: {len(hits)} raw hits")
     return hits
@@ -128,9 +138,16 @@ def geocode(address, fallback_city):
 def main():
     print("Fetching Switzerland Zefix register...")
     all_hits = {}
-    for term in SEARCH_TERMS:
+    scope_by_id = {}
+    for term in SEARCH_TERMS + DISABILITY_TERMS:
+        is_autism = term in SEARCH_TERMS
         for e in search_term(term):
-            all_hits[e["ehraid"]] = e
+            eid = e["ehraid"]
+            all_hits[eid] = e
+            if is_autism:
+                scope_by_id[eid] = None
+            elif eid not in scope_by_id:
+                scope_by_id[eid] = "general"
         time.sleep(1.1)
     print(f"  {len(all_hits)} unique entities across all search terms")
 
@@ -166,7 +183,10 @@ def main():
             "source": SOURCE,
             "services": ["Information & Support"],
             "description": description,
+            "breadth": "core",
         }
+        if scope_by_id.get(ehraid):
+            entry["disability_scope"] = scope_by_id[ehraid]
         if full_address:
             entry["address"] = full_address
         if coords:

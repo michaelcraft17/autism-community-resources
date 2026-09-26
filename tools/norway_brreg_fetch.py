@@ -61,7 +61,11 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Norway Bronnoysund Register Centre (Enhetsregisteret) - official national entity registry"
 
 SEARCH_TERMS = ["autisme", "autistisk", "autist", "autismeforeningen", "asperger"]
-KEEP_SUBSTR = ["autis", "asperger"]
+# Disability-master pass (2026-09-25): Norwegian disability term (Nordic
+# family root "funksjonshem" -- funksjonshemmet/funksjonshemming, disabled/
+# disability) plus "utviklingshemmet" (developmentally disabled).
+DISABILITY_TERMS = ["funksjonshem", "utviklingshemmet"]
+KEEP_SUBSTR = ["autis", "asperger", "funksjonshem", "utviklingshemmet"]
 EXCLUDE_SUBSTR = ["nautisk", "nautisch", "dødsbo"]  # "dødsbo" = sole proprietor deceased, estate in probate
 
 
@@ -102,12 +106,13 @@ def geocode(address, fallback_city):
 def main():
     print("Fetching Norway Bronnoysund register...")
     all_entities = {}
-    for term in SEARCH_TERMS:
+    for term in SEARCH_TERMS + DISABILITY_TERMS:
         for e in fetch_term(term):
             all_entities[e["organisasjonsnummer"]] = e
         time.sleep(1.1)
     print(f"  {len(all_entities)} unique entities across all search terms")
 
+    AUTISM_SUBSTR = ["autis", "asperger"]
     matches = []
     for e in all_entities.values():
         name = e.get("navn", "")
@@ -122,6 +127,7 @@ def main():
             continue
         if e.get("konkurs") or e.get("underAvvikling") or e.get("underTvangsavviklingEllerTvangsopplosning"):
             continue
+        e["_disability_scope"] = None if any(any(k in n for k in AUTISM_SUBSTR) for n in all_names_low) else "general"
         matches.append(e)
     print(f"  {len(matches)} matches after substring filter + status exclusion")
 
@@ -156,7 +162,10 @@ def main():
             "source": SOURCE,
             "services": ["Information & Support"],
             "description": description,
+            "breadth": "core",
         }
+        if e.get("_disability_scope"):
+            entry["disability_scope"] = e["_disability_scope"]
         if full_address:
             entry["address"] = full_address
         if coords:

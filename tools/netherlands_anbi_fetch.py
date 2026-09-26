@@ -64,7 +64,17 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 
 SOURCE = "Netherlands ANBI register - official Belastingdienst (Tax Administration) open data"
 
-KEYWORDS = ["autisme", "autistisch", "autistische", "autisten", "autist", "asperger", "aspergers"]
+AUTISM_KEYWORDS = ["autisme", "autistisch", "autistische", "autisten", "autist", "asperger", "aspergers"]
+# Disability-master pass (2026-09-25): Dutch disability terms. Bare
+# "beperking" (limitation/restriction) is too generic on its own (appears in
+# unrelated legal/financial contexts like "beperking van aansprakelijkheid"),
+# so using the more specific compound phrases instead, plus "handicap"
+# (specific enough on its own) and deaf/blind terms.
+DISABILITY_KEYWORDS = [
+    "handicap", "gehandicapt", "verstandelijke beperking", "lichamelijke beperking",
+    "doofblind", "slechthorend", "slechtziend", " doof ", " dove ", " blind ", " blinden ",
+]
+KEYWORDS = AUTISM_KEYWORDS + DISABILITY_KEYWORDS
 EXCLUDE_SUBSTR = ["in liquidatie"]  # being wound down, not operating
 
 
@@ -110,12 +120,16 @@ def main():
         combined = (naam + " " + alias).lower()
         if any(k in combined for k in EXCLUDE_SUBSTR):
             continue
-        if any(k in combined for k in KEYWORDS):
+        padded = f" {combined} "
+        is_autism = any(k in padded for k in AUTISM_KEYWORDS)
+        is_disability = any(k in padded for k in DISABILITY_KEYWORDS)
+        if is_autism or is_disability:
             matches.append({
                 "name": re.sub(r"\s+", " ", naam).strip().title(),
                 "alias": re.sub(r"\s+", " ", alias).strip() if alias else None,
                 "city": b.findtext("vestigingsPlaats"),
                 "website": b.findtext("webSite"),
+                "disability_scope": None if is_autism else "general",
             })
     print(f"  {len(matches)} matches after keyword filter")
 
@@ -133,11 +147,14 @@ def main():
             "source": SOURCE,
             "services": ["Information & Support"],
             "description": description,
+            "breadth": "core",
         }
         if m["city"]:
             entry["address"] = f"{m['city']}, Netherlands"
         if m["website"]:
             entry["website"] = m["website"]
+        if m.get("disability_scope"):
+            entry["disability_scope"] = m["disability_scope"]
         if coords:
             entry["coordinates"] = coords
         else:
