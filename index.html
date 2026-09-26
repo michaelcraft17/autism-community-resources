@@ -2774,6 +2774,28 @@ const MobileMapSheet = ({groups, listContent, noResults, coords, radius, themeKe
   useLayoutEffect(() => {
     if (groups.length > 0 && activeGroupIdx === -1) setActiveId(groups[0][0].id);
   }, [groups.length, activeGroupIdx]);
+
+  // Expanding to list view used to always land at the top of the results, so stepping to pin
+  // 3 or 5 with Prev/Next and then opening the list meant scrolling down by hand to find it.
+  // This jumps the list straight to whichever card matches the current selection instead.
+  // Measured this two ways before landing here: computing the scroll offset synchronously
+  // (in a useLayoutEffect, so it runs before paint) reads the card's position *while the sheet
+  // is still mid-slide* from its peek offset to 0 -- transform transitions don't jump straight
+  // to their end state, and getBoundingClientRect reports whatever's true at that instant -- so
+  // the computed scroll consistently overshot by roughly the slide distance (confirmed: with a
+  // ~450px peek offset, landing 1-2 cards further down than the selected one). Waiting for the
+  // slide to actually finish before reading the card's real position fixes it.
+  useEffect(() => {
+    if (!full) return;
+    const root = shellRef.current && shellRef.current.querySelector('[data-scroll-root]');
+    const card = root && activeId != null && root.querySelector(`[data-rid="${activeId}"]`);
+    if (!card) return;
+    const jump = () => card.scrollIntoView({block: 'start', behavior: 'auto'});
+    if (reduceMotion) { jump(); return; }
+    const ms = parseFloat(getComputedStyle(document.body).getPropertyValue('--dur-base')) || 220;
+    const t = setTimeout(jump, ms + 30);
+    return () => clearTimeout(t);
+  }, [full]);
   const stepPreview = delta => {
     if (!groups.length) return;
     const cur = activeGroupIdx === -1 ? 0 : activeGroupIdx;
