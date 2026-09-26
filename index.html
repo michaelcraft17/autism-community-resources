@@ -221,18 +221,24 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 .catchip:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px;}
 /* Combined "what" + "where" search bar: one pill instead of two competing search boxes
    (the old header location box plus the filter bar's separate "Name or service" box). */
-.hdr-search{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;flex:1 1 320px;max-width:640px;}
-.hdr-search-field{flex:1 1 auto;display:flex;align-items:center;gap:8px;padding:0 14px;min-width:0;height:42px;border-bottom:1px solid var(--border);}
+.hdr-search{display:flex;flex-direction:column;align-items:stretch;background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;flex:1 1 320px;max-width:640px;padding:3px;}
+.hdr-search-field{flex:1 1 0;display:flex;align-items:center;gap:6px;padding:0 12px;min-width:0;height:36px;border-bottom:1px solid var(--border);}
+.hdr-search-field:last-of-type{border-bottom:none;}
+.hdr-search-field:first-child{flex:1.2 1 0;}
 .hdr-search-field input{flex:1;min-width:0;height:100%;border:none;outline:none;font-size:14px;background:transparent;color:var(--text);font-family:var(--font-sans);}
 .hdr-search-field input::placeholder{color:var(--text-muted);}
-.hdr-search-icon{color:var(--text-muted);flex-shrink:0;display:flex;}
-.hdr-search-locate{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;}
-.hdr-search-locate:hover{background:var(--bg-sunken);}
-.hdr-search-locate:focus-visible{outline:2px solid var(--border-focus);outline-offset:1px;}
-.hdr-search-btn{flex:0 0 auto;height:42px;padding:0 20px;background:var(--brand);color:var(--brand-on);border:none;font-size:14px;font-weight:700;cursor:pointer;}
+.hdr-search-icon{flex-shrink:0;display:flex;color:var(--text-muted);}
+/* The "where" field's leading icon doubles as the "use my current location" button (a real
+   <button>, styled to look like the plain decorative icon the other field has) rather than a
+   second separate control -- one tap target per field instead of icon-plus-button clutter. */
+button.hdr-search-icon{border:none;background:transparent;cursor:pointer;color:var(--brand);padding:0;}
+button.hdr-search-icon:hover{color:var(--brand-hover);}
+button.hdr-search-icon:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px;border-radius:50%;}
+button.hdr-search-icon:disabled{cursor:wait;opacity:.6;}
+.hdr-search-btn{flex-shrink:0;width:30px;height:30px;margin:0 2px 0 4px;border-radius:50%;background:var(--brand);color:var(--brand-on);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;align-self:center;}
 .hdr-search-btn:hover{background:var(--brand-hover);}
 .hdr-search-btn:disabled{opacity:.7;cursor:wait;}
-@media (min-width:641px){.hdr-search{flex-direction:row;}.hdr-search-field{border-bottom:none;height:44px;}.hdr-search-field:first-child{border-right:1px solid var(--border);}}
+@media (min-width:641px){.hdr-search{flex-direction:row;border-radius:999px;}.hdr-search-field{border-bottom:none;}.hdr-search-field:first-child{border-right:1px solid var(--border);}}
 .sortsel{height:34px;padding:0 8px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-size:13px;font-weight:600;font-family:var(--font-sans);cursor:pointer;}
 .sortsel:focus-visible{outline:2px solid var(--border-focus);outline-offset:1px;}
 .fchip.on{border-color:var(--brand);background:var(--brand-subtle);color:var(--text);}
@@ -598,6 +604,7 @@ const LandmarkIcon = lucideIcon(<><path d="M10 18v-7"/><path d="M11.119 2.205a2 
 const SearchCheckIcon = lucideIcon(<><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>);
 const MapPinLineIcon = lucideIcon(<><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></>);
 const PlusCircleIcon = lucideIcon(<><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></>);
+const ArrowRightIcon = lucideIcon(<><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></>);
 
 /* ─── Scroll-reveal + count-up hooks (respect reduceMotion: shows final state instantly) ─── */
 function useRevealOnce(reduceMotion) {
@@ -1310,6 +1317,11 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
 
 /* ─── Filter bar (Yelp-style): search box, category pills, and dropdown chips ─── */
 const CATEGORIES = ['Advocacy','Therapy','Education','Medical','Social'];
+// A separate, more saturated palette just for the small category dot -- TYPE_META's own
+// colors are tuned to work as running text on a light tint (WCAG AA), which reads as muted
+// on a tiny 8px dot; this is purely decorative so it can be as vivid as an actual color-coded
+// legend, without touching the text-safe colors used everywhere else (badges, cards).
+const CATEGORY_DOT_COLORS = { advocacy:'#378ADD', therapy:'#7F77DD', education:'#639922', medical:'#D4537E', social:'#D85A30' };
 const SUGGESTED =['Individual Provider','Organization / Agency','Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
 /* ─── Mobile "Filters" bottom sheet ──────────────────────────────
    Below 640px the 7 always-visible filter chips (5 categories + Distance + Specialty,
@@ -1366,10 +1378,9 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, showType, specia
               <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All</button>
               {CATEGORIES.map(c => {
                 const v = c.toLowerCase();
-                const t = TYPE_META[v] || TYPE_META.general_support;
                 return (
                   <button key={c} type="button" className={`catchip${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>
-                    <span className="cdot" aria-hidden="true" style={{background:t.fg}}/>{c}
+                    <span className="cdot" aria-hidden="true" style={{background:CATEGORY_DOT_COLORS[v]}}/>{c}
                   </button>
                 );
               })}
@@ -1497,10 +1508,9 @@ const FilterBar = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, 
           <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All</button>
           {CATEGORIES.map(c => {
             const v = c.toLowerCase();
-            const t = TYPE_META[v] || TYPE_META.general_support;
             return (
               <button key={c} type="button" className={`catchip${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>
-                <span className="cdot" aria-hidden="true" style={{background:t.fg}}/>{c}
+                <span className="cdot" aria-hidden="true" style={{background:CATEGORY_DOT_COLORS[v]}}/>{c}
               </button>
             );
           })}
@@ -1802,7 +1812,12 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
         <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="ABA therapy, speech…" aria-label="Search by name or service" autoComplete="off"/>
       </div>
       <div ref={anchorRef} className="hdr-search-field" style={{position:'relative'}}>
-        <span className="hdr-search-icon" aria-hidden="true"><PinIcon s={15}/></span>
+        {/* Doubles as "use my current location" -- a real button styled like the plain
+           decorative icon the "what" field has, instead of a second separate icon+button
+           pair crowding this already-compact field. */}
+        <button type="button" className="hdr-search-icon" onClick={onUseMyLocation} disabled={locBusy} aria-label="Use my current location" title="Use my current location">
+          <LocateIcon s={15}/>
+        </button>
         <input
           value={locInput}
           onChange={e=>{ setLocInput(e.target.value); setOpen(true); }}
@@ -1817,14 +1832,11 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
           title="Search a new location"
           autoComplete="off"
         />
-        <button type="button" onClick={onUseMyLocation} disabled={locBusy} aria-label="Use my current location" title="Use my current location" className="hdr-search-locate">
-          <LocateIcon s={15}/>
-        </button>
         {open && <SuggestDropdown suggestions={suggestions} activeIdx={activeIdx} setActiveIdx={setActiveIdx} onPick={pick} anchorRef={anchorRef}/>}
         {locError && <div style={{position:'absolute',top:'calc(100% + 6px)',right:0,background:'var(--error-bg)',color:'var(--error-fg)',border:'1px solid var(--error)',borderRadius:8,padding:'6px 10px',fontSize:12,whiteSpace:'nowrap',boxShadow:'0 2px 8px rgba(42,38,30,.12)',zIndex:1}}>{locError}</div>}
       </div>
       <button type="submit" disabled={locBusy} title="Search" aria-label="Search" className="hdr-search-btn">
-        <SearchIcon s={16}/>
+        <ArrowRightIcon s={16}/>
       </button>
     </form>
   );
@@ -1837,9 +1849,6 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
         <Logo onClick={onLogoClick}/>
         {!isMobile && searchBlock}
         <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
-          <a href="#donate" onClick={e=>{e.preventDefault();onDonate();}} className="donate-pill">
-            ♥ Donate
-          </a>
           <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title={savedCount>0 ? `Saved resources (${savedCount})` : 'Saved resources'} aria-label={savedCount>0 ? `Saved resources, ${savedCount} saved` : 'Saved resources'} className={`hdr-icon-btn${savedOpen?' on':''}`}>
             <HeartIcon f={savedCount>0 && !savedOpen}/>
             {savedCount>0 && <span aria-hidden="true" style={{position:'absolute',top:-5,right:-5,minWidth:16,height:16,borderRadius:999,background:'var(--cardinal-500)',color:'#fff',fontSize:10,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px'}}>{savedCount}</span>}
@@ -1850,6 +1859,9 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
           <button ref={menuBtnRef} type="button" onClick={()=>setMobileMenuOpen(o=>!o)} aria-expanded={mobileMenuOpen} title="More actions" aria-label="More actions" className="hdr-icon-btn">
             <MenuIcon/>
           </button>
+          <a href="#donate" onClick={e=>{e.preventDefault();onDonate();}} className="donate-pill">
+            ♥ Donate
+          </a>
         </div>
         {isMobile && searchBlock}
       </div>
