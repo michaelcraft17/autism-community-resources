@@ -64,6 +64,10 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Slovakia RPO (Register of Legal Persons, Statistical Office) - official national entity registry"
 
 SEARCH_TERMS = ["autizmus", "autisti", "autistick", "autizmom", "asperger"]
+# Disability-master pass (2026-09-25): Slovak disability terms (Czech/Slovak
+# term family) -- "postihnut" (disabled/impaired) and "zdravotne postihnut"
+# (health-impaired), the standard Slovak disability phrasing.
+DISABILITY_TERMS = ["postihnut", "zdravotne postihnut"]
 
 # The search endpoint needs a JSESSIONID cookie, minted by POSTing to
 # auth/user first -- a plain unauthenticated urllib request 401s otherwise.
@@ -110,15 +114,22 @@ def main():
     print("Fetching Slovakia RPO register...")
     establish_session()
     all_hits = {}
-    for term in SEARCH_TERMS:
+    scope_by_id = {}
+    for term in SEARCH_TERMS + DISABILITY_TERMS:
+        is_autism = term in SEARCH_TERMS
         for h in fetch_term(term):
             if not h.get("orgTerminationDate"):  # excludes dissolved orgs
-                all_hits[h["orgIdentifierValue"]] = h
+                oid = h["orgIdentifierValue"]
+                all_hits[oid] = h
+                if is_autism:
+                    scope_by_id[oid] = None
+                elif oid not in scope_by_id:
+                    scope_by_id[oid] = "general"
         time.sleep(1.1)
     print(f"  {len(all_hits)} unique active entities across all search terms")
 
     resources = []
-    for h in all_hits.values():
+    for oid, h in all_hits.items():
         name = html.unescape(h.get("orgNameFullName", "")).strip()
         municipality = html.unescape(h.get("addrMunicipality", "")).strip()
         address = f"{municipality}, Slovakia" if municipality else "Slovakia"
@@ -135,6 +146,8 @@ def main():
                             + (f", based in {municipality}." if municipality else "."),
             "address": address,
         }
+        if scope_by_id.get(oid):
+            entry["disability_scope"] = scope_by_id[oid]
         if coords:
             entry["coordinates"] = coords
         else:

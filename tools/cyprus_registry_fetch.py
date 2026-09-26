@@ -50,6 +50,11 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Cyprus Register of Associations, Foundations, Federations and Unions - official open data"
 
 KEYWORD = "αυτισμ"
+# Disability-master pass (2026-09-25): Greek disability terms per the
+# multilingual term list -- αναπηρ (disab-, root of αναπηρία/αναπηρος) and
+# ΑμεΑ (Άτομα με Αναπηρία, "People with Disabilities", the standard Greek
+# initialism used in official contexts).
+DISABILITY_KEYWORDS = ["αναπηρ", "αμεα"]
 EXCLUDE_STATUS_SUBSTR = ["ΥΠΟ ΕΞΕΤΑΣΗ"]  # "under review" -- not yet an approved registration
 
 DISTRICT_CITY = {
@@ -97,12 +102,19 @@ def main():
         for row in reader:
             name = (row.get("Name") or "").strip()
             status = (row.get("Category") or "").strip()
-            if KEYWORD not in name.lower():
+            low = name.lower()
+            is_autism = KEYWORD in low
+            is_disability = any(k in low for k in DISABILITY_KEYWORDS)
+            if not (is_autism or is_disability):
                 continue
             if any(x in status for x in EXCLUDE_STATUS_SUBSTR):
                 print(f"  skipping (not yet approved): {name}")
                 continue
-            matches.append({"name": name, "district": (row.get("District") or "").strip()})
+            matches.append({
+                "name": name,
+                "district": (row.get("District") or "").strip(),
+                "disability_scope": None if is_autism else "general",
+            })
     print(f"  {len(matches)} matches after status filter")
 
     resources = []
@@ -121,6 +133,8 @@ def main():
                             + (f", {city} district." if city else "."),
             "address": address,
         }
+        if m.get("disability_scope"):
+            entry["disability_scope"] = m["disability_scope"]
         if coords:
             entry["coordinates"] = coords
         else:

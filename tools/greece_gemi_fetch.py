@@ -53,7 +53,15 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Greece GEMI (General Commercial Registry) - official national business registry"
 
 SEARCH_TERMS = ["αυτισμ", "αυτιστικ"]
+# Disability-master pass (2026-09-25): Greek disability terms.
+DISABILITY_TERMS = ["αναπηρ", "αμεα"]
 ACTIVE_STATUS = "Ενεργή"
+# API drift found 2026-09-25: the autocomplete endpoint's `companyStatus`
+# field is now always null (the string status only comes back from the
+# details endpoint, nested as companyStatus.status). companyStatusId "3"
+# is confirmed (via a details lookup) to correspond to Ενεργή/Active, so
+# filter on that instead of the now-always-null string field.
+ACTIVE_STATUS_ID = "3"
 
 
 def fetch_term(term):
@@ -101,10 +109,17 @@ def geocode(address):
 def main():
     print("Fetching Greece GEMI registry...")
     all_hits = {}
-    for term in SEARCH_TERMS:
+    scope_by_id = {}
+    for term in SEARCH_TERMS + DISABILITY_TERMS:
+        is_autism_term = term in SEARCH_TERMS
         for h in fetch_term(term):
-            if h.get("companyStatus") == ACTIVE_STATUS:
-                all_hits[h["arGemi"]] = h
+            if str(h.get("companyStatusId")) == ACTIVE_STATUS_ID:
+                gid = h["arGemi"]
+                all_hits[gid] = h
+                if is_autism_term:
+                    scope_by_id[gid] = None
+                elif gid not in scope_by_id:
+                    scope_by_id[gid] = "general"
         time.sleep(1.1)
     print(f"  {len(all_hits)} unique active entities across all search terms")
 
@@ -129,6 +144,8 @@ def main():
             "description": "Registered organization in Greece's GEMI national business registry.",
             "address": full_address,
         }
+        if scope_by_id.get(ar_gemi):
+            entry["disability_scope"] = scope_by_id[ar_gemi]
         if coords:
             entry["coordinates"] = coords
         else:
