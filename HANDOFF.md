@@ -13,24 +13,57 @@ autism/special-needs community resources worldwide. Deployed via GitHub Pages fr
 ## Data pipeline
 
 ```
-community_resources.json  (canonical flat JSON array, ~70k entries)
+community_resources.json  (canonical flat JSON array, 136k+ entries)
+        │  python3 tools/split_by_region.py
+        ▼
+community_resources_{us,europe,world}.json   (generated, region-bucketed)
         │  node gen_community_data.js
         ▼
-community_data.js          (window.communityData = [...], loaded via <script> tag)
-        │  read by useCommunityData() / shapeAll() in index.html
+community_data_{us,europe,world}.js   (window.communityData = (window.communityData||[]).concat(...))
+        │  read by useCommunityData() / shapeAll() in index.html, loaded sequentially
         ▼
 the live app
 ```
 
-**Always regenerate `community_data.js` after editing `community_resources.json`:**
+**Always regenerate after editing `community_resources.json`:**
 ```
-node gen_community_data.js
+python3 tools/split_by_region.py && node gen_community_data.js
 ```
-It must emit `window.communityData = [...]` (a global, not a bare `const`) — index.html loads
-it as a classic script and reads `window.communityData` off it. A bare `const` silently fails
+Each `community_data_*.js` must emit `window.communityData = (window.communityData||[]).concat([...])`
+(a global, concat not assign) — index.html loads all three as classic scripts in sequence and
+reads `window.communityData` off them once all three have loaded. A bare `const` silently fails
 and the site falls back to 6 hardcoded sample resources with no visible error. This exact bug
-took the site down once already (fixed in commit `f3ae20e`); `tools/regen_community_data_js.py`
-does the same thing in Python if that's more convenient, and has the same requirement.
+took the site down once already (fixed in commit `f3ae20e`) back when there was a single
+`community_data.js`; `tools/regen_community_data_js.py` is now stale (single-file era) and should
+not be used — regenerate via the two commands above instead.
+
+### Region split (added 2026-09-26, commits `c8138c6`/`c31aebe`)
+
+`community_resources.json` and the old single `community_data.js` were closing in on GitHub's
+100MB hard per-file block (98MB/94MB at 136,138 entries — GitHub already warns past 50MB).
+`tools/split_by_region.py` buckets every entry into US / Europe / World:
+- **Source-string match first** (each fetcher's `source` field reliably names its registry/
+  country — see `US_SOURCE_PATTERNS`/`EUROPE_SOURCE_PATTERNS`/`WORLD_SOURCE_PATTERNS` at the
+  top of the script for the exact substring lists).
+- **Fallback for entries with no recognized source** (mostly individually-curated orgs, not
+  bulk-registry rows): address shape (US 2-letter-state+5-digit-zip, Canadian/UK postcode
+  formats, Australian state+4-digit-postcode), then description text for placeless entries
+  (Wikidata/GPT-Researcher rows often say "American nonprofit", "Irish nonprofit", "from
+  Poland", etc.), then website ccTLD, then a small hardcoded `MANUAL_OVERRIDES` table for the
+  handful nothing else resolved (checked against `name`, e.g. "Autism Society of America" → US,
+  "Autism Anglia" → Europe).
+- Anything with genuinely no signal defaults to World and is logged to
+  `tools/logs/region_split_report.txt` (gitignored) for audit — as of this pass, 5 entries hit
+  that path and all 5 were correctly World anyway (Somalia, Turkey ×2, a likely-Nigeria org,
+  New Zealand).
+
+Current bucket counts (136,138 total): **US 70,471 / Europe 60,162 / World 5,505**. Re-run the
+split any time the ratio matters (new fetchers may shift it); it's a derived/generated file
+like `community_data*.js`, never hand-edited.
+
+If a bucket's `community_data_*.js` alone approaches 50MB again as the dataset keeps growing
+(US and Europe are already 43MB/48MB), the next move is a finer split (e.g. US by state, Europe
+by sub-region) or Git LFS — not attempted yet, flagged for a future pass.
 
 ### Data harvesting tools (all in `tools/`, all free/local, no API keys)
 
