@@ -808,6 +808,32 @@ persistence guardrail, so cron was used instead.
   the master list calls for it (a `breadth: "core"|"broad"` field doesn't exist in the
   schema yet — introduce it when the first genuinely Broad-tier source is built, per the
   user's decision to include Broad but keep it filterable).
+- **Disability-layer expansion, round 2 (2026-09-26): 119,616 -> 136,138 (+16,522).**
+  `breadth` field (introduced in round 1 planning, backfilled `"core"` onto all 119,498
+  pre-expansion entries in a separate commit) is now actually populated by new fetcher
+  output. Extended 5 more of the Section B fetchers with the same disability-term
+  treatment: Finland YTJ (+36, Nordic root "vammais"), Norway Brønnøysund (+70,
+  "funksjonshem"/"utviklingshemmet"), Switzerland Zefix (+9, DE/FR/IT
+  "behindert"/"handicap"/"disabil"), Netherlands ANBI (+206, "handicap"/"gehandicapt"/
+  deaf+blind compounds — bare "beperking" deliberately excluded as too generic, collides
+  with ordinary legal/financial "beperking van aansprakelijkheid" phrasing), and CQC UK
+  (+16,201 — by far the biggest of this batch: the CQC directory's own
+  "Specialisms/services" column is a clean pipe-separated category list, so this now
+  keeps every location tagged "Physical disabilities" or "Sensory impairments", not just
+  autism/learning-disability matches; deliberately did NOT widen to CQC's "Mental health
+  conditions"/"Dementia"/"Eating disorders" bands, which are real categories but outside
+  this directory's disability scope). All new entries tagged `breadth: "core"` (the
+  match is on the source's own disability category or name field, not a beneficiary
+  flag) and `disability_scope: "general"` where the match came from a disability term
+  rather than autism. **One false positive caught and removed during review:** a Dutch
+  ANBI org named "Stichting Blind Walls Gallery" — a street-art/mural organization
+  (blindwalls.gallery); "blind wall" is architecture jargon for a windowless wall used as
+  a mural canvas, unrelated to disability. Illustrates that " blind "/" doof " as
+  standalone-word disability guards still need a manual false-positive pass, same as any
+  other language's term list. Section B's other ~7 fetchers (Italy RUNTS, Belgium KBO,
+  Slovenia AJPES, Estonia, Latvia, Ukraine, Bulgaria) and the NPI DD-taxonomy addition are
+  still queued next, followed by Section A's big remaining sources (IRS full NTEE set,
+  Ohio DODD, NY Medicaid DD-specific vs. broad).
 - **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
   research" build pass (see its own section above, under Data harvesting tools) added
   Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
