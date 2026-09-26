@@ -200,33 +200,63 @@ body:not(.contrast-dark):not(.contrast-light) .pc.on{background:var(--s);color:#
 body:not(.contrast-dark):not(.contrast-light) .pc.on .fcount{background:#fff;color:var(--s);}
 body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px solid var(--s);outline-offset:2px;}
 .map-win{overflow:hidden;overflow:clip;}   /* clip keeps the pinned (sticky) map working; browsers without it fall back to a plain scrolling map */
-.fsearch{border:1px solid var(--brand)!important;}
-.fsearch:focus-within{box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 28%,transparent);}
 .hbtn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 16px;white-space:nowrap;flex-shrink:0;border:1px solid var(--border);border-radius:20px;background:var(--surface-subtle);color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer;}
+/* ─── Results-page header redesign: one neutral accent language (brand teal for the primary
+   search action, cardinal red reserved only for Donate) instead of a different color on every
+   button and filter chip -- the mix of loud, unrelated colors was flagged as visually noisy,
+   particularly for autistic users who benefit from a calmer, more predictable UI. ─── */
+.hdr-icon-btn{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);background:var(--surface-subtle);color:var(--text-secondary);cursor:pointer;position:relative;}
+.hdr-icon-btn:hover{background:var(--bg-sunken);}
+.hdr-icon-btn.on{background:var(--brand-subtle);border-color:var(--brand);color:var(--brand);}
+.hdr-icon-btn:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px;}
+.donate-pill{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;white-space:nowrap;flex-shrink:0;background:var(--cardinal-500);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.02em;text-decoration:none;cursor:pointer;}
+.donate-pill:hover{background:var(--cardinal-600);}
+.donate-pill:focus-visible{outline:2px solid var(--cardinal-500);outline-offset:2px;}
+/* Category filter chips: neutral outline + a small dot in the category's own accent color,
+   rather than tinting the whole chip -- the dot alone carries the color, text stays the
+   primary signal (never relying on color alone), same principle as the TypePill badge dot. */
+.catchip{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);color:var(--text);font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer;}
+.catchip:hover{background:var(--bg-sunken);}
+.catchip .cdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.catchip.on{background:var(--brand-subtle);border-color:var(--brand);color:var(--text);font-weight:700;}
+.catchip:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px;}
+/* Combined "what" + "where" search bar: one pill instead of two competing search boxes
+   (the old header location box plus the filter bar's separate "Name or service" box). */
+.hdr-search{display:flex;flex-direction:column;align-items:stretch;background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;flex:1 1 320px;max-width:640px;padding:3px;}
+.hdr-search-field{flex:1 1 0;display:flex;align-items:center;gap:6px;padding:0 12px;min-width:0;height:36px;border-bottom:1px solid var(--border);}
+.hdr-search-field:last-of-type{border-bottom:none;}
+.hdr-search-field:first-child{flex:1.2 1 0;}
+.hdr-search-field input{flex:1;min-width:0;height:100%;border:none;outline:none;font-size:14px;background:transparent;color:var(--text);font-family:var(--font-sans);}
+.hdr-search-field input::placeholder{color:var(--text-muted);}
+.hdr-search-icon{flex-shrink:0;display:flex;color:var(--text-muted);}
+/* The "where" field's leading icon doubles as the "use my current location" button (a real
+   <button>, styled to look like the plain decorative icon the other field has) rather than a
+   second separate control -- one tap target per field instead of icon-plus-button clutter. */
+button.hdr-search-icon{border:none;background:transparent;cursor:pointer;color:var(--brand);padding:0;}
+button.hdr-search-icon:hover{color:var(--brand-hover);}
+button.hdr-search-icon:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px;border-radius:50%;}
+button.hdr-search-icon:disabled{cursor:wait;opacity:.6;}
+.hdr-search-btn{flex-shrink:0;width:30px;height:30px;margin:0 2px 0 4px;border-radius:50%;background:var(--brand);color:var(--brand-on);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;align-self:center;}
+.hdr-search-btn:hover{background:var(--brand-hover);}
+.hdr-search-btn:disabled{opacity:.7;cursor:wait;}
+@media (min-width:641px){.hdr-search{flex-direction:row;border-radius:999px;}.hdr-search-field{border-bottom:none;}.hdr-search-field:first-child{border-right:1px solid var(--border);}}
+.sortsel-wrap{position:relative;display:inline-flex;align-items:center;}
+.sortsel{height:34px;padding:0 26px 0 8px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-size:13px;font-weight:600;font-family:var(--font-sans);cursor:pointer;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+.sortsel:focus-visible{outline:2px solid var(--border-focus);outline-offset:1px;}
+.sortsel-chevron{position:absolute;right:8px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-secondary);display:flex;}
 .fchip.on{border-color:var(--brand);background:var(--brand-subtle);color:var(--text);}
 .fchip .fcount{background:var(--brand);color:var(--brand-on);border-radius:999px;font-size:11px;min-width:18px;height:18px;padding:0 5px;display:inline-flex;align-items:center;justify-content:center;}
 .fpop{position:absolute;top:calc(100% + 6px);left:0;z-index:150;min-width:230px;max-height:min(60vh,420px);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.14);padding:6px;}
 .fopt{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:14px;color:var(--text);cursor:pointer;}
 .fopt:hover{background:var(--bg-sunken);}
 .fopt input{accent-color:var(--brand);width:17px;height:17px;flex-shrink:0;cursor:pointer;}
-/* ─── Mobile header nav + filter bar (<=640px): collapse the 4 header buttons into a
-   hamburger menu, and the filter-chip row into a "Filters" bottom sheet, so a phone
-   visitor isn't scrolling past a wall of controls before the first result card. ─── */
-.hdr-menu-btn{display:none;}
-.hdr-filters-btn{display:none;}
+/* The single "Filters" button (Distance/Specialty/More, plus Type on mobile -- see
+   FilterBar's `compact`) is the same sheet-opening control on mobile and desktop now, so
+   it no longer needs its own breakpoint-gated show/hide rule; whether the category-chip row
+   itself renders is a JS conditional in FilterBar, not CSS. */
+.filters-btn{height:40px;}
 @media (max-width:640px){
-  .hdr-full-btn{display:none!important;}
-  .hdr-menu-btn{display:inline-flex!important;}
-  .fbar-desktop-filters{display:none!important;}
-  .hdr-filters-btn{display:inline-flex!important;}
-  /* One search bar on a phone: the header's location field. The name/service keyword box
-     moves into the Filters sheet (where Zillow/Redfin keep keyword search too) and shows as
-     a removable chip while it's set, instead of a second full-width search bar. */
-  .fbar .fsearch{display:none!important;}
-  .fbar{padding:0;border-bottom:none;margin-bottom:0;}
   .hide-mobile{display:none!important;}
-  /* >=40px touch target on the Filters button, same floor as the rest of the mobile layout. */
-  .hdr-filters-btn.fchip{height:40px;}
   /* Keeps the chip's x at its current small visual size (it reads as a dense filter chip,
      not a standalone button) while giving it a real >=40px hit target via an invisible
      enlarged hit area, rather than growing the circle itself. */
@@ -427,6 +457,25 @@ function formatSuggestion(s) {
   return { main, secondary };
 }
 
+/* "Use my current location" used to just label the search "My Location" forever -- resolving
+   it to a real place name (the same city/state format the address search already shows) makes
+   the header search bar readable at a glance instead of a placeholder that never updates.
+   Best-effort: any failure here just falls back to the literal "My Location" label. */
+async function reverseGeocode(lat, lng) {
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+    const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
+    const data = await res.json();
+    const a = data && data.address;
+    if (!a) return null;
+    // Built from the address' own city/state fields (not display_name's part order, which
+    // puts street-level detail before the state) -- that's what actually reads as "San Jose, CA".
+    const main = a.city || a.town || a.village || a.county;
+    if (!main) return null;
+    return a.state ? `${main}, ${a.state}` : main;
+  } catch (e) { return null; }
+}
+
 /* Debounced, cancel-safe Nominatim autocomplete-as-you-type. Nominatim's public API asks for
    at most ~1 request/sec; a single typing user's keystrokes are almost never that fast, so
    this only waits 150ms of silence before firing (down from 350ms, which felt sluggish) and
@@ -544,18 +593,25 @@ const SunIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none
 const SlidersIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 6h9M17 6h3M4 12h3M9 12h11M4 18h13M19 18h1" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="14" cy="6" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>;
 const XIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const LocateIcon = ({s=18}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
+const ChevronDownIcon = ({s=14}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 const MenuIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const HeartIcon = ({f}) => <svg width="18" height="18" viewBox="0 0 24 24" fill={f?'var(--cardinal-500)':'none'}><path d="M12 20s-7-4.6-7-9.5A4.5 4.5 0 0112 7a4.5 4.5 0 017 3.5C19 15.4 12 20 12 20z" stroke={f?'var(--cardinal-500)':'var(--stone-400)'} strokeWidth="2" strokeLinejoin="round"/></svg>;
 const ShareIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" strokeWidth="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 
 /* ─── Lucide-style icons (decorative; paths from lucide-static, ISC license) ─── */
 const lucideIcon = (paths) => ({s=16}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths}</svg>;
-const HeartHandshakeIcon = lucideIcon(<path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>);
-const GraduationCapIcon = lucideIcon(<><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></>);
-const PaletteIcon = lucideIcon(<><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></>);
-const UsersDuoIcon = lucideIcon(<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></>);
-const StethoscopeIcon = lucideIcon(<><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></>);
-const BriefcaseIcon = lucideIcon(<><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></>);
+/* These six (the landing page's "Browse by category" icons) carry a real accent-color fill,
+   not just a currentColor outline, matching the reference mockup's request to give them the
+   same colored, detailed treatment as the palette and briefcase. Each fill reuses that
+   category's own established hex (the same one behind TYPE_META/.pc-* elsewhere) rather than
+   inventing new colors, except Recreation and Employment which have no matching resource type
+   -- those get realistic object colors instead (actual paint-swatch hues, brown leather). */
+const HeartHandshakeIcon = lucideIcon(<path fill="#6a5191" fillOpacity=".25" d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>);
+const GraduationCapIcon = lucideIcon(<><path fill="#3e7a45" fillOpacity=".28" d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></>);
+const PaletteIcon = lucideIcon(<><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r="1.15" fill="#e05a5f" stroke="none"/><circle cx="17.5" cy="10.5" r="1.15" fill="#4f9bd6" stroke="none"/><circle cx="6.5" cy="12.5" r="1.15" fill="#e8b23d" stroke="none"/><circle cx="8.5" cy="7.5" r="1.15" fill="#5fae5a" stroke="none"/></>);
+const UsersDuoIcon = lucideIcon(<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4" fill="#b0532f" fillOpacity=".3"/></>);
+const StethoscopeIcon = lucideIcon(<><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2" fill="#a85a4c" fillOpacity=".45"/></>);
+const BriefcaseIcon = lucideIcon(<><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2" fill="#d9a86c" fillOpacity=".55"/><path d="M2 13h20"/><rect width="3.6" height="2.6" x="10.2" y="11.7" rx=".5" fill="#8a6a3a" stroke="none"/></>);
 const ShieldCheckIcon = lucideIcon(<><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></>);
 const GlobeIcon = lucideIcon(<><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></>);
 const BadgeCheckIcon = lucideIcon(<><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m16 9-5.5 5.5L8 12"/></>);
@@ -563,6 +619,7 @@ const LandmarkIcon = lucideIcon(<><path d="M10 18v-7"/><path d="M11.119 2.205a2 
 const SearchCheckIcon = lucideIcon(<><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>);
 const MapPinLineIcon = lucideIcon(<><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></>);
 const PlusCircleIcon = lucideIcon(<><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></>);
+const ArrowRightIcon = lucideIcon(<><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></>);
 
 /* ─── Scroll-reveal + count-up hooks (respect reduceMotion: shows final state instantly) ─── */
 function useRevealOnce(reduceMotion) {
@@ -1275,13 +1332,17 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
 
 /* ─── Filter bar (Yelp-style): search box, category pills, and dropdown chips ─── */
 const CATEGORIES = ['Advocacy','Therapy','Education','Medical','Social'];
-const CATEGORY_ICONS = {
-  Advocacy: LandmarkIcon, Therapy: HeartHandshakeIcon, Education: GraduationCapIcon,
-  Medical: StethoscopeIcon, Social: UsersDuoIcon,
-};
-const SUGGESTED = ['Individual Provider','Organization / Agency','Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
+// A separate, more saturated palette just for the small category dot -- TYPE_META's own
+// colors are tuned to work as running text on a light tint (WCAG AA), which reads as muted
+// on a tiny 8px dot; this is purely decorative so it can be as vivid as an actual color-coded
+// legend, without touching the text-safe colors used everywhere else (badges, cards).
+const CATEGORY_DOT_COLORS = { advocacy:'#378ADD', therapy:'#7F77DD', education:'#639922', medical:'#D4537E', social:'#D85A30' };
+const SUGGESTED =['Individual Provider','Organization / Agency','Free / Sliding Scale','Telehealth Available','In-home Services','Accepts Medicaid','Early Intervention (0–5)','Bilingual Services','Wheelchair Accessible'];
 const Caret = () => <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 
+// Desktop keeps Distance/Specialty/More filters as three separate dropdown chips (the
+// pre-redesign look the site owner asked to keep) -- only mobile (`compact`, see FilterBar)
+// collapses them into the single FilterSheet panel below.
 const FilterChip = ({id, label, active, count, open, onToggle, tone, children}) => (
   <div style={{position:'relative'}} data-filter-chip>
     <button type="button" className={`fchip pc pc-${tone}${active?' on':''}`} aria-haspopup="true" aria-expanded={open} onClick={()=>onToggle(id)}>
@@ -1296,7 +1357,7 @@ const FilterChip = ({id, label, active, count, open, onToggle, tone, children}) 
    plus the "More filters" chip) were pushing every result card below the fold on a phone
    — confirmed on a real 390px screenshot. They collapse into this single sheet, opened from
    a "Filters" button that carries an active-count badge (same .fcount style as the chips). */
-const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, resultCount, keyword, setKeyword, keywordInSheet}) => {
+const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, showType, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, resultCount}) => {
   const dialogRef = useRef(null);
   const closeRef = useRef(null);
 
@@ -1318,9 +1379,7 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
   }, [open]);
 
   if (!open) return null;
-  // On a phone the keyword box lives in this sheet (it's hidden from the filter bar there), so
-  // it's one of the filters "Clear all" resets.
-  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); if (keywordInSheet) setKeyword(''); };
+  const clearAll = () => { if (showType) setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); };
   return ReactDOM.createPortal(
     <div style={{position:'fixed',inset:0,zIndex:1000,display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
       <div onClick={onClose} aria-hidden="true" style={{position:'absolute',inset:0,background:'var(--overlay)'}}/>
@@ -1334,30 +1393,29 @@ const FilterSheet = ({open, onClose, typeFilter, setTypeFilter, specialty, setSp
           <h2 id="filter-sheet-title" style={{margin:0,fontSize:18,fontFamily:'var(--font-antonio)',color:'var(--text)'}}>Filters</h2>
           <button ref={closeRef} type="button" onClick={onClose} aria-label="Close filters" style={{width:34,height:34,borderRadius:'50%',border:'1px solid var(--border)',background:'var(--surface)',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}><XIcon/></button>
         </div>
-        {keywordInSheet && (
-          <div style={{marginBottom:20}}>
-            <label htmlFor="fsheet-keyword" style={{display:'block',fontSize:13,fontWeight:700,color:'var(--text)',margin:'0 0 8px'}}>Name or service</label>
-            <div className="fsearch" style={{display:'flex',alignItems:'center',gap:8,border:'1px solid var(--border-strong)',borderRadius:10,padding:'0 4px 0 12px',height:44,background:'var(--surface)'}}>
-              <span aria-hidden="true" style={{color:'var(--brand)',display:'inline-flex',flexShrink:0}}><SearchIcon s={16}/></span>
-              {/* 16px text so iOS doesn't zoom the page on focus; Enter closes the sheet to show the results. */}
-              <input id="fsheet-keyword" value={keyword} onChange={e=>setKeyword(e.target.value)} onKeyDown={e=>{ if (e.key === 'Enter') { e.preventDefault(); onClose(); } }}
-                placeholder="e.g. speech therapy, ABA, clinic name" autoComplete="off" enterKeyHint="search"
-                style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:16,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
-              {keyword && <button type="button" onClick={()=>setKeyword('')} aria-label="Clear name or service search" style={{width:36,height:36,flexShrink:0,borderRadius:'50%',border:'none',background:'transparent',color:'var(--text-muted)',display:'inline-flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><XIcon/></button>}
+        {/* On desktop, category is the always-visible chip row above the results list, so it's
+           deliberately left out of this panel to avoid a second, redundant way to set the same
+           thing. On mobile there's no room for that row without pushing results below the fold
+           (measured: header + an inline category row ate over half the viewport before the map
+           even started), so category rejoins Distance/Specialty/More filters in here instead --
+           `showType` is just `compact` from FilterBar. Name/service search moved out of both,
+           into the header's combined search bar, on both sizes. */}
+        {showType && (
+          <div role="group" aria-label="Type" style={{marginBottom:20}}>
+            <h3 style={{fontSize:13,fontWeight:700,color:'var(--text)',margin:'0 0 8px'}}>Type</h3>
+            <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+              <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All</button>
+              {CATEGORIES.map(c => {
+                const v = c.toLowerCase();
+                return (
+                  <button key={c} type="button" className={`catchip${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>
+                    <span className="cdot" aria-hidden="true" style={{background:CATEGORY_DOT_COLORS[v]}}/>{c}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
-        <div role="group" aria-label="Type" style={{marginBottom:20}}>
-          <h3 style={{fontSize:13,fontWeight:700,color:'var(--text)',margin:'0 0 8px'}}>Type</h3>
-          <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-            <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All types</button>
-            {CATEGORIES.map(c => {
-              const v = c.toLowerCase();
-              const Icon = CATEGORY_ICONS[c];
-              return <button key={c} type="button" className={`fchip pc pc-${v}${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}><Icon s={13}/>{c}</button>;
-            })}
-          </div>
-        </div>
         <fieldset className="fsheet-fieldset">
           <legend>Distance</legend>
           <div style={{display:'flex',flexDirection:'column'}}>
@@ -1408,17 +1466,13 @@ function useDebounced(value, delay) {
    pills above already show their own "on" state, but this row is the only one-tap way to drop
    a single filter without reopening a popover/sheet, which is worth it on both sizes -- see the
    commit message for this as an explicit decision, not an oversight.
-   On desktop the keyword search box is NOT one of these chips and "Clear all" here does not
-   touch it -- it's a separate, always-visible, always-editable field there, so a filter-focused
-   "clear" acting on it too was surprising. On a phone (`keywordAsChip`) the box is hidden from
-   the filter bar and lives inside the Filters sheet instead, so an active keyword gets its own
-   chip here -- otherwise it would be an invisible filter -- and both "Clear all"s reset it. */
-const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearAll, filtersBtnRef, keyword, setKeyword, keywordAsChip}) => {
+   Keyword has no chip here -- it's a separate, always-visible, always-editable field in the
+   header now (on both desktop and mobile), so a filter-focused "clear" acting on it too would
+   be surprising, same as it always was on desktop. */
+const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearAll, filtersBtnRef}) => {
   const containerRef = useRef(null);
   const [pendingFocus, setPendingFocus] = useState(null);
   const chips = [];
-  const kwTrim = (keyword || '').trim();
-  if (keywordAsChip && kwTrim) chips.push({ key:'kw', label:`“${kwTrim}”`, srLabel:`name or service “${kwTrim}”`, onRemove:()=>setKeyword('') });
   if (typeFilter) chips.push({ key:'type', label: TYPE_META[typeFilter] ? TYPE_META[typeFilter].label : typeFilter, onRemove:()=>setTypeFilter('') });
   if (radius != null) chips.push({ key:'radius', label:`Within ${radius} mi`, onRemove:()=>setRadius(null) });
   if (specialty) chips.push({ key:'specialty', label:specialty, onRemove:()=>setSpecialty('') });
@@ -1445,9 +1499,7 @@ const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, 
     chips[idx].onRemove();
   };
   return (
-    <div ref={containerRef} style={keywordAsChip
-        ? {display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flex:'1 1 0',minWidth:0}
-        : {display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flexBasis:'100%',marginTop:2}}>
+    <div ref={containerRef} style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flexBasis:'100%',marginTop:2}}>
       {chips.map(c => (
         <span key={c.key} data-chip-key={c.key} className="afchip" style={{maxWidth:'100%'}}>
           <span style={{overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{c.label}</span>
@@ -1461,16 +1513,22 @@ const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, 
 
 const ListIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 
-// `compact` = the phone layout: the keyword box is hidden from this bar and moves into the
-// Filters sheet (one search bar on screen -- the header's location field), so there it counts
-// as an applied filter, gets a removable chip, and is reset by "Clear all".
-const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, summary, resultCount, compact}) => {
+// Name/service search now lives only in the header's combined search bar (both mobile and
+// desktop). Category stays its own always-visible chip row on desktop. Distance/Specialty/
+// More filters are back to three separate dropdown chips on desktop (the site owner's
+// preference -- reverted after trying the single-panel consolidation); mobile (`compact`)
+// still collapses Type + those three into one "Filters" sheet, since an inline category row
+// plus three dropdown chips measured out at over half the viewport before the map even
+// started there.
+const FilterBar = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearSug, resultCount, compact}) => {
   const [openId, setOpenId] = useState(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const filtersBtnRef = useRef(null);
   const toggle = id => setOpenId(o => o === id ? null : id);
-  const activeCount = (typeFilter?1:0) + (specialty?1:0) + (radius!=null?1:0) + selSug.length + (compact && keyword.trim() ? 1 : 0);
+  const activeCount = (specialty?1:0) + (radius!=null?1:0) + selSug.length + (compact && typeFilter ? 1 : 0);
   const closeSheet = () => { setSheetOpen(false); filtersBtnRef.current && filtersBtnRef.current.focus(); };
+  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); setOpenId(null); };
+  const distLabel = (DIST_OPTIONS.find(([, mi]) => mi === radius) || DIST_OPTIONS[0])[0];
 
   useEffect(() => {
     if (!openId) return;
@@ -1481,11 +1539,6 @@ const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, s
     return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
   }, [openId]);
 
-  const distLabel = (DIST_OPTIONS.find(([, mi]) => mi === radius) || DIST_OPTIONS[0])[0];
-  // Scoped to the structured filters only -- the keyword box is a separate, always-editable
-  // field, not one of the removable chips, so this no longer also wipes it (see the note on
-  // ActiveFilterChips for why that was surprising).
-  const clearAll = () => { setTypeFilter(''); setSpecialty(''); setRadius(null); clearSug(); setOpenId(null); if (compact) setKeyword(''); };
   // Debounced so typing a keyword doesn't fire an announcement on every keystroke -- only once
   // the result count has actually settled for a moment.
   const announcedCount = useDebounced(resultCount, 500);
@@ -1493,46 +1546,46 @@ const FilterBar = ({keyword, setKeyword, typeFilter, setTypeFilter, specialty, s
   return (
     <div className="fbar" role="search" aria-label="Filter resources">
       <div aria-live="polite" className="sr-only">{announcedCount} result{announcedCount!==1?'s':''}</div>
-      <div className="fsearch" style={{display:'flex',alignItems:'center',gap:6,border:'1px solid var(--border-strong)',borderRadius:999,padding:'0 12px',height:34,background:'var(--surface)',width:210}}>
-        <span style={{color:'var(--brand)',display:'inline-flex',flexShrink:0}}><SearchIcon s={14}/></span>
-        <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="Name or service…" aria-label="Search by name or service" style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}/>
-      </div>
-      <span className="fbar-sep hide-mobile" aria-hidden="true"/>
-      <div className="fbar-desktop-filters" style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8}}>
-        <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All types</button>
-        {CATEGORIES.map(c => {
-          const v = c.toLowerCase();
-          const Icon = CATEGORY_ICONS[c];
-          return <button key={c} type="button" className={`fchip pc pc-${v}${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}><Icon s={13}/>{c}</button>;
-        })}
-        <span className="fbar-sep" aria-hidden="true"/>
-        <FilterChip tone="blue" id="Distance" label={radius == null ? 'Distance' : distLabel} active={radius != null} open={openId==='Distance'} onToggle={toggle}>
-          {DIST_OPTIONS.map(([d, mi]) => (
-            <label key={d} className="fopt"><input type="radio" name="dist" checked={radius===mi} onChange={()=>{setRadius(mi); setOpenId(null);}}/>{d}</label>
-          ))}
-        </FilterChip>
-        <FilterChip tone="amber" id="Specialty" label={specialty || 'Specialty'} active={!!specialty} open={openId==='Specialty'} onToggle={toggle}>
-          {['', ...SPECIALTIES].map(sp => (
-            <label key={sp || 'all'} className="fopt"><input type="radio" name="spec" checked={specialty===sp} onChange={()=>{setSpecialty(sp); setOpenId(null);}}/>{sp || 'All specialties'}</label>
-          ))}
-        </FilterChip>
-        <FilterChip tone="pink" id="More filters" label="More filters" active={selSug.length > 0} count={selSug.length} open={openId==='More filters'} onToggle={toggle}>
-          {SUGGESTED.map(sg => (
-            <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
-          ))}
-        </FilterChip>
-        {/* "Clear all" lives in ActiveFilterChips below now, alongside the removable per-filter
-           chips, instead of duplicating it here -- keeping keyword-only clears simple (just
-           edit the search box) rather than showing two "Clear all" controls at once. */}
-      </div>
-      <button ref={filtersBtnRef} type="button" className="hdr-filters-btn fchip pc pc-cardinal" aria-haspopup="dialog" aria-label={activeCount > 0 ? `Filters, ${activeCount} applied` : 'Filters'} onClick={()=>setSheetOpen(true)}>
-        <SlidersIcon/> Filters{activeCount > 0 && <span className="fcount">{activeCount}</span>}
-      </button>
-      <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll} filtersBtnRef={filtersBtnRef}
-        keyword={keyword} setKeyword={setKeyword} keywordAsChip={compact}/>
-      {summary && <div className="fbar-summary" style={{flex:'1 1 240px',marginLeft:'auto',textAlign:'right',minWidth:0}}>{summary}</div>}
-      <FilterSheet open={sheetOpen} onClose={closeSheet} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}
-        keyword={keyword} setKeyword={setKeyword} keywordInSheet={compact}/>
+      {!compact && (
+        <div className="fbar-cats" style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8}}>
+          <button type="button" className={`fchip pc pc-teal${!typeFilter?' on':''}`} aria-pressed={!typeFilter} onClick={()=>setTypeFilter('')}>All</button>
+          {CATEGORIES.map(c => {
+            const v = c.toLowerCase();
+            return (
+              <button key={c} type="button" className={`catchip${typeFilter===v?' on':''}`} aria-pressed={typeFilter===v} onClick={()=>setTypeFilter(typeFilter===v?'':v)}>
+                <span className="cdot" aria-hidden="true" style={{background:CATEGORY_DOT_COLORS[v]}}/>{c}
+              </button>
+            );
+          })}
+        </div>
+      )}
+      {!compact && (
+        <>
+          <span className="fbar-sep" aria-hidden="true"/>
+          <FilterChip tone="blue" id="Distance" label={radius == null ? 'Distance' : distLabel} active={radius != null} open={openId==='Distance'} onToggle={toggle}>
+            {DIST_OPTIONS.map(([d, mi]) => (
+              <label key={d} className="fopt"><input type="radio" name="dist" checked={radius===mi} onChange={()=>{setRadius(mi); setOpenId(null);}}/>{d}</label>
+            ))}
+          </FilterChip>
+          <FilterChip tone="amber" id="Specialty" label={specialty || 'Specialty'} active={!!specialty} open={openId==='Specialty'} onToggle={toggle}>
+            {['', ...SPECIALTIES].map(sp => (
+              <label key={sp || 'all'} className="fopt"><input type="radio" name="spec" checked={specialty===sp} onChange={()=>{setSpecialty(sp); setOpenId(null);}}/>{sp || 'All specialties'}</label>
+            ))}
+          </FilterChip>
+          <FilterChip tone="pink" id="More filters" label="More filters" active={selSug.length > 0} count={selSug.length} open={openId==='More filters'} onToggle={toggle}>
+            {SUGGESTED.map(sg => (
+              <label key={sg} className="fopt"><input type="checkbox" checked={selSug.includes(sg)} onChange={()=>toggleSug(sg)}/>{sg}</label>
+            ))}
+          </FilterChip>
+        </>
+      )}
+      {compact && (
+        <button ref={filtersBtnRef} type="button" className="filters-btn fchip" style={{marginLeft:'auto'}} aria-haspopup="dialog" aria-label={activeCount > 0 ? `Filters, ${activeCount} applied` : 'Filters'} onClick={()=>setSheetOpen(true)}>
+          <SlidersIcon/> Filters{activeCount > 0 && <span className="fcount">{activeCount}</span>}
+        </button>
+      )}
+      <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll} filtersBtnRef={filtersBtnRef}/>
+      {compact && <FilterSheet open={sheetOpen} onClose={closeSheet} typeFilter={typeFilter} setTypeFilter={setTypeFilter} showType specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>}
     </div>
   );
 };
@@ -1738,14 +1791,14 @@ const SuggestModal = ({open, onClose}) => {
   );
 };
 
-/* ─── Header mobile overflow menu ───────────────────────────────
-   Below 640px the header's 4 buttons (Donate / Suggest a Resource / Saved / Accessibility)
-   no longer fit in one row without clipping (confirmed on a real 390px viewport — "Saved"
-   was cut mid-word and "Accessibility" pushed off-screen). Donate/Suggest/Saved collapse into
-   this menu; Accessibility stays visible on its own since it's the site's core feature.
+/* ─── Header overflow menu ───────────────────────────────────────
+   Donate, Saved, and Accessibility are all their own always-visible buttons now (a red
+   outline pill and two icon buttons), so this menu only needs to hold Suggest a Resource --
+   kept as a real menu icon (not just a mobile fallback) as a home for that and any future
+   secondary, non-primary action, rather than growing the always-visible row further.
    Portaled to document.body (same pattern as SuggestDropdown) so it isn't affected by any
    ancestor's overflow, and positioned from the trigger button's own rect. */
-const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest, savedOpen, savedCount, onToggleSaved, onDonate}) => {
+const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest}) => {
   const [rect, setRect] = useState(null);
   const popRef = useRef(null);
 
@@ -1784,20 +1837,20 @@ const HeaderMobileMenu = ({open, onClose, anchorRef, onSuggest, savedOpen, saved
   // focus to the trigger (all still here) are everything the disclosure pattern requires.
   return ReactDOM.createPortal(
     <div ref={popRef} className="hdr-menu-pop" style={{top:rect.bottom+8, right:Math.max(8, window.innerWidth - rect.right)}}>
-      <a href="#donate" onClick={e=>{e.preventDefault();onClose();onDonate();}}>
-        <span aria-hidden="true" style={{color:'var(--cardinal-500)'}}>♥</span> Donate
-      </a>
       <button type="button" onClick={()=>{onClose();onSuggest();}}><PlusCircleIcon s={16}/> Suggest a Resource</button>
-      <button type="button" onClick={()=>{onClose();onToggleSaved();}} aria-pressed={savedOpen}>
-        <HeartIcon f={savedCount>0 && !savedOpen}/> Saved{savedCount>0 && ` (${savedCount})`}
-      </button>
     </div>,
     document.body
   );
 };
 
-/* ─── Header ─────────────────────────────────────────────────── */
-const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, onSuggest, onDonate, locLabel, onLogoClick, onSearchLocation, onSelectSuggestion, onUseMyLocation, showSearch, locBusy, locError}) => {
+/* ─── Header ───────────────────────────────────────────────────
+   Redesigned results-page header: one combined "what" + "where" search pill (replacing the
+   old header-only location box plus the filter bar's separate "Name or service" box), a
+   single filled (brand teal) search button as the only filled control here, Saved and
+   Accessibility as plain icon buttons, Suggest a Resource moved into the menu icon, and
+   Donate as a red outline pill instead of a filled one competing with the search button's
+   own red. */
+const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, onSuggest, onDonate, locLabel, onLogoClick, onSearchLocation, onSelectSuggestion, onUseMyLocation, showSearch, locBusy, locError, keyword, setKeyword}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuBtnRef = useRef(null);
   const [locInput, setLocInput] = useState(locLabel === 'My Location' ? '' : locLabel);
@@ -1807,53 +1860,50 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
   const suggestions = useLocationSuggestions(open ? locInput : '');
   useEffect(() => { setActiveIdx(-1); }, [suggestions]);
   const anchorRef = useRef(null);
-  const pick = (s) => { setOpen(false); onSelectSuggestion(s); };
+  const pick = (s) => { setOpen(false); onSelectSuggestion(s, keyword); };
   const submitLocation = () => {
     setOpen(false);
     const q = locInput.trim();
-    if (q && q !== locLabel) onSearchLocation(q);
+    if (q && q !== locLabel) onSearchLocation(q, keyword);
   };
-  // On a phone the results header is two rows: logo + menu/accessibility buttons, then one
-  // full-width location field with "use my location" folded in as an icon button. The search
-  // block is rendered *after* the action buttons in the DOM there (not just visually reordered
-  // with CSS `order`), so keyboard focus follows the same top-to-bottom order you see.
+  // On a phone the results header is two rows: logo + action buttons, then the full-width
+  // search bar. It's rendered *after* the action buttons in the DOM there (not just visually
+  // reordered with CSS `order`), so keyboard focus follows the same top-to-bottom order you see.
   const isMobile = useIsMobile();
   const searchBlock = showSearch && (
-        <div ref={anchorRef} style={isMobile ? {flex:'1 1 100%',position:'relative'} : {flex:'1 1 240px',maxWidth:520,position:'relative'}}>
-        <form onSubmit={e=>e.preventDefault()} style={{display:'flex',alignItems:'center',gap:0,border:'2px solid var(--action)',borderRadius:10,overflow:'hidden',height:42,width:'100%'}}>
-          <div style={{flex:'1 1 auto',display:'flex',alignItems:'center',gap:8,padding:'0 14px',background:'var(--surface)',minWidth:0}}>
-            <span style={{color:'var(--text-muted)',display:'inline-flex'}}><PinIcon s={14}/></span>
-            <input
-              value={locInput}
-              onChange={e=>{ setLocInput(e.target.value); setOpen(true); }}
-              onFocus={()=>setOpen(true)}
-              onBlur={()=>setOpen(false)}
-              onKeyDown={e=>{
-                if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i+1, suggestions.length-1)); }
-                else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i-1, -1)); }
-                else if (e.key === 'Escape') { setOpen(false); }
-                else if (e.key === 'Enter') {
-                  e.preventDefault();
-                  if (open && activeIdx >= 0 && suggestions[activeIdx]) pick(suggestions[activeIdx]);
-                  else submitLocation();
-                }
-              }}
-              placeholder="City, ZIP, or address"
-              title="Search a new location"
-              autoComplete="off"
-              style={{flex:1,minWidth:0,border:'none',outline:'none',background:'transparent',fontSize:14,color:'var(--text)',fontFamily:'var(--font-sans)'}}
-            />
-          </div>
-          {isMobile && <button type="button" onClick={onUseMyLocation} disabled={locBusy} aria-label="Use my current location" title="Use my current location" style={{height:'100%',width:44,flexShrink:0,background:'var(--surface)',border:'none',borderLeft:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-secondary)',cursor:locBusy?'wait':'pointer'}}>
-            <LocateIcon/>
-          </button>}
-          <button type="button" onClick={submitLocation} disabled={locBusy} title="Search this location" className="search-go" style={{height:'100%',width:44,background:'var(--action)',border:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--action-on)',cursor:locBusy?'wait':'pointer',opacity:locBusy?.7:1}}>
-            <SearchIcon s={16}/>
-          </button>
-        </form>
+    <form className="hdr-search" onSubmit={e=>{ e.preventDefault(); if (open && activeIdx >= 0 && suggestions[activeIdx]) pick(suggestions[activeIdx]); else submitLocation(); }}>
+      <div className="hdr-search-field">
+        <span className="hdr-search-icon" aria-hidden="true"><SearchIcon s={15}/></span>
+        <input value={keyword} onChange={e=>setKeyword(e.target.value)} placeholder="ABA therapy, speech…" aria-label="Search by name or service" autoComplete="off"/>
+      </div>
+      <div ref={anchorRef} className="hdr-search-field" style={{position:'relative'}}>
+        {/* Doubles as "use my current location" -- a real button styled like the plain
+           decorative icon the "what" field has, instead of a second separate icon+button
+           pair crowding this already-compact field. */}
+        <button type="button" className="hdr-search-icon" onClick={onUseMyLocation} disabled={locBusy} aria-label="Use my current location" title="Use my current location">
+          <LocateIcon s={15}/>
+        </button>
+        <input
+          value={locInput}
+          onChange={e=>{ setLocInput(e.target.value); setOpen(true); }}
+          onFocus={()=>setOpen(true)}
+          onBlur={()=>setOpen(false)}
+          onKeyDown={e=>{
+            if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i+1, suggestions.length-1)); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i-1, -1)); }
+            else if (e.key === 'Escape') { setOpen(false); }
+          }}
+          placeholder="City, ZIP, or address"
+          title="Search a new location"
+          autoComplete="off"
+        />
         {open && <SuggestDropdown suggestions={suggestions} activeIdx={activeIdx} setActiveIdx={setActiveIdx} onPick={pick} anchorRef={anchorRef}/>}
         {locError && <div style={{position:'absolute',top:'calc(100% + 6px)',right:0,background:'var(--error-bg)',color:'var(--error-fg)',border:'1px solid var(--error)',borderRadius:8,padding:'6px 10px',fontSize:12,whiteSpace:'nowrap',boxShadow:'0 2px 8px rgba(42,38,30,.12)',zIndex:1}}>{locError}</div>}
-        </div>
+      </div>
+      <button type="submit" disabled={locBusy} title="Search" aria-label="Search" className="hdr-search-btn">
+        <ArrowRightIcon s={16}/>
+      </button>
+    </form>
   );
   return (
     <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:200,boxShadow:'0 1px 4px rgba(42,38,30,.06)'}}>
@@ -1863,30 +1913,24 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
         </div>}
         <Logo onClick={onLogoClick}/>
         {!isMobile && searchBlock}
-        {showSearch && !isMobile && <button type="button" onClick={onUseMyLocation} disabled={locBusy} title="Use my current location" style={{display:'flex',alignItems:'center',gap:6,height:36,padding:'0 14px',whiteSpace:'nowrap',flexShrink:0,background:'var(--surface-subtle)',border:'1px solid var(--border)',borderRadius:8,color:'var(--text-secondary)',fontSize:13,cursor:locBusy?'wait':'pointer',flexShrink:0}}>
-          <PinIcon s={14}/> My Location
-        </button>}
         <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
-          <a href="#donate" onClick={e=>{e.preventDefault();onDonate();}} className="hdr-full-btn" style={{display:'inline-flex',alignItems:'center',gap:6,height:36,padding:'0 16px',whiteSpace:'nowrap',flexShrink:0,background:'var(--cardinal-500)',color:'#fff',borderRadius:8,fontSize:13,fontWeight:700,letterSpacing:'.02em',textDecoration:'none',border:'none',cursor:'pointer'}}>
-            ♥ Donate
-          </a>
-          <button type="button" onClick={onSuggest} aria-haspopup="dialog" title="Suggest a resource to add" className="hdr-full-btn hbtn pc pc-cardinal">
-            <PlusCircleIcon s={16}/> Suggest a Resource
-          </button>
-          <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title="Your saved resources" className={`hdr-full-btn hbtn pc pc-cardinal${savedOpen?' on':''}`}>
-            <HeartIcon f={savedCount>0 && !savedOpen}/> Saved{savedCount>0 && <span style={{fontWeight:700}}>({savedCount})</span>}
-          </button>
-          <button ref={menuBtnRef} type="button" onClick={()=>setMobileMenuOpen(o=>!o)} aria-expanded={mobileMenuOpen} aria-label={`More actions${savedCount>0 ? `, ${savedCount} saved` : ''}`} className="hdr-menu-btn hbtn pc pc-cardinal" style={{position:'relative'}}>
-            <MenuIcon/>
+          <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title={savedCount>0 ? `Saved resources (${savedCount})` : 'Saved resources'} aria-label={savedCount>0 ? `Saved resources, ${savedCount} saved` : 'Saved resources'} className={`hdr-icon-btn${savedOpen?' on':''}`}>
+            <HeartIcon f={savedCount>0 && !savedOpen}/>
             {savedCount>0 && <span aria-hidden="true" style={{position:'absolute',top:-5,right:-5,minWidth:16,height:16,borderRadius:999,background:'var(--cardinal-500)',color:'#fff',fontSize:10,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px'}}>{savedCount}</span>}
           </button>
-          <button type="button" onClick={()=>setA11yOpen(o=>!o)} aria-pressed={a11yOpen} aria-haspopup="dialog" aria-label="Accessibility settings" className={`hbtn pc pc-teal${a11yOpen?' on':''}`}>
-            <SlidersIcon/> <span className="hide-mobile">Accessibility</span>
+          <button type="button" onClick={()=>setA11yOpen(o=>!o)} aria-pressed={a11yOpen} aria-haspopup="dialog" title="Accessibility settings" aria-label="Accessibility settings" className={`hdr-icon-btn${a11yOpen?' on':''}`}>
+            <SlidersIcon/>
           </button>
+          <button ref={menuBtnRef} type="button" onClick={()=>setMobileMenuOpen(o=>!o)} aria-expanded={mobileMenuOpen} title="More actions" aria-label="More actions" className="hdr-icon-btn">
+            <MenuIcon/>
+          </button>
+          <a href="#donate" onClick={e=>{e.preventDefault();onDonate();}} className="donate-pill">
+            ♥ Donate
+          </a>
         </div>
         {isMobile && searchBlock}
       </div>
-      <HeaderMobileMenu open={mobileMenuOpen} onClose={()=>setMobileMenuOpen(false)} anchorRef={menuBtnRef} onSuggest={onSuggest} savedOpen={savedOpen} savedCount={savedCount} onToggleSaved={onToggleSaved} onDonate={onDonate}/>
+      <HeaderMobileMenu open={mobileMenuOpen} onClose={()=>setMobileMenuOpen(false)} anchorRef={menuBtnRef} onSuggest={onSuggest}/>
     </header>
   );
 };
@@ -2903,7 +2947,12 @@ const MobileMapSheet = ({groups, listContent, noResults, coords, radius, themeKe
 const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, contrast, onVisibleChange, reduceMotion}) => {
   const [typeFilter, setTypeFilter] = useState('');
   const [specialty, setSpecialty] = useState('');
-  const [radius, setRadius] = useState(null);
+  // Defaults to a real radius (not "Any distance") so the summary line's "N resources within
+  // 10 mi" is meaningful from the first search, instead of counting the entire directory as
+  // "near" a location an hour away. Still adjustable (including back to "Any distance") from
+  // the Filters panel.
+  const [radius, setRadius] = useState(10);
+  const [sortBy, setSortBy] = useState('distance');
   // Two separate ids, not one: `activeId` is the desktop transient hover highlight (set by
   // mouseenter/mouseleave on a card or a map pin), `selectedId` is the mobile sticky selection
   // (set by tapping a pin or Prev/Next, and meant to persist). QA found the single shared id
@@ -2922,7 +2971,7 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
   const curId = isMobile ? selectedId : activeId;
   const setCurId = isMobile ? setSelectedId : setActiveId;
   // Reset to first page whenever the result set changes
-  useEffect(() => { setPage(0); }, [typeFilter, specialty, radius, keyword, coords, selSug]);
+  useEffect(() => { setPage(0); }, [typeFilter, specialty, radius, keyword, coords, selSug, sortBy]);
 
   const kw = keyword.trim().toLowerCase();
   const matchKwType = r =>
@@ -2956,7 +3005,8 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
 
   // Located resources (mapped, distance-filtered) vs. placeless nationwide/virtual ones
   let local = loading ? [] : ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
-  if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
+  if (sortBy === 'name') local.sort((a,b)=>a.name.localeCompare(b.name));
+  else if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
   const filtered = local.filter(r => matchKwType(r) && matchSug(r) && (radius == null || (r.distance != null && r.distance <= radius)));
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const safePage = Math.min(page, totalPages - 1);
@@ -3029,24 +3079,35 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
     </React.Fragment>
   );
 
+  // One FilterBar now, used identically on mobile and desktop -- it no longer carries the
+  // count/sort summary (that moved to its own row, `resultsSummary` below) or a keyword box
+  // (that's the header's job now), so there's nothing left that needs to differ by size.
   const filterBar = (
-    <FilterBar resultCount={filtered.length} summary={
-      <React.Fragment>
-        <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(18px,2.2vw,22px)',margin:'0 0 2px',letterSpacing:'.01em',color:'var(--text)'}}>
-          {filtered.length} Resource{filtered.length!==1?'s':''}{radius!=null?` within ${radius} mi`:''} Near {locLabel}
-        </h2>
-        <div style={{fontSize:12,color:'var(--text-muted)'}}>
-          {coords ? 'Sorted by distance' : 'Browse all'}
-          {filtered.length > 0 ? ` · showing ${start + 1}–${start + shown.length} of ${filtered.length}` : ''}
-          <span className="hide-mobile">{` · ${ALL.length} total in directory`}</span>
-        </div>
-      </React.Fragment>
-    } keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])}/>
+    <FilterBar resultCount={filtered.length} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])} compact={isMobile}/>
   );
-  // Phone: the same filter bar minus the count heading (the list sheet's header carries it) and
-  // with the keyword box moved into the Filters sheet -- see FilterBar's `compact`.
-  const mobileFilterBar = (
-    <FilterBar resultCount={filtered.length} compact keyword={keyword} setKeyword={setKeyword} typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={()=>setSelSug([])}/>
+  // Desktop-only summary row: left-aligned count/location line plus a sort control, replacing
+  // the old right-aligned, un-comma-formatted heading crammed into the end of the filter bar.
+  const resultsSummary = (
+    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10,margin:'14px 0 10px'}}>
+      <div>
+        <div style={{fontSize:15,fontWeight:700,color:'var(--text)'}}>
+          {filtered.length.toLocaleString()} resource{filtered.length!==1?'s':''}{radius!=null?` within ${radius} mi of ${locLabel}`:` near ${locLabel}`}
+        </div>
+        {filtered.length > 0 && <div style={{fontSize:12,color:'var(--text-muted)',marginTop:2}}>Showing {start+1}–{start+shown.length}</div>}
+      </div>
+      {coords && (
+        <label style={{display:'flex',alignItems:'center',gap:8,fontSize:13,color:'var(--text-secondary)',flexShrink:0}}>
+          Sort:
+          <span className="sortsel-wrap">
+            <select className="sortsel" value={sortBy} onChange={e=>setSortBy(e.target.value)} aria-label="Sort results by">
+              <option value="distance">Nearest</option>
+              <option value="name">Name (A–Z)</option>
+            </select>
+            <span className="sortsel-chevron" aria-hidden="true"><ChevronDownIcon s={13}/></span>
+          </span>
+        </label>
+      )}
+    </div>
   );
   const sheetHeading = `${filtered.length.toLocaleString()} resource${filtered.length!==1?'s':''}${radius!=null?` within ${radius} mi`:''} near ${locLabel}`;
   const sheetSubheading = `${coords ? 'Sorted by distance' : 'Browse all'}${filtered.length > 0 ? ` · showing ${start + 1}–${start + shown.length}` : ''}`;
@@ -3063,7 +3124,7 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
   if (isMobile) {
     return (
       <div style={{position:'fixed',top:headerH,left:0,right:0,bottom:0,zIndex:100,display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden'}}>
-        <div style={{padding:'10px 16px',flexShrink:0}}>{mobileFilterBar}</div>
+        <div style={{padding:'10px 16px',flexShrink:0}}>{filterBar}</div>
         <div style={{flex:'1 1 auto',minHeight:0}}>
           <MobileMapSheet groups={groups} listContent={listContent} noResults={noResults} coords={coords} radius={radius} themeKey={themeKey} contrast={contrast}
             activeId={curId} setActiveId={setCurId} sheetState={sheetState} setSheetState={setSheetState} heading={sheetHeading} subheading={sheetSubheading} reduceMotion={reduceMotion}/>
@@ -3083,6 +3144,7 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
         <span style={{marginLeft:'auto'}}>Questions or feedback? <a href={`mailto:${CONTACT_EMAIL}`} style={{color:'var(--text-link)',fontWeight:600,textDecoration:'underline'}}>{CONTACT_EMAIL}</a></span>
       </div>
       {filterBar}
+      {resultsSummary}
       <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
         <div style={{flex:'3 1 480px',minWidth:320}}>{listContent}</div>
         <div style={{flex:'2 1 400px',minWidth:340,alignSelf:'stretch',minHeight:'calc(100vh - 92px)',display:'flex',flexDirection:'column'}}>
@@ -3231,7 +3293,14 @@ function App() {
     if (!navigator.geolocation) { setError('Geolocation isn’t supported by your browser.'); return; }
     setBusy(true); setError('');
     navigator.geolocation.getCurrentPosition(
-      pos => { setCoords({lat:pos.coords.latitude, lng:pos.coords.longitude}); setLocLabel('My Location'); setKeyword(kw); setScreen('results'); setBusy(false); },
+      async pos => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        setCoords({lat, lng}); setLocLabel('My Location'); setKeyword(kw); setScreen('results'); setBusy(false);
+        // Best-effort upgrade from the placeholder label to an actual place name ("San Jose, CA")
+        // once it resolves -- results are already shown by coordinates, so this never blocks them.
+        const resolved = await reverseGeocode(lat, lng);
+        if (resolved) setLocLabel(resolved);
+      },
       err => { setError(err.code===1 ? 'Location permission denied — enter a location instead.' : 'Couldn’t get your location.'); setBusy(false); },
       { enableHighAccuracy:true, timeout:10000 }
     );
@@ -3241,7 +3310,7 @@ function App() {
   return (
     <>
     <div className="app-zoom">
-      <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} savedOpen={savedOpen} savedCount={favs.length} onToggleSaved={toggleSaved} onSuggest={() => setSuggestOpen(true)} onDonate={goDonate} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onSelectSuggestion={selectSuggestion} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'}/>
+      <Header a11yOpen={a11yOpen} setA11yOpen={setA11yOpen} savedOpen={savedOpen} savedCount={favs.length} onToggleSaved={toggleSaved} onSuggest={() => setSuggestOpen(true)} onDonate={goDonate} locLabel={locLabel} onLogoClick={goLanding} onSearchLocation={searchLocation} onSelectSuggestion={selectSuggestion} onUseMyLocation={useMyLocation} locBusy={busy} locError={error} showSearch={screen==='results'} keyword={keyword} setKeyword={setKeyword}/>
       <main>{screen==='landing' ? <Landing onSearch={searchLocation} onSelectSuggestion={selectSuggestion} onLocate={useMyLocation} busy={busy} error={error} reduceMotion={reduceMotion}/> : <Results ALL={ALL} coords={coords} locLabel={locLabel} keyword={keyword} setKeyword={setKeyword} favs={favs} onFav={toggleFav} themeKey={themeKey} contrast={prefs.contrast} onVisibleChange={setReadableList} reduceMotion={reduceMotion}/>}</main>
       <footer ref={footerRef} style={{borderTop:'1px solid var(--border)',background:'var(--surface)',padding:'24px 24px',textAlign:'center',fontSize:12,color:'var(--text-muted)'}}>
         © 2026 Accessibility Mapper · Cal Poly Pomona Computer Science ·{' '}
