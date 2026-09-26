@@ -272,7 +272,7 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 .hero2-btn:disabled{opacity:.7;cursor:wait;}
 .hero2-chip{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 10px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);color:var(--text-secondary);font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;}
 .hero2-chip:hover{background:var(--brand-subtle);border-color:var(--brand);color:var(--text);}
-@media (min-width:641px){.hero2-search{flex-direction:row;}.hero2-field{border-bottom:none;}.hero2-field:first-child{border-right:1px solid var(--border);}}
+@media (min-width:641px){.hero2-search{flex-direction:row;}.hero2-field{border-bottom:none;flex:1 1 0;}.hero2-field:first-child{border-right:1px solid var(--border);flex:0.7 1 0;}.hero2-field:last-child{flex:1.3 1 0;}}
 
 /* ─── Hero decorations + scroll reveal ──────────────────────────
    All motion here is gated two ways: (1) prefers-reduced-motion:no-preference below,
@@ -412,8 +412,9 @@ function formatSuggestion(s) {
 }
 
 /* Debounced, cancel-safe Nominatim autocomplete-as-you-type. Nominatim's public API asks for
-   at most ~1 request/sec, so this waits 350ms of typing silence before firing, and only ever
-   keeps the latest in-flight request's result. */
+   at most ~1 request/sec; a single typing user's keystrokes are almost never that fast, so
+   this only waits 150ms of silence before firing (down from 350ms, which felt sluggish) and
+   only ever keeps the latest in-flight request's result. */
 function useLocationSuggestions(query) {
   const [suggestions, setSuggestions] = useState([]);
   useEffect(() => {
@@ -429,7 +430,7 @@ function useLocationSuggestions(query) {
       } catch (e) {
         if (!cancelled) setSuggestions([]);
       }
-    }, 350);
+    }, 150);
     return () => { cancelled = true; clearTimeout(t); };
   }, [query]);
   return suggestions;
