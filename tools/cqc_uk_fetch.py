@@ -60,6 +60,20 @@ def download_csv():
     print(f"Saved {os.path.getsize(CSV_PATH)} bytes to {CSV_PATH}")
 
 
+"""
+disability_scope: general (2026-09-25) -- the "Specialisms/services" column
+is a pipe-separated list of clean category labels (confirmed by sampling the
+CSV directly), so this now also takes every location tagged "Physical
+disabilities" or "Sensory impairments" in that field, not just autism/
+learning-disabilities matches -- per the disability-master research pass.
+Deliberately NOT widened to "Mental health conditions", "Dementia", "Eating
+disorders" etc. -- those are real CQC categories but outside this directory's
+disability scope, same distinction the project draws elsewhere.
+"""
+
+DISABILITY_SPECIALISMS = {"Physical disabilities", "Sensory impairments"}
+
+
 def filter_rows():
     with open(CSV_PATH, newline="", encoding="utf-8-sig") as f:
         for _ in range(4):
@@ -68,9 +82,13 @@ def filter_rows():
         matches = []
         for row in reader:
             blob = " ".join((v or "") for v in row.values())
-            if "autis" in blob.lower():
+            specialisms = set((row.get("Specialisms/services") or "").split("|"))
+            is_autism = "autis" in blob.lower()
+            is_disability = bool(specialisms & DISABILITY_SPECIALISMS)
+            if is_autism or is_disability:
+                row["_disability_scope"] = None if is_autism else "general"
                 matches.append(row)
-    print(f"Filtered {len(matches)} rows mentioning autism anywhere in the record.")
+    print(f"Filtered {len(matches)} rows (autism mention or physical/sensory-disability specialism).")
     return matches
 
 
@@ -141,6 +159,9 @@ def to_resource(row, coords):
         entry["coordinates"] = {"lat": lat_lng[0], "lng": lat_lng[1]}
     else:
         entry["placeless"] = True
+    if row.get("_disability_scope"):
+        entry["disability_scope"] = row["_disability_scope"]
+    entry["breadth"] = "core"
     return entry
 
 

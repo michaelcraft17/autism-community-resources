@@ -58,7 +58,11 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Finland PRH Business Information System (YTJ) - official national entity registry"
 
 SEARCH_TERMS = ["autismi", "autismisäätiö", "autismiyhdistys", "autismikirjo", "asperger"]
-KEEP_SUBSTR = ["autis", "asperger"]
+# Disability-master pass (2026-09-25): Finnish disability term (Nordic
+# family root "vammais" -- vammainen/vammaisjärjestö, disabled/disability).
+DISABILITY_TERMS = ["vammais"]
+AUTISM_SUBSTR = ["autis", "asperger"]
+KEEP_SUBSTR = ["autis", "asperger", "vammais"]
 EXCLUDE_SUBSTR = ["nautis"]
 # real-estate holding subsidiary of the Autism Foundation, not itself a
 # service-providing resource
@@ -103,7 +107,7 @@ def geocode(address, fallback_city):
 def main():
     print("Fetching Finland YTJ register...")
     all_companies = {}
-    for term in SEARCH_TERMS:
+    for term in SEARCH_TERMS + DISABILITY_TERMS:
         for c in fetch_term(term):
             all_companies[c["businessId"]["value"]] = c
         time.sleep(1.1)
@@ -130,11 +134,12 @@ def main():
             continue
         if current.get("endDate"):
             continue  # this name/entity has ended -- dissolved, merged, or renamed
-        matches.append((name, c))
+        scope = None if any(any(k in (n.get("name","").lower()) for k in AUTISM_SUBSTR) for n in names) else "general"
+        matches.append((name, c, scope))
     print(f"  {len(matches)} matches after substring filter + status exclusion")
 
     resources = []
-    for name, c in matches:
+    for name, c, scope in matches:
         addrs = c.get("addresses") or []
         street_addr = next((a for a in addrs if a.get("type") == 1), addrs[0] if addrs else None)
         city = None
@@ -171,7 +176,10 @@ def main():
             "source": SOURCE,
             "services": ["Information & Support"],
             "description": description,
+            "breadth": "core",
         }
+        if scope:
+            entry["disability_scope"] = scope
         website = (c.get("website") or {}).get("url")
         if website:
             if not website.startswith("http"):
