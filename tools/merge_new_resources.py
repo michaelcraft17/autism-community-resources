@@ -101,7 +101,13 @@ def norm_city(address):
     parts = [p.strip() for p in address.split(",") if p.strip()]
     if len(parts) < 2:
         return norm_name(address)  # single-segment address, best effort
-    city = parts[-2]
+    # "..., City, State[, ZIP]" -- if the last segment is a postal code
+    # (mostly digits), the city is 3rd-from-end, not 2nd (which would be the
+    # state/UF and would wrongly conflate different cities in the same state).
+    if len(parts) >= 3 and re.match(r"^\d{4,9}[\-\d]*$", parts[-1]):
+        city = parts[-3]
+    else:
+        city = parts[-2]
     city = re.sub(r"\d+", "", city)
     return norm_name(city)
 
