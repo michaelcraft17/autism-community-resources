@@ -33,6 +33,10 @@ import re
 import time
 import urllib.parse
 import urllib.request
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from category_map import classify
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = {"User-Agent": "autism-community-resources research (contact: changcheng875@gmail.com)"}
@@ -63,7 +67,7 @@ def geocode(query, countrycode="es"):
 
 def fetch_catalonia():
     url = ("https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json"
-           "?$where=" + urllib.parse.quote("upper(nom_entitat) like '%AUTIS%' OR upper(contingut_finalitats) like '%AUTIS%' OR upper(classificacio_especifica) like '%DISCAPACIT%'")
+           "?$where=" + urllib.parse.quote("estat='Inscrita' AND (upper(nom_entitat) like '%AUTIS%' OR upper(contingut_finalitats) like '%AUTIS%' OR upper(classificacio_especifica) like '%DISCAPACIT%' OR upper(classificacio_especifica) like '%DISMINU%')")
            + "&$limit=1000")
     req = urllib.request.Request(url, headers=UA)
     with urllib.request.urlopen(req, timeout=60) as r:
@@ -89,7 +93,7 @@ def fetch_catalonia():
             "address": full_addr,
             "phone": (row.get("telefon", "") or "").split("/")[0].strip(),
             "website": website,
-            "type": "general_support",
+            "type": classify(name, purpose + " " + classif),
             "source": "Catalonia Registre d'Associacions (Generalitat de Catalunya)",
             "services": [],
             "description": purpose[:500] if purpose else classif.strip(),
@@ -135,7 +139,7 @@ def fetch_basque():
             "address": full_addr,
             "phone": row.get("phone", ""),
             "website": website,
-            "type": "general_support",
+            "type": classify(name, goal),
             "source": "Basque Country Registro de Asociaciones (Gobierno Vasco)",
             "services": [],
             "description": goal[:500] if goal else goal_type,
@@ -152,7 +156,10 @@ def fetch_basque():
 
 
 def fetch_madrid(csv_path="/tmp/madrid.csv"):
-    out = []
+    # One row per association x activity class -- dedupe on the registration
+    # number first (round-4 finding), keeping the most relevant matching row
+    # per registration rather than emitting one entry per activity row.
+    by_reg = {}
     with open(csv_path, encoding="utf-8-sig") as f:
         reader = csv.DictReader(f, delimiter=";")
         for row in reader:
@@ -160,14 +167,29 @@ def fetch_madrid(csv_path="/tmp/madrid.csv"):
             activity = row.get("clasificacion_activdad_desc", "") or row.get("clasificacion_actividad_desc", "") or ""
             if not is_autism_match(name) and "discapacid" not in activity.lower():
                 continue
-            scope = "autism" if is_autism_match(name) else "general"
-            addr = row.get("asociación_direccion", "") or row.get("asociacion_direccion", "")
-            entry = {
+            reg = row.get("numero_registro_territorial", "") or name
+            if reg not in by_reg:
+                by_reg[reg] = row
+            else:
+                # Prefer a row whose own activity mentions the disability/autism
+                # term, so the description isn't a coincidentally-unrelated
+                # activity class for an org matched via a different row.
+                prev_activity = (by_reg[reg].get("clasificacion_actividad_desc") or "")
+                if "discapacid" not in prev_activity.lower() and "discapacid" in activity.lower():
+                    by_reg[reg] = row
+
+    out = []
+    for row in by_reg.values():
+        name = row.get("asociación_nombre", "") or row.get("asociacion_nombre", "")
+        activity = row.get("clasificacion_activdad_desc", "") or row.get("clasificacion_actividad_desc", "") or ""
+        scope = "autism" if is_autism_match(name) else "general"
+        addr = row.get("asociación_direccion", "") or row.get("asociacion_direccion", "")
+        entry = {
                 "name": (name or "").strip(),
                 "address": addr.strip() if addr else "",
                 "phone": "",
                 "website": "",
-                "type": "general_support",
+                "type": classify(name, activity),
                 "source": "Madrid Registro de Asociaciones (Comunidad de Madrid)",
                 "services": [],
                 "description": activity.strip(),
@@ -175,10 +197,10 @@ def fetch_madrid(csv_path="/tmp/madrid.csv"):
                 "suggested": {},
                 "entity_type": "organization",
                 "_geo_query": addr.strip() + ", Spain" if addr else None,
-            }
-            if scope != "autism":
-                entry["disability_scope"] = scope
-            out.append(entry)
+        }
+        if scope != "autism":
+            entry["disability_scope"] = scope
+        out.append(entry)
     return out
 
 
@@ -208,7 +230,7 @@ def fetch_canarias(csv_path="/tmp/canarias.csv"):
                 "address": full_addr,
                 "phone": phone if phone != "_U" else "",
                 "website": website,
-                "type": "general_support",
+                "type": classify(name, activities),
                 "source": "Canarias Registro de Asociaciones (Gobierno de Canarias)",
                 "services": [],
                 "description": activities.strip(),
@@ -231,9 +253,12 @@ def main():
     all_entries += cat
 
     print("Fetching Basque Country...")
-    basq = fetch_basque()
-    print(f"  {len(basq)} matches")
-    all_entries += basq
+    try:
+        basq = fetch_basque()
+        print(f"  {len(basq)} matches")
+        all_entries += basq
+    except Exception as exc:
+        print(f"  SKIPPED (endpoint error: {exc}) -- retry separately later")
 
     if os.path.exists("/tmp/madrid.csv"):
         print("Fetching Madrid...")

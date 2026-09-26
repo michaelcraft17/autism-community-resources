@@ -37,6 +37,19 @@ ACCUEIL," "APIPA-ASPERGER-TSA," plus some the API's own relevance ranking
 pulled in that only mention Asperger's in passing -- kept as-is, same
 tolerance as the autism-root query's own false-positive rate).
 
+Expanded again 2026-09-25 (disability-master pass) with the French
+disability/neurodevelopmental term list: handicap (50,108 hits alone --
+verified with a manual spot-check of 15 records before committing to the
+full fetch; real disability associations -- sports, home care, employment,
+parental support -- not noise), déficience, trisomie (Down syndrome),
+sourd/malentendant (deaf/hard-of-hearing), aveugle/malvoyant (blind/low
+vision), dyslexie/dyspraxie/dyscalculie, "infirmité motrice cérébrale"
+(cerebral palsy). Records matched only by a disability/neuro term (not an
+autism-root term) get `disability_scope` set to "neurodevelopmental" (Down
+syndrome, dyslexia, dyspraxia, dyscalculia) or "general" (everything else)
+so the site can still filter to autism-only if wanted. This makes France by
+far the largest single-country addition in the disability layer.
+
 Known upstream data quality issue: ~37% of `object` (description) fields for
 older records (pre-2009 declarations, part of the "RNA_import" legacy batch)
 have specific accented characters corrupted (e.g. "acces" renders as
@@ -55,9 +68,14 @@ Writes:
 """
 import json
 import os
+import re
+import sys
 import time
 import urllib.parse
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from category_map import classify
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRATCH = os.path.join(REPO, "tools", "france_rna_scratch")
@@ -68,8 +86,30 @@ OUT_PATH = os.path.join(REPO, "new_resources_france_rna.json")
 HEADERS = {"User-Agent": "autism-community-resources-research/1.0 (contact: michaelcraft17@gmail.com)"}
 API = "https://public.opendatasoft.com/api/records/1.0/search/"
 DATASET = "ref-france-association-repertoire-national"
-QUERY = "autisme OR autiste OR autistes OR asperger"
+AUTISM_TERMS = "autisme OR autiste OR autistes OR asperger"
+# "handicap" alone is 50,108 hits -- too big for this API's 10,000-record
+# start+rows pagination cap, and doesn't share a date/geo field with full
+# coverage (a declaration_date-range shard only recovers ~82%; commune-code
+# sharding below recovers the same ~82% via a field every record has, so
+# that's what's used). Every other disability term is well under 10k and
+# fetched directly, no sharding needed.
+NARROW_DISABILITY_TERMS = (
+    "deficience OR déficience OR trisomie OR sourd OR malentendant "
+    "OR aveugle OR malvoyant OR dyslexie OR dyspraxie OR dyscalculie OR "
+    '"infirmité motrice cérébrale"'
+)
+QUERY = f"{AUTISM_TERMS} OR {NARROW_DISABILITY_TERMS}"
 PAGE_SIZE = 1000
+# commune-code (com_code_asso) shards for the separate "handicap" fetch --
+# verified 2026-09-25 that every 10,000-wide bin stays under the API's cap;
+# sums to ~41,200 of the true 50,108 (~82%; the rest have no com_code_asso
+# in range, e.g. foreign/overseas-territory addresses -- not chased further
+# this pass, a documented partial capture like tools/italy_runts_fetch.py).
+HANDICAP_SHARDS = [(f"{lo:05d}", f"{lo+9999:05d}") for lo in range(0, 100000, 10000)]
+
+AUTISM_RE = re.compile(r"autis|asperger", re.IGNORECASE)
+NEURO_RE = re.compile(r"trisomie|dyslexi|dyspraxi|dyscalculi", re.IGNORECASE)
+# everything else in DISABILITY_TERMS that isn't autism/neuro-specific
 
 SOURCE = "France RNA (Repertoire National des Associations) - official government open data, data.gouv.fr"
 
@@ -82,34 +122,59 @@ TYPE_KEYWORDS = [
 ]
 
 
-def infer_type(object_text):
+def infer_type(title, object_text):
     t = (object_text or "").lower()
     for keywords, kind in TYPE_KEYWORDS:
         if any(k in t for k in keywords):
             return kind
-    return "general_support"
+    return classify(title, object_text)
 
 
-def fetch_page(start):
-    params = {"dataset": DATASET, "q": QUERY, "rows": PAGE_SIZE, "start": start}
+def infer_scope(title, object_text):
+    blob = f"{title or ''} {object_text or ''}"
+    if AUTISM_RE.search(blob):
+        return None
+    if NEURO_RE.search(blob):
+        return "neurodevelopmental"
+    return "general"
+
+
+def fetch_page(query, start):
+    params = {"dataset": DATASET, "q": query, "rows": PAGE_SIZE, "start": start}
     url = API + "?" + urllib.parse.urlencode(params)
     req = urllib.request.Request(url, headers=HEADERS)
     with urllib.request.urlopen(req, timeout=30) as resp:
         return json.loads(resp.read())
 
 
-def fetch_all():
+def fetch_query(query):
     records = []
     start = 0
     total = None
     while total is None or start < total:
-        data = fetch_page(start)
+        data = fetch_page(query, start)
         total = data["nhits"]
         batch = data.get("records", [])
         records.extend(batch)
-        print(f"  fetched {len(records)}/{total}")
         start += PAGE_SIZE
         time.sleep(1)
+    return records
+
+
+def fetch_handicap_sharded():
+    records = []
+    for lo, hi in HANDICAP_SHARDS:
+        q = f"handicap AND com_code_asso:[{lo} TO {hi}]"
+        shard = fetch_query(q)
+        print(f"  handicap [{lo}-{hi}]: {len(shard)}")
+        records.extend(shard)
+    return records
+
+
+def fetch_all():
+    records = fetch_query(QUERY)
+    print(f"  narrow query: {len(records)}")
+    records += fetch_handicap_sharded()
     return records
 
 
@@ -144,12 +209,15 @@ def build_resources(records):
         entry = {
             "name": title.strip().title(),
             "address": build_address(f),
-            "type": infer_type(object_text),
+            "type": infer_type(title, object_text),
             "source": SOURCE,
             "services": ["Information & Support"],
             "description": f"French officially registered association (RNA): {object_text.strip()}." if object_text
             else f"{title.strip().title()} -- see the RNA (French association registry) for details.",
         }
+        scope = infer_scope(title, object_text)
+        if scope:
+            entry["disability_scope"] = scope
         if coord and len(coord) == 2:
             entry["coordinates"] = {"lat": coord[0], "lng": coord[1]}
         else:
