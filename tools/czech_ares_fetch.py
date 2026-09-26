@@ -46,6 +46,10 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Czech Republic ARES (Administrative Register of Economic Subjects) - official national entity registry"
 
 SEARCH_TERMS = ["autismus", "autiste", "autisté"]
+# Disability-master pass (2026-09-25): Czech disability terms -- "postižení"
+# (disability/impairment) and "zdravotně postižený" (health-impaired), the
+# standard Czech disability phrasing.
+DISABILITY_TERMS = ["postižení", "postižených", "zdravotně postižen"]
 
 
 def fetch_term(term):
@@ -81,14 +85,21 @@ def geocode(address):
 def main():
     print("Fetching Czech ARES register...")
     all_entities = {}
-    for term in SEARCH_TERMS:
+    scope_by_ico = {}
+    for term in SEARCH_TERMS + DISABILITY_TERMS:
+        is_autism = term in SEARCH_TERMS
         for e in fetch_term(term):
-            all_entities[e["ico"]] = e
+            ico = e["ico"]
+            all_entities[ico] = e
+            if is_autism:
+                scope_by_ico[ico] = None
+            elif ico not in scope_by_ico:
+                scope_by_ico[ico] = "general"
         time.sleep(1.1)
     print(f"  {len(all_entities)} unique entities across all search terms")
 
     resources = []
-    for e in all_entities.values():
+    for ico, e in all_entities.items():
         name = e.get("obchodniJmeno", "").strip()
         sidlo = e.get("sidlo") or {}
         addr_text = sidlo.get("textovaAdresa")
@@ -105,6 +116,8 @@ def main():
             "description": f"Registered organization in the Czech ARES national registry, based in {sidlo.get('nazevObce', 'the Czech Republic')}.",
             "address": full_address,
         }
+        if scope_by_ico.get(ico):
+            entry["disability_scope"] = scope_by_ico[ico]
         if coords:
             entry["coordinates"] = coords
         else:
