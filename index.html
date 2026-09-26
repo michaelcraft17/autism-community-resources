@@ -336,8 +336,11 @@ const TYPE_META = {
   general_support: { label:'General Support',bg:'var(--type-general-bg)',   fg:'var(--type-general-fg)' },
 };
 
-/* ─── Full dataset (community_data.js) — loaded asynchronously so the
-   page shell renders immediately instead of blocking on a multi-MB file. */
+/* ─── Full dataset (community_data_us.js / _europe.js / _world.js) — loaded asynchronously,
+   one region at a time, so the page shell renders immediately instead of blocking on a
+   multi-MB file. Split by region to stay under GitHub's 100MB per-file hard limit as the
+   dataset grows; each file does `window.communityData = (window.communityData||[]).concat(...)`
+   so load order doesn't matter. */
 function shapeAll(raw) {
   return (Array.isArray(raw) && raw.length ? raw : RESOURCES).map((r,i) => ({
     id: i+1, name: r.name, type: r.type, address: r.address, phone: r.phone,
@@ -347,15 +350,26 @@ function shapeAll(raw) {
   })).filter(r => r.placeless || (r.coordinates && r.coordinates.lat && r.coordinates.lng));
 }
 
+const COMMUNITY_DATA_FILES = ['community_data_us.js', 'community_data_europe.js', 'community_data_world.js'];
+
 function useCommunityData() {
   const [all, setAll] = useState(null); // null = still loading
   useEffect(() => {
     if (window.communityData) { setAll(shapeAll(window.communityData)); return; }
-    const s = document.createElement('script');
-    s.src = 'community_data.js';
-    s.onload = () => setAll(shapeAll(window.communityData));
-    s.onerror = () => setAll(shapeAll(null)); // fall back to sample RESOURCES
-    document.body.appendChild(s);
+    let cancelled = false;
+    const loadNext = i => {
+      if (i >= COMMUNITY_DATA_FILES.length) {
+        if (!cancelled) setAll(shapeAll(window.communityData));
+        return;
+      }
+      const s = document.createElement('script');
+      s.src = COMMUNITY_DATA_FILES[i];
+      s.onload = () => loadNext(i + 1);
+      s.onerror = () => loadNext(i + 1); // skip a missing/broken region, keep the others
+      document.body.appendChild(s);
+    };
+    loadNext(0);
+    return () => { cancelled = true; };
   }, []);
   return all;
 }
