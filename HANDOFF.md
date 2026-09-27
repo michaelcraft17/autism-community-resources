@@ -909,6 +909,40 @@ persistence guardrail, so cron was used instead.
   disability terms added), Bulgaria needs `COMPANYBOOK_API_KEY` set, and the NPI
   DD-taxonomy addition plus Section A's big remaining sources (IRS full NTEE set, Ohio
   DODD, NY Medicaid DD-specific vs. broad) are unchanged from before this pass.
+- **Disability-layer expansion, round 4 (2026-09-27): 136,229 -> 136,327 (+98), Belgium.**
+  Two prior fork attempts at this specific fetcher stalled (600s watchdog, no progress) —
+  root-caused directly rather than retried blindly: `kbopub.economie.fgov.be`
+  intermittently hangs on Playwright's default `page.goto()`, which waits for the `load`
+  event (a slow subresource this site has) — confirmed by direct testing (sometimes loads
+  in 3s, sometimes hangs 20-30s+). **Fix: `wait_until="domcontentloaded"` with a short
+  timeout, wrapped in a 3-4 attempt retry loop** — the site works fine once you stop
+  waiting for `load`. Worth remembering for any other Playwright-driven fetcher in this
+  project that hits unexplained hangs (Italy RUNTS is the next candidate). Used this to
+  capture the real working PDF-export param set for `tools/belgium_kbo_fetch.py` and
+  **saved it into the script itself this time** (`FIXED_PARAMS`-equivalent
+  `PDF_URL_TEMPLATE`, plus reusable `fetch_pdf_bytes()`/`parse_pdf()` functions) — it was
+  previously only ever captured live and used once, never preserved (see this file's
+  older "not swept" note on this exact fetcher). Searched 15 Dutch/French disability terms
+  (handicap, gehandicapt, doof, slechthorend, sourd, malentendant, blind, slechtziend,
+  aveugle, malvoyant, downsyndroom, "syndrome de down", dyslexie, dyspraxie, dyscalculie):
+  126 raw hits deduped by KBO number, **5 excluded as confirmed false positives** after
+  checking each one's legal form/NACE activity code on the KBO detail page rather than
+  guessing from the name alone — "BLIND DATE MEETING SYSTEM"/"BLIND SPOT"/"BLIND'ART" are
+  natural-person fairground-trader (`kermisuitbater`) registrations, "Blind Drift" is a
+  VZW but its NACE code is performing-arts ensembles, "BLIND OPERA" is a commercial BV
+  (likely an escape-room brand) — all unrelated to disability despite the name match.
+  Conversely, "Running Blind België" and "Sonic & Blind asbl" were kept after confirming
+  real signal (NACE 88.109 "social work... for persons with a handicap", and a link to
+  the healthcare-providers registry, respectively) — same discipline as every other
+  country's false-positive review in this project, just using KBO's own detail-page data
+  instead of a web search. One entry (a UK cross-border registration, "YORK BLIND &
+  PARTIALLY SIGHTED SOCIETY") kept its garbled OCR'd postcode from the PDF and is marked
+  `placeless` rather than force-geocoded. Tagged `breadth: "core"`,
+  `disability_scope: "general"` (`"neurodevelopmental"` for the Down Syndrome match).
+  Italy RUNTS and Ukraine EDR still queued (Italy may hit the same Playwright load-hang
+  class of bug — try the same fix first; Ukraine needs the ~3.2GB bulk XML re-streamed
+  with disability terms), Bulgaria still needs `COMPANYBOOK_API_KEY` set, and the NPI
+  DD-taxonomy addition plus Section A's remaining sources are unchanged.
 - **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
   research" build pass (see its own section above, under Data harvesting tools) added
   Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
