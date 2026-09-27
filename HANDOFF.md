@@ -974,11 +974,39 @@ persistence guardrail, so cron was used instead.
   `tools/italy_runts_fetch.py`, plus a working `--scrape` CLI mode) rather than leaving it
   a throwaway, same pattern as Belgium's `FIXED_PARAMS` fix. Tagged `breadth: "core"`,
   `disability_scope: "general"` (`"neurodevelopmental"` for the Down syndrome/dyslexia/
-  discalculia/disprassia matches). Ukraine EDR is the last Section B fetcher still queued
-  (needs the ~3.2GB bulk XML re-streamed with disability terms — a long-running single
-  operation, not expected to hit the same load-hang bug, but print frequent progress so it
-  isn't mistaken for a hang); Bulgaria still needs `COMPANYBOOK_API_KEY` set; NPI
-  DD-taxonomy and Section A's remaining sources are unchanged.
+  discalculia/disprassia matches). **Section B's last fetcher, Ukraine EDR, is now also
+  done: 136,653 -> 142,774 (+6,121).** Re-streamed the ~3.2GB register (cached zip, no
+  re-download needed) with Ukrainian disability terms (invalid/invalidnist, hlukhykh/
+  hlukhonim — deaf, slipykh — blind, "syndrom dauna", dyslex/disprax/dyskalkul) added to
+  the existing autism-only scan; took ~110s at ~2MB/33ms throughput, with progress printed
+  every 100MB so the long single-pass stream was never mistaken for a hang. **Real bug
+  found and fixed:** the original (and this pass's first-draft) keyword check matched
+  against the *entire* XML `<SUBJECT>` record, not just the org's own `<NAME>` — for a
+  broad term like "invalid" this pulled in ~1,084 organizations whose only connection was
+  a FOUNDER's personal disabled-veteran legal-status field, unrelated to the org's actual
+  purpose (caught by noticing a "Ukraine Forever" patriotic charity fund with an empty
+  `<PURPOSE>` field in the general-disability sample — traced to the founder's own status
+  string, not the org's name or mission). Restricting the match to `<NAME>` only dropped
+  those false positives while keeping the real signal: two massive, genuinely legitimate
+  federated networks surfaced for the first time — **Ukrainian Society of the Blind (УТОС)**
+  and **Ukrainian Society of the Deaf (УТОГ)**, each with hundreds of regional branches and
+  sheltered-workshop production enterprises (a real, decades-old state-recognized
+  employment structure for disabled workers, same "one federation, many genuine local
+  chapters" shape as Brazil's APAE network or CQC UK's location count), plus the general
+  "Spilka/Tovarystvo Invalidiv" (Union/Society of Invalids) network. Final breakdown:
+  `інвалід` 5,829, `сліпих` (blind) 200, `глухих` (deaf) 118, `дислекс` 1 — all spot-checked
+  clean after the NAME-only fix, no further false positives found. 65 of the raw matches
+  were already present from earlier sources (deduped); the autism-only re-scan under the
+  same NAME-only restriction found 38 (a subset of the already-merged 41 — the 3 not
+  re-found here matched via a non-NAME field under the old behavior and remain safely in
+  the dataset from the original run; nothing was removed). Tagged `breadth: "core"`,
+  `disability_scope: "general"` (`"neurodevelopmental"` for the one dyslexia match).
+  **Section B is now fully complete** (Finland, Norway, Switzerland, Netherlands, CQC UK,
+  Latvia, Slovenia, Estonia, Belgium, Italy, Ukraine all widened with disability terms).
+  Bulgaria's disability-term pass still needs `COMPANYBOOK_API_KEY` set by the site owner;
+  the NPI DD-taxonomy addition and Section A's remaining sources (IRS full NTEE set, Ohio
+  DODD, NY Medicaid DD-specific vs. broad) are the next queue items per
+  `~/Desktop/autism-registry-sources-DISABILITY-MASTER.md`.
 - **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
   research" build pass (see its own section above, under Data harvesting tools) added
   Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
