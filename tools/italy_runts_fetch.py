@@ -44,21 +44,131 @@ tools/netherlands_anbi_fetch.py.
 
 Usage:
     python3 tools/italy_runts_fetch.py            # geocodes ENTRIES below, writes output
-    python3 tools/italy_runts_fetch.py --scrape    # re-runs the live Playwright scrape first
-                                                     (requires `pip install playwright` +
-                                                     `playwright install chromium` in a venv;
-                                                     prints newly found entries to add by hand,
-                                                     does not modify ENTRIES automatically)
+    python3 tools/italy_runts_fetch.py --scrape    # re-runs the live Playwright scrape (see
+                                                     scrape_all_terms() below), prints
+                                                     newly-found rows to review by hand --
+                                                     does not modify ENTRIES automatically
 
 Writes:
     new_resources_italy_runts.json   final resource-schema output (repo root)
+
+Disability-term expansion (2026-09-27): the pagination flakiness described
+above turned out to be substantially the SAME bug class as Belgium KBO's
+(see tools/belgium_kbo_fetch.py's docstring) -- Playwright's default
+`page.goto()`/`expect_navigation()` wait for the `load` event, and this
+portal has slow-loading subresources that intermittently hang that wait.
+Using `wait_until="domcontentloaded"` took capture reliability from ~10-30%
+per page to consistently 100% on every small/medium term, and from ~30% to
+78% on the two largest terms (disabilita: 244 hits; autismo: 220 hits) --
+those two still occasionally break mid-pagination (a genuine timeout, not
+just the load-hang) and are worth a retry-from-scratch attempt (cheap, since
+each retry is a few minutes) rather than assuming it's a hard wall.
+`scrape_all_terms()`/`parse_result_rows()` below are the reusable, working
+scraper -- saved this time instead of being a one-off throwaway script.
 """
 import json
 import os
+import re
 import sys
 import time
 import urllib.parse
 import urllib.request
+
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    sync_playwright = None  # only needed for --scrape / scrape_all_terms()
+
+RUNTS_SEARCH_URL = "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti"
+DENOMINAZIONE_INPUT = 'input[name="dnn$ctr446$View$txtDenominazione"]'
+SEARCH_BUTTON = 'input[name="dnn$ctr446$View$btnRicercaEnti"]'
+
+DISABILITY_TERMS = [
+    "disabilita", "handicap", "sordo", "cieco", "sindrome di down",
+    "dislessia", "discalculia", "disprassia",
+]
+# "non udente" and "ipovedente" (tried 2026-09-27) returned zero results --
+# the search matches an org's registered name substring only, and no
+# registered entity happens to use those exact multi-word phrases in its
+# name (unlike "sordo"/"cieco" which are common name components).
+
+
+def parse_result_rows(body_text):
+    """Extract (name, comune, sezione) rows from the results page's plain
+    text -- the table renders as tab-separated text between the
+    "Denominazione\tComune\tSezione" header and the pager controls."""
+    lines = body_text.split("\n")
+    start = None
+    for i, l in enumerate(lines):
+        if l.strip().startswith("Denominazione\tComune\tSezione"):
+            start = i + 1
+            break
+    if start is None:
+        return []
+    row_re = re.compile(r"^(.+?)\t(.+?)\t(.+?)\t?$")
+    rows = []
+    for l in lines[start:]:
+        l = l.rstrip()
+        if not l.strip():
+            continue
+        m = row_re.match(l)
+        if not m:
+            break
+        rows.append((m.group(1).strip(), m.group(2).strip(), m.group(3).strip()))
+    return rows
+
+
+def scrape_term(page, term):
+    """One search term, all pages. Always use wait_until='domcontentloaded'
+    (never the default 'load') -- see the module docstring."""
+    page.goto(RUNTS_SEARCH_URL, timeout=15000, wait_until="domcontentloaded")
+    page.fill(DENOMINAZIONE_INPUT, term)
+    with page.expect_navigation(wait_until="domcontentloaded", timeout=15000):
+        page.click(SEARCH_BUTTON)
+    text = page.inner_text("body")
+    total = int((re.search(r"Risultati Ricerca:\s*(\d+)", text) or [None, "0"]).group(1))
+    total_pages = int((re.search(r"Pagina \d+ di (\d+)", text) or [None, "1"]).group(1))
+    print(f"[{term}] total={total} pages={total_pages}", flush=True)
+
+    all_rows = list(parse_result_rows(text))
+    page_num = 1
+    while page_num < total_pages:
+        try:
+            with page.expect_navigation(wait_until="domcontentloaded", timeout=15000):
+                page.click('a:has-text("Successiva")')
+            page_num += 1
+            all_rows.extend(parse_result_rows(page.inner_text("body")))
+            if page_num % 5 == 0 or page_num == total_pages:
+                print(f"  [{term}] page {page_num}/{total_pages}, {len(all_rows)} rows so far", flush=True)
+        except Exception as e:
+            print(f"  [{term}] pagination broke at page {page_num + 1}: {type(e).__name__}", flush=True)
+            break
+    print(f"[{term}] captured {len(all_rows)} of {total} rows", flush=True)
+    return all_rows, total
+
+
+def scrape_all_terms(terms, retries_for_partial=1):
+    """Scrape every term in `terms`. Automatically retries a term once if its
+    first attempt came back partial (pagination broke early) -- this project
+    has seen a full retry succeed 100% on a term that partially failed
+    moments before (pure transient flakiness, not a structural block)."""
+    if sync_playwright is None:
+        raise RuntimeError("playwright not installed -- pip install playwright && playwright install chromium")
+    results = {}
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        for term in terms:
+            rows, total = scrape_term(page, term)
+            attempts = 0
+            while len(rows) < total and attempts < retries_for_partial:
+                attempts += 1
+                retry_rows, retry_total = scrape_term(page, term)
+                if len(retry_rows) > len(rows):
+                    rows, total = retry_rows, retry_total
+            results[term] = {"rows": rows, "total": total}
+        browser.close()
+    return results
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_PATH = os.path.join(REPO, "new_resources_italy_runts.json")
@@ -233,9 +343,21 @@ def main():
 
 if __name__ == "__main__":
     if "--scrape" in sys.argv:
-        print("Live re-scrape requires Playwright; see this file's docstring for the")
-        print("interactive scraping approach used to build ENTRIES -- not wired up as")
-        print("an unattended one-shot here because of the pagination flakiness described")
-        print("in the docstring. Run the scrape interactively and diff by name instead.")
-        sys.exit(1)
+        existing_terms = ["autismo", "autistici", "autistica"]
+        results = scrape_all_terms(existing_terms + DISABILITY_TERMS)
+        existing_names = {e[0].strip().lower() for e in ENTRIES}
+        seen, net_new = set(), []
+        for term, d in results.items():
+            for name, comune, sezione in d["rows"]:
+                key = name.strip().lower()
+                if key in existing_names or key in seen:
+                    continue
+                seen.add(key)
+                net_new.append((name.strip(), comune.strip(), sezione.strip()))
+        print(f"\n{len(net_new)} net-new rows not already in ENTRIES (review before adding by hand,")
+        print("same false-positive discipline as every prior pass -- e.g. exclude any")
+        print('"scautismo" (scouting) substring collision on the autism terms):')
+        for row in net_new:
+            print(" ", row)
+        sys.exit(0)
     main()
