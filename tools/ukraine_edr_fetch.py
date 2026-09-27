@@ -68,6 +68,21 @@ SOURCE = ("Ukraine Unified State Register of Legal Entities, Individual Entrepre
           "and Public Formations - official open data")
 
 KEYWORD = "аутизм"
+# Disability-term expansion (2026-09-27): general disability (invalid/invalidnist),
+# deaf (hlukhyi/hlukhonimyi), blind (slipyi), Down syndrome, and dyslexia/dyspraxia/
+# dyscalculia, same "widen an existing working fetcher" treatment as every other
+# Section B country. Down/dyslexia/dyspraxia/dyscalculia terms are tagged
+# neurodevelopmental; the rest are general.
+DISABILITY_KEYWORDS = {
+    "інвалід": "general",           # invalid/invalidnist -- disability/disabled person
+    "глухих": "general",            # hlukhykh -- (of/for) the deaf
+    "глухонім": "general",          # hlukhonim -- deaf-mute
+    "сліпих": "general",            # slipykh -- (of/for) the blind
+    "синдром дауна": "neurodevelopmental",
+    "дислекс": "neurodevelopmental",
+    "диспракс": "neurodevelopmental",
+    "дискалькул": "neurodevelopmental",
+}
 EXCLUDE_STAN_SUBSTR = ["припинено", "припинення"]  # terminated / being terminated
 
 # Ukrainian place names to try extracting from an org's own name for a coarse geocode.
@@ -98,7 +113,10 @@ def download_zip():
     print(f"  downloaded to {ZIP_PATH}")
 
 
-def stream_matches():
+def stream_matches(extra_keywords=None):
+    """extra_keywords: {keyword: disability_scope} beyond the base autism KEYWORD
+    (which always gets disability_scope=None, i.e. autism/untagged)."""
+    extra_keywords = extra_keywords or {}
     proc = subprocess.Popen(
         f"unzip -p '{ZIP_PATH}' UO.xml | iconv -f windows-1251 -t utf-8",
         shell=True, stdout=subprocess.PIPE, bufsize=2 * 1024 * 1024,
@@ -106,6 +124,7 @@ def stream_matches():
     buf = b""
     matches = []
     mb = 0
+    t0 = time.time()
     while True:
         chunk = proc.stdout.read(2 * 1024 * 1024)
         if not chunk:
@@ -122,18 +141,44 @@ def stream_matches():
             record = buf[start:end]
             buf = buf[end:]
             text = record.decode("utf-8", errors="replace")
-            if KEYWORD in text.lower():
-                name_m = re.search(r"<NAME>(.*?)</NAME>", text, re.S)
+            # Match against the org's own <NAME> only, not the whole record --
+            # matching the whole record (the original behavior) let a founder's
+            # personal status field ("... ІНВАЛІД ВІЙНИ ...", a disabled war
+            # veteran's own legal status, unrelated to the org's actual purpose)
+            # false-match broad terms like "інвалід" onto otherwise-unrelated
+            # organizations. "аутизм" never had this problem in practice (too
+            # rare a word to appear outside an org's own name), so restricting
+            # to NAME-only here doesn't change the original 41 autism matches,
+            # but is essential for the disability terms to stay precise.
+            name_m = re.search(r"<NAME>(.*?)</NAME>", text, re.S)
+            name_raw = name_m.group(1) if name_m else ""
+            name_low = name_raw.lower()
+            scope = None
+            matched_kw = None
+            if KEYWORD in name_low:
+                matched_kw = KEYWORD
+            else:
+                for kw, kw_scope in extra_keywords.items():
+                    if kw in name_low:
+                        matched_kw, scope = kw, kw_scope
+                        break
+            if matched_kw:
                 stan_m = re.search(r"<STAN>(.*?)</STAN>", text, re.S)
                 edrpou_m = re.search(r"<EDRPOU>(.*?)</EDRPOU>", text, re.S)
-                name = (name_m.group(1) if name_m else "").replace("&quot;", '"').replace("&apos;", "'")
+                name = name_raw.replace("&quot;", '"').replace("&apos;", "'")
                 stan = stan_m.group(1) if stan_m else ""
                 if any(x in stan for x in EXCLUDE_STAN_SUBSTR):
                     continue
-                matches.append({"name": name.strip(), "edrpou": edrpou_m.group(1) if edrpou_m else ""})
+                matches.append({
+                    "name": name.strip(),
+                    "edrpou": edrpou_m.group(1) if edrpou_m else "",
+                    "matched_keyword": matched_kw,
+                    "disability_scope": scope,
+                })
         mb += 2
-        if mb % 200 == 0:
-            print(f"  processed ~{mb}MB, {len(matches)} matches so far...")
+        if mb % 100 == 0:
+            elapsed = time.time() - t0
+            print(f"  processed ~{mb}MB in {elapsed:.0f}s, {len(matches)} matches so far...", flush=True)
     proc.wait()
     return matches
 
@@ -155,7 +200,7 @@ def geocode(query):
 def main():
     print("Fetching Ukraine Unified State Register (UO/legal entities export)...")
     download_zip()
-    matches = stream_matches()
+    matches = stream_matches(extra_keywords=DISABILITY_KEYWORDS)
     print(f"\n{len(matches)} active matches found")
 
     resources = []
@@ -176,7 +221,10 @@ def main():
             "services": ["Information & Support"],
             "description": "Registered organization in Ukraine's Unified State Register of Legal Entities.",
             "address": address,
+            "breadth": "core",
         }
+        if m.get("disability_scope"):
+            entry["disability_scope"] = m["disability_scope"]
         if coords:
             entry["coordinates"] = coords
         else:
