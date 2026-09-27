@@ -867,6 +867,48 @@ persistence guardrail, so cron was used instead.
   Slovenia AJPES, Estonia, Latvia, Ukraine, Bulgaria) and the NPI DD-taxonomy addition are
   still queued next, followed by Section A's big remaining sources (IRS full NTEE set,
   Ohio DODD, NY Medicaid DD-specific vs. broad).
+- **Disability-layer expansion, round 3 (2026-09-27), part 1: 136,138 -> 136,186.**
+  Continued Section B's remaining fetchers. **Latvia (+35):** extended
+  `tools/latvia_ur_fetch.py`'s existing autism-only "autis" keyword with Latvian
+  general-disability terms ("invalid"/"invaliditāte" — disability/disabled person,
+  "nedzirdīgo" — deaf, "neredzīgo" — blind/visually-impaired), checked directly against
+  the already-cached register CSV; no coincidental-substring false positives found this
+  time (unlike "autis"/"starptautisks"). **Slovenia (+13):** re-queried AJPES's live
+  `ajax.asp` autocomplete endpoint (see `tools/slovenia_ajpes_fetch.py` docstring) with
+  "invalid"/"invalidsko" and "down" prefixes — real yield: 5 regional Ilco (ostomy-patient)
+  chapters, 2 general physical-disability advocacy societies, 1 national disability
+  society, 4 "invalidsko podjetje" sheltered-employment companies (a legally-defined
+  Slovenian company category for firms employing a quota of workers with disabilities),
+  and the national Down Syndrome Slovenia society. Excluded several real coincidental
+  name collisions, documented in the script: a cleaning company ("INVAL Čiščenje"), a
+  "blind spot"-themed tech company ("Slepa Pega"), catering/investment firms named
+  "Sindrom", a manufacturing company ("Gluhicom", unrelated to "gluh"/deaf), and three
+  "gibalno" (movement)-prefixed entries too ambiguous to confirm as disability-specific.
+  Both countries' new entries tagged `breadth: "core"`, `disability_scope: "general"`
+  (Slovenia's Down Syndrome entry: `"neurodevelopmental"`). **Bulgaria skipped this
+  round** — `COMPANYBOOK_API_KEY` not set in this session's environment (the fetcher
+  needs it; see its docstring).
+- **Disability-layer expansion, round 3 (2026-09-27), part 2: 136,186 -> 136,229.**
+  **Estonia (+43):** extended `tools/estonia_ariregister_fetch.py` with Estonian
+  general-disability terms (puue/puuetega, invaliid, erivajadus, kurtide, pimeda,
+  downi). Real yield: general-disability support groups, deaf and blind
+  national/regional associations and sports clubs, special-needs support centers, a
+  therapeutic riding club (Rebala), and both Estonian Down Syndrome organizations
+  (`disability_scope: "neurodevelopmental"`). **Three genuine linguistic-collision
+  false positives found and excluded**, worth remembering for any future Estonian
+  term list: "puude" is the genitive of both "puue" (disability) and "puu" (tree) —
+  matched tree-care/landscaping companies and a cosmetics company; "pime" means both
+  "dark" and "blind" in Estonian — matched a film festival ("Pimedate Ööde
+  Filmifestival" = Dark Nights Film Festival) and an entertainment company ("Peitus
+  Pimedas" = Hide in the Dark); "Invaliidi tn" (Invalid Street) is a real Tallinn
+  street name — matched two unrelated apartment-building housing co-ops. All
+  exclusions documented in the script's `EXCLUDE_NAMES`/docstring.
+  **Round 3 total so far: 136,138 -> 136,229 (+91)** across Latvia/Slovenia/Estonia.
+  Italy RUNTS, Belgium KBO, and Ukraine EDR still queued (Belgium/Italy need a fresh
+  Playwright param-capture session; Ukraine needs the ~3.2GB bulk XML re-streamed with
+  disability terms added), Bulgaria needs `COMPANYBOOK_API_KEY` set, and the NPI
+  DD-taxonomy addition plus Section A's big remaining sources (IRS full NTEE set, Ohio
+  DODD, NY Medicaid DD-specific vs. broad) are unchanged from before this pass.
 - **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
   research" build pass (see its own section above, under Data harvesting tools) added
   Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
