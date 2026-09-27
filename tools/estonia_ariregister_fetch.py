@@ -18,6 +18,23 @@ surfaces 8 real active organizations (national federation, regional
 associations, a foundation, and specialist centers), no false
 positives.
 
+Disability-master pass: added general-disability terms (puue/puuetega,
+invaliid, erivajadus, kurtide, pimeda, downi). Real, genuine
+linguistic-collision false positives found and excluded (see
+EXCLUDE_NAMES) -- worth knowing about for any future Estonian-language
+term list: "puude" is the genitive of both "puue" (disability) AND
+"puu" (tree), so it also matches tree-care/landscaping companies;
+"pime" means both "dark" and "blind" in Estonian, matching a film
+festival ("Pimedate Ööde Filmifestival" = Dark Nights Film Festival)
+and an entertainment company ("Peitus Pimedas" = Hide in the Dark);
+and "Invaliidi tn" (Invalid Street) is a real Tallinn street name, so
+"invaliid" also matches apartment-building housing co-ops with no
+disability connection at all. Deaf ("kurtide") and blind ("pimedate",
+minus the two false positives above) national/regional associations
+and sports clubs, special-needs ("erivajadus") support centers and a
+therapeutic riding club, and both Estonian Down Syndrome organizations
+all came back clean.
+
 A follow-up pass found the original term list was too narrow: it missed
 other Estonian grammatical forms of "autist" (person with autism) --
 "autistide" (genitive/partitive) turned up two more real, active
@@ -55,7 +72,20 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Estonia e-Business Register (Ariregister, RIK) - official national entity registry"
 
 SEARCH_TERMS = ["autism", "autismi", "autistlik", "autist", "autistide"]
-EXCLUDE_NAMES = ["autist oü"]  # ambiguous, no corroborating evidence -- see docstring
+# Disability-master pass: general-disability/neurodevelopmental Estonian term
+# roots (puue = disability noun stem; invaliid = older but still-used
+# "disabled person" term, common in legacy org names; erivajadus = special
+# needs; kurt/pime = deaf/blind; down = Down syndrome).
+DISABILITY_TERMS = ["puude", "puuetega", "invaliid", "erivajadus", "kurtide", "pimeda", "downi"]
+AUTISM_SUBSTR = ["autis"]
+DOWN_SYNDROME_SUBSTR = ["downi"]
+EXCLUDE_NAMES = [
+    "autist oü",  # ambiguous, no corroborating evidence -- see docstring
+    # Real linguistic collisions surfaced by the disability-term pass, see docstring:
+    "puude hooldus oü", "puudel kõrghaljastus oü", "oü puuder", "a&t puude oü",  # "puude"="of trees" here, not disability
+    "tallinn, invaliidi tn 3 korteriühistu", "tallinn, invaliidi tn 4 korteriühistu",  # street name, not disability
+    "mittetulundusühing pimedate ööde filmifestival", "peitus pimedas oü",  # "pime"="dark" here, not "blind"
+]
 
 
 def fetch_term(term):
@@ -105,19 +135,28 @@ def geocode(address):
 def main():
     print("Fetching Estonia e-Business Register...")
     all_entities = {}
-    for term in SEARCH_TERMS:
+    matched_terms = {}
+    for term in SEARCH_TERMS + DISABILITY_TERMS:
         for e in fetch_term(term):
             if e.get("status") != "R":  # "Registrisse kantud" - actively registered, not dissolved
                 continue
             if (e.get("name") or "").strip().lower() in EXCLUDE_NAMES:
                 continue
             all_entities[e["reg_code"]] = e
+            matched_terms.setdefault(e["reg_code"], set()).add(term)
         time.sleep(1.1)
     print(f"  {len(all_entities)} unique active entities across all search terms")
 
     resources = []
     for e in all_entities.values():
         name = e.get("name", "").strip()
+        low = name.lower()
+        if any(t in low for t in AUTISM_SUBSTR):
+            scope = None
+        elif any(t in low for t in DOWN_SYNDROME_SUBSTR):
+            scope = "neurodevelopmental"
+        else:
+            scope = "general"
         addr = e.get("legal_address", "")
         zip_code = e.get("zip_code", "")
         full_address = ", ".join(p for p in [addr, zip_code, "Estonia"] if p)
@@ -132,7 +171,10 @@ def main():
             "services": ["Information & Support"],
             "description": f"Registered organization in the Estonian e-Business Register.",
             "address": full_address,
+            "breadth": "core",
         }
+        if scope:
+            entry["disability_scope"] = scope
         if coords:
             entry["coordinates"] = coords
         else:
