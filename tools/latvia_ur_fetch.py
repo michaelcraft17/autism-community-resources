@@ -57,6 +57,14 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 SOURCE = "Latvia Register of Enterprises (Uzņēmumu reģistrs) open data - official associations/foundations register"
 
 KEYWORD = "autis"
+# Disability-master pass: general-disability Latvian term roots (invaliditāt/
+# invalīds = disability/disabled person, the standard modern Latvian terms;
+# nedzirdīg = deaf; neredzīg = blind/visually-impaired). Checked directly
+# against the cached CSV first -- all matches were genuine disability
+# organizations, no coincidental-substring false positives found (unlike
+# "autis"/"starptautisk").
+DISABILITY_KEYWORDS = ["invalid", "nedzirdīg", "neredzīg"]
+AUTISM_SUBSTR = ["autis"]
 EXCLUDE_SUBSTR = ["starptautisk", "tautisk"]  # "international" false-positive, see docstring
 
 # Latvian city names to try extracting from an org's own name for a coarse geocode.
@@ -101,8 +109,9 @@ def main():
             if len(row) < 3:
                 continue
             regcode, name = row[0], row[1]
-            low = name.lower()
-            if KEYWORD not in low:
+            low = unicodedata.normalize("NFC", name.lower())
+            keywords = [KEYWORD] + [unicodedata.normalize("NFC", k) for k in DISABILITY_KEYWORDS]
+            if not any(k in low for k in keywords):
                 continue
             if any(x in low for x in EXCLUDE_SUBSTR):
                 continue
@@ -119,6 +128,7 @@ def main():
         # script's literal Latvian text can use different Unicode compositions
         # for the same visible diacritics (e.g. precomposed vs. combining "ē").
         norm_name = unicodedata.normalize("NFC", clean_name)
+        scope = None if any(t in norm_name.lower() for t in AUTISM_SUBSTR) else "general"
         city = next((c for c in KNOWN_CITIES if unicodedata.normalize("NFC", c) in norm_name), None)
         coords = None
         address = "Latvia"
@@ -135,7 +145,10 @@ def main():
             "services": ["Information & Support"],
             "description": f"Registered association/foundation in the Latvian Register of Enterprises.",
             "address": address,
+            "breadth": "core",
         }
+        if scope:
+            entry["disability_scope"] = scope
         if coords:
             entry["coordinates"] = coords
         else:
