@@ -44,12 +44,120 @@ Usage:
 
 Writes:
     new_resources_belgium_kbo.json   final resource-schema output (repo root)
+
+Disability-term expansion (2026-09-27): FIXED_PARAMS below is the actual
+working param set for the PDF-export endpoint (previously only ever captured
+live via Playwright and used once, never saved -- see HANDOFF.md's "not
+swept" note). To search a new term, no Playwright session is needed: build
+`PDF_URL_TEMPLATE % term` and fetch with plain `requests`/`urllib` -- only
+re-drive the live form with Playwright if the site ever changes its param
+names. Real gotcha hit and fixed while capturing this: kbopub.economie.fgov.be
+intermittently hangs on Playwright's default `page.goto()`, which waits for
+the `load` event (a slow subresource this site has) -- always pass
+`wait_until="domcontentloaded"` with a short timeout (10-15s) wrapped in a
+3-4 attempt retry loop with ~3s backoff; the site works fine once you avoid
+waiting for `load`. Same fix likely applies to any other Playwright-driven
+fetcher in this project that hits intermittent hangs (e.g. Italy RUNTS).
+`fetch_pdf_bytes()`/`parse_pdf()` below implement the fetch+parse side;
+DISABILITY_TERMS lists the terms already searched this round (found 98 net-new
+disability-related entries after filtering struck-off entities and manual
+false-positive review -- see new_resources_belgium_disability.json / HANDOFF.md
+for that pass's specific exclusions and results, not reproduced here).
 """
 import json
 import os
+import re
 import time
 import urllib.parse
 import urllib.request
+
+try:
+    import pdfplumber
+except ImportError:
+    pdfplumber = None  # only needed for parse_pdf(), not the hand-transcribed ENTRIES path
+
+PDF_URL_TEMPLATE = (
+    "https://kbopub.economie.fgov.be/kbopub/zoeknaamfonetischform.pdf?searchWord=%s"
+    "&_oudeBenaming=on&pstcdeNPRP=&postgemeente1=&ondNP=true&_ondNP=on&ondRP=true"
+    "&_ondRP=on&rechtsvormFonetic=ALL&vest=true&_vest=on&filterEnkelActieve=true"
+    "&_filterEnkelActieve=on&actionNPRP=Zoek"
+)
+
+DISABILITY_TERMS = [
+    "handicap", "gehandicapt", "doof", "slechthorend", "sourd", "malentendant",
+    "blind", "slechtziend", "aveugle", "malvoyant", "downsyndroom",
+    "syndrome de down", "dyslexie", "dyspraxie", "dyscalculie",
+]
+
+
+def fetch_pdf_bytes(term):
+    """Fetch the KBO PDF export for one search term. No session/cookie needed
+    once FIXED_PARAMS-equivalent query string is used -- confirmed via plain
+    curl/urllib."""
+    url = PDF_URL_TEMPLATE % urllib.parse.quote(term)
+    req = urllib.request.Request(url, headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return resp.read()
+
+
+def parse_pdf(pdf_path):
+    """Column-position-based parser for the KBO PDF export's fixed layout
+    (entity type/status | KBO number+date | name | address columns). Requires
+    pdfplumber (plain pypdf's text order isn't reliably column-safe here)."""
+    NAAM_SPLIT_LOW, NAAM_ADRES_SPLIT = 255, 390
+    footer_re = re.compile(r"Toestand in de KBO databank op \d{2}/\d{2}/\d{4}")
+    pagenum_re = re.compile(r"^\d+/\s*\d+$")
+
+    def clean(text):
+        text = footer_re.sub("", text)
+        text = re.sub(r"\bAdres van de zetel:\s*", "", text)
+        return " ".join(text.split()).strip()
+
+    all_records = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            words = page.extract_words()
+            buckets = {}
+            for w in words:
+                buckets.setdefault(round(w["top"] / 3.0), []).append(w)
+            rows = []
+            for k in sorted(buckets.keys()):
+                ws = sorted(buckets[k], key=lambda w: w["x0"])
+                col0 = " ".join(w["text"] for w in ws if w["x0"] < 103)
+                col1 = " ".join(w["text"] for w in ws if 103 <= w["x0"] < 169)
+                col3 = " ".join(w["text"] for w in ws if NAAM_SPLIT_LOW <= w["x0"] < NAAM_ADRES_SPLIT)
+                col4 = " ".join(w["text"] for w in ws if w["x0"] >= NAAM_ADRES_SPLIT)
+                if pagenum_re.match(" ".join(w["text"] for w in ws).strip()):
+                    continue
+                rows.append((col0, col1, col3, col4))
+            cur = None
+            for col0, col1, col3, col4 in rows:
+                if col0.strip() in ("ENT RP", "VE"):
+                    if cur:
+                        all_records.append(cur)
+                    cur = {"type": col0.strip(), "status": [col0, col1], "naam": [col3], "adres": [col4]}
+                elif cur is not None:
+                    if col0.strip() or col1.strip():
+                        cur["status"].append(col0); cur["status"].append(col1)
+                    if col3.strip():
+                        cur["naam"].append(col3)
+                    if col4.strip():
+                        cur["adres"].append(col4)
+            if cur:
+                all_records.append(cur)
+
+    out = []
+    for r in all_records:
+        status_text = " ".join(r["status"])
+        num_match = re.search(r"\d{4}\.\d{3}\.\d{3}", status_text)
+        out.append({
+            "type": r["type"],
+            "struck_off": "doorgehaald entiteit" in status_text,
+            "num": num_match.group(0) if num_match else None,
+            "naam": clean(" ".join(x for x in r["naam"] if x.strip())),
+            "adres": clean(" ".join(x for x in r["adres"] if x.strip())),
+        })
+    return out
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_PATH = os.path.join(REPO, "new_resources_belgium_kbo.json")
