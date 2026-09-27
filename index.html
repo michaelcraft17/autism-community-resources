@@ -651,21 +651,25 @@ function useCountUp(target, start, reduceMotion, duration=1200) {
 
 /* ─── Logo ──────────────────────────────────────────────────── */
 /* Logo mark: a map pin holding four dots in the NNEA-style spark colors (a nod to neurodiversity). */
-const LogoMark = ({size=32, glass=false}) => {
+const LogoMark = ({size=32}) => {
   const gid = 'lg' + React.useId().replace(/[^a-zA-Z0-9]/g, '');
   return (
-    <svg width={size} height={size} viewBox="0 0 60 60" fill="none" aria-hidden="true">
+    <svg width={size} height={size} viewBox="0 0 60 60" aria-hidden="true">
       <defs>
-        <linearGradient id={gid} x1="6" y1="4" x2="54" y2="58" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#3d9bf0"/><stop offset="1" stopColor="#0b4f95"/>
+        <linearGradient id={gid} x1="0" y1="15.2" x2="0" y2="40.03" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#14c8b4"/><stop offset="1" stopColor="#7c5cf6"/>
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="56" height="56" rx="16" fill={glass ? 'rgba(255,255,255,.16)' : `url(#${gid})`}/>
-      <path d="M30 14c-7.7 0-14 6-14 13.5C16 37 30 48 30 48s14-11 14-20.5C44 20 37.7 14 30 14z" fill="#fff"/>
-      <circle cx="26.2" cy="24.8" r="3.6" fill="#f6a21e"/>
-      <circle cx="33.8" cy="24.8" r="3.6" fill="#e5348b"/>
-      <circle cx="26.2" cy="32.4" r="3.6" fill="#6bbf3b"/>
-      <circle cx="33.8" cy="32.4" r="3.6" fill="#2e7dd7"/>
+      <rect x="2" y="2" width="56" height="56" rx="13" fill="#f6f3ec"/>
+      <rect x="36" y="7.5" width="15" height="9" rx="3" fill="#cfeac6"/>
+      <rect x="5" y="19.5" width="8" height="7" rx="2.5" fill="#cfeac6"/>
+      <path d="M2 28.5H58M16 2V58M44 2V58" fill="none" stroke="#ffffff" strokeWidth="1.75"/>
+      <path d="M2 17.5 17.5 2H21.5L2 21.5Z" fill="#fbe3a0"/>
+      <path d="M2 44C14 40 20 47 32.6 42.4S52 35 58 36.5V45A13 13 0 0 1 45 58H15A13 13 0 0 1 2 45Z" fill="#b6ddf5"/>
+      <path d="M17.05 42.92 29.76 15.2M22.71 33.1H31.14" fill="none" stroke="#0f2a4a" strokeWidth="2.31" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M29.76 15.2C32.35 20.68 36.11 23.86 34.95 28.77C34.03 32.81 35.99 36.74 39.92 40.03" fill="none" stroke={`url(#${gid})`} strokeWidth="2.13" strokeLinecap="round"/>
+      <circle cx="40.44" cy="40.61" r="2.54" fill="#ff5d5d"/>
+      <circle cx="40.44" cy="40.61" r="0.88" fill="#ffffff"/>
     </svg>
   );
 };
@@ -2884,7 +2888,15 @@ const MobileMapSheet = ({groups, listContent, noResults, coords, radius, themeKe
     const root = shellRef.current && shellRef.current.querySelector('[data-scroll-root]');
     const card = root && activeId != null && root.querySelector(`[data-rid="${activeId}"]`);
     if (!card) return;
-    const jump = () => card.scrollIntoView({block: 'start', behavior: 'auto'});
+    // Not card.scrollIntoView(): with the card already flush against the top of `root`
+    // (scrollTop 0 there satisfies block:'start'), the browser kept walking up the scroll-
+    // container chain and also scrolled shellRef -- which is overflow:hidden purely to clip
+    // the sliding sheet, never meant to scroll -- dragging the whole sheet (header included)
+    // up by the header's own height. That left the header's real screen position overlapped
+    // by the filter row above it, so its drag handle couldn't be grabbed or tapped and the
+    // sheet got stuck unable to collapse back to the map. Scrolling only `root` by the exact
+    // delta sidesteps the ancestor walk entirely.
+    const jump = () => { root.scrollTop += card.getBoundingClientRect().top - root.getBoundingClientRect().top; };
     if (reduceMotion) { jump(); return; }
     const ms = parseFloat(getComputedStyle(document.body).getPropertyValue('--dur-base')) || 220;
     const t = setTimeout(jump, ms + 30);
