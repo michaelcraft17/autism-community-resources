@@ -943,6 +943,42 @@ persistence guardrail, so cron was used instead.
   class of bug — try the same fix first; Ukraine needs the ~3.2GB bulk XML re-streamed
   with disability terms), Bulgaria still needs `COMPANYBOOK_API_KEY` set, and the NPI
   DD-taxonomy addition plus Section A's remaining sources are unchanged.
+- **Disability-layer expansion, round 4 continued (2026-09-27): 136,327 -> 136,653
+  (+326), Italy.** Confirmed the guess above — RUNTS's documented pagination flakiness
+  ("intermittent full page reloads mid-scrape") is substantially the same bug class as
+  Belgium KBO's: Playwright's default `page.goto()`/`expect_navigation()` wait for the
+  `load` event, and this portal has slow subresources that intermittently hang that wait.
+  `wait_until="domcontentloaded"` plus a one-retry-on-partial-capture policy took
+  reliability from the old ~10-30%-per-page baseline to **100% on every small/medium term**
+  (sordo, cieco, "sindrome di down", dislessia, discalculia, disprassia — all captured in
+  full on the first or second attempt) and to 78-100% on the two largest terms
+  (disabilita: 190/244 after 2 attempts, handicap: 103/103 after a retry from an initial
+  10/103). autismo itself was retried too (still genuinely partial, 70/220 best-of-2 — the
+  extra attempt made it worse, not better, confirming this specific term/volume combo has
+  a real remaining flakiness ceiling even with the fix; not chased further, same "don't
+  fight it excessively" discipline as before). Searched Italian disability terms
+  (disabilita, handicap, sordo, cieco, "sindrome di down", dislessia, discalculia,
+  disprassia) plus a fresh pass on the existing autism terms. **5 "scautismo" (scouting)
+  false positives excluded** — same known coincidental-substring pattern as the original
+  capture ("SCAUTISMO" contains "AUTISMO"). No other false positives found across any
+  disability term: RUNTS matches only an org's own registered name (not purpose/activity
+  text), which is inherently lower-collision-risk than sources that also match free-text
+  fields. One large real federated network surfaced for the first time: **ANFFAS**
+  (Associazione Nazionale Famiglie di Persone con Disabilità Intellettiva e/o Relazionale),
+  Italy's national intellectual-disability federation, with dozens of regional/local
+  chapters captured as distinct entities (same "one federated network, many real chapters"
+  shape as Brazil's APAE or Slovakia's autism-support network in earlier rounds — matched
+  on "disabilita", not on the federation's own name, so wasn't previously in this dataset
+  at all). Saved the working Playwright scraper into the script itself this time
+  (`scrape_all_terms()`/`parse_result_rows()`/`scrape_term()` in
+  `tools/italy_runts_fetch.py`, plus a working `--scrape` CLI mode) rather than leaving it
+  a throwaway, same pattern as Belgium's `FIXED_PARAMS` fix. Tagged `breadth: "core"`,
+  `disability_scope: "general"` (`"neurodevelopmental"` for the Down syndrome/dyslexia/
+  discalculia/disprassia matches). Ukraine EDR is the last Section B fetcher still queued
+  (needs the ~3.2GB bulk XML re-streamed with disability terms — a long-running single
+  operation, not expected to hit the same load-hang bug, but print frequent progress so it
+  isn't mistaken for a hang); Bulgaria still needs `COMPANYBOOK_API_KEY` set; NPI
+  DD-taxonomy and Section A's remaining sources are unchanged.
 - **73,238 total resources** (was 72,577 before this update). The 2026-09-25 "in-depth API
   research" build pass (see its own section above, under Data harvesting tools) added
   Germany ZER (+176) and UK charity regulators/CCEW+CCNI (+485) = **+661 net new**. IRS
