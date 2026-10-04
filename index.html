@@ -350,6 +350,38 @@ body.contrast-dark .cat-line,body.contrast-light .cat-line{display:inline-flex;}
   .fade-up{opacity:0;transform:translateY(12px);transition:opacity .55s ease-out,transform .55s ease-out;}
   .fade-up.in-view{opacity:1;transform:translateY(0);}
 }
+/* ─── City loader (directory loading state) ─────────────────────
+   A tilted 3D city flattens into a 2D map, a route draws itself, then a pin drops.
+   Base styles ARE the final frame, so OS reduced-motion users (no animation) and the
+   "Pause Animations" toggle (body.reduce-motion, which shortens animations to one
+   near-instant cycle with no fill) both get a still, finished map. */
+.city-loader{display:flex;flex-direction:column;align-items:center;}
+.city-stage{width:220px;height:210px;perspective:620px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.city-tile{width:180px;height:180px;display:block;overflow:visible;transform-origin:50% 60%;}
+.city-ground{fill:var(--bg-sunken);stroke:var(--border);stroke-width:1.5;}
+.city-street{fill:var(--surface);}
+.city-park{fill:var(--success);fill-opacity:.18;}
+.city-tree{fill:var(--success);}
+.city-wall{fill:var(--border-strong);transform:scaleY(0);transform-box:fill-box;transform-origin:50% 100%;}
+.city-roof{fill:var(--brand-subtle);stroke:var(--border-strong);stroke-width:1;}
+.city-road{fill:none;stroke:var(--brand);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;}
+.city-pin-head{fill:var(--pin-fill);}
+.city-pin-dot{fill:var(--pin-fill-on);}
+.city-ripple{fill:none;stroke:var(--pin-fill);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center;}
+@media (prefers-reduced-motion:no-preference){
+  .city-tile{animation:cityTilt 3.8s cubic-bezier(.45,0,.25,1) infinite;}
+  .city-wall{animation:cityWall 3.8s cubic-bezier(.45,0,.25,1) infinite;}
+  .city-roof{animation:cityRoof 3.8s cubic-bezier(.45,0,.25,1) infinite;}
+  .city-road{animation:cityRoad 3.8s ease-in-out infinite;}
+  .city-pin{animation:cityPin 3.8s ease-out infinite;}
+  .city-ripple{animation:cityRipple 3.8s ease-out infinite;}
+}
+@keyframes cityTilt{0%{opacity:0;transform:rotateX(58deg) scale(.9);}8%,12%{opacity:1;transform:rotateX(58deg) scale(.9);}38%{transform:rotateX(0deg) scale(1);}90%{opacity:1;transform:rotateX(0deg) scale(1);}100%{opacity:0;transform:rotateX(0deg) scale(1);}}
+@keyframes cityWall{0%,12%{transform:scaleY(1);}38%,100%{transform:scaleY(0);}}
+@keyframes cityRoof{0%,12%{transform:translateY(calc(var(--h) * -1px));}38%,100%{transform:translateY(0);}}
+@keyframes cityRoad{0%,40%{stroke-dashoffset:1;}66%,100%{stroke-dashoffset:0;}}
+@keyframes cityPin{0%,66%{opacity:0;transform:translateY(-28px);}73%{opacity:1;transform:translateY(2px);}77%,100%{opacity:1;transform:translateY(0);}}
+@keyframes cityRipple{0%,73%{opacity:0;transform:scale(.3);}75%{opacity:.7;}92%,100%{opacity:0;transform:scale(1.9);}}
 </style>
 </head>
 <body>
@@ -2950,6 +2982,48 @@ const MobileMapSheet = ({groups, listContent, noResults, coords, radius, themeKe
   );
 };
 
+/* ─── Loading animation: 3D city → 2D map → route → pin (styles: .city-* in <style>) ─── */
+// [x, y, width, depth, height] — height is how far the roof lifts in the 3D view.
+const CITY_BUILDINGS = [
+  [8,10,38,30,34], [73,8,22,32,52], [99,14,18,26,28], [143,8,50,34,40],
+  [73,68,44,44,60], [143,68,22,44,32], [169,76,24,36,46],
+  [8,138,38,54,28], [73,140,44,52,44], [143,138,50,24,34], [143,168,50,24,22],
+];
+
+const CityLoader = () => (
+  <div className="city-loader" role="status" aria-live="polite">
+    <div className="city-stage" aria-hidden="true">
+      <svg className="city-tile" viewBox="0 0 200 200">
+        <rect className="city-ground" x="0" y="0" width="200" height="200" rx="14"/>
+        <rect className="city-street" x="53" y="0" width="14" height="200"/>
+        <rect className="city-street" x="123" y="0" width="14" height="200"/>
+        <rect className="city-street" x="0" y="48" width="200" height="14"/>
+        <rect className="city-street" x="0" y="118" width="200" height="14"/>
+        <rect className="city-park" x="6" y="68" width="41" height="44" rx="6"/>
+        <circle className="city-tree" cx="18" cy="82" r="6"/>
+        <circle className="city-tree" cx="34" cy="96" r="7"/>
+        <circle className="city-tree" cx="17" cy="102" r="4"/>
+        {CITY_BUILDINGS.map(([x,y,w,d,h]) => (
+          <g key={x+'-'+y}>
+            <rect className="city-wall" x={x} y={y+d-h} width={w} height={h}/>
+            <rect className="city-roof" x={x} y={y} width={w} height={d} rx="2" style={{'--h':h}}/>
+          </g>
+        ))}
+        <path className="city-road" d="M10 125 H60 V55 H130 V100" pathLength="1"/>
+        <ellipse className="city-ripple" cx="130" cy="100" rx="10" ry="4"/>
+        <g transform="translate(130 100)">
+          <g className="city-pin">
+            <path className="city-pin-head" d="M0 0 C-3 -7 -11 -12 -11 -21 A11 11 0 0 1 11 -21 C11 -12 3 -7 0 0 Z"/>
+            <circle className="city-pin-dot" cx="0" cy="-21" r="4.5"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700,color:'var(--text)'}}>LOADING DIRECTORY…</div>
+    <div style={{fontSize:14,marginTop:6}}>Fetching the full resource list — just a moment.</div>
+  </div>
+);
+
 const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, themeKey, contrast, onVisibleChange, reduceMotion}) => {
   const [typeFilter, setTypeFilter] = useState('');
   const [specialty, setSpecialty] = useState('');
@@ -3049,9 +3123,7 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
   if (loading) {
     return (
       <div style={{maxWidth:2400,margin:'0 auto',padding:'96px 24px',textAlign:'center',color:'var(--text-muted)'}}>
-        <div style={{fontSize:32,marginBottom:10}}>⏳</div>
-        <div style={{fontFamily:'var(--font-antonio)',fontSize:20,fontWeight:700,color:'var(--text)'}}>LOADING DIRECTORY…</div>
-        <div style={{fontSize:14,marginTop:6}}>Fetching the full resource list — just a moment.</div>
+        <CityLoader/>
       </div>
     );
   }
