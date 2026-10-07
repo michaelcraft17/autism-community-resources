@@ -2450,7 +2450,7 @@ const TRUST_STEPS = [
 const TRUST_STATS = [
   {Icon:ShieldCheckIcon, target:136000, suffix:'+', format:v=>v.toLocaleString(), label:'verified resources'},
   {Icon:GlobeIcon, target:30, suffix:'+', format:v=>String(v), label:'countries covered'},
-  {Icon:BadgeCheckIcon, target:100, suffix:'%', format:v=>String(v), label:'from official sources'},
+  {Icon:BadgeCheckIcon, target:965, suffix:'%', format:v=>(v/10).toFixed(1), label:'from official registries*'},
 ];
 
 const StatBlock = ({Icon, target, suffix, format, label, start, reduceMotion}) => {
@@ -2559,6 +2559,13 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error, reduceMot
         <div style={{display:'flex',gap:24,justifyContent:'center',flexWrap:'wrap'}}>
           {TRUST_STATS.map(s => <StatBlock key={s.label} {...s} start={trustInView} reduceMotion={reduceMotion}/>)}
         </div>
+        <p style={{fontSize:13,color:'var(--text-muted)',margin:'24px auto 0',maxWidth:'62ch',lineHeight:1.6,textWrap:'pretty'}}>
+          *96.5% of listings come directly from official government and regulatory registries
+          (such as the US NPI Registry, the UK Care Quality Commission, and France's national
+          association registry). The remaining 3.5% come from national nonprofit chapter
+          directories, such as Best Buddies, The Arc, and Special Olympics, which are each
+          organization's own published records.
+        </p>
       </section>
       <section style={{maxWidth:1500,margin:'56px auto',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:36}}>
