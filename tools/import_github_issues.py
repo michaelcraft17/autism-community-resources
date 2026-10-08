@@ -26,7 +26,7 @@ Human workflow to actually process a batch of submissions:
        hand for a small batch. Entries covering a whole country/region with no
        single address can instead be marked `"placeless": true`.
     3. python3 tools/merge_new_resources.py
-    4. node gen_community_data.js
+    4. python3 tools/split_by_region.py
     5. Test locally (python3 -m http.server 8765), then commit.
     6. Manually close each imported issue on GitHub (`gh issue close <n>
        --comment "Added, thanks!"` or similar) so it doesn't get re-imported.

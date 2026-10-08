@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-"""Split community_resources.json into US / Europe / World buckets for file-size management.
+"""Split community_resources.json into per-region shards (one JSON file per US state / European
+country, plus one World file) under data/, and write data/manifest.json for the app.
 
-Derived/generated step, same relationship gen_community_data.js has to community_resources.json.
-Run this after merge_new_resources.py, before gen_community_data.js.
+The shards are the committed source of truth (each stays far below GitHub's 50MB warning);
+community_resources.json is a local working file that tools/join_regions.py rebuilds from them.
+Run this after merge_new_resources.py (or any edit to community_resources.json).
 
 Classification is source-first (each fetcher's `source` string reliably names its registry/
 country), with an address/description/website-TLD fallback for the long tail of individually
 curated entries that don't come from a bulk registry fetch.
 """
 import json
+import os
 import re
+import shutil
 from collections import Counter
 
 IN_PATH = "community_resources.json"
-OUT_US = "community_resources_us.json"
-OUT_EUROPE = "community_resources_europe.json"
-OUT_WORLD = "community_resources_world.json"
+DATA_DIR = "data"
 REPORT_PATH = "tools/logs/region_split_report.txt"
 
 US_STATE_ABBR = {
@@ -256,6 +258,103 @@ def classify_by_fallback(entry: dict):
     return None
 
 
+# ── Sub-region classification (US state / European country) ──────────────────────────────────
+US_STATE_TAIL_RE = re.compile(r"\b([A-Z]{2})\s+\d{5}(?:-\d{4})?\b")
+US_STATE_COMMA_RE = re.compile(r",\s*([A-Z]{2})\s*(?:,|$)")
+US_TERRITORIES = {"PR", "GU", "AS", "VI", "MP", "PW"}
+US_VALID = US_STATE_ABBR | US_TERRITORIES
+
+# Source-string substring -> ISO country code (checked in order, lowercase).
+EURO_SOURCE_COUNTRY = [
+    ("france rna", "FR"), ("cqc (uk", "GB"), ("england & wales charity", "GB"),
+    ("northern ireland charity", "GB"), ("ukraine", "UA"), ("catalonia", "ES"), ("madrid", "ES"),
+    ("canarias", "ES"), ("basque country", "ES"), ("italy runts", "IT"), ("netherlands anbi", "NL"),
+    ("germany bzst", "DE"), ("belgium kbo", "BE"), ("norway bronnoysund", "NO"),
+    ("czech republic ares", "CZ"), ("slovakia rpo", "SK"), ("estonia e-business", "EE"),
+    ("latvia register", "LV"), ("finland prh", "FI"), ("greece gemi", "GR"),
+    ("switzerland zefix", "CH"), ("slovenia ajpes", "SI"), ("cyprus register", "CY"),
+    ("bulgaria commercial", "BG"),
+]
+# Name/word -> code for address and description matching.
+EURO_COUNTRY_WORDS = {
+    "united kingdom": "GB", "england": "GB", "scotland": "GB", "wales": "GB",
+    "northern ireland": "GB", "ireland": "IE", "france": "FR", "germany": "DE", "deutschland": "DE",
+    "italy": "IT", "italia": "IT", "spain": "ES", "españa": "ES", "netherlands": "NL",
+    "belgium": "BE", "belgique": "BE", "poland": "PL", "polska": "PL", "finland": "FI",
+    "sweden": "SE", "norway": "NO", "denmark": "DK", "switzerland": "CH", "austria": "AT",
+    "portugal": "PT", "greece": "GR", "czech": "CZ", "slovakia": "SK", "slovenia": "SI",
+    "estonia": "EE", "latvia": "LV", "lithuania": "LT", "ukraine": "UA", "hungary": "HU",
+    "romania": "RO", "bulgaria": "BG", "croatia": "HR", "cyprus": "CY", "malta": "MT",
+    "iceland": "IS", "luxembourg": "LU",
+}
+# Adjective forms only used on descriptions ("Irish nonprofit", ...).
+EURO_ADJECTIVES = {
+    "irish": "IE", "french": "FR", "german": "DE", "italian": "IT", "spanish": "ES", "dutch": "NL",
+    "belgian": "BE", "polish": "PL", "finnish": "FI", "swedish": "SE", "norwegian": "NO",
+    "danish": "DK", "swiss": "CH", "austrian": "AT", "portuguese": "PT", "greek": "GR",
+    "slovak": "SK", "slovenian": "SI", "estonian": "EE", "latvian": "LV", "lithuanian": "LT",
+    "ukrainian": "UA", "hungarian": "HU", "romanian": "RO", "bulgarian": "BG", "croatian": "HR",
+    "cypriot": "CY", "maltese": "MT", "icelandic": "IS", "british": "GB", "scottish": "GB",
+    "welsh": "GB", "english": "GB",
+}
+EURO_TLD_COUNTRY = {
+    "ie": "IE", "uk": "GB", "fr": "FR", "de": "DE", "it": "IT", "es": "ES", "nl": "NL", "be": "BE",
+    "pl": "PL", "fi": "FI", "se": "SE", "no": "NO", "dk": "DK", "ch": "CH", "at": "AT", "pt": "PT",
+    "gr": "GR", "cz": "CZ", "sk": "SK", "si": "SI", "ee": "EE", "lv": "LV", "lt": "LT", "ua": "UA",
+    "hu": "HU", "ro": "RO", "bg": "BG", "hr": "HR", "cy": "CY", "mt": "MT", "is": "IS", "lu": "LU",
+}
+
+
+def us_state(entry: dict) -> str:
+    """Two-letter state/territory code, or 'national' when the address names none."""
+    addr = entry.get("address") or ""
+    m = US_STATE_TAIL_RE.findall(addr)
+    for code in reversed(m):
+        if code in US_VALID:
+            return code
+    for code in reversed(US_STATE_COMMA_RE.findall(addr)):
+        if code in US_VALID:
+            return code
+    return "national"
+
+
+# The curated UK organisations at the tail of EUROPE_SOURCE_PATTERNS (from "national autistic
+# society" on) are all UK-based even when the entry carries no address.
+UK_SOURCE_PATTERNS = EUROPE_SOURCE_PATTERNS[EUROPE_SOURCE_PATTERNS.index("national autistic society"):]
+
+
+def europe_country(entry: dict) -> str:
+    """ISO country code for a European entry, or 'other' when nothing identifies one."""
+    s = (entry.get("source") or "").lower()
+    for pat, code in EURO_SOURCE_COUNTRY:
+        if pat in s:
+            return code
+    if any(p in s for p in UK_SOURCE_PATTERNS):
+        return "GB"
+    addr = (entry.get("address") or "")
+    low = addr.lower()
+    for w, code in EURO_COUNTRY_WORDS.items():
+        if re.search(rf"\b{re.escape(w)}\b", low):
+            return code
+    if UK_POSTCODE_RE.search(addr):
+        return "GB"
+    site = (entry.get("website") or "").lower().split("//")[-1].split("/")[0]
+    tld = site.rsplit(".", 1)[-1] if "." in site else ""
+    if tld in EURO_TLD_COUNTRY:
+        return EURO_TLD_COUNTRY[tld]
+    desc = (entry.get("description") or "").lower()
+    for w, code in {**EURO_COUNTRY_WORDS, **EURO_ADJECTIVES}.items():
+        if re.search(rf"\b{re.escape(w)}\b", desc):
+            return code
+    return "other"
+
+
+def write_shard(path: str, entries: list):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("[\n" + ",\n".join(json.dumps(e, ensure_ascii=False, separators=(",", ":")) for e in entries) + "\n]\n")
+
+
 def main():
     with open(IN_PATH, encoding="utf-8") as f:
         data = json.load(f)
@@ -285,12 +384,34 @@ def main():
         buckets[bucket].append(entry)
         source_bucket_counts[(source, bucket, method)] += 1
 
-    with open(OUT_US, "w", encoding="utf-8") as f:
-        json.dump(buckets["us"], f, ensure_ascii=False, indent=2)
-    with open(OUT_EUROPE, "w", encoding="utf-8") as f:
-        json.dump(buckets["europe"], f, ensure_ascii=False, indent=2)
-    with open(OUT_WORLD, "w", encoding="utf-8") as f:
-        json.dump(buckets["world"], f, ensure_ascii=False, indent=2)
+    shards = {}  # (region, code) -> entries, canonical order preserved
+    for e in buckets["us"]:
+        shards.setdefault(("us", us_state(e)), []).append(e)
+    for e in buckets["europe"]:
+        addr = e.get("address") or ""
+        # A few US/Canadian orgs were bucketed Europe by their source string; route them home.
+        if any(c in US_VALID for c in US_STATE_TAIL_RE.findall(addr)):
+            shards.setdefault(("us", us_state(e)), []).append(e)
+            continue
+        if CA_POSTAL_RE.search(addr):
+            shards[("world", "all")] = shards.get(("world", "all"), []) + [e]
+            continue
+        code = europe_country(e)
+        shards.setdefault(("europe", code), []).append(e)
+    shards[("world", "all")] = buckets["world"] + shards.get(("world", "all"), [])
+
+    # Regenerate the shard folder from scratch so a state/country that empties out disappears.
+    if os.path.isdir(DATA_DIR):
+        shutil.rmtree(DATA_DIR)
+    order = {"us": 0, "europe": 1, "world": 2}
+    manifest = []
+    for (region, code), entries in sorted(shards.items(), key=lambda kv: (order[kv[0][0]], kv[0][1])):
+        rel = f"{region}/{code}.json"
+        write_shard(os.path.join(DATA_DIR, rel), entries)
+        manifest.append({"file": rel, "region": region, "code": code, "count": len(entries)})
+    with open(os.path.join(DATA_DIR, "manifest.json"), "w", encoding="utf-8") as f:
+        json.dump({"total": len(data), "files": manifest}, f, indent=1)
+        f.write("\n")
 
     print(f"Total entries: {len(data)}")
     print(f"  US:     {len(buckets['us']):>7}")
@@ -298,8 +419,11 @@ def main():
     print(f"  World:  {len(buckets['world']):>7}")
     print(f"  Sum:    {sum(len(v) for v in buckets.values()):>7}")
     print(f"Unclassified (defaulted to World): {len(unclassified)}")
+    print(f"Shards written: {len(manifest)} files under {DATA_DIR}/ "
+          f"(largest {max(m['count'] for m in manifest)} entries)")
+    print(f"  US 'national' (no state in address): {len(shards.get(('us', 'national'), []))}")
+    print(f"  Europe 'other' (no country found):   {len(shards.get(('europe', 'other'), []))}")
 
-    import os
     os.makedirs("tools/logs", exist_ok=True)
     with open(REPORT_PATH, "w", encoding="utf-8") as f:
         f.write(f"Region split report — total {len(data)}\n")

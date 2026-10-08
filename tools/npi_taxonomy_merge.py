@@ -5,10 +5,7 @@ Dedupes by npi_number, by name, and by (address, type) so multiple staff enumera
 one clinic don't produce duplicate map pins, and caps each taxonomy's contribution at
 PER_TAXONOMY_CAP entries (should already be true post-prefilter, this is a safety net).
 
-After this: regenerate community_data.js using tools/regen_community_data_js.py's
-approach (`window.communityData = [...]`), NOT the root gen_community_data.js, which
-writes `const communityResourcesData = ...` — a variable index.html never reads, so the
-site silently falls back to its tiny hardcoded sample dataset if you use it by mistake.
+After this: run `python3 tools/split_by_region.py` to rewrite the data/ shards the app loads.
 Then commit + push and let GitHub Pages rebuild (check with:
   gh api repos/michaelcraft17/autism-community-resources/pages/builds/latest
 ).

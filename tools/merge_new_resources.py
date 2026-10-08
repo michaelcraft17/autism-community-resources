@@ -19,8 +19,8 @@ Dedup key precedence (fixed 2026-09-25 -- see HANDOFF.md "dedup bug"):
      and legal-form words) so the same org matches across sources without
      over-collapsing distinct ones.
 
-After running, regenerate community_data.js:
-    node gen_community_data.js
+After running, rewrite the data/ shards the app loads:
+    python3 tools/split_by_region.py
 """
 import glob
 import json
