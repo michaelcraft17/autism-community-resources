@@ -180,6 +180,15 @@ button{font-family:inherit;cursor:pointer;}
 @media (prefers-reduced-motion:reduce){:root{--dur-fast:0.01ms;--dur-base:0.01ms;}}
 /* Lively banner background: cerulean base (keeps white text >= 4.5:1) with sky-blue glows at the edges */
 .lively-bg{position:relative;overflow:hidden;--spark-blue:#bfe0ff;background:radial-gradient(760px 380px at 6% -12%,rgba(125,190,255,.55),transparent 70%),radial-gradient(620px 320px at 100% 115%,rgba(90,170,255,.45),transparent 70%),linear-gradient(135deg,#0b5cad 0%,#0a6cc4 55%,#1177d6 100%);}
+/* Light-grey full-width bands alternate with white sections to separate landing-page sections */
+.band{display:flow-root;background:var(--band,#f1f1f1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+body.dark{--band:#14302b;}
+body.contrast-dark .band,body.contrast-light .band{background:var(--bg);}
+/* Donate band: deep blue-to-indigo with a warm glow behind the heart, a fading dot grid and soft rings */
+.donate-bg{background:radial-gradient(480px 300px at 50% 16%,rgba(255,112,136,.30),transparent 72%),radial-gradient(720px 420px at 0% 0%,rgba(120,175,255,.45),transparent 70%),radial-gradient(680px 420px at 100% 100%,rgba(156,116,255,.42),transparent 70%),linear-gradient(160deg,#093b80 0%,#0b55ad 48%,#2b4fb9 100%);}
+.donate-bg::before,.donate-bg::after{content:'';position:absolute;pointer-events:none;z-index:0;}
+.donate-bg::before{inset:0;background:radial-gradient(rgba(255,255,255,.2) 1.5px,transparent 2px) 0 0/26px 26px;-webkit-mask-image:radial-gradient(ellipse at 50% 100%,#000 0,transparent 65%);mask-image:radial-gradient(ellipse at 50% 100%,#000 0,transparent 65%);}
+.donate-bg::after{left:-170px;bottom:-230px;width:520px;height:520px;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 46px,rgba(255,255,255,.11) 46px 48px);}
 .lively-bg>*{position:relative;z-index:1;}
 .lively-bg>.confetti{position:absolute;inset:0;z-index:0;pointer-events:none;}
 .confetti i{position:absolute;border-radius:50%;display:block;opacity:.9;}
@@ -288,22 +297,114 @@ button.hdr-search-icon:disabled{cursor:wait;opacity:.6;}
 .ra-guide::after{top:-12.8px;border-width:0 12.8px 12.8px 12.8px;border-bottom-color:#000;}
 .feat-btn{display:inline-flex;align-items:center;gap:6px;height:46px;padding:0 26px;background:var(--fb);color:var(--fbt);border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 0 rgba(0,0,0,.12);transition:background var(--dur-fast),transform var(--dur-fast);}
 .feat-btn:hover{background:var(--fbh);transform:translateY(-1px);}
+/* Featured resource cards: a grid of category-colored cards. Each tone sets --fa (accent / button fill), --fbt (text on accent),
+   --fbg (card), --fbd (border), --ft (title), --fbody (body text), --fl (label text on tinted chips). Contrast modes drop the tints. */
+.feat-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:22px;}
+@media (min-width:980px){.feat-grid.cols3{grid-template-columns:repeat(3,1fr);}}
+@media (min-width:760px){.feat-grid{grid-template-columns:1fr 1fr;}.feat-card.wide{grid-column:1 / -1;}}
+.feat-card{--fa:#1f6a5e;--fbt:#fff;--fbg:#e7f7f4;--fbd:#b9e6dd;--ft:#111315;--fbody:#33383b;--fl:#17564c;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:9px;padding:16px 18px 18px;background:var(--fbg);border:1px solid var(--fbd);border-top:6px solid var(--fa);border-radius:16px;box-shadow:0 2px 10px rgba(9,42,38,.06);transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out);}
+/* Each card gets its own decoration (all built from the card's accent --fa, drawn behind the content) */
+.feat-card::before,.feat-card::after{content:'';position:absolute;pointer-events:none;z-index:0;}
+.feat-card>*{position:relative;z-index:1;}
+/* teal: big soft circle top-right + small ring */
+.feat-tone-teal::before{top:-70px;right:-70px;width:220px;height:220px;border-radius:50%;background:var(--fa);opacity:.1;}
+.feat-tone-teal::after{bottom:26px;right:30px;width:46px;height:46px;border-radius:50%;border:5px solid var(--fa);opacity:.14;}
+/* amber: concentric rings, like a ripple, bottom-right */
+.feat-tone-amber::before{bottom:-110px;right:-110px;width:300px;height:300px;border-radius:50%;background:repeating-radial-gradient(circle,var(--fa) 0 10px,transparent 10px 30px);opacity:.14;}
+/* cardinal: diagonal stripe band across the top-right corner */
+.feat-tone-cardinal::before{top:0;right:0;width:260px;height:130px;background:repeating-linear-gradient(135deg,var(--fa) 0 8px,transparent 8px 22px);opacity:.13;-webkit-mask-image:linear-gradient(to left,#000,transparent);mask-image:linear-gradient(to left,#000,transparent);}
+/* blue: dot grid fading out from the top-right */
+.feat-tone-blue::before{top:0;right:0;width:230px;height:190px;background-image:radial-gradient(var(--fa) 2.5px,transparent 3px);background-size:20px 20px;opacity:.22;-webkit-mask-image:radial-gradient(circle at top right,#000,transparent 75%);mask-image:radial-gradient(circle at top right,#000,transparent 75%);}
+/* pink: two overlapping blobs rising from the bottom-right, plus a small dot */
+.feat-tone-pink::before{bottom:-60px;right:-30px;width:190px;height:190px;border-radius:46% 54% 60% 40% / 52% 40% 60% 48%;background:var(--fa);opacity:.1;}
+.feat-tone-pink::after{bottom:-20px;right:110px;width:110px;height:110px;border-radius:50%;background:var(--fa);opacity:.07;}
+/* violet: starburst rays fanning from the top-right corner */
+.feat-tone-violet::before{top:-90px;right:-90px;width:260px;height:260px;border-radius:50%;background:repeating-conic-gradient(var(--fa) 0 8deg,transparent 8deg 24deg);opacity:.13;}
+/* green: ring pattern fading in from the bottom-right */
+.feat-tone-green::before{bottom:0;right:0;width:200px;height:150px;background:radial-gradient(circle,transparent 5px,var(--fa) 5.5px 7px,transparent 7.5px) 0 0/26px 26px;opacity:.16;-webkit-mask-image:radial-gradient(circle at bottom right,#000,transparent 72%);mask-image:radial-gradient(circle at bottom right,#000,transparent 72%);}
+/* orange: bold corner triangle plus a smaller one */
+.feat-tone-orange::before{top:0;right:0;width:120px;height:120px;background:var(--fa);opacity:.13;clip-path:polygon(100% 0,0 0,100% 100%);}
+.feat-tone-orange::after{top:0;right:0;width:64px;height:64px;background:var(--fa);opacity:.14;clip-path:polygon(100% 0,0 0,100% 100%);}
+/* cyan: zigzag waves along the bottom edge */
+.feat-tone-cyan::before{left:0;right:0;bottom:0;height:34px;background:linear-gradient(135deg,var(--fa) 25%,transparent 25%) 0 0/22px 22px,linear-gradient(225deg,var(--fa) 25%,transparent 25%) 0 0/22px 22px;opacity:.14;}
+/* slate: square grid in the top-right */
+.feat-tone-slate::before{top:0;right:0;width:230px;height:170px;background-image:linear-gradient(var(--fa) 1.5px,transparent 1.5px),linear-gradient(90deg,var(--fa) 1.5px,transparent 1.5px);background-size:22px 22px;opacity:.2;-webkit-mask-image:radial-gradient(circle at top right,#000,transparent 75%);mask-image:radial-gradient(circle at top right,#000,transparent 75%);}
+/* olive: checkerboard squares fading from the bottom-right */
+.feat-tone-olive::before{bottom:0;right:0;width:200px;height:160px;background:repeating-conic-gradient(var(--fa) 0 25%,transparent 0 50%) 0 0/28px 28px;opacity:.14;-webkit-mask-image:radial-gradient(circle at bottom right,#000,transparent 72%);mask-image:radial-gradient(circle at bottom right,#000,transparent 72%);}
+/* brown: scalloped arches rising along the bottom */
+.feat-tone-brown::before{left:0;right:0;bottom:-14px;height:46px;background:radial-gradient(circle at 50% 100%,var(--fa) 0 17px,transparent 18px) 0 0/36px 46px repeat-x;opacity:.15;}
+.feat-card:hover,.feat-card:focus-within{transform:translateY(-3px);box-shadow:0 10px 26px rgba(9,42,38,.14);}
+.feat-card .feat-arrow{display:inline-block;transition:transform var(--dur-fast);}
+.feat-card:hover .feat-arrow,.feat-card:focus-within .feat-arrow{transform:translate(2px,-2px);}
+.feat-card .feat-btn:hover{filter:brightness(.92);}
+.feat-title{font-size:18px;}.feat-blurb{font-size:14px;}.feat-head{display:flex;align-items:center;gap:12px;}.feat-head>div{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:5px;}
+.feat-card.mini .feat-title{font-size:16px;}.feat-card.mini .feat-blurb{font-size:13.5px;}
+.feat-pill{display:inline-flex;align-items:center;gap:7px;padding:2px 9px;border-radius:999px;background:var(--fa);color:var(--fbt);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+.feat-chip{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--fa) 14%,var(--fbg));border:1px solid color-mix(in srgb,var(--fa) 40%,var(--fbg));color:var(--fl);font-size:12px;font-weight:700;}
+.feat-tone-violet{--fa:#5b3fb0;--fbt:#fff;--fbg:#f1ecfb;--fbd:#d6c9f3;--ft:#26134f;--fbody:#43326b;--fl:#5b3fb0;}
+.feat-tone-green{--fa:#2d7a2a;--fbt:#fff;--fbg:#ebf7e8;--fbd:#c3e6bd;--ft:#123a10;--fbody:#2f4e2d;--fl:#2d7a2a;}
+.feat-tone-orange{--fa:#bf4a0c;--fbt:#fff;--fbg:#fff0e6;--fbd:#f9cdb0;--ft:#4f1d03;--fbody:#6a3417;--fl:#a53f09;}
+.feat-tone-cyan{--fa:#0b6a86;--fbt:#fff;--fbg:#e4f6fb;--fbd:#b3e0ee;--ft:#08384a;--fbody:#1f4f60;--fl:#0b6a86;}
+.feat-tone-slate{--fa:#3f4f66;--fbt:#fff;--fbg:#edf0f5;--fbd:#ccd4e0;--ft:#1a2332;--fbody:#3b475a;--fl:#3f4f66;}
+.feat-tone-olive{--fa:#5f6f0a;--fbt:#fff;--fbg:#f3f6e0;--fbd:#d9e3a6;--ft:#2b3204;--fbody:#475010;--fl:#556307;}
+.feat-tone-brown{--fa:#7a4a2a;--fbt:#fff;--fbg:#f7eee7;--fbd:#e5cfbf;--ft:#3b2210;--fbody:#5a3d2a;--fl:#7a4a2a;}
+.feat-tone-teal{--fa:#1f6a5e;--fbt:#fff;--fbg:#e7f7f4;--fbd:#b9e6dd;--ft:#111315;--fbody:#33383b;--fl:#17564c;}
+.feat-tone-amber{--fa:#a15c00;--fbt:#fff;--fbg:#fff6e0;--fbd:#f6dc9c;--ft:#4a2e02;--fbody:#5c3f0e;--fl:#7a4700;}
+.feat-tone-cardinal{--fa:#b4232a;--fbt:#fff;--fbg:#fdf0f0;--fbd:#f3c7c7;--ft:#520c0c;--fbody:#5e2828;--fl:#8c1515;}
+.feat-tone-blue{--fa:#1c5490;--fbt:#fff;--fbg:#eaf2fb;--fbd:#c3d9f1;--ft:#113356;--fbody:#2c4a6e;--fl:#1c5490;}
+.feat-tone-pink{--fa:#a3186b;--fbt:#fff;--fbg:#fdeaf3;--fbd:#f5c4dc;--ft:#4d0b32;--fbody:#62264b;--fl:#a3186b;}
+body.dark .feat-tone-teal{--fa:#40bca8;--fbt:#062420;--fbg:#12403a;--fbd:#22665b;--ft:#e7f7f4;--fbody:#b6d8d1;--fl:#8fe0d0;}
+body.dark .feat-tone-amber{--fa:#ffc94d;--fbt:#3a2a05;--fbg:#3a2a05;--fbd:#6b4d0c;--ft:#fff6e0;--fbody:#f0d9a0;--fl:#ffc94d;}
+body.dark .feat-tone-cardinal{--fa:#f0868b;--fbt:#2a0a0c;--fbg:#3a1a1c;--fbd:#6a2a2e;--ft:#fdecec;--fbody:#e6bcbc;--fl:#f0a0a0;}
+body.dark .feat-tone-blue{--fa:#6aa8e3;--fbt:#0c2338;--fbg:#12314f;--fbd:#25527f;--ft:#eaf2fb;--fbody:#b9cfe6;--fl:#9fc7ef;}
+body.dark .feat-tone-pink{--fa:#f08cc0;--fbt:#2a0a1c;--fbg:#3d1530;--fbd:#6e2b57;--ft:#fdeaf3;--fbody:#e9bcd6;--fl:#f5a3cf;}
+body.dark .feat-tone-violet{--fa:#b9a4f5;--fbt:#1c0f40;--fbg:#2b2050;--fbd:#4a3a85;--ft:#f1ecfb;--fbody:#cfc4ee;--fl:#cdbdf8;}
+body.dark .feat-tone-green{--fa:#7fd276;--fbt:#0c2a0a;--fbg:#1c3a1a;--fbd:#35632f;--ft:#ebf7e8;--fbody:#bfdcb9;--fl:#9fe097;}
+body.dark .feat-tone-orange{--fa:#ff9a62;--fbt:#3a1503;--fbg:#44200c;--fbd:#7a4220;--ft:#fff0e6;--fbody:#f0cdb4;--fl:#ffb084;}
+body.dark .feat-tone-cyan{--fa:#5cc8e6;--fbt:#04303d;--fbg:#0f3a47;--fbd:#1f6477;--ft:#e4f6fb;--fbody:#b2dbe8;--fl:#8adcf2;}
+body.dark .feat-tone-slate{--fa:#a9b8d0;--fbt:#121a28;--fbg:#252e3d;--fbd:#435068;--ft:#edf0f5;--fbody:#c3ccdb;--fl:#c0cde2;}
+body.dark .feat-tone-olive{--fa:#c4d65a;--fbt:#232a03;--fbg:#343c10;--fbd:#5c6a1f;--ft:#f3f6e0;--fbody:#d3dba6;--fl:#d3e272;}
+body.dark .feat-tone-brown{--fa:#d8a47e;--fbt:#2e1a0c;--fbg:#3d2a1d;--fbd:#6b4a34;--ft:#f7eee7;--fbody:#dcc6b6;--fl:#e6b894;}
+body.contrast-dark .feat-card,body.contrast-light .feat-card{--fa:var(--text);--fbt:var(--bg);--fbg:var(--surface);--fbd:var(--text);--ft:var(--text);--fbody:var(--text);--fl:var(--text);border:2px solid var(--text);box-shadow:none;}
+body.contrast-dark .feat-card::before,body.contrast-light .feat-card::before,body.contrast-dark .feat-card::after,body.contrast-light .feat-card::after{display:none;}
+body.contrast-dark .feat-chip,body.contrast-light .feat-chip{background:transparent;border:1px solid var(--text);}
+body.reduce-motion .feat-card,body.reduce-motion .feat-card .feat-arrow{transition:none;}
+body.reduce-motion .feat-card:hover,body.reduce-motion .feat-card:focus-within,body.reduce-motion .feat-card:hover .feat-arrow,body.reduce-motion .feat-card:focus-within .feat-arrow{transform:none;}
+@media (prefers-reduced-motion:reduce){.feat-card,.feat-card .feat-arrow{transition:none;}.feat-card:hover,.feat-card:focus-within,.feat-card:hover .feat-arrow,.feat-card:focus-within .feat-arrow{transform:none;}}
+/* Summit carousel tiles: a colored picture tile on top, centered details below (compact take on a product-lineup row) */
+.feat-card.tile{flex:0 0 288px;scroll-snap-align:start;align-items:center;text-align:center;padding:12px 16px 18px;gap:8px;border-top-width:1px;}
+.feat-tile{align-self:stretch;height:112px;border-radius:12px;background:color-mix(in srgb,var(--fa) 16%,var(--fbg));display:flex;align-items:center;justify-content:center;position:relative;}
+.feat-tile .tile-logo{width:176px;height:80px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;position:relative;}
+.feat-tile .tile-logo.sq{width:80px;}
+.feat-tile .tile-logo img{width:100%;height:100%;object-fit:contain;}
+.feat-card.tile .feat-chips{justify-content:center;}
+.feat-card.tile .feat-title{font-size:17px;}
+.feat-card.tile .feat-blurb{font-size:13.5px;}
+@media (max-width:640px){.feat-card.tile{flex-basis:260px;}}
+body.contrast-dark .feat-tile,body.contrast-light .feat-tile{background:transparent;border:1px solid var(--text);}
 /* Scrolling project-card row: native touch/trackpad/wheel scroll + snap, with prev/next buttons for pointer users */
 .carousel-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 12px;scrollbar-width:thin;}
 .carousel-track::-webkit-scrollbar{height:7px;width:auto;}
 .carousel-track::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px;}
-.scroll-card{flex:0 0 260px;scroll-snap-align:start;}
-.carousel-nav{position:absolute;top:calc(50% - 34px);width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(9,42,38,.16);cursor:pointer;z-index:2;}
-.carousel-nav:hover{background:var(--brand-subtle);color:var(--brand);}
-.carousel-nav.left{left:-18px;}
-.carousel-nav.right{right:-18px;}
-@media (max-width:640px){.carousel-nav{display:none;}.scroll-card{flex-basis:220px;}}
-.hero2-search{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 2px 12px rgba(9,42,38,.08);overflow:hidden;}
-.hero2-field{flex:1 1 auto;display:flex;align-items:center;gap:10px;padding:0 16px;min-width:0;height:54px;border-bottom:1px solid var(--border);}
+.scroll-card{flex:0 0 340px;scroll-snap-align:start;}
+.carousel-nav-row{display:flex;justify-content:flex-end;gap:12px;margin-top:14px;}
+.carousel-nav{width:38px;height:38px;border-radius:50%;border:none;background:var(--divider);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,opacity .15s;}
+.carousel-nav:hover:not(:disabled){background:var(--border-strong);}
+.carousel-nav:disabled{opacity:.4;cursor:default;}
+body.contrast-dark .carousel-nav,body.contrast-light .carousel-nav{background:transparent;border:2px solid var(--text);}
+@media (max-width:640px){.carousel-nav-row{display:none;}.scroll-card{flex-basis:280px;}}
+.hero2-search{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(9,42,38,.12);overflow:hidden;padding:5px;gap:0;}
+.hero2-field{flex:1 1 auto;display:flex;align-items:center;gap:10px;padding:0 16px;min-width:0;height:48px;border-bottom:1px solid var(--border);}
 .hero2-field input{flex:1;min-width:0;height:100%;border:none;outline:none;font-size:15px;background:transparent;color:var(--text);font-family:var(--font-sans);}
 .hero2-field input::placeholder{color:var(--text-muted);}
 .hero2-icon{color:var(--text-muted);flex-shrink:0;display:flex;}
-.hero2-btn{flex:0 0 auto;height:54px;padding:0 30px;background:var(--brand);color:var(--brand-on);border:none;font-size:15px;font-weight:700;font-family:var(--font-sans);cursor:pointer;white-space:nowrap;}
+.hero2-btn{flex:0 0 auto;height:48px;min-width:48px;padding:0 20px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:var(--brand-on);border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--font-sans);cursor:pointer;white-space:nowrap;}
+.hero2-btn-label{display:inline;}
+.hero2-clear{flex:0 0 auto;width:32px;height:32px;border:none;background:transparent;color:var(--text-link);font-size:24px;line-height:1;cursor:pointer;border-radius:50%;}
+.hero2-clear:hover{background:var(--brand-subtle);}
+.hero2-clear{opacity:0;transition:opacity .15s;}
+.hero2-field:hover .hero2-clear,.hero2-field:focus-within .hero2-clear,.hero2-clear:focus-visible{opacity:1;}
+@media (hover:none){.hero2-clear{opacity:1;}}
 .hero2-btn:hover{background:var(--brand-hover);}
 .hero2-btn:disabled{opacity:.7;cursor:wait;}
 .hero2-chip{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px 0 10px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);color:var(--text-secondary);font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;}
@@ -316,7 +417,7 @@ body.contrast-dark .cat-art,body.contrast-light .cat-art{display:none;}
 body.contrast-dark .cat-line,body.contrast-light .cat-line{display:inline-flex;}
 .hero2-chip.on .cat-art .ln{stroke:#fff;}
 .hero2-chip.on .cat-art .tn{fill:rgba(255,255,255,.2);}
-@media (min-width:641px){.hero2-search{flex-direction:row;}.hero2-field{border-bottom:none;flex:1 1 0;}.hero2-field:first-child{border-right:1px solid var(--border);flex:0.7 1 0;}.hero2-field:last-child{flex:1.3 1 0;}}
+@media (min-width:641px){.hero2-search{flex-direction:row;}.hero2-field{border-bottom:none;flex:1 1 0;}.hero2-field:first-child{flex:1 1 0;}.hero2-field{padding:0 14px;}.hero2-field:nth-child(2){position:relative;flex:0 0 clamp(190px,26%,260px);}.hero2-field:nth-child(2)::before{content:'';position:absolute;left:0;top:50%;height:30px;margin-top:-15px;border-left:2px solid var(--border);}.hero2-btn{width:48px;padding:0;margin-left:4px;}.hero2-btn-label{display:none;}}
 
 /* ─── Hero decorations + scroll reveal ──────────────────────────
    All motion here is gated two ways: (1) prefers-reduced-motion:no-preference below,
@@ -508,6 +609,12 @@ async function reverseGeocode(lat, lng) {
   } catch (e) { return null; }
 }
 
+/* Remembered location: pre-fills the landing search like other directories do. Only a place name
+   is stored (never coordinates), and only in this browser. */
+const LAST_LOC_KEY = 'last_loc';
+const saveLastLoc = label => { if (label && label !== 'My Location') { try { localStorage.setItem(LAST_LOC_KEY, label); } catch (e) {} } };
+const readLastLoc = () => { try { return localStorage.getItem(LAST_LOC_KEY) || ''; } catch (e) { return ''; } };
+
 /* Debounced, cancel-safe Nominatim autocomplete-as-you-type. Nominatim's public API asks for
    at most ~1 request/sec; a single typing user's keystrokes are almost never that fast, so
    this only waits 150ms of silence before firing (down from 350ms, which felt sluggish) and
@@ -538,21 +645,33 @@ function useLocationSuggestions(query) {
    the landing hero's ".lively-bg" section clips its own confetti with overflow:hidden,
    which was silently cutting the dropdown off before this. Position is computed from the
    anchor input's real on-screen rect, so it tracks wherever that input actually is. */
-const SuggestDropdown = ({suggestions, activeIdx, setActiveIdx, onPick, anchorRef, dark}) => {
+const SuggestDropdown = ({suggestions, activeIdx, setActiveIdx, onPick, anchorRef, dark, onLocate}) => {
+  const off = onLocate ? 1 : 0;
   const [rect, setRect] = useState(null);
   useEffect(() => {
-    if (!suggestions.length || !anchorRef.current) { setRect(null); return; }
+    if ((!suggestions.length && !onLocate) || !anchorRef.current) { setRect(null); return; }
     const update = () => setRect(anchorRef.current.getBoundingClientRect());
     update();
     window.addEventListener('scroll', update, true);
     window.addEventListener('resize', update);
     return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update); };
-  }, [suggestions.length, anchorRef]);
+  }, [suggestions.length, anchorRef, onLocate]);
 
-  if (!suggestions.length || !rect) return null;
+  if ((!suggestions.length && !onLocate) || !rect) return null;
   return ReactDOM.createPortal(
     <div style={{position:'fixed',top:rect.bottom+6,left:rect.left,width:rect.width,background:dark?'#2a261e':'#fff',border:'1px solid var(--border)',borderRadius:10,boxShadow:'0 8px 28px rgba(0,0,0,.18)',zIndex:9999,overflow:'hidden',textAlign:'left'}}>
-      {suggestions.map((s,i) => {
+      {onLocate && (
+        <div role="option" aria-selected={activeIdx===0}
+          onMouseDown={e=>{e.preventDefault();onLocate();}}
+          onMouseEnter={()=>setActiveIdx(0)}
+          onMouseLeave={()=>setActiveIdx(-1)}
+          style={{display:'flex',alignItems:'center',gap:12,padding:'14px 16px',cursor:'pointer',color:'var(--text-link)',fontWeight:600,fontSize:15,
+            background: activeIdx===0 ? (dark?'rgba(255,255,255,.14)':'#dce8fb') : 'transparent'}}>
+          <span style={{display:'inline-flex',flexShrink:0}}><PinIcon s={20}/></span>Current Location
+        </div>
+      )}
+      {suggestions.map((s,k) => {
+        const i = k + off;
         const {main, secondary} = formatSuggestion(s);
         return (
           <div key={s.place_id}
@@ -626,7 +745,7 @@ const SlidersIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="
 const XIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const LocateIcon = ({s=18}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 const ChevronDownIcon = ({s=14}) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
-const MenuIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
+const MenuIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>;
 const HeartIcon = ({f}) => <svg width="18" height="18" viewBox="0 0 24 24" fill={f?'var(--cardinal-500)':'none'}><path d="M12 20s-7-4.6-7-9.5A4.5 4.5 0 0112 7a4.5 4.5 0 017 3.5C19 15.4 12 20 12 20z" stroke={f?'var(--cardinal-500)':'var(--stone-400)'} strokeWidth="2" strokeLinejoin="round"/></svg>;
 const ShareIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" strokeWidth="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" strokeWidth="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 
@@ -757,7 +876,7 @@ const CardThumb = ({fg, badge, badgeBg, badgeColor='var(--pin-on)', badgeSize=13
   </div>
 );
 
-const CARD_ROW = {display:'flex',gap:14,alignItems:'flex-start',borderBottom:'1px solid var(--divider)',padding:'10px 8px',transition:'background var(--dur-fast) var(--ease-out)'};
+const CARD_ROW = {display:'flex',gap:14,alignItems:'flex-start',borderBottom:'1px solid var(--divider)',padding:'10px 8px',transition:'background 60ms linear'};
 const CARD_TITLE = {margin:0,fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:17,letterSpacing:'-0.01em',lineHeight:1.15,color:'var(--text)'};
 const MAX_TAGS = 4;
 
@@ -779,7 +898,7 @@ async function shareResource(r) {
   return 'failed';
 }
 
-const ResourceCard = ({r, idx, fav, onFav, active, onHover, compact}) => {
+const ResourceCard = React.memo(({r, idx, fav, onFav, active, onHover, compact}) => {
   const t = TYPE_META[r.type] || TYPE_META.general_support;
   const [shareStatus, setShareStatus] = useState(null); // null | {ok, message, text?}
   const tags = r.services.slice(0, compact ? 2 : MAX_TAGS), extra = r.services.length - tags.length;
@@ -847,10 +966,10 @@ const ResourceCard = ({r, idx, fav, onFav, active, onHover, compact}) => {
       </div>
     </div>
   );
-};
+});
 
 /* ─── Grouped card — multiple providers sharing one address ──── */
-const GroupedResourceCard = ({group, idx, active, onHover}) => {
+const GroupedResourceCard = React.memo(({group, idx, active, onHover}) => {
   const first = group[0];
   const t = TYPE_META[first.type] || TYPE_META.general_support;
   const label = first.facility_name || `${group.length} Resources at This Address`;
@@ -895,7 +1014,7 @@ const GroupedResourceCard = ({group, idx, active, onHover}) => {
       </div>
     </div>
   );
-};
+});
 
 /* ─── Map styling — colors sampled from Yelp's map (exact canvas pixels, Palo Alto, Sept 2026) ───── */
 const MAP_STYLE = [
@@ -969,8 +1088,11 @@ function currentBrandColors() {
 }
 // SVG teardrop pin with a soft drop shadow and a small ground shadow at the tip, so it reads clearly on the busy map.
 // 48x52 viewBox: tip at (24,44), badge centre at (24,21.1), badge radius 16.5.
+const _symCache = {};   // icon objects are rebuilt (SVG string + URI encoding) on every hover otherwise
 const pinSymbol = (act) => {
   const { brand, accent } = currentBrandColors();
+  const ck = 'p|' + (act?1:0) + '|' + brand + '|' + accent;
+  if (_symCache[ck]) return _symCache[ck];
   const fill = act ? accent : brand;
   const k = act ? 1.15 : 0.9;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${48*k}" height="${52*k}" viewBox="0 0 48 52">`
@@ -979,28 +1101,30 @@ const pinSymbol = (act) => {
     + `<ellipse cx="24" cy="44.5" rx="10" ry="3.6" fill="#000" fill-opacity=".38" filter="url(#g)"/>`
     + `<path d="M24 44 L18 36.5 A16.5 16.5 0 1 1 30 36.5 Z" fill="${fill}" stroke="#fff" stroke-width="2.5" stroke-linejoin="round" filter="url(#d)"/>`
     + `</svg>`;
-  return {
+  return (_symCache[ck] = {
     url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
     scaledSize: new google.maps.Size(48*k, 52*k),
     anchor: new google.maps.Point(24*k, 44*k),
     labelOrigin: new google.maps.Point(24*k, 21.1*k),
-  };
+  });
 };
 // Cluster bubble: same red family as the pins but round, with a translucent halo, so it reads as "several pins here".
 const clusterSymbol = (act) => {
   const { brand, accent } = currentBrandColors();
+  const ck = 'c|' + (act?1:0) + '|' + brand + '|' + accent;
+  if (_symCache[ck]) return _symCache[ck];
   const fill = act ? accent : brand;
   const size = act ? 58 : 52;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 52 52">`
     + `<defs><filter id="d" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".4"/></filter></defs>`
     + `<circle cx="26" cy="26" r="24" fill="${fill}" fill-opacity=".28"/>`
     + `<circle cx="26" cy="26" r="17.5" fill="${fill}" stroke="#fff" stroke-width="3" filter="url(#d)"/></svg>`;
-  return {
+  return (_symCache[ck] = {
     url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
     scaledSize: new google.maps.Size(size, size),
     anchor: new google.maps.Point(size/2, size/2),
     labelOrigin: new google.maps.Point(size/2, size/2),
-  };
+  });
 };
 // Hovering a pin on the map brings that result into view in the list. The map stays fixed on screen (see MapPanel), so pins
 // never move under the cursor while the page scrolls.
@@ -1277,6 +1401,9 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
     c.clusters.forEach(cl => {
       if (!cl.marker || !cl.markers || cl.markers.length < 2) return;
       const isA = cl.markers.some(m => (m.__ids || []).includes(activeRef.current));
+      const ckey = contrastVal + '|' + currentBrandColors().brand;
+      if (cl.marker.__act === isA && cl.marker.__actC === ckey) return;   // unchanged: skip the costly icon/label updates
+      cl.marker.__act = isA; cl.marker.__actC = ckey;
       cl.marker.setIcon(clusterSymbol(isA));
       cl.marker.setZIndex(isA ? 999 : 500 + cl.markers.length);
       const lb = cl.marker.getLabel();
@@ -1311,11 +1438,13 @@ const MapPanel = ({groups, active, onHover, center, radiusMi, themeKey, contrast
     let panTarget = null;
     Object.values(markersRef.current).forEach(({marker, ids}) => {
       const isA = ids.includes(active);
+      if (isA) panTarget = marker.getPosition();
+      if (marker.__act === isA) return;   // only the previously- and newly-active pins need new icons
+      marker.__act = isA;
       marker.setIcon(pinSymbol(isA));
       marker.setZIndex(isA ? 999 : (marker.__z || 1));
       const lb = marker.getLabel();
       if (lb) marker.setLabel({ ...lb, color: isA ? activeLabelColor() : pinLabelColor(contrastRef.current) });
-      if (isA) panTarget = marker.getPosition();
     });
     if (panTarget && mobileFull && mapRef.current) {
       mapRef.current.panTo(panTarget);
@@ -2356,31 +2485,121 @@ const AccessibilityPanel = ({open, onClose, prefs, setPrefs, favs, readableList,
   );
 };
 
-/* ─── Featured resource card (colors come from the --tint-a / --tint-b tokens so it follows the color scheme and dark mode) ─── */
-const FeaturedResource = ({tone, name, blurb, href, cta, logo, logoAlt, badge, badgeAlt}) => {
-  const t = k => `var(--tint-${tone}-${k})`;
+/* ─── Featured resource cards: category-colored grid cards (tones live in the .feat-tone-* CSS classes so they follow dark and Contrast modes) ─── */
+const FEATURED_COMMUNITY = [
+  {tone:'teal', category:'Parent support', wide:true, name:'Friends of Children with Special Needs', href:'https://fcsn1996.org/', cta:'Visit FCSN',
+   logo:'assets/logo-friends-of-children.png', logoAlt:'Friends of Children with Special Needs logo',
+   facts:['Since 1996','Training & advocacy'],
+   blurb:'A center for parents and parent organizations to work together on behalf of children with disabilities and their families. Offering training, information, and advocacy support since 1996.'},
+];
+const FEATURED_SNP = [
+  {tone:'violet', category:'High school summer camp', logo:'assets/logo-snp-reach.png', logoAlt:'SNP-REACH logo', name:'SNP-REACH', href:'https://stanfordneurodiversityproject.stanford.edu/neurodiversity-education/snp-reach-2027', cta:'Visit SNP-REACH',
+   facts:['High school','Two weeks','Virtual & in-person'],
+   blurb:'The Stanford Neurodiversity Project\u2019s Research, Education, and Advocacy Camp for High Schoolers. It pairs lectures on neurodiversity with a small-group project built on design thinking, and campers can earn the chance to present at Stanford\u2019s neurodiversity conference.'},
+  {tone:'orange', category:'College-bound summer program', logo:'assets/logo-snp-bridge.png', logoAlt:'SNP-BRIDGE logo', name:'SNP-BRIDGE', href:'https://stanfordneurodiversityproject.stanford.edu/neurodiversity-education/snp-bridge-2027', cta:'Visit SNP-BRIDGE',
+   facts:['College-bound & college','Two weeks'],
+   blurb:'A two-week summer program for college-bound and college students to engage in neurodiversity advocacy. It builds on SNP-REACH, which teaches design thinking, universal design for learning, and many aspects of the neurodiversity field.'},
+  {tone:'pink', category:'K\u201312 advocacy network', name:'NNEA', href:'https://www.stanfordnnea.com/', cta:'Visit NNEA',
+   logo:'assets/logo-nnea.png', logoAlt:'NNEA logo',
+   facts:['Students','Parents','Educators'],
+   blurb:'A Stanford-affiliated network where K-12 students, parents, and educators share neurodiversity advocacy and strength-based approaches.'},
+];
+const FEATURED_REACH = [
+  {tone:'amber', category:'Inclusive play', name:'Magical Bridge Playground', href:'https://www.magicalbridge.org/', cta:'Visit Magical Bridge',
+   logo:'assets/logo-magical-bridge.png', logoAlt:'Magical Bridge logo',
+   facts:['All abilities','Sensory-rich'],
+   blurb:'Inclusive, all-abilities playgrounds where children of every ability play side-by-side. Sensory-rich, universally accessible equipment designed with input from families, therapists, and disability advocates.'},
+  {tone:'cyan', category:'Creative careers', logo:'assets/logo-danimation.png', logoAlt:'DaniMation logo', wideLogo:true, name:'DaniMation Entertainment', href:'https://danimation.us/', cta:'Visit DaniMation',
+   facts:['Ages 8 and up','Online classes','Taught by people on the spectrum'],
+   blurb:'Autism-positive animation classes and remote creative workshops taught by individuals on the spectrum. Founded by Dani Bowman, an animator and cast member of Love on the Spectrum, who spoke to SNP-REACH campers about animation in neurodiversity advocacy.'},
+  {tone:'olive', category:'Communication', logo:'assets/logo-communication4all.png', logoAlt:'Communication 4 ALL logo', name:'Communication 4 ALL', href:'https://communication4all.org/', cta:'Visit Communication 4 ALL',
+   facts:['Nonspeakers','Lessons in 3 languages'],
+   blurb:'A nonprofit with the mission to ensure all nonspeakers have access to communication and education, including C4A Academy lessons on learning to type in English, Spanish, and French. Its executive director, Elizabeth Bonker, spoke to SNP-REACH campers.'},
+];
+const FEATURED_SUMMIT = [
+  {tone:'cardinal', category:'Research & care', wide:true, name:'Stanford Center for Neurodiversity and Human Potential', href:'https://stanfordneurodiversityproject.stanford.edu/', cta:'Visit the Center',
+   logo:'assets/logo-stanford.png', logoAlt:'Stanford University logo',
+   facts:['Idea in 2017','Led by Lawrence K. Fung, MD, PhD'],
+   blurb:'Announced at the 2026 summit: the Stanford Neurodiversity Project, an idea in 2017, is now a center led by Lawrence K. Fung, MD, PhD.'},
+  {tone:'blue', category:'Employment', name:'Microsoft\u2019s Neurodiversity Hiring Program', href:'https://aka.ms/NDHPguide', cta:'Read Microsoft\u2019s guide',
+   logo:'assets/logo-microsoft.svg', logoAlt:'Microsoft logo',
+   badge:'assets/badge-microsoft-disability-hiring.png', badgeAlt:'Achievement in Accessibility: Disability Hiring Champion',
+   facts:['220,000 employees','13,000 managers'],
+   blurb:'Shared at the summit: executive function coaching for all 220,000 employees, plus training for recruiters and 13,000 managers.'},
+];
+const FEATURED_SUMMIT_MORE = [
+  {tone:'green', category:'Higher education', logo:'assets/logo-can.png', logoAlt:'College Autism Network logo', wideLogo:true, name:'College Autism Network', href:'https://www.collegeautismnetwork.org/', cta:'Visit CAN',
+   facts:['Day 1 panel','Postsecondary supports'],
+   blurb:'Evidence-guided efforts to improve access and outcomes for college students with autism. Executive director Lee Burdette Williams joined the higher-ed panel.'},
+  {tone:'slate', category:'Communication', logo:'assets/logo-iasc.png', logoAlt:'I-ASC logo', name:'I-ASC: International Association for Spelling as Communication', href:'https://i-asc.org/', cta:'Visit I-ASC',
+   facts:['Day 1 panel','Nonspeakers'],
+   blurb:'Resources and advocacy so nonspeakers can communicate reliably. Executive director Elizabeth Vosseller spoke on nonspeakers with dyspraxia.'},
+  {tone:'orange', category:'Family support', logo:'assets/logo-supernova.png', logoAlt:'Supernova Parenting Foundation logo', name:'Supernova Parenting Foundation', href:'https://supernovaparenting.org/', cta:'Visit Supernova Parenting',
+   facts:['Day 3 keynote','Families of color'],
+   blurb:'Education and support for families of color facing neurodivergence and disability. Founder Natasha Nelson gave a keynote.'},
+  {tone:'brown', category:'Arts', logo:'assets/logo-creative-growth.png', logoAlt:'Creative Growth Art Center logo', name:'Creative Growth Art Center', href:'https://creativegrowth.org/', cta:'Visit Creative Growth',
+   facts:['Day 1 arts panel','Oakland, CA'],
+   blurb:'Oakland nonprofit advancing artists with developmental disabilities in contemporary art. Its representatives joined the arts panel.'},
+  {tone:'violet', category:'Arts & making', logo:'assets/logo-autistry.png', logoAlt:'Autistry Studios logo', wideLogo:true, name:'Autistry Studios', href:'https://autistrystudios.com/', cta:'Visit Autistry Studios',
+   facts:['Day 2 keynote','Project-based'],
+   blurb:'Project-based programs for autistic people. Co-founder Janet Lawson keynoted on exploring identity through developmental therapy.'},
+  {tone:'teal', category:'Arts & connection', logo:'assets/logo-offscript.png', logoAlt:'Off Script Society logo', name:'Off Script Society', href:'https://offscriptsociety.com/', cta:'Visit Off Script Society',
+   facts:['Day 2 arts panel','Improvisation'],
+   blurb:'Improvisation experiences that build confidence and belonging. Its team presented on improv as a path to connection.'},
+  {tone:'pink', category:'Entrepreneurship', logo:'assets/logo-2gether.png', logoAlt:'2Gether-International logo', wideLogo:true, name:'2Gether-International', href:'https://2gether-international.org/', cta:'Visit 2Gether-International',
+   facts:['Day 1 panel','Disabled founders'],
+   blurb:'A startup accelerator for disabled founders. Founder Diego Mariscal joined the employment panel on AI in startups.'},
+  {tone:'cyan', category:'Mentoring', logo:'assets/logo-mam.jpg', logoAlt:'Mentoring Autistic Minds logo', wideLogo:true, name:'Mentoring Autistic Minds', href:'https://mentoringautisticminds.org/', cta:'Visit Mentoring Autistic Minds',
+   facts:['Day 3 panel','San Diego, CA'],
+   blurb:'San Diego nonprofit offering one-on-one and group mentoring for autistic people. Founder David Rivera joined the human-rights panel.'},
+];
+const FeaturedCard = ({tone, category, wide, mini, name, blurb, href, cta, logo, logoAlt, badge, badgeAlt, facts, mono, wideLogo, tile}) => {
+  const tw = wideLogo ? 120 : 48;
+  if (tile) return (
+  <article className={`feat-card feat-tone-${tone} tile scroll-card`} role="listitem">
+    <div className="feat-tile">
+      <div className="tile-logo">
+        <img src={logo} alt={logoAlt || `${name} logo`} loading="lazy"/>
+        {badge && <img src={badge} alt={badgeAlt || ''} title={badgeAlt} loading="lazy" style={{position:'absolute',bottom:-4,right:-4,width:28,height:28,borderRadius:'50%',objectFit:'cover',border:'2px solid var(--surface)',background:'#fff'}}/>}
+      </div>
+    </div>
+    <span className="feat-pill">{category}</span>
+    <h3 className="feat-title" style={{margin:0,fontWeight:700,lineHeight:1.25,color:'var(--ft)'}}>{name}</h3>
+    {facts && facts.length > 0 && <div className="feat-chips" style={{display:'flex',flexWrap:'wrap',gap:6}}>{facts.map(f => <span key={f} className="feat-chip">{f}</span>)}</div>}
+    <p className="feat-blurb" style={{margin:0,color:'var(--fbody)',lineHeight:1.5}}>{blurb}</p>
+    <div style={{marginTop:'auto',paddingTop:4}}>
+      <a className="feat-btn" href={href} target="_blank" rel="noopener noreferrer" style={{'--fb':'var(--fa)','--fbh':'var(--fa)',padding:'8px 14px',fontSize:14,minHeight:40}}>{cta} <span className="feat-arrow" aria-hidden="true">{'\u2197'}</span></a>
+    </div>
+  </article>
+  );
   return (
-    <div style={{marginTop:28,background:t('bg'),borderRadius:14,padding:'28px 32px',border:`1px solid ${t('border')}`,borderLeft:`8px solid ${t('btn')}`,display:'flex',alignItems:'center',gap:24,flexWrap:'wrap',boxShadow:'0 2px 10px rgba(9,42,38,.06)'}}>
+  <article className={`feat-card feat-tone-${tone}${wide ? ' wide' : ''}${mini ? ' mini' : ''}`}>
+    <div className="feat-head">
       {logo && (
-        <div style={{position:'relative',width:64,height:64,flexShrink:0}}>
-          <div style={{width:'100%',height:'100%',borderRadius:12,background:'#fff',border:'1px solid rgba(0,0,0,.08)',boxShadow:'0 1px 4px rgba(9,42,38,.12)',display:'flex',alignItems:'center',justifyContent:'center',padding:9,overflow:'hidden'}}>
+        <div style={{position:'relative',width:tw,height:48,flexShrink:0}}>
+          <div style={{width:'100%',height:'100%',borderRadius:10,background:'#fff',border:'1px solid rgba(0,0,0,.08)',display:'flex',alignItems:'center',justifyContent:'center',padding:6,overflow:'hidden'}}>
             <img src={logo} alt={logoAlt || `${name} logo`} loading="lazy" style={{width:'100%',height:'100%',objectFit:'contain'}}/>
           </div>
           {badge && (
             <img src={badge} alt={badgeAlt || ''} title={badgeAlt} loading="lazy"
-              style={{position:'absolute',bottom:-6,right:-6,width:30,height:30,borderRadius:'50%',objectFit:'cover',border:'2px solid var(--surface)',boxShadow:'0 1px 4px rgba(0,0,0,.3)',background:'#fff'}}/>
+              style={{position:'absolute',bottom:-5,right:-5,width:22,height:22,borderRadius:'50%',objectFit:'cover',border:'2px solid var(--surface)',background:'#fff'}}/>
           )}
         </div>
       )}
-      <div style={{flex:1,minWidth:220}}>
-        <div style={{display:'inline-flex',alignItems:'center',gap:8,fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:14,letterSpacing:'.08em',textTransform:'uppercase',color:t('label'),marginBottom:8}}>
-          <span aria-hidden="true" style={{width:9,height:9,borderRadius:'50%',background:t('btn')}}/>Featured Resource
-        </div>
-        <div style={{fontWeight:700,fontSize:22,color:t('title'),marginBottom:8}}>{name}</div>
-        <div style={{fontSize:16,color:t('body'),lineHeight:1.65}}>{blurb}</div>
+      {!logo && mono && <div aria-hidden="true" style={{width:48,height:48,flexShrink:0,borderRadius:10,background:'var(--fa)',color:'var(--fbt)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:24}}>{mono}</div>}
+      <div>
+        <span className="feat-pill">{category}</span>
+        <h3 className="feat-title" style={{margin:0,fontWeight:700,lineHeight:1.2,color:'var(--ft)'}}>{name}</h3>
       </div>
-      <a className="feat-btn" href={href} target="_blank" rel="noopener noreferrer" style={{'--fb':t('btn'),'--fbh':t('btn-hover'),'--fbt':t('btn-text')}}>{cta} ↗</a>
     </div>
+    {facts && facts.length > 0 && (
+      <div style={{display:'flex',flexWrap:'wrap',gap:6}}>{facts.map(f => <span key={f} className="feat-chip">{f}</span>)}</div>
+    )}
+    <p className="feat-blurb" style={{margin:0,color:'var(--fbody)',lineHeight:1.5}}>{blurb}</p>
+    <div style={{marginTop:'auto',paddingTop:2}}>
+      <a className="feat-btn" href={href} target="_blank" rel="noopener noreferrer" style={{'--fb':'var(--fa)','--fbh':'var(--fa)',padding:'8px 14px',fontSize:14,minHeight:40}}>{cta} <span className="feat-arrow" aria-hidden="true">{'\u2197'}</span></a>
+    </div>
+  </article>
   );
 };
 
@@ -2398,8 +2617,20 @@ const PROJECT_CARDS = [
 
 /* Horizontally scrolling row of cards with prev/next buttons (mouse wheel, trackpad swipe, and
    keyboard scrolling all work natively too since the track is a focusable, overflow:auto element). */
-const ScrollRow = ({children}) => {
+const ScrollRow = ({children, label='Project highlights', maxW=1100}) => {
+  const gutter = `max(24px, calc((100vw - ${maxW}px) / 2 + 24px))`;
   const trackRef = useRef(null);
+  const [edge, setEdge] = useState({start:true, end:false});
+  const sync = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setEdge({start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2});
+  };
+  useEffect(() => {
+    sync();
+    window.addEventListener('resize', sync);
+    return () => window.removeEventListener('resize', sync);
+  }, []);
   const scrollBy = dir => {
     const el = trackRef.current;
     if (!el) return;
@@ -2408,12 +2639,14 @@ const ScrollRow = ({children}) => {
     el.scrollBy({ left: dir * step, behavior: 'smooth' });
   };
   return (
-    <div style={{position:'relative'}}>
-      <button type="button" aria-label="Scroll left" onClick={()=>scrollBy(-1)} className="carousel-nav left"><ChevronIcon dir="left"/></button>
-      <div ref={trackRef} className="carousel-track" tabIndex={0} role="list" aria-label="Project highlights">
+    <div className="bleed-row" style={{position:'relative',width:'100vw',marginLeft:'calc(50% - 50vw)'}}>
+      <div ref={trackRef} onScroll={sync} className="carousel-track" style={{paddingLeft:gutter,paddingRight:gutter,scrollPaddingLeft:gutter}} tabIndex={0} role="list" aria-label={label}>
         {children}
       </div>
-      <button type="button" aria-label="Scroll right" onClick={()=>scrollBy(1)} className="carousel-nav right"><ChevronIcon dir="right"/></button>
+      <div className="carousel-nav-row" style={{paddingLeft:gutter,paddingRight:gutter}}>
+        <button type="button" aria-label="Scroll left" disabled={edge.start} onClick={()=>scrollBy(-1)} className="carousel-nav"><ChevronIcon dir="left"/></button>
+        <button type="button" aria-label="Scroll right" disabled={edge.end} onClick={()=>scrollBy(1)} className="carousel-nav"><ChevronIcon dir="right"/></button>
+      </div>
     </div>
   );
 };
@@ -2442,6 +2675,78 @@ const POPULAR_SEARCHES = [
   {label:'Healthcare', Icon:StethoscopeIcon, Art:HealthcareArt, tone:'medical'},
   {label:'Employment', Icon:BriefcaseIcon, Art:EmploymentArt, tone:'blue'},
 ];
+/* Search-box suggestions for "what are you looking for": the category names first, then common
+   service terms. Every entry is matched by the same substring search the results page runs on a
+   listing's name, services, description and type, so picking one never leads to a dead end. */
+const KEYWORD_SUGGESTIONS = [
+  ...POPULAR_SEARCHES.map(p => p.label),
+  'ABA therapy','Speech therapy','Occupational therapy','Behavioral therapy','Social skills groups','Early intervention',
+  'Autism diagnosis','Developmental pediatrics','Pediatric neurology','Child psychiatry','Special education','IEP support',
+  'Parent support group','Respite care','Adult services','Job training','Vocational training','Telehealth',
+  'Sensory-friendly','Advocacy','Summer camp','Day program','Residential','Sports','Art program','Mentoring',
+];
+/* Cute colorful icons for the keyword suggestions (same 24px outline-plus-tint style as the category art). */
+const KW_ART = {
+  'ABA therapy': <><path d="M9 4.5h3.2a2 2 0 1 1 3.6 0H19v4.2a2 2 0 1 0 0 3.6V19H5v-4.5a2 2 0 1 1 0-4V4.5z" fill="#e6dcf7" stroke="#7b55c7"/></>,
+  'Speech therapy': <><path d="M4 5h16a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 20 16h-8l-5 4v-4H4a1.5 1.5 0 0 1-1.5-1.5v-8A1.5 1.5 0 0 1 4 5z" fill="#d6ecfa" stroke="#2e7dd7"/><path d="M7.5 9.5h9M7.5 12.5h5" stroke="#2e7dd7"/></>,
+  'Occupational therapy': <><rect x="3" y="13" width="8" height="8" rx="1.5" fill="#fdebc8" stroke="#c77a12"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="#d9efd6" stroke="#2f8a47"/><rect x="8" y="3" width="8" height="8" rx="1.5" fill="#fde0d3" stroke="#e0623a"/></>,
+  'Behavioral therapy': <><circle cx="12" cy="12" r="9.5" fill="#fdf1c4" stroke="#d99a0b"/><circle cx="8.8" cy="10" r="1.1" fill="#7a5200" stroke="none"/><circle cx="15.2" cy="10" r="1.1" fill="#7a5200" stroke="none"/><path d="M7.8 14c1 2.2 2.4 3 4.2 3s3.2-.8 4.2-3" stroke="#7a5200" fill="none"/></>,
+  'Social skills groups': <><path d="M3 5h10a1.5 1.5 0 0 1 1.5 1.5v4A1.5 1.5 0 0 1 13 12H8l-3 2.5V12H3a1.5 1.5 0 0 1-1.5-1.5v-4A1.5 1.5 0 0 1 3 5z" fill="#d5f0ec" stroke="#1f9d8f"/><path d="M21 10h-5.5v5a1.5 1.5 0 0 0 1.5 1.5h2v2.5l3-2.5a1.5 1.5 0 0 0 .5-1.1V11.5A1.5 1.5 0 0 0 21 10z" fill="#fde0d3" stroke="#e0623a"/></>,
+  'Early intervention': <><path d="M12 21v-9" stroke="#2f8a47"/><path d="M12 13c0-4 2.5-6.5 7-6.5 0 4-2.5 6.5-7 6.5z" fill="#d9efd6" stroke="#2f8a47"/><path d="M12 15c0-3-2-5-6-5 0 3 2 5 6 5z" fill="#eaf7d2" stroke="#6aa11d"/></>,
+  'Autism diagnosis': <><rect x="4.5" y="4" width="15" height="17" rx="2.2" fill="#dde9f9" stroke="#1f63b8"/><rect x="9" y="2.5" width="6" height="3.5" rx="1.2" fill="#fff" stroke="#1f63b8"/><path d="M8.5 13.5l2.4 2.4 4.6-5" stroke="#35a853" strokeWidth="2.2" fill="none"/></>,
+  'Developmental pediatrics': <><circle cx="6.5" cy="6.5" r="2.5" fill="#f6dcc0" stroke="#b9743a"/><circle cx="17.5" cy="6.5" r="2.5" fill="#f6dcc0" stroke="#b9743a"/><circle cx="12" cy="13" r="7.5" fill="#f6dcc0" stroke="#b9743a"/><circle cx="9.3" cy="11.8" r=".9" fill="#5a3412" stroke="none"/><circle cx="14.7" cy="11.8" r=".9" fill="#5a3412" stroke="none"/><ellipse cx="12" cy="15.2" rx="2.2" ry="1.6" fill="#fff" stroke="#b9743a"/></>,
+  'Pediatric neurology': <><path d="M12 4.5C9 2.5 5 4 5 7.5c-2 .8-2.5 4 0 5-.5 2.6 1.7 4.5 4 4 .5 1.8 2 2.8 3 2.8V4.5z" fill="#f9d6e6" stroke="#c63d82"/><path d="M12 4.5c3-2 7-.5 7 3 2 .8 2.5 4 0 5 .5 2.6-1.7 4.5-4 4-.5 1.8-2 2.8-3 2.8" fill="#fbe3ee" stroke="#c63d82"/></>,
+  'Child psychiatry': <><path d="M12 2.5a7.5 7.5 0 0 0-4.6 13.4c.4.4.6.9.6 1.4V19h8v-1.7c0-.5.2-1 .6-1.4A7.5 7.5 0 0 0 12 2.5z" fill="#fdf1c4" stroke="#d99a0b"/><path d="M10 21.5h4" stroke="#d99a0b"/><path d="M12 12.8s-3-1.8-3-4a1.7 1.7 0 0 1 3-1 1.7 1.7 0 0 1 3 1c0 2.2-3 4-3 4z" fill="#e5484d" stroke="#e5484d"/></>,
+  'Special education': <><path d="M12 6.5C10 5 6.5 4.5 3 5v13c3.5-.5 7 0 9 1.5 2-1.5 5.5-2 9-1.5V5c-3.500-.5-7 0-9 1.500z" fill="#d9efd6" stroke="#2f8a47"/><path d="M12 6.5v13" stroke="#2f8a47"/><path d="M15.500 9.500l.8 1.600 1.700.3-1.300 1.200.3 1.700-1.500-.9-1.500.9.3-1.700-1.300-1.200 1.700-.3z" fill="#f2a51f" stroke="none"/></>,
+  'IEP support': <><path d="M6 3h8l5 5v13H6z" fill="#dde9f9" stroke="#1f63b8"/><path d="M14 3v5h5" stroke="#1f63b8" fill="none"/><path d="M9 13h7M9 16.500h4" stroke="#1f63b8"/><path d="M16.500 12.500l3 3-4.500 4.500-3.200.4.400-3.200z" fill="#f2a51f" stroke="#c77a12"/></>,
+  'Parent support group': <><circle cx="8" cy="6.500" r="2.800" fill="#fde0d3" stroke="#e0623a"/><path d="M2.500 20.500c0-4 2.400-6.500 5.500-6.500s5.500 2.500 5.500 6.500z" fill="#fde0d3" stroke="#e0623a"/><circle cx="17.500" cy="12" r="2.100" fill="#d5f0ec" stroke="#1f9d8f"/><path d="M14.500 20.500c0-2.800 1.300-4.600 3-4.600s3 1.800 3 4.600z" fill="#d5f0ec" stroke="#1f9d8f"/></>,
+  'Respite care': <><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z" fill="#fdebc8" stroke="#c77a12"/><path d="M16 10.500h1.500a2.500 2.500 0 0 1 0 5H16" stroke="#c77a12" fill="none"/><path d="M7.500 3.500c-1 1.200 1 2.200 0 3.500M11.500 3.500c-1 1.200 1 2.200 0 3.500" stroke="#c77a12" fill="none"/></>,
+  'Adult services': <><rect x="2.500" y="5" width="19" height="14" rx="2.500" fill="#dde9f9" stroke="#1f63b8"/><circle cx="8.500" cy="11" r="2.100" fill="#fff" stroke="#1f63b8"/><path d="M5 16.500c.4-1.800 1.800-2.700 3.500-2.700s3.100.9 3.500 2.700" stroke="#1f63b8" fill="none"/><path d="M14.500 10h4.500M14.500 13.500h3" stroke="#1f63b8"/></>,
+  'Job training': <><path d="M4 16a8 8 0 0 1 16 0z" fill="#fdebc8" stroke="#c77a12"/><path d="M2.500 16h19v2.500h-19z" fill="#f2a51f" stroke="#c77a12"/><path d="M12 8v4" stroke="#c77a12"/></>,
+  'Vocational training': <><path d="M14.700 6.300a4 4 0 0 0-5.400 5.100L3.500 17.200a1.800 1.800 0 0 0 2.600 2.600l5.800-5.800a4 4 0 0 0 5.100-5.400l-2.600 2.600-2.100-.5-.5-2.100z" fill="#d6ecfa" stroke="#2e7dd7"/></>,
+  'Telehealth': <><rect x="2.500" y="4" width="19" height="13" rx="2" fill="#d5f0ec" stroke="#1f9d8f"/><path d="M8 21h8M12 17v4" stroke="#1f9d8f"/><path d="M12 7.500v6M9 10.500h6" stroke="#e5484d" strokeWidth="2.200"/></>,
+  'Sensory-friendly': <><path d="M4 15v-3a8 8 0 0 1 16 0v3" stroke="#7b55c7" fill="none"/><rect x="2.500" y="13" width="4.500" height="7" rx="2" fill="#e6dcf7" stroke="#7b55c7"/><rect x="17" y="13" width="4.500" height="7" rx="2" fill="#e6dcf7" stroke="#7b55c7"/></>,
+  'Advocacy': <><path d="M3 10v4h3.500l8 4.500v-13l-8 4.500z" fill="#fde0d3" stroke="#e0623a"/><path d="M7 14l1.200 5.500h2.500L9.500 15" fill="#fff" stroke="#e0623a"/><path d="M18.500 9.500c1.300 1.500 1.300 3.500 0 5" stroke="#f2a51f" fill="none"/><path d="M21 7.500c2.200 2.700 2.200 6.300 0 9" stroke="#f2a51f" fill="none"/></>,
+  'Summer camp': <><path d="M12 3l9.500 17H2.500z" fill="#fdebc8" stroke="#c77a12"/><path d="M12 20l-3.200-6.200h6.400z" fill="#c77a12" stroke="#c77a12"/><path d="M12 3v3" stroke="#c77a12"/></>,
+  'Day program': <><circle cx="12" cy="12" r="4.500" fill="#fdf1c4" stroke="#d99a0b"/><path d="M12 2.500v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300l1.800 1.800M16.900 16.900l1.800 1.800M5.300 18.700l1.800-1.800M16.900 7.100l1.800-1.800" stroke="#f2a51f"/></>,
+  'Residential': <><path d="M3 11.500L12 3.500l9 8" stroke="#c0564b" fill="none"/><path d="M5.500 10v10.500h13V10L12 4.500z" fill="#fde0d3" stroke="#c0564b"/><rect x="10" y="14" width="4" height="6.500" rx=".8" fill="#f2a51f" stroke="#c77a12"/></>,
+  'Sports': <><circle cx="12" cy="12" r="9.500" fill="#fdebc8" stroke="#c77a12"/><path d="M12 2.500v19M2.500 12h19" stroke="#c77a12"/><path d="M5.200 5.200c3 3 3 10.600 0 13.600M18.800 5.200c-3 3-3 10.600 0 13.600" stroke="#c77a12" fill="none"/></>,
+  'Art program': <><path d="M20.500 3.500c-4 .5-8 4-9.500 8l2.500 2.500c4-1.500 7.500-5.500 8-9.500a.5.500 0 0 0-1-.0z" fill="#f9d6e6" stroke="#c63d82"/><path d="M10.500 13.500c-2.500-.5-4.500 1-4.500 3.500 0 1.500-.8 2.500-2 3 3.500 1.200 8-.5 8-4.500z" fill="#d6ecfa" stroke="#2e7dd7"/></>,
+  'Mentoring': <><circle cx="8" cy="7" r="3" fill="#fde0d3" stroke="#e0623a"/><path d="M2.500 20c0-4 2.400-6.500 5.500-6.500s5.500 2.500 5.500 6.500z" fill="#fde0d3" stroke="#e0623a"/><path d="M17.500 3.500l1.100 2.300 2.500.4-1.800 1.800.4 2.500-2.200-1.200-2.200 1.200.4-2.500-1.800-1.800 2.500-.4z" fill="#f2a51f" stroke="#c77a12"/></>,
+};
+const KeywordIcon = ({term, s=22}) => {
+  const cat = POPULAR_SEARCHES.find(p => p.label === term);
+  if (cat) { const A = cat.Art; return <A s={s}/>; }
+  const art = KW_ART[term];
+  if (!art) return <SearchIcon s={15}/>;
+  return <svg width={s} height={s} viewBox="0 0 24 24" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{art}</svg>;
+};
+const KeywordDropdown = ({items, activeIdx, setActiveIdx, onPick, anchorRef}) => {
+  const [rect, setRect] = useState(null);
+  useEffect(() => {
+    if (!items.length || !anchorRef.current) { setRect(null); return; }
+    const update = () => setRect(anchorRef.current.getBoundingClientRect());
+    update();
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update); };
+  }, [items.length, anchorRef]);
+  if (!items.length || !rect) return null;
+  return ReactDOM.createPortal(
+    <div role="listbox" aria-label="Search suggestions" style={{position:'fixed',top:rect.bottom+8,left:rect.left,width:Math.max(rect.width,260),background:'var(--surface)',border:'1px solid var(--border)',borderRadius:10,boxShadow:'0 8px 28px rgba(0,0,0,.18)',zIndex:9999,overflow:'hidden',textAlign:'left',padding:'6px 0'}}>
+      {items.map((t,i) => (
+        <div key={t} role="option" aria-selected={i===activeIdx}
+          onMouseDown={e=>{e.preventDefault();onPick(t);}}
+          onMouseEnter={()=>setActiveIdx(i)}
+          style={{display:'flex',alignItems:'center',gap:12,padding:'10px 16px',cursor:'pointer',fontSize:15,color:'var(--text)',
+            background: i===activeIdx ? 'var(--brand-subtle)' : 'transparent'}}>
+          <span style={{display:'inline-flex',flexShrink:0,width:22,justifyContent:'center'}}><KeywordIcon term={t}/></span>{t}
+        </div>
+      ))}
+    </div>,
+    document.body
+  );
+};
 const TRUST_STEPS = [
   {label:'Official source', Icon:LandmarkIcon},
   {label:'Reviewed', Icon:SearchCheckIcon},
@@ -2473,7 +2778,41 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error, reduceMot
   const suggestions = useLocationSuggestions(open ? q : '');
   useEffect(() => { setActiveIdx(-1); }, [suggestions]);
   const anchorRef = useRef(null);
+  const kwFieldRef = useRef(null);
+  const [kwOpen, setKwOpen] = useState(false);
+  const [kwIdx, setKwIdx] = useState(-1);
+  const kwItems = useMemo(() => {
+    const t = kw.trim().toLowerCase();
+    if (!t) return KEYWORD_SUGGESTIONS.slice(0, POPULAR_SEARCHES.length);
+    const starts = [], has = [];
+    for (const k of KEYWORD_SUGGESTIONS) {
+      const l = k.toLowerCase();
+      if (l === t) continue;
+      if (l.startsWith(t)) starts.push(k); else if (l.includes(t)) has.push(k);
+    }
+    return [...starts, ...has].slice(0, 8);
+  }, [kw]);
+  useEffect(() => { setKwIdx(-1); }, [kw]);
+  const pickKw = (t) => { setKw(t); setKwOpen(false); setKwIdx(-1); };
   const pick = (s) => { setOpen(false); setLocHint(''); onSelectSuggestion(s, kw); };
+  useEffect(() => {
+    let dead = false;
+    const last = readLastLoc();
+    if (last) setQ(cur => cur || last);
+    // If the visitor already allowed location for this site, refresh the city silently (no prompt).
+    // Otherwise nothing is requested until they choose "Current Location".
+    if (navigator.permissions && navigator.permissions.query && navigator.geolocation) {
+      navigator.permissions.query({name:'geolocation'}).then(st => {
+        if (st.state !== 'granted' || dead) return;
+        navigator.geolocation.getCurrentPosition(async pos => {
+          const city = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+          if (city && !dead) { setQ(cur => (!cur || cur === last) ? city : cur); saveLastLoc(city); }
+        }, () => {}, {timeout:8000, maximumAge:600000});
+      }).catch(() => {});
+    }
+    return () => { dead = true; };
+  }, []);
+  const useHere = () => { setOpen(false); setLocHint(''); onLocate(kw); };
   const [heroRef, heroInView] = useRevealOnce(reduceMotion);
   const [trustRef, trustInView] = useRevealOnce(reduceMotion);
   return (
@@ -2492,38 +2831,45 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error, reduceMot
 
           <div ref={anchorRef} style={{position:'relative',textAlign:'left'}}>
             <form onSubmit={e=>{e.preventDefault();setOpen(false);if(q.trim()){setLocHint('');onSearch(q, kw);}else{setLocHint('Enter a city or ZIP code to search near you.');}}} className="hero2-search">
-              <div className="hero2-field">
-                <span className="hero2-icon"><SearchIcon s={17}/></span>
-                <input value={kw} onChange={e=>setKw(e.target.value)} placeholder="Therapy, education, support groups…" aria-label="What are you looking for?" autoComplete="off"/>
+              <div className="hero2-field" ref={kwFieldRef}>
+                <input value={kw} onChange={e=>{setKw(e.target.value);setKwOpen(true);}}
+                  onFocus={()=>setKwOpen(true)} onBlur={()=>setKwOpen(false)}
+                  onKeyDown={e=>{
+                    if (e.key === 'ArrowDown') { e.preventDefault(); setKwOpen(true); setKwIdx(i => Math.min(i+1, kwItems.length-1)); }
+                    else if (e.key === 'ArrowUp') { e.preventDefault(); setKwIdx(i => Math.max(i-1, -1)); }
+                    else if (e.key === 'Escape') { setKwOpen(false); }
+                    else if (e.key === 'Enter' && kwOpen && kwIdx >= 0 && kwItems[kwIdx]) { e.preventDefault(); pickKw(kwItems[kwIdx]); }
+                  }}
+                  role="combobox" aria-expanded={kwOpen && kwItems.length > 0} aria-autocomplete="list"
+                  placeholder="Therapy, education, support groups…" aria-label="What are you looking for?" autoComplete="off"/>
               </div>
+              {kwOpen && <KeywordDropdown items={kwItems} activeIdx={kwIdx} setActiveIdx={setKwIdx} onPick={pickKw} anchorRef={kwFieldRef}/>}
               <div className="hero2-field">
-                <span className="hero2-icon"><PinIcon s={17}/></span>
                 <input
                   value={q}
                   onChange={e=>{ setQ(e.target.value); setOpen(true); if (locHint) setLocHint(''); }}
-                  onFocus={()=>setOpen(true)}
+                  onFocus={e=>{setOpen(true);e.target.select();}}
                   onBlur={()=>setOpen(false)}
                   onKeyDown={e=>{
-                    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i+1, suggestions.length-1)); }
+                    if (e.key === 'ArrowDown') { e.preventDefault(); setOpen(true); setActiveIdx(i => Math.min(i+1, suggestions.length)); }
                     else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i-1, -1)); }
                     else if (e.key === 'Escape') { setOpen(false); }
-                    else if (e.key === 'Enter' && open && activeIdx >= 0 && suggestions[activeIdx]) { e.preventDefault(); pick(suggestions[activeIdx]); }
+                    else if (e.key === 'Enter' && open && activeIdx === 0) { e.preventDefault(); useHere(); }
+                    else if (e.key === 'Enter' && open && activeIdx > 0 && suggestions[activeIdx-1]) { e.preventDefault(); pick(suggestions[activeIdx-1]); }
                   }}
                   placeholder="City or ZIP code"
                   aria-label="City or ZIP code"
                   autoComplete="off"
                 />
+                {q && <button type="button" className="hero2-clear" aria-label="Clear location" onMouseDown={e=>{e.preventDefault();setQ('');setOpen(true);}}>&times;</button>}
               </div>
-              <button type="submit" className="hero2-btn" disabled={busy}>{busy?'Searching…':'Search Resources'}</button>
+              <button type="submit" className="hero2-btn" disabled={busy} aria-label="Search"><SearchIcon s={20}/><span className="hero2-btn-label">{busy?'Searching…':'Search'}</span></button>
             </form>
-            {open && <SuggestDropdown suggestions={suggestions} activeIdx={activeIdx} setActiveIdx={setActiveIdx} onPick={pick} anchorRef={anchorRef}/>}
+            {open && <SuggestDropdown suggestions={suggestions} activeIdx={activeIdx} setActiveIdx={setActiveIdx} onPick={pick} anchorRef={anchorRef} onLocate={useHere}/>}
           </div>
 
           <div style={{textAlign:'center'}}>
-            <button onClick={()=>{setLocHint('');onLocate(kw);}} disabled={busy} style={{marginTop:14,background:'transparent',border:'none',padding:0,color:'var(--text-link)',fontSize:14,fontWeight:600,cursor:busy?'wait':'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
-              <PinIcon s={14}/> Use my current location
-            </button>
-            {locHint && <div style={{marginTop:10,color:'var(--text-secondary)',fontSize:14}}>{locHint}</div>}
+            {locHint && <div style={{marginTop:14,color:'var(--text-secondary)',fontSize:14}}>{locHint}</div>}
             {error && <div style={{marginTop:10,color:'var(--accent-text)',fontSize:14}}>{error}</div>}
 
             <div style={{marginTop:22,display:'flex',alignItems:'center',justifyContent:'center',gap:6,flexWrap:'wrap'}}>
@@ -2536,10 +2882,10 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error, reduceMot
           </div>
         </div>
       </section>
-      <section ref={trustRef} className={`fade-up${trustInView ? ' in-view' : ''}`} style={{maxWidth:900,margin:'56px auto',padding:'0 24px',textAlign:'center'}}>
+      <section ref={trustRef} className={`fade-up${trustInView ? ' in-view' : ''}`} style={{maxWidth:980,margin:'56px auto',padding:'0 24px',textAlign:'center'}}>
         <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--text)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Our verification standard</span>
         <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:28,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 14px',textWrap:'balance'}}>Every listing comes from a verified source</h2>
-        <p style={{fontSize:15,color:'var(--text-muted)',margin:'0 auto 32px',maxWidth:'62ch',lineHeight:1.7,textWrap:'pretty'}}>
+        <p style={{fontSize:17,color:'var(--text-secondary)',margin:'0 auto 32px',maxWidth:'78ch',lineHeight:1.75,textWrap:'pretty'}}>
           On open mapping platforms, anyone can add or edit a listing. This directory does not
           allow that. Each resource is drawn from an official source, such as a government
           registry, a national health or disability database, or an organization's published
@@ -2559,69 +2905,86 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error, reduceMot
         <div style={{display:'flex',gap:24,justifyContent:'center',flexWrap:'wrap'}}>
           {TRUST_STATS.map(s => <StatBlock key={s.label} {...s} start={trustInView} reduceMotion={reduceMotion}/>)}
         </div>
-        <p style={{fontSize:13,color:'var(--text-muted)',margin:'24px auto 0',maxWidth:'62ch',lineHeight:1.6,textWrap:'pretty'}}>
-          *96.5% of listings come directly from official government and regulatory registries
-          (such as the US NPI Registry, the UK Care Quality Commission, and France's national
-          association registry). The remaining 3.5% come from national nonprofit chapter
-          directories, such as Best Buddies, The Arc, and Special Olympics, which are each
-          organization's own published records.
+        <p style={{fontSize:12,color:'var(--text-muted)',margin:'20px auto 0',maxWidth:'96ch',lineHeight:1.5,textWrap:'pretty'}}>
+          *96.5% of listings come from official registries, including the US NPI Registry, the UK Care
+          Quality Commission, and France&rsquo;s national association registry. The other 3.5% come from the
+          published directories of national nonprofits such as Best Buddies, The Arc, and Special Olympics.
         </p>
       </section>
-      <section style={{maxWidth:1500,margin:'56px auto',padding:'0 24px'}}>
+      <div style={{overflowX:'clip'}}><section style={{maxWidth:1500,margin:'56px auto',padding:'0 24px'}}>
         <div style={{textAlign:'center',marginBottom:36}}>
           <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--text)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Cal Poly Pomona · CS Department</span>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:32,letterSpacing:'.01em',color:'var(--text)',margin:0}}>AI-POWERED RESEARCH PROJECT</h2>
         </div>
-        <ScrollRow>
+        <ScrollRow maxW={1500}>
           {PROJECT_CARDS.map(([h,b,img],i)=>(
             <div key={i} className="scroll-card" style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,overflow:'hidden',boxShadow:'0 1px 3px rgba(42,38,30,.06)'}}>
-              <img src={img} alt={h} loading="lazy" style={{width:'100%',height:170,objectFit:'cover',display:'block'}}/>
-              <div style={{padding:'20px'}}>
+              <img src={img} alt={h} loading="lazy" style={{width:'100%',height:220,objectFit:'cover',display:'block'}}/>
+              <div style={{padding:'24px'}}>
                 <div style={{width:36,height:4,background:'var(--cardinal-500)',borderRadius:999,marginBottom:14}}/>
-                <h3 style={{margin:'0 0 8px',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:17,letterSpacing:'.01em',color:'var(--text)'}}>{h}</h3>
-                <p style={{margin:0,fontSize:13,color:'var(--text-muted)',lineHeight:1.55}}>{b}</p>
+                <h3 style={{margin:'0 0 8px',fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:21,letterSpacing:'.01em',color:'var(--text)'}}>{h}</h3>
+                <p style={{margin:0,fontSize:15,color:'var(--text-muted)',lineHeight:1.6}}>{b}</p>
               </div>
             </div>
           ))}
         </ScrollRow>
-      </section>
-      <section style={{maxWidth:1100,margin:'56px auto 72px',padding:'0 24px'}}>
+      </section></div>
+      <div className="band">
+        <div style={{maxWidth:1100,margin:'0 auto',padding:'56px 24px 48px'}}>
         <div style={{textAlign:'center',marginBottom:28}}>
           <span style={{display:'inline-block',background:'var(--brand-subtle)',color:'var(--text)',borderRadius:999,padding:'5px 16px',fontSize:12,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:14}}>Learn More</span>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:32,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 8px'}}>AUTISM INFO</h2>
           <p style={{fontSize:15,color:'var(--text-muted)',margin:'0 auto',maxWidth:'60ch',lineHeight:1.6}}>A short introduction to autism — what it is and how to support autistic individuals in your community.</p>
         </div>
-        <div style={{position:'relative',width:'100%',paddingBottom:'56.25%',height:0,borderRadius:14,overflow:'hidden',boxShadow:'0 8px 30px rgba(42,38,30,.14)',border:'1px solid var(--border)'}}>
+        <div style={{maxWidth:600,margin:'0 auto'}}><div style={{position:'relative',width:'100%',paddingBottom:'56.25%',height:0,borderRadius:14,overflow:'hidden',boxShadow:'0 8px 30px rgba(42,38,30,.14)',border:'1px solid var(--border)'}}>
           <iframe src="https://www.youtube.com/embed/N6Xw5M0fzRo" title="Autism Info" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none'}}/>
-        </div>
-        <div style={{textAlign:'center',marginTop:18}}>
+        </div></div>
+        <div style={{textAlign:'center',marginTop:12}}>
           <a href="https://www.youtube.com/watch?v=N6Xw5M0fzRo" target="_blank" rel="noopener noreferrer" style={{display:'inline-flex',alignItems:'center',gap:8,color:'var(--text-link)',textDecoration:'underline',fontWeight:600,fontSize:14}}>Watch on YouTube ↗</a>
         </div>
-        <FeaturedResource tone="a" name="Friends of Children with Special Needs" href="https://fcsn1996.org/" cta="Visit FCSN"
-          logo="assets/logo-friends-of-children.png" logoAlt="Friends of Children with Special Needs logo"
-          blurb="A center for parents and parent organizations to work together on behalf of children with disabilities and their families. Offering training, information, and advocacy support since 1996."/>
-        <FeaturedResource tone="b" name="Magical Bridge Playground" href="https://www.magicalbridge.org/" cta="Visit Magical Bridge"
-          logo="assets/logo-magical-bridge.png" logoAlt="Magical Bridge logo"
-          blurb="Inclusive, all-abilities playgrounds where children of every ability play side-by-side. Sensory-rich, universally accessible equipment designed with input from families, therapists, and disability advocates."/>
+        <div className="feat-grid">{FEATURED_COMMUNITY.map(f => <FeaturedCard key={f.name} {...f}/>)}</div>
+        </div>
+      </div>
+      <div>
+        <div style={{maxWidth:1100,margin:'0 auto',padding:'16px 24px 48px'}}>
+        <div style={{textAlign:'center',margin:'40px 0 20px'}}>
+          <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:20,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 6px'}}>Stanford Neurodiversity Project</h3>
+          <p style={{fontSize:13,color:'var(--text-muted)',margin:0}}>Youth, college, and K&ndash;12 programs from the Stanford Neurodiversity Project.</p>
+        </div>
+        <div className="feat-grid cols3" style={{marginTop:0}}>{FEATURED_SNP.map(f => <FeaturedCard key={f.name} mini {...f}/>)}</div>
+        </div>
+      </div>
+      <div className="band">
+        <div style={{maxWidth:1100,margin:'0 auto',padding:'16px 24px 48px'}}>
+        <div style={{textAlign:'center',margin:'40px 0 20px'}}>
+          <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:20,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 6px'}}>From SNP-REACH</h3>
+          <p style={{fontSize:13,color:'var(--text-muted)',margin:0}}>Organizations featured in Stanford’s SNP-REACH summer camp.</p>
+        </div>
+        <div className="feat-grid cols3" style={{marginTop:0}}>{FEATURED_REACH.map(f => <FeaturedCard key={f.name} {...f}/>)}</div>
+        </div>
+      </div>
+      <div>
+        <div style={{maxWidth:1100,margin:'0 auto',padding:'16px 24px 72px'}}>
         <div style={{textAlign:'center',margin:'40px 0 20px'}}>
           <h3 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:20,letterSpacing:'.01em',color:'var(--text)',margin:'0 0 6px'}}>From the Stanford Neurodiversity Summit 2026</h3>
-          <p style={{fontSize:13,color:'var(--text-muted)',margin:0}}>Highlights from the September 19–21, 2026 summit on building strengths through neurodiversity innovation.</p>
+          <p style={{fontSize:13,color:'var(--text-muted)',margin:0}}>Organizations that took part in the September 19&ndash;21, 2026 summit program.</p>
         </div>
-        <FeaturedResource tone="a" name="Stanford Center for Neurodiversity and Human Potential" href="https://stanfordneurodiversityproject.stanford.edu/" cta="Visit the Center"
-          logo="assets/logo-stanford.png" logoAlt="Stanford University logo"
-          blurb="Announced at the 2026 summit: what began as an idea in 2017 and grew into the Stanford Neurodiversity Project is now an established center, led by Lawrence K. Fung, MD, PhD. It continues the project's research, clinical care, and community programs for neurodivergent individuals."/>
-        <FeaturedResource tone="b" name="Microsoft's Neurodiversity Hiring Program" href="https://aka.ms/NDHPguide" cta="Read Microsoft's guide"
-          logo="assets/logo-microsoft.svg" logoAlt="Microsoft logo"
-          badge="assets/badge-microsoft-disability-hiring.png" badgeAlt="Achievement in Accessibility: Disability Hiring Champion"
-          blurb="Also shared at the summit: Microsoft offers executive function coaching to all 220,000 employees, a Disability Hiring Champion badge with training for recruiters and interviewers, and neurodiversity coaching for all 13,000 people managers."/>
-        <FeaturedResource tone="a" name="Stanford Neurodiversity Project – NNEA" href="https://www.stanfordnnea.com/" cta="Visit NNEA"
-          logo="assets/logo-nnea.png" logoAlt="NNEA logo"
-          blurb="The Network for K-12 Neurodiversity Education and Advocacy: a Stanford-affiliated community for K-12 students, parents, and educators to share and discover neurodiversity advocacy efforts, stories, and strength-based approaches."/>
-      </section>
-      <section id="donate-section" className="lively-bg" style={{padding:'72px 24px',textAlign:'center'}}>
+        <div className="feat-grid" style={{marginTop:0,marginBottom:18}}>{FEATURED_SUMMIT.filter(f=>f.wide).map(f => <FeaturedCard key={f.name} {...f}/>)}</div>
+          <ScrollRow label="Summit organizations" maxW={1500}>{[...FEATURED_SUMMIT.filter(f=>!f.wide), ...FEATURED_SUMMIT_MORE].map(f => <FeaturedCard key={f.name} tile {...f}/>)}</ScrollRow>
+        </div>
+      </div>
+      <section id="donate-section" className="lively-bg donate-bg" style={{padding:'72px 24px',textAlign:'center'}}>
         <Confetti dots={DONATE_DOTS}/>
         <div style={{maxWidth:580,margin:'0 auto'}}>
-          <div style={{fontSize:36,marginBottom:16}}>❤️</div>
+          <div aria-hidden="true" style={{marginBottom:16,display:'flex',justifyContent:'center'}}>
+            <svg width="52" height="48" viewBox="0 0 52 48" style={{filter:'drop-shadow(0 4px 6px rgba(80,0,10,.35))'}}>
+              <defs>
+                <linearGradient id="heartFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ff5b6b"/><stop offset="1" stopColor="#d3152f"/></linearGradient>
+              </defs>
+              <path d="M26 46C-8 24 4 -2 19 3c4 1.4 6 4 7 7 1-3 3-5.600 7-7C48-2 60 24 26 46Z" fill="url(#heartFill)"/>
+              <path d="M13 9c-4 1-7 5-7.500 10" fill="none" stroke="#fff" strokeOpacity=".55" strokeWidth="3.200" strokeLinecap="round"/>
+            </svg>
+          </div>
           <h2 style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:'clamp(26px,4vw,38px)',color:'#fff',margin:'0 0 14px',letterSpacing:'.02em'}}>SUPPORT THIS PROJECT</h2>
           <p style={{fontSize:16,color:'rgba(255,255,255,.92)',margin:'0 0 32px',lineHeight:1.7}}>This directory is free and built by one person. Your support helps keep it growing — adding more resources, improving the map, and reaching more families who need it.</p>
           <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
@@ -2665,9 +3028,9 @@ const Pager = ({page, totalPages, setPage}) => {
   }
   const btn = (active, disabled) => ({
     minWidth:36, height:36, padding:'0 10px', borderRadius:8,
-    border:'1px solid ' + (active ? 'var(--brand)' : 'var(--border)'),
-    background: active ? 'var(--brand)' : 'var(--surface)',
-    color: active ? '#fff' : (disabled ? 'var(--text-muted)' : 'var(--text-secondary)'),
+    border: active ? '2px solid var(--brand)' : '1px solid var(--border)',
+    background: active ? 'var(--brand-subtle)' : 'var(--surface)',
+    color: active ? 'var(--text)' : (disabled ? 'var(--text-muted)' : 'var(--text-secondary)'),
     fontFamily:'var(--font-sans)', fontSize:14, fontWeight: active ? 700 : 500,
     cursor: disabled ? 'default' : 'pointer', opacity: disabled ? .5 : 1,
   });
@@ -3091,26 +3454,34 @@ const Results = ({ALL, coords, locLabel, keyword, setKeyword, favs, onFav, theme
   const loading = !ALL;
 
   // Located resources (mapped, distance-filtered) vs. placeless nationwide/virtual ones
-  let local = loading ? [] : ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
-  if (sortBy === 'name') local.sort((a,b)=>a.name.localeCompare(b.name));
-  else if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
-  const filtered = local.filter(r => matchKwType(r) && matchSug(r) && (radius == null || (r.distance != null && r.distance <= radius)));
+  // Memoized: this filters, measures and sorts the whole directory (100k+ entries), so it must not re-run when only the
+  // hovered/active result changes -- it used to, on every pin or card hover, which was the highlight lag.
+  const { filtered, national } = useMemo(() => {
+    const local = loading ? [] : ALL.filter(r => !r.placeless).map(r => ({...r, distance: coords ? haversine(coords, r.coordinates) : null}));
+    if (sortBy === 'name') local.sort((a,b)=>a.name.localeCompare(b.name));
+    else if (coords) local.sort((a,b)=>(a.distance ?? 1e9)-(b.distance ?? 1e9));
+    return {
+      filtered: local.filter(r => matchKwType(r) && matchSug(r) && (radius == null || (r.distance != null && r.distance <= radius))),
+      national: loading ? [] : ALL.filter(r => r.placeless && matchKwType(r) && matchSug(r)),
+    };
+  }, [ALL, coords, sortBy, kw, typeFilter, specialty, selSug, radius]);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const safePage = Math.min(page, totalPages - 1);
   const start = safePage * PER_PAGE;
-  const shown = filtered.slice(start, start + PER_PAGE);
-  const national = loading ? [] : ALL.filter(r => r.placeless && matchKwType(r) && matchSug(r));
+  const shown = useMemo(() => filtered.slice(start, start + PER_PAGE), [filtered, start]);
   const onLastPage = safePage >= totalPages - 1;
 
   // Multiple providers at the exact same address (e.g. several doctors inside
   // one medical center) collapse into a single card + a single map pin.
-  const groupMap = new Map();
-  const groups = [];
-  shown.forEach(r => {
-    const key = normalizeAddress(r.address);
-    if (!groupMap.has(key)) { const arr = []; groupMap.set(key, arr); groups.push(arr); }
-    groupMap.get(key).push(r);
-  });
+  const groups = useMemo(() => {
+    const groupMap = new Map(), out = [];
+    shown.forEach(r => {
+      const key = normalizeAddress(r.address);
+      if (!groupMap.has(key)) { const arr = []; groupMap.set(key, arr); out.push(arr); }
+      groupMap.get(key).push(r);
+    });
+    return out;
+  }, [shown]);
   const groupsKey = groups.map(g=>g.map(r=>r.id).join('+')).join(',');
 
   useEffect(() => {
@@ -3360,7 +3731,7 @@ function App() {
     try {
       const c = await geocode(text);
       if (!c) { setError('Couldn’t find that location. Try a city, ZIP code, or full address.'); setBusy(false); return; }
-      setCoords(c); setLocLabel(text); setKeyword(kw); setScreen('results');
+      setCoords(c); setLocLabel(text); saveLastLoc(text); setKeyword(kw); setScreen('results');
     } catch (e) { setError('Search failed — please try again.'); }
     setBusy(false);
   };
@@ -3370,7 +3741,7 @@ function App() {
   const selectSuggestion = (s, kw = '') => {
     const {main, secondary} = formatSuggestion(s);
     setCoords({ lat: parseFloat(s.lat), lng: parseFloat(s.lon) });
-    setLocLabel(secondary ? `${main}, ${secondary}` : main);
+    setLocLabel(secondary ? `${main}, ${secondary}` : main); saveLastLoc(secondary ? `${main}, ${secondary}` : main);
     setKeyword(kw); setScreen('results'); setError('');
   };
 
@@ -3384,7 +3755,7 @@ function App() {
         // Best-effort upgrade from the placeholder label to an actual place name ("San Jose, CA")
         // once it resolves -- results are already shown by coordinates, so this never blocks them.
         const resolved = await reverseGeocode(lat, lng);
-        if (resolved) setLocLabel(resolved);
+        if (resolved) { setLocLabel(resolved); saveLastLoc(resolved); }
       },
       err => { setError(err.code===1 ? 'Location permission denied — enter a location instead.' : 'Couldn’t get your location.'); setBusy(false); },
       { enableHighAccuracy:true, timeout:10000 }
