@@ -28,4 +28,4 @@ with open(tmp, "w", encoding="utf-8") as f:
 os.replace(tmp, f"{REPO}/community_resources.json")
 
 print(f"Applied facility_name to {applied} records across {len(names)} named addresses.")
-print("Now run tools/regen_community_data_js.py to rebuild community_data.js.")
+print("Now run tools/split_by_region.py to rewrite the data/ shards the app loads.")

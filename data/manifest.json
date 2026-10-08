@@ -1,0 +1,551 @@
+{
+ "total": 142774,
+ "files": [
+  {
+   "file": "us/AK.json",
+   "region": "us",
+   "code": "AK",
+   "count": 351
+  },
+  {
+   "file": "us/AL.json",
+   "region": "us",
+   "code": "AL",
+   "count": 848
+  },
+  {
+   "file": "us/AR.json",
+   "region": "us",
+   "code": "AR",
+   "count": 639
+  },
+  {
+   "file": "us/AS.json",
+   "region": "us",
+   "code": "AS",
+   "count": 19
+  },
+  {
+   "file": "us/AZ.json",
+   "region": "us",
+   "code": "AZ",
+   "count": 1828
+  },
+  {
+   "file": "us/CA.json",
+   "region": "us",
+   "code": "CA",
+   "count": 7413
+  },
+  {
+   "file": "us/CO.json",
+   "region": "us",
+   "code": "CO",
+   "count": 2403
+  },
+  {
+   "file": "us/CT.json",
+   "region": "us",
+   "code": "CT",
+   "count": 953
+  },
+  {
+   "file": "us/DC.json",
+   "region": "us",
+   "code": "DC",
+   "count": 301
+  },
+  {
+   "file": "us/DE.json",
+   "region": "us",
+   "code": "DE",
+   "count": 324
+  },
+  {
+   "file": "us/FL.json",
+   "region": "us",
+   "code": "FL",
+   "count": 7617
+  },
+  {
+   "file": "us/GA.json",
+   "region": "us",
+   "code": "GA",
+   "count": 2509
+  },
+  {
+   "file": "us/GU.json",
+   "region": "us",
+   "code": "GU",
+   "count": 24
+  },
+  {
+   "file": "us/HI.json",
+   "region": "us",
+   "code": "HI",
+   "count": 441
+  },
+  {
+   "file": "us/IA.json",
+   "region": "us",
+   "code": "IA",
+   "count": 729
+  },
+  {
+   "file": "us/ID.json",
+   "region": "us",
+   "code": "ID",
+   "count": 479
+  },
+  {
+   "file": "us/IL.json",
+   "region": "us",
+   "code": "IL",
+   "count": 3462
+  },
+  {
+   "file": "us/IN.json",
+   "region": "us",
+   "code": "IN",
+   "count": 1757
+  },
+  {
+   "file": "us/KS.json",
+   "region": "us",
+   "code": "KS",
+   "count": 556
+  },
+  {
+   "file": "us/KY.json",
+   "region": "us",
+   "code": "KY",
+   "count": 1205
+  },
+  {
+   "file": "us/LA.json",
+   "region": "us",
+   "code": "LA",
+   "count": 1134
+  },
+  {
+   "file": "us/MA.json",
+   "region": "us",
+   "code": "MA",
+   "count": 2022
+  },
+  {
+   "file": "us/MD.json",
+   "region": "us",
+   "code": "MD",
+   "count": 1920
+  },
+  {
+   "file": "us/ME.json",
+   "region": "us",
+   "code": "ME",
+   "count": 669
+  },
+  {
+   "file": "us/MI.json",
+   "region": "us",
+   "code": "MI",
+   "count": 2048
+  },
+  {
+   "file": "us/MN.json",
+   "region": "us",
+   "code": "MN",
+   "count": 943
+  },
+  {
+   "file": "us/MO.json",
+   "region": "us",
+   "code": "MO",
+   "count": 1299
+  },
+  {
+   "file": "us/MP.json",
+   "region": "us",
+   "code": "MP",
+   "count": 14
+  },
+  {
+   "file": "us/MS.json",
+   "region": "us",
+   "code": "MS",
+   "count": 436
+  },
+  {
+   "file": "us/MT.json",
+   "region": "us",
+   "code": "MT",
+   "count": 220
+  },
+  {
+   "file": "us/NC.json",
+   "region": "us",
+   "code": "NC",
+   "count": 1516
+  },
+  {
+   "file": "us/ND.json",
+   "region": "us",
+   "code": "ND",
+   "count": 96
+  },
+  {
+   "file": "us/NE.json",
+   "region": "us",
+   "code": "NE",
+   "count": 415
+  },
+  {
+   "file": "us/NH.json",
+   "region": "us",
+   "code": "NH",
+   "count": 303
+  },
+  {
+   "file": "us/NJ.json",
+   "region": "us",
+   "code": "NJ",
+   "count": 2065
+  },
+  {
+   "file": "us/NM.json",
+   "region": "us",
+   "code": "NM",
+   "count": 477
+  },
+  {
+   "file": "us/NV.json",
+   "region": "us",
+   "code": "NV",
+   "count": 873
+  },
+  {
+   "file": "us/NY.json",
+   "region": "us",
+   "code": "NY",
+   "count": 3358
+  },
+  {
+   "file": "us/OH.json",
+   "region": "us",
+   "code": "OH",
+   "count": 1840
+  },
+  {
+   "file": "us/OK.json",
+   "region": "us",
+   "code": "OK",
+   "count": 544
+  },
+  {
+   "file": "us/OR.json",
+   "region": "us",
+   "code": "OR",
+   "count": 653
+  },
+  {
+   "file": "us/PA.json",
+   "region": "us",
+   "code": "PA",
+   "count": 2135
+  },
+  {
+   "file": "us/PR.json",
+   "region": "us",
+   "code": "PR",
+   "count": 669
+  },
+  {
+   "file": "us/PW.json",
+   "region": "us",
+   "code": "PW",
+   "count": 9
+  },
+  {
+   "file": "us/RI.json",
+   "region": "us",
+   "code": "RI",
+   "count": 279
+  },
+  {
+   "file": "us/SC.json",
+   "region": "us",
+   "code": "SC",
+   "count": 679
+  },
+  {
+   "file": "us/SD.json",
+   "region": "us",
+   "code": "SD",
+   "count": 176
+  },
+  {
+   "file": "us/TN.json",
+   "region": "us",
+   "code": "TN",
+   "count": 1022
+  },
+  {
+   "file": "us/TX.json",
+   "region": "us",
+   "code": "TX",
+   "count": 3492
+  },
+  {
+   "file": "us/UT.json",
+   "region": "us",
+   "code": "UT",
+   "count": 533
+  },
+  {
+   "file": "us/VA.json",
+   "region": "us",
+   "code": "VA",
+   "count": 1579
+  },
+  {
+   "file": "us/VI.json",
+   "region": "us",
+   "code": "VI",
+   "count": 15
+  },
+  {
+   "file": "us/VT.json",
+   "region": "us",
+   "code": "VT",
+   "count": 142
+  },
+  {
+   "file": "us/WA.json",
+   "region": "us",
+   "code": "WA",
+   "count": 936
+  },
+  {
+   "file": "us/WI.json",
+   "region": "us",
+   "code": "WI",
+   "count": 703
+  },
+  {
+   "file": "us/WV.json",
+   "region": "us",
+   "code": "WV",
+   "count": 498
+  },
+  {
+   "file": "us/WY.json",
+   "region": "us",
+   "code": "WY",
+   "count": 99
+  },
+  {
+   "file": "us/national.json",
+   "region": "us",
+   "code": "national",
+   "count": 804
+  },
+  {
+   "file": "europe/BE.json",
+   "region": "europe",
+   "code": "BE",
+   "count": 135
+  },
+  {
+   "file": "europe/BG.json",
+   "region": "europe",
+   "code": "BG",
+   "count": 14
+  },
+  {
+   "file": "europe/CH.json",
+   "region": "europe",
+   "code": "CH",
+   "count": 24
+  },
+  {
+   "file": "europe/CY.json",
+   "region": "europe",
+   "code": "CY",
+   "count": 14
+  },
+  {
+   "file": "europe/CZ.json",
+   "region": "europe",
+   "code": "CZ",
+   "count": 69
+  },
+  {
+   "file": "europe/DE.json",
+   "region": "europe",
+   "code": "DE",
+   "count": 179
+  },
+  {
+   "file": "europe/DK.json",
+   "region": "europe",
+   "code": "DK",
+   "count": 2
+  },
+  {
+   "file": "europe/EE.json",
+   "region": "europe",
+   "code": "EE",
+   "count": 56
+  },
+  {
+   "file": "europe/ES.json",
+   "region": "europe",
+   "code": "ES",
+   "count": 1855
+  },
+  {
+   "file": "europe/FI.json",
+   "region": "europe",
+   "code": "FI",
+   "count": 41
+  },
+  {
+   "file": "europe/FR.json",
+   "region": "europe",
+   "code": "FR",
+   "count": 40447
+  },
+  {
+   "file": "europe/GB.json",
+   "region": "europe",
+   "code": "GB",
+   "count": 16865
+  },
+  {
+   "file": "europe/GR.json",
+   "region": "europe",
+   "code": "GR",
+   "count": 24
+  },
+  {
+   "file": "europe/HR.json",
+   "region": "europe",
+   "code": "HR",
+   "count": 1
+  },
+  {
+   "file": "europe/HU.json",
+   "region": "europe",
+   "code": "HU",
+   "count": 2
+  },
+  {
+   "file": "europe/IE.json",
+   "region": "europe",
+   "code": "IE",
+   "count": 8
+  },
+  {
+   "file": "europe/IS.json",
+   "region": "europe",
+   "code": "IS",
+   "count": 1
+  },
+  {
+   "file": "europe/IT.json",
+   "region": "europe",
+   "code": "IT",
+   "count": 419
+  },
+  {
+   "file": "europe/LT.json",
+   "region": "europe",
+   "code": "LT",
+   "count": 1
+  },
+  {
+   "file": "europe/LU.json",
+   "region": "europe",
+   "code": "LU",
+   "count": 1
+  },
+  {
+   "file": "europe/LV.json",
+   "region": "europe",
+   "code": "LV",
+   "count": 43
+  },
+  {
+   "file": "europe/MT.json",
+   "region": "europe",
+   "code": "MT",
+   "count": 2
+  },
+  {
+   "file": "europe/NL.json",
+   "region": "europe",
+   "code": "NL",
+   "count": 227
+  },
+  {
+   "file": "europe/NO.json",
+   "region": "europe",
+   "code": "NO",
+   "count": 107
+  },
+  {
+   "file": "europe/PL.json",
+   "region": "europe",
+   "code": "PL",
+   "count": 6
+  },
+  {
+   "file": "europe/PT.json",
+   "region": "europe",
+   "code": "PT",
+   "count": 2
+  },
+  {
+   "file": "europe/RO.json",
+   "region": "europe",
+   "code": "RO",
+   "count": 1
+  },
+  {
+   "file": "europe/SE.json",
+   "region": "europe",
+   "code": "SE",
+   "count": 1
+  },
+  {
+   "file": "europe/SI.json",
+   "region": "europe",
+   "code": "SI",
+   "count": 15
+  },
+  {
+   "file": "europe/SK.json",
+   "region": "europe",
+   "code": "SK",
+   "count": 63
+  },
+  {
+   "file": "europe/UA.json",
+   "region": "europe",
+   "code": "UA",
+   "count": 6163
+  },
+  {
+   "file": "europe/other.json",
+   "region": "europe",
+   "code": "other",
+   "count": 7
+  },
+  {
+   "file": "world/all.json",
+   "region": "world",
+   "code": "all",
+   "count": 5506
+  }
+ ]
+}

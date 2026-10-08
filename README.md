@@ -89,7 +89,7 @@ acceptance.
 
 The source code (site, scripts, tooling) is open source under the [MIT License](LICENSE).
 
-The compiled resource database (`community_data.js` / `community_resources.json`) is **not**
+The compiled resource database (the `data/` shards / `community_resources.json`) is **not**
 covered by that license. Automated scraping, bulk downloading, and redistribution of the
 database are restricted — see [TERMS.md](TERMS.md).
 

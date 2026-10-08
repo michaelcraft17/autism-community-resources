@@ -61,8 +61,8 @@ FETCHERS=(
   echo "--- merge_new_resources.py ---"
   python3 tools/merge_new_resources.py
 
-  echo "--- gen_community_data.js ---"
-  node gen_community_data.js
+  echo "--- split_by_region.py ---"
+  python3 tools/split_by_region.py
 
   AFTER_COUNT=$(python3 -c "import json; print(len(json.load(open('community_resources.json'))))")
   echo "Resource count after:  $AFTER_COUNT"

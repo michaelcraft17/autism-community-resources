@@ -16,7 +16,7 @@ by our own editorial process.
 ## What's not permitted without prior written permission
 
 - Automated scraping, crawling, or bulk downloading of this site or its
-  underlying data files (including `community_data.js` and
+  underlying data files (including the `data/` JSON files and
   `community_resources.json`).
 - Reproducing, redistributing, republishing, or reselling this compiled
   database (in whole or in substantial part), including for use in

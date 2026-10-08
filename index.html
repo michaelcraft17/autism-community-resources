@@ -192,7 +192,9 @@ body.contrast-dark .band,body.contrast-light .band{background:var(--bg);}
 .lively-bg>*{position:relative;z-index:1;}
 .lively-bg>.confetti{position:absolute;inset:0;z-index:0;pointer-events:none;}
 .confetti i{position:absolute;border-radius:50%;display:block;opacity:.9;}
+.afchips-inline::-webkit-scrollbar{display:none}.afchips-inline{scrollbar-width:none}
 .fbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 0 14px;border-bottom:1px solid var(--divider);margin-bottom:6px;}
+@media (max-width:640px){.fbar{padding:6px 0 8px;flex-wrap:nowrap;margin-bottom:0;}}
 .fbar-sep{width:1px;height:22px;background:var(--border-strong);margin:0 4px;}
 .search-go:hover:not(:disabled){background:var(--action-hover)!important;}
 .call-btn:hover{background:var(--action-hover)!important;}
@@ -219,6 +221,7 @@ body:not(.contrast-dark):not(.contrast-light) .pc:focus-visible{outline:2px soli
 .hdr-icon-btn.on{background:var(--brand-subtle);border-color:var(--brand);color:var(--brand);}
 .hdr-icon-btn:focus-visible{outline:2px solid var(--border-focus);outline-offset:2px;}
 .donate-pill{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;white-space:nowrap;flex-shrink:0;background:var(--cardinal-500);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.02em;text-decoration:none;cursor:pointer;}
+@media (max-width:640px){.hdr-icon-btn{width:32px;height:32px;}.hdr-icon-btn svg{width:16px;height:16px;}.donate-pill{height:32px;padding:0 12px;font-size:12px;}}
 .donate-pill:hover{background:var(--cardinal-600);}
 .donate-pill:focus-visible{outline:2px solid var(--cardinal-500);outline-offset:2px;}
 /* Category filter chips: neutral outline + a small dot in the category's own accent color,
@@ -248,6 +251,7 @@ button.hdr-search-icon:disabled{cursor:wait;opacity:.6;}
 .hdr-search-btn{flex-shrink:0;width:30px;height:30px;margin:0 2px 0 4px;border-radius:50%;background:var(--brand);color:var(--brand-on);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;align-self:center;}
 .hdr-search-btn:hover{background:var(--brand-hover);}
 .hdr-search-btn:disabled{opacity:.7;cursor:wait;}
+@media (max-width:640px){.hdr-search{position:relative;}.hdr-search-field{padding-right:44px;height:34px;}.hdr-search-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;margin:0;}}
 @media (min-width:641px){.hdr-search{flex-direction:row;border-radius:999px;}.hdr-search-field{border-bottom:none;}.hdr-search-field:first-child{border-right:1px solid var(--border);}}
 .sortsel-wrap{position:relative;display:inline-flex;align-items:center;}
 .sortsel{height:34px;padding:0 26px 0 8px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-size:13px;font-weight:600;font-family:var(--font-sans);cursor:pointer;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
@@ -515,11 +519,9 @@ const TYPE_META = {
   general_support: { label:'General Support',bg:'var(--type-general-bg)',   fg:'var(--type-general-fg)' },
 };
 
-/* ─── Full dataset (community_data_us.js / _europe.js / _world.js) — loaded asynchronously,
-   one region at a time, so the page shell renders immediately instead of blocking on a
-   multi-MB file. Split by region to stay under GitHub's 100MB per-file hard limit as the
-   dataset grows; each file does `window.communityData = (window.communityData||[]).concat(...)`
-   so load order doesn't matter. */
+/* ─── Full dataset (data/manifest.json lists one JSON shard per US state / European country,
+   plus one World file) — fetched asynchronously so the page shell renders immediately.
+   Sharded to keep every file far below GitHub's per-file size limits as the dataset grows. */
 function shapeAll(raw) {
   return (Array.isArray(raw) && raw.length ? raw : RESOURCES).map((r,i) => ({
     id: i+1, name: r.name, type: r.type, address: r.address, phone: r.phone,
@@ -529,25 +531,19 @@ function shapeAll(raw) {
   })).filter(r => r.placeless || (r.coordinates && r.coordinates.lat && r.coordinates.lng));
 }
 
-const COMMUNITY_DATA_FILES = ['community_data_us.js', 'community_data_europe.js', 'community_data_world.js'];
-
 function useCommunityData() {
   const [all, setAll] = useState(null); // null = still loading
   useEffect(() => {
     if (window.communityData) { setAll(shapeAll(window.communityData)); return; }
     let cancelled = false;
-    const loadNext = i => {
-      if (i >= COMMUNITY_DATA_FILES.length) {
-        if (!cancelled) setAll(shapeAll(window.communityData));
-        return;
-      }
-      const s = document.createElement('script');
-      s.src = COMMUNITY_DATA_FILES[i];
-      s.onload = () => loadNext(i + 1);
-      s.onerror = () => loadNext(i + 1); // skip a missing/broken region, keep the others
-      document.body.appendChild(s);
-    };
-    loadNext(0);
+    (async () => {
+      let files = [];
+      try { files = (await (await fetch('data/manifest.json')).json()).files || []; } catch (e) {}
+      // Fetch every shard in parallel but join them in manifest order so ids stay stable.
+      const parts = await Promise.all(files.map(f =>
+        fetch('data/' + f.file).then(r => r.json()).catch(() => []))); // a broken shard is skipped
+      if (!cancelled) setAll(shapeAll([].concat(...parts)));
+    })();
     return () => { cancelled = true; };
   }, []);
   return all;
@@ -825,10 +821,10 @@ const LogoMark = ({size=32}) => {
   );
 };
 
-const Logo = ({onClick}) => (
-  <button onClick={onClick} style={{background:'transparent',border:'none',padding:0,display:'flex',alignItems:'center',gap:10,cursor:'pointer',flexShrink:0}}>
-    <LogoMark size={34}/>
-    <div style={{display:'flex',flexDirection:'column',lineHeight:1.1}}>
+const Logo = ({onClick, iconOnly}) => (
+  <button onClick={onClick} aria-label={iconOnly ? 'Accessibility Mapper home' : undefined} style={{background:'transparent',border:'none',padding:0,display:'flex',alignItems:'center',gap:10,cursor:'pointer',flexShrink:0}}>
+    <LogoMark size={iconOnly ? 28 : 34}/>
+    <div style={{display:iconOnly?'none':'flex',flexDirection:'column',lineHeight:1.1}}>
       <span style={{fontFamily:'var(--font-antonio)',fontWeight:700,fontSize:17,letterSpacing:'0.01em',color:'var(--text)'}}>ACCESSIBILITY</span>
       <span style={{fontFamily:'var(--font-antonio)',fontWeight:500,fontSize:13,letterSpacing:'0.08em',color:'var(--text-secondary)'}}>MAPPER</span>
     </div>
@@ -1628,7 +1624,7 @@ function useDebounced(value, delay) {
    Keyword has no chip here -- it's a separate, always-visible, always-editable field in the
    header now (on both desktop and mobile), so a filter-focused "clear" acting on it too would
    be surprising, same as it always was on desktop. */
-const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearAll, filtersBtnRef}) => {
+const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, setRadius, selSug, toggleSug, clearAll, filtersBtnRef, inline}) => {
   const containerRef = useRef(null);
   const [pendingFocus, setPendingFocus] = useState(null);
   const chips = [];
@@ -1658,14 +1654,14 @@ const ActiveFilterChips = ({typeFilter, setTypeFilter, specialty, setSpecialty, 
     chips[idx].onRemove();
   };
   return (
-    <div ref={containerRef} style={{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flexBasis:'100%',marginTop:2}}>
+    <div ref={containerRef} className={inline ? 'afchips-inline' : undefined} style={inline ? {display:'flex',flexWrap:'nowrap',alignItems:'center',gap:8,flex:'1 1 0',minWidth:0,overflowX:'auto'} : {display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,flexBasis:'100%',marginTop:2}}>
       {chips.map(c => (
         <span key={c.key} data-chip-key={c.key} className="afchip" style={{maxWidth:'100%'}}>
           <span style={{overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{c.label}</span>
           <button type="button" onClick={()=>removeChip(c.key)} aria-label={`Remove filter: ${c.srLabel || c.label}`}><XIcon/></button>
         </span>
       ))}
-      <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:13,fontWeight:600,padding:'0 4px',cursor:'pointer'}}>Clear all</button>
+      <button type="button" onClick={clearAll} style={{background:'transparent',border:'none',color:'var(--text)',textDecoration:'underline',fontSize:13,fontWeight:600,padding:'0 4px',cursor:'pointer',whiteSpace:'nowrap',flexShrink:0}}>Clear all</button>
     </div>
   );
 };
@@ -1739,11 +1735,11 @@ const FilterBar = ({typeFilter, setTypeFilter, specialty, setSpecialty, radius, 
         </>
       )}
       {compact && (
-        <button ref={filtersBtnRef} type="button" className="filters-btn fchip" style={{marginLeft:'auto'}} aria-haspopup="dialog" aria-label={activeCount > 0 ? `Filters, ${activeCount} applied` : 'Filters'} onClick={()=>setSheetOpen(true)}>
+        <button ref={filtersBtnRef} type="button" className="filters-btn fchip" style={{flexShrink:0}} aria-haspopup="dialog" aria-label={activeCount > 0 ? `Filters, ${activeCount} applied` : 'Filters'} onClick={()=>setSheetOpen(true)}>
           <SlidersIcon/> Filters{activeCount > 0 && <span className="fcount">{activeCount}</span>}
         </button>
       )}
-      <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll} filtersBtnRef={filtersBtnRef}/>
+      <ActiveFilterChips typeFilter={typeFilter} setTypeFilter={setTypeFilter} specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearAll={clearAll} filtersBtnRef={filtersBtnRef} inline={compact}/>
       {compact && <FilterSheet open={sheetOpen} onClose={closeSheet} typeFilter={typeFilter} setTypeFilter={setTypeFilter} showType specialty={specialty} setSpecialty={setSpecialty} radius={radius} setRadius={setRadius} selSug={selSug} toggleSug={toggleSug} clearSug={clearSug} resultCount={resultCount}/>}
     </div>
   );
@@ -2066,11 +2062,11 @@ const Header = ({a11yOpen, setA11yOpen, savedOpen, savedCount, onToggleSaved, on
   );
   return (
     <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:200,boxShadow:'0 1px 4px rgba(42,38,30,.06)'}}>
-      <div style={{maxWidth:2400,margin:'0 auto',padding:isMobile && showSearch ? '6px 16px 10px' : '6px 24px',minHeight:62,display:'flex',flexWrap:'wrap',alignItems:'center',columnGap:16,rowGap:isMobile && showSearch ? 8 : 6,position:'relative'}}>
+      <div style={{maxWidth:2400,margin:'0 auto',padding:isMobile && showSearch ? '6px 16px 8px' : '6px 24px',minHeight:isMobile && showSearch ? 0 : 62,display:'flex',flexWrap:'wrap',alignItems:'center',columnGap:16,rowGap:isMobile && showSearch ? 6 : 6,position:'relative'}}>
         {!showSearch && <div className="hdr-tagline" style={{position:'absolute',left:'50%',transform:'translateX(-50%)',pointerEvents:'none',textAlign:'center',whiteSpace:'nowrap'}}>
           <span style={{fontFamily:'var(--font-sans)',fontSize:12,fontWeight:500,color:'var(--text-muted)'}}>Developed by Michael Chang, Founder of AI for Every Ability Inc.</span>
         </div>}
-        <Logo onClick={onLogoClick}/>
+        <Logo onClick={onLogoClick} iconOnly={isMobile && showSearch}/>
         {!isMobile && searchBlock}
         <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8}}>
           <button type="button" onClick={onToggleSaved} aria-pressed={savedOpen} aria-haspopup="dialog" title={savedCount>0 ? `Saved resources (${savedCount})` : 'Saved resources'} aria-label={savedCount>0 ? `Saved resources, ${savedCount} saved` : 'Saved resources'} className={`hdr-icon-btn${savedOpen?' on':''}`}>
@@ -2869,7 +2865,10 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error, reduceMot
           </div>
 
           <div style={{textAlign:'center'}}>
-            {locHint && <div style={{marginTop:14,color:'var(--text-secondary)',fontSize:14}}>{locHint}</div>}
+            <button type="button" onClick={useHere} disabled={busy} style={{marginTop:14,background:'transparent',border:'none',padding:'4px 2px',color:'var(--text-link)',fontSize:14,fontWeight:600,cursor:busy?'wait':'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
+              <PinIcon s={14}/> Use my current location
+            </button>
+            {locHint && <div style={{marginTop:10,color:'var(--text-secondary)',fontSize:14}}>{locHint}</div>}
             {error && <div style={{marginTop:10,color:'var(--accent-text)',fontSize:14}}>{error}</div>}
 
             <div style={{marginTop:22,display:'flex',alignItems:'center',justifyContent:'center',gap:6,flexWrap:'wrap'}}>
@@ -3267,6 +3266,37 @@ const MobileMapSheet = ({groups, listContent, noResults, coords, radius, themeKe
     setSheetState(full ? 'peek' : 'full');
   };
 
+  // Pull-to-collapse from the list itself: once the list is scrolled to its top, dragging down
+  // (touch) or scrolling up further (wheel / trackpad) brings the sheet down with it, so the
+  // handle bar isn't the only way back to the map. The sheet follows the finger and snaps on release.
+  const pull = useRef({startY:0, active:false, off:0, wheel:0, wheelT:0});
+  const onListTouchStart = e => { pull.current.startY = e.touches[0].clientY; pull.current.active = false; };
+  const onListTouchMove = e => {
+    const root = e.currentTarget, p = pull.current, dy = e.touches[0].clientY - p.startY;
+    if (!p.active) {
+      if (root.scrollTop <= 0 && dy > 8) { p.active = true; p.startY = e.touches[0].clientY; }
+      else return;
+    }
+    p.off = Math.min(maxOffset, Math.max(0, e.touches[0].clientY - p.startY));
+    setDragOffset(p.off);
+  };
+  const onListTouchEnd = () => {
+    const p = pull.current;
+    if (!p.active) return;
+    p.active = false;
+    setDragOffset(null);
+    if (p.off > Math.min(90, maxOffset / 3)) setSheetState('peek');
+  };
+  const onListWheel = e => {
+    const root = e.currentTarget, p = pull.current;
+    if (root.scrollTop > 0 || e.deltaY >= 0) { p.wheel = 0; return; }
+    const now = Date.now();
+    if (now - p.wheelT > 400) p.wheel = 0;   // a new gesture, not a continuation
+    p.wheelT = now;
+    p.wheel += -e.deltaY;
+    if (p.wheel > 120) { p.wheel = 0; setSheetState('peek'); }
+  };
+
   const activeGroupIdx = groups.length ? groups.findIndex(g => g.some(r => r.id === activeId)) : -1;
   // If nothing is selected yet (fresh search, or the previous selection's page no longer
   // exists), select the first result, so the map highlight and the docked card always agree.
@@ -3343,7 +3373,7 @@ const MobileMapSheet = ({groups, listContent, noResults, coords, radius, themeKe
           )}
         </div>
         {full && (
-          <div id="msheet-list" data-scroll-root className="msheet-content-in" style={{flex:1,overflowY:'auto',padding:'0 12px 24px',WebkitOverflowScrolling:'touch'}}>
+          <div id="msheet-list" data-scroll-root className="msheet-content-in" onTouchStart={onListTouchStart} onTouchMove={onListTouchMove} onTouchEnd={onListTouchEnd} onTouchCancel={onListTouchEnd} onWheel={onListWheel} style={{flex:1,overflowY:'auto',padding:'0 12px 24px',WebkitOverflowScrolling:'touch',overscrollBehaviorY:'contain'}}>
             {listContent}
           </div>
         )}

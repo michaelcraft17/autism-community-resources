@@ -40,3 +40,7 @@ new_resources_*.json
 .aider*
 !.aider.conf.yml
 __pycache__/
+
+# Flat working copy of the whole dataset, rebuilt from the committed data/ shards by
+# tools/join_regions.py (97MB+; never commit it).
+community_resources.json

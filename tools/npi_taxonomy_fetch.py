@@ -15,8 +15,8 @@ Pipeline (run in this order from the repo root):
   3. python3 tools/npi_taxonomy_geocode.py    -> tools/npi_scratch/geocoded.jsonl + failed.jsonl
                                                   (resumable — safe to Ctrl+C and rerun)
   4. python3 tools/npi_taxonomy_merge.py      -> appends into community_resources.json
-  5. node gen_community_data.js  is WRONG — use tools/regen_community_data_js.py's format
-     instead (see that script). Then commit + push, and let GitHub Pages rebuild.
+  5. python3 tools/split_by_region.py  -> rewrites the data/ shards. Then commit + push, and let
+     GitHub Pages rebuild.
 
 To add MORE taxonomies later: find the code on the official NUCC list
 (https://www.nucc.org/index.php/code-sets-mainmenu-41/provider-taxonomy-mainmenu-40/csv-mainmenu-57),
