@@ -9,11 +9,19 @@ Run this after merge_new_resources.py (or any edit to community_resources.json).
 Classification is source-first (each fetcher's `source` string reliably names its registry/
 country), with an address/description/website-TLD fallback for the long tail of individually
 curated entries that don't come from a bulk registry fetch.
+
+Each manifest entry also lists the shard's `cells`: the 1°x1° grid squares its located entries fall
+in. index.html uses them to fetch only the shards a search area touches, instead of every shard.
+
+    python3 tools/split_by_region.py                   # re-split community_resources.json into data/
+    python3 tools/split_by_region.py --manifest-only   # rewrite data/manifest.json from the shards on disk
 """
 import json
+import math
 import os
 import re
 import shutil
+import sys
 from collections import Counter
 
 IN_PATH = "community_resources.json"
@@ -355,6 +363,77 @@ def write_shard(path: str, entries: list):
         f.write("[\n" + ",\n".join(json.dumps(e, ensure_ascii=False, separators=(",", ":")) for e in entries) + "\n]\n")
 
 
+def located(entry: dict):
+    """(lat, lng) for an entry the app puts on the map, else None (placeless or no coordinates)."""
+    c = entry.get("coordinates") or {}
+    lat, lng = c.get("lat"), c.get("lng")
+    if entry.get("placeless") or not lat or not lng:
+        return None
+    return lat, lng
+
+
+def shard_cells(entries: list) -> list:
+    """Sorted 1°x1° grid cells holding the shard's located entries, each encoded as
+    (floor(lat) + 90) * 360 + (floor(lng) + 180) % 360 -- the same formula as cellKey() in index.html.
+    Cells rather than one bounding box: France's overseas territories alone would stretch its box
+    over most of the globe, so every US search would download France."""
+    cells = set()
+    for e in entries:
+        p = located(e)
+        if p:
+            cells.add((math.floor(p[0]) + 90) * 360 + (math.floor(p[1]) + 180) % 360)
+    return sorted(cells)
+
+
+def manifest_entry(rel: str, region: str, code: str, entries: list) -> dict:
+    return {"file": rel, "region": region, "code": code, "count": len(entries), "cells": shard_cells(entries)}
+
+
+def write_manifest(total: int, files: list):
+    # One line per shard: the cell lists would otherwise put thousands of lines in the diff.
+    with open(os.path.join(DATA_DIR, "manifest.json"), "w", encoding="utf-8") as f:
+        f.write('{"total": %d, "files": [\n' % total)
+        f.write(",\n".join(json.dumps(m, separators=(",", ":")) for m in files))
+        f.write("\n]}\n")
+
+
+def report_wide_shards(shards: dict):
+    """Print shards whose located entries span an unusually wide area -- usually a few entries with
+    wrong coordinates (or real overseas territories) worth a look. Cells keep the app correct either way."""
+    wide = []
+    for rel, entries in shards.items():
+        pts = [p for p in map(located, entries) if p]
+        if not pts:
+            continue
+        lats, lngs = [p[0] for p in pts], [p[1] for p in pts]
+        if max(lats) - min(lats) > 20 or max(lngs) - min(lngs) > 40:
+            wide.append((rel, min(lats), min(lngs), max(lats), max(lngs)))
+    if wide:
+        print("Shards spanning an unusually wide area (lat > 20° or lng > 40°) -- check for stray coordinates:")
+        for rel, a, b, c, d in wide:
+            print(f"  {rel:<22} lat {a:7.2f} .. {c:7.2f}   lng {b:8.2f} .. {d:8.2f}")
+
+
+def rebuild_manifest_only():
+    """Rewrite data/manifest.json from the shard files already on disk -- same files, same order --
+    without rewriting any shard (main() always regenerates every shard)."""
+    with open(os.path.join(DATA_DIR, "manifest.json"), encoding="utf-8") as f:
+        old = json.load(f)
+    files, shards, total = [], {}, 0
+    for m in old["files"]:
+        with open(os.path.join(DATA_DIR, m["file"]), encoding="utf-8") as f:
+            entries = json.load(f)
+        files.append(manifest_entry(m["file"], m["region"], m["code"], entries))
+        shards[m["file"]] = entries
+        total += len(entries)
+    if total != old.get("total"):
+        print(f"Note: shards hold {total} entries; the old manifest said {old.get('total')}.")
+    write_manifest(total, files)
+    print(f"Rewrote {DATA_DIR}/manifest.json: {len(files)} shards, {total} entries, "
+          f"{sum(len(m['cells']) for m in files)} grid cells.")
+    report_wide_shards(shards)
+
+
 def main():
     with open(IN_PATH, encoding="utf-8") as f:
         data = json.load(f)
@@ -408,10 +487,8 @@ def main():
     for (region, code), entries in sorted(shards.items(), key=lambda kv: (order[kv[0][0]], kv[0][1])):
         rel = f"{region}/{code}.json"
         write_shard(os.path.join(DATA_DIR, rel), entries)
-        manifest.append({"file": rel, "region": region, "code": code, "count": len(entries)})
-    with open(os.path.join(DATA_DIR, "manifest.json"), "w", encoding="utf-8") as f:
-        json.dump({"total": len(data), "files": manifest}, f, indent=1)
-        f.write("\n")
+        manifest.append(manifest_entry(rel, region, code, entries))
+    write_manifest(len(data), manifest)
 
     print(f"Total entries: {len(data)}")
     print(f"  US:     {len(buckets['us']):>7}")
@@ -423,6 +500,7 @@ def main():
           f"(largest {max(m['count'] for m in manifest)} entries)")
     print(f"  US 'national' (no state in address): {len(shards.get(('us', 'national'), []))}")
     print(f"  Europe 'other' (no country found):   {len(shards.get(('europe', 'other'), []))}")
+    report_wide_shards({f"{region}/{code}.json": entries for (region, code), entries in shards.items()})
 
     os.makedirs("tools/logs", exist_ok=True)
     with open(REPORT_PATH, "w", encoding="utf-8") as f:
@@ -440,4 +518,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if "--manifest-only" in sys.argv[1:]:
+        rebuild_manifest_only()
+    else:
+        main()
