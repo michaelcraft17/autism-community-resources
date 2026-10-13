@@ -44,7 +44,7 @@ EUROPEAN_COUNTRY_WORDS = [
     "portugal","portuguese","greece","greek","czech","slovakia","slovak","slovenia","slovenian",
     "estonia","estonian","latvia","latvian","lithuania","lithuanian","ukraine","ukrainian",
     "hungary","hungarian","romania","romanian","bulgaria","bulgarian","croatia","croatian",
-    "cyprus","cypriot","malta","maltese","iceland","icelandic","luxembourg",
+    "cyprus","cypriot","malta","maltese","iceland","icelandic","luxembourg","russia","russian",
 ]
 WORLD_COUNTRY_WORDS = [
     "australia","australian","new zealand","canada","canadian","brazil","brazilian","mexico",
@@ -52,7 +52,7 @@ WORLD_COUNTRY_WORDS = [
     "israel","israeli","india","indian","singapore","south africa","china","chinese","taiwan",
 ]
 
-EURO_TLDS = {"ie","uk","fr","de","it","es","nl","be","pl","fi","se","no","dk","ch","at","pt",
+EURO_TLDS = {"ru","ie","uk","fr","de","it","es","nl","be","pl","fi","se","no","dk","ch","at","pt",
              "gr","cz","sk","si","ee","lv","lt","ua","hu","ro","bg","hr","cy","mt","is","lu"}
 WORLD_TLDS = {"au","nz","ca","br","mx","ar","co","jp","kr","il","in","sg","za","cn","tw"}
 
@@ -106,6 +106,8 @@ EUROPE_SOURCE_PATTERNS = [
     "yorkshire coast families", "cambian group", "options autism", "dfn project search",
     "auticon uk", "avon and wiltshire", "devon partnership", "strathclyde autistic society",
     "pasda official",
+    "russia federal resource centre", "russia ministry of", "russia ministry of justice",
+    "russian society of the deaf",
 ]
 WORLD_SOURCE_PATTERNS = [
     "brazil ipea", "inclusion international", "empowered kids ontario",
@@ -281,7 +283,7 @@ EURO_SOURCE_COUNTRY = [
     ("czech republic ares", "CZ"), ("slovakia rpo", "SK"), ("estonia e-business", "EE"),
     ("latvia register", "LV"), ("finland prh", "FI"), ("greece gemi", "GR"),
     ("switzerland zefix", "CH"), ("slovenia ajpes", "SI"), ("cyprus register", "CY"),
-    ("bulgaria commercial", "BG"),
+    ("bulgaria commercial", "BG"), ("russia ", "RU"), ("russian society", "RU"),
 ]
 # Name/word -> code for address and description matching.
 EURO_COUNTRY_WORDS = {
@@ -293,7 +295,7 @@ EURO_COUNTRY_WORDS = {
     "portugal": "PT", "greece": "GR", "czech": "CZ", "slovakia": "SK", "slovenia": "SI",
     "estonia": "EE", "latvia": "LV", "lithuania": "LT", "ukraine": "UA", "hungary": "HU",
     "romania": "RO", "bulgaria": "BG", "croatia": "HR", "cyprus": "CY", "malta": "MT",
-    "iceland": "IS", "luxembourg": "LU",
+    "iceland": "IS", "luxembourg": "LU", "russia": "RU", "россия": "RU",
 }
 # Adjective forms only used on descriptions ("Irish nonprofit", ...).
 EURO_ADJECTIVES = {
@@ -302,14 +304,14 @@ EURO_ADJECTIVES = {
     "danish": "DK", "swiss": "CH", "austrian": "AT", "portuguese": "PT", "greek": "GR",
     "slovak": "SK", "slovenian": "SI", "estonian": "EE", "latvian": "LV", "lithuanian": "LT",
     "ukrainian": "UA", "hungarian": "HU", "romanian": "RO", "bulgarian": "BG", "croatian": "HR",
-    "cypriot": "CY", "maltese": "MT", "icelandic": "IS", "british": "GB", "scottish": "GB",
+    "cypriot": "CY", "maltese": "MT", "icelandic": "IS", "russian": "RU", "british": "GB", "scottish": "GB",
     "welsh": "GB", "english": "GB",
 }
 EURO_TLD_COUNTRY = {
     "ie": "IE", "uk": "GB", "fr": "FR", "de": "DE", "it": "IT", "es": "ES", "nl": "NL", "be": "BE",
     "pl": "PL", "fi": "FI", "se": "SE", "no": "NO", "dk": "DK", "ch": "CH", "at": "AT", "pt": "PT",
     "gr": "GR", "cz": "CZ", "sk": "SK", "si": "SI", "ee": "EE", "lv": "LV", "lt": "LT", "ua": "UA",
-    "hu": "HU", "ro": "RO", "bg": "BG", "hr": "HR", "cy": "CY", "mt": "MT", "is": "IS", "lu": "LU",
+    "ru": "RU", "hu": "HU", "ro": "RO", "bg": "BG", "hr": "HR", "cy": "CY", "mt": "MT", "is": "IS", "lu": "LU",
 }
 
 
