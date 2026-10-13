@@ -1134,3 +1134,26 @@ persistence guardrail, so cron was used instead.
   `~/gpt-researcher-local/reports/` but were low-yield on verification and discarded —
   a from-scratch structured-dataset approach (a national registry, if one exists and is
   findable) would likely beat re-running the LLM narration approach on these.
+
+## Russia (round 5, 2026-10-12)
+
+Added **~7,900 entries** (6,150 core + 1,758 broad) to `data/europe/RU.json` via `tools/russia_build.py`
+(fetchers: `russia_frc_fetch.py`, `russia_zhitvmeste_fetch.py`, `russia_misc_fetch.py`;
+scratch in gitignored `tools/russia_scratch/`; geocodes cached in `geocode_cache.jsonl`,
+Nominatim at 1 req/s, so a full rebuild takes ~1.5 h).
+
+- R1 autism-frc.ru navigator: 1,903 (autism-focused, `disability_scope` absent).
+- R2 zhit-vmeste.ru feed: 3,903 -- MSE bureaus (medical), inclusive recreation (social),
+  social-protection "core" institutions by `ZV_CORE_RE` (disability homes, rehab centres).
+- R3 Justice Ministry NGO register (data.gov.ru CSV): 438 active disability NGOs, deduped by OGRN.
+- SONKO 14, VOG regional branches 81, national NGOs 8.
+- Non-autism sources are tagged `disability_scope: "general"`.
+
+Decisions: the broad КЦСОН/ЦСОН (general social-service centre) tier is included as 1,758 entries
+tagged `breadth: "broad"` (mostly serve elderly people; the app has no breadth filter yet, so they show
+like core entries -- add a filter if that is too noisy); entries with only a region are pinned at the region centre; detail pages and VOI pages are
+not fetched; geo-blocked sources (nco.minjust.gov.ru, obrnadzor, bus.gov.ru) and sfri.ru
+(needs a Russian CA) were deliberately not touched. Two Arctic mis-geocodes (lat > 75) were
+removed by hand; if you rebuild, filter `lat > 75` in `russia_build.py`.
+
+Part S (Japan WAM NET, France FINESS, England GIAS, US CCD) is **not started**.
