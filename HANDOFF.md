@@ -1228,3 +1228,13 @@ Decisions / notes:
 - Browser checks after the split: Stockholm, Oslo, Riga, Sydney, Auckland, Columbus load only their nearby shards (+ `world/all.json`, and `us/national.json` for the US). Earlier: Tokyo, Warsaw, Helsinki, Tallinn.
 - Not merged (reasons above): Japan WAM non-child ~92.5k, PTV broad 1,512, Norway Brreg broad ~11k, Estonia broad 123 and the EMTAK code tier, Latvia non-disability locations 212, NIW broad 114, ACNC housing-only and People-with-Disabilities flag, Canada programme-text-only autism mentions (~218; CRA core is batch 3).
 - Pre-existing stray coordinates (some NPI rows in us/CA, ID, MI, GU, PW; FR-OM, FR-BFC, BE) are untouched.
+
+### Batch 3 (same day): Canada CRA + duplicate sweep
+
+Total 227,691 -> **228,611**.
+
+| Source | Fetcher | Fetched | Merged | Notes |
+|---|---|---|---|---|
+| Canada CRA List of charities 2024 | `cra_fetch.py` | 975 -> 973 | 941 | sub-categories 0010/0012, 0110/0014, 0140/0005 plus English and French disability names; "developmental" day-care centres excluded; PO-Box / C.P. charities placed by town and the box is not shown; 4 without a geocode. Programme-text-only autism mentions (~218) not merged |
+
+Duplicate sweep (the domain rule is skipped for entries with an external_id, so registry rows can duplicate older hand-collected rows that share a website): after the CRA, ACNC and NZ merges, `ca-bn` 32, `au-abn` 18 and `nz-cc` 3 rows whose website matches an older id-less entry with a >= 60% name-token overlap were removed. Not applied to GIAS / FINESS / STIL / Skolverket, where a school and its parent charity are different listings sharing a site. Idea for the merge script: apply the same website+name-token check to id-bearing rows against id-less rows.
