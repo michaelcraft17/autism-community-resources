@@ -1254,3 +1254,21 @@ Total 228,611 -> **229,498** (+887).
 | Finland federation member associations (Autismiliitto, Kuuloliitto, Nakovammaisten liitto) | `federations_fetch.py` | 85 | 84 | place guessed from the genitive stem in the name (`fi_places`), regions pinned at their regional centre; nationwide associations (Rett, Suomen ..., HYMY, ...) skipped; 3 unresolved |
 
 Not done / skipped: Valencia (`dadesobertes.gva.es` does not resolve from this network; not worked around; the 2020 snapshot was stale anyway), Galicia (incomplete TLS chain on the server), Andalucía (blocked, per the research notes). `tools/dedupe_registry_vs_manual.py <prefix>...` is the reusable post-merge website+name duplicate check.
+
+### Batch 5 (same day): Israel, Mexico, Colombia, Argentina
+
+Total 229,498 -> **230,220** (+722).
+
+| Source | Fetcher | Fetched | Merged | Notes |
+|---|---|---|---|---|
+| Israel Registrar of Amutot (data.gov.il datastore API) | `israel_fetch.py` | 311 candidates, 306 geocoded | 306 | registered / active only; "assistance to people with disabilities" domain, plus autism / disability names and purposes. Hebrew names as registered; 5 without a geocode |
+| Mexico SAT Donatarias Autorizadas 2026 | `latam_fetch.py` | 238 candidates, 229 geocoded | 229 | active taxpayers, one per RFC; name matches (and autism / Asperger in the purpose text). `REPRESENTANTE LEGAL` and e-mail never read. Fiscal addresses are often private, so entries are placed at the city of the SAT regional office, not at street level. The ~8.5k "mentions disability among many groups" rows are not merged |
+| Colombia RUES / Confecámaras (datos.gov.co) | `latam_fetch.py` | 601 entries from 11 name queries | 128 | active non-profits only; the register has no street address, so city of the chamber of commerce. Merged only names for a specific condition (autism, Asperger, Down, cerebral palsy, deaf, blind, special needs); the ~450 generic "discapacidad" names (many tiny municipal groups) are deferred |
+| Argentina IGJ entities (datos.jus.gob.ar, 2026 semester 2) | `argentina_fetch.py` | 184 candidates, 59 with a legal address | 59 | asociación civil / fundación only; `autoridades` (named officers) never opened and deleted from scratch. Companies like "AUTISIMA SRL" and a sheep-breeders' "Hampshire Down" association excluded. IGJ covers Buenos Aires city plus national entities only |
+
+Infrastructure notes:
+- `registry_common.py` now forces IPv4 for HTTP (`socket.getaddrinfo` filter). urllib tried IPv6 first and each Nominatim call stalled for tens of seconds on this network, which made Israel / Mexico / Argentina runs crawl until fixed.
+- Scratch zip of 160 MB for IGJ (`tools/world_small_scratch/igj.zip`) can be deleted; scratch dirs are gitignored.
+- New shards: `world/IL`, `world/MX`, `world/CO`, `world/AR` (routes in `NEW_SOURCE_SHARDS`).
+
+Not done in this session (reasons): Japan NTA corporate-number file (needs a token-POST download of ~1 GB, and Nominatim cannot geocode Japanese street addresses well; would need the GSI address-search API), Valencia (host did not resolve), Galicia (incomplete TLS chain), Autismo España / EDA / ADHD Europe federation lists, Germany ZER larger layer, IRS full NTEE set, CCEW Disability class, NY Medicaid behaviour analysts, California AG charity API, other US state charity registries (dedupe trial not run), Mexico / Colombia generic disability layers.
