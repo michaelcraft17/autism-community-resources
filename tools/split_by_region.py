@@ -10,6 +10,11 @@ Classification is source-first (each fetcher's `source` string reliably names it
 country), with an address/description/website-TLD fallback for the long tail of individually
 curated entries that don't come from a bulk registry fetch.
 
+Big countries are split into sub-shards so a search downloads only its own part: France by région
+(europe/FR-IDF.json, ...) and Japan by region (world/JP-KANTO.json, ...). Every world country with a
+bulk registry gets its own world/<CC>.json; world/all.json holds only what has no country shard,
+because the app loads it on EVERY search and it has to stay small.
+
 Each manifest entry also lists the shard's `cells`: the 1°x1° grid squares its located entries fall
 in. index.html uses them to fetch only the shards a search area touches, instead of every shard.
 
@@ -174,6 +179,82 @@ WORLD_SOURCE_PATTERNS = [
     "facebook page / autism ontario", "medicine hat news",
     "canada revenue agency official site",
 ]
+
+# Explicit routing for the registry sources added from 2026-10-12 on: lowercase source substring ->
+# (bucket, shard code). The code is the shard name; None means "derive it" (US state from the address).
+# Checked BEFORE the broad pattern lists above, so an unrelated substring such as "card" cannot misroute them.
+NEW_SOURCE_SHARDS = [
+    ("brazil ipea", "world", "BR"),
+    ("nces common core", "us", None),
+    ("california department of developmental services", "us", None),
+    ("england gias", "europe", "GB"),
+    ("denmark stil", "europe", "DK"),
+    ("sweden skolverket", "europe", "SE"),
+    ("france finess", "europe", "FR"),
+]
+
+# France: 5-digit postcode -> département -> région, so the 40k+ French rows split into shards of a few MB.
+FR_REGION_DEPTS = {
+    "ARA": "01 03 07 15 26 38 42 43 63 69 73 74",
+    "BFC": "21 25 39 58 70 71 89 90",
+    "BRE": "22 29 35 56",
+    "CVL": "18 28 36 37 41 45",
+    "COR": "20",
+    "GES": "08 10 51 52 54 55 57 67 68 88",
+    "HDF": "02 59 60 62 80",
+    "IDF": "75 77 78 91 92 93 94 95",
+    "NOR": "14 27 50 61 76",
+    "NAQ": "16 17 19 23 24 33 40 47 64 79 86 87",
+    "OCC": "09 11 12 30 31 32 34 46 48 65 66 81 82",
+    "PDL": "44 49 53 72 85",
+    "PAC": "04 05 06 13 83 84",
+}
+FR_DEPT_REGION = {d: r for r, ds in FR_REGION_DEPTS.items() for d in ds.split()}
+FR_POSTCODE_RE = re.compile(r"\b(\d{5})\b")
+
+
+def fr_region_code(entry: dict) -> str:
+    """'FR-<région>' from the postcode in the address ('FR-OM' for overseas); plain 'FR' when none parses."""
+    for pc in FR_POSTCODE_RE.findall(entry.get("address") or ""):
+        if pc[:2] in ("97", "98"):
+            return "FR-OM"
+        if pc[:2] in FR_DEPT_REGION:
+            return "FR-" + FR_DEPT_REGION[pc[:2]]
+    return "FR"
+
+
+# Japan: addresses start with the prefecture name; eight classic regions keep every shard in single-digit MB.
+JP_REGIONS = {
+    "HOKKAIDO": "北海道",
+    "TOHOKU": "青森県 岩手県 宮城県 秋田県 山形県 福島県",
+    "KANTO": "茨城県 栃木県 群馬県 埼玉県 千葉県 東京都 神奈川県",
+    "CHUBU": "新潟県 富山県 石川県 福井県 山梨県 長野県 岐阜県 静岡県 愛知県",
+    "KINKI": "三重県 滋賀県 京都府 大阪府 兵庫県 奈良県 和歌山県",
+    "CHUGOKU": "鳥取県 島根県 岡山県 広島県 山口県",
+    "SHIKOKU": "徳島県 香川県 愛媛県 高知県",
+    "KYUSHU": "福岡県 佐賀県 長崎県 熊本県 大分県 宮崎県 鹿児島県 沖縄県",
+}
+JP_PREF_REGION = {p: r for r, ps in JP_REGIONS.items() for p in ps.split()}
+
+
+def jp_region_code(entry: dict) -> str:
+    """'JP-<region>' from the prefecture at the start of the address; plain 'JP' when none parses."""
+    addr = (entry.get("address") or "").replace("〒", " ")
+    addr = re.sub(r"^[\s\d\-]+", "", addr)
+    for pref, reg in JP_PREF_REGION.items():
+        if addr.startswith(pref):
+            return "JP-" + reg
+    return "JP"
+
+
+def forced_shard(source: str):
+    """(bucket, code) for the sources in NEW_SOURCE_SHARDS, else None."""
+    s = source.lower()
+    for pat, bucket, code in NEW_SOURCE_SHARDS:
+        if pat in s:
+            return bucket, code
+    return None
+
 
 SOURCE_RULES = [
     ("us", US_SOURCE_PATTERNS),
@@ -441,6 +522,7 @@ def main():
         data = json.load(f)
 
     buckets = {"us": [], "europe": [], "world": []}
+    forced_code = {}   # id(entry) -> shard code, for entries routed by NEW_SOURCE_SHARDS
     source_bucket_counts = Counter()
     unclassified = []
 
@@ -449,7 +531,12 @@ def main():
         name = entry.get("name")
         bucket = None
         method = None
-        if name in MANUAL_OVERRIDES:
+        rule = forced_shard(source)
+        if rule:
+            bucket, method = rule[0], "rule"
+            if rule[1]:
+                forced_code[id(entry)] = rule[1]
+        if bucket is None and name in MANUAL_OVERRIDES:
             bucket = MANUAL_OVERRIDES[name]
             method = "manual"
         if bucket is None:
@@ -470,16 +557,29 @@ def main():
         shards.setdefault(("us", us_state(e)), []).append(e)
     for e in buckets["europe"]:
         addr = e.get("address") or ""
-        # A few US/Canadian orgs were bucketed Europe by their source string; route them home.
-        if any(c in US_VALID for c in US_STATE_TAIL_RE.findall(addr)):
-            shards.setdefault(("us", us_state(e)), []).append(e)
-            continue
-        if CA_POSTAL_RE.search(addr):
-            shards[("world", "all")] = shards.get(("world", "all"), []) + [e]
-            continue
-        code = europe_country(e)
+        code = forced_code.get(id(e))
+        if code is None:
+            # A few US/Canadian orgs were bucketed Europe by their source string; route them home.
+            if any(c in US_VALID for c in US_STATE_TAIL_RE.findall(addr)):
+                shards.setdefault(("us", us_state(e)), []).append(e)
+                continue
+            if CA_POSTAL_RE.search(addr):
+                shards[("world", "all")] = shards.get(("world", "all"), []) + [e]
+                continue
+            code = europe_country(e)
+        if code == "FR":
+            code = fr_region_code(e)
         shards.setdefault(("europe", code), []).append(e)
-    shards[("world", "all")] = buckets["world"] + shards.get(("world", "all"), [])
+    world_all = []
+    for e in buckets["world"]:
+        code = forced_code.get(id(e))
+        if code == "JP":
+            code = jp_region_code(e)
+        if code:
+            shards.setdefault(("world", code), []).append(e)
+        else:
+            world_all.append(e)
+    shards[("world", "all")] = world_all + shards.get(("world", "all"), [])
 
     # Regenerate the shard folder from scratch so a state/country that empties out disappears.
     if os.path.isdir(DATA_DIR):

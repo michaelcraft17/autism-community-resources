@@ -1156,4 +1156,46 @@ not fetched; geo-blocked sources (nco.minjust.gov.ru, obrnadzor, bus.gov.ru) and
 (needs a Russian CA) were deliberately not touched. Two Arctic mis-geocodes (lat > 75) were
 removed by hand; if you rebuild, filter `lat > 75` in `russia_build.py`.
 
-Part S (Japan WAM NET, France FINESS, England GIAS, US CCD) is **not started**.
+Part S: England GIAS, US CCD and France FINESS were built in the 2026-10-15 build session (below); Japan WAM NET is still to do.
+
+## Build session 2026-10-15 -- batch 1: cross-cutting changes + GIAS, CCD, FINESS, STIL, Skolverket, California DDS
+
+Total 150,682 -> **173,847** (+23,165). Per source (fetched -> merged; skipped = duplicates by name+city):
+
+| Source | Fetcher | Fetched | Merged | Notes |
+|---|---|---|---|---|
+| England GIAS special schools + ASD resourced provision (core) | `gias_fetch.py 20261010` | 3,497 | 3,491 | 6 skipped (name+city) |
+| England GIAS SEN units without ASD (broad) | same | 1,119 | 1,119 | small, disability-specific, so merged |
+| US NCES CCD special-education schools | `us_ccd_fetch.py` | 1,873 | 1,869 | 4 skipped; 2024 data from the Urban Institute API |
+| France FINESS disability establishments | `finess_fetch.py` | 14,561 | 14,561 | 4101-4107, 4301-4305, 4609, MDPH, resource centres; 5 without coordinates dropped |
+| Denmark STIL special schools / PPR | `stil_fetch.py` | 857 | 857 | 9 without coordinates dropped |
+| Sweden Skolverket grund-/gymnasiesarskola, specialskola, special-support | `skolverket_fetch.py` | 1,160 | 1,160 | 1 row dropped: coordinates 500 km from its postcode area |
+| California DDS regional / family resource centres | `ca_dds_fetch.py` | 112 | 108 | 4 skipped (already in the dataset) |
+
+Cross-cutting changes (all in this commit):
+- `merge_new_resources.py` takes file names (`python3 tools/merge_new_resources.py new_resources_x.json ...`);
+  with none it still merges every `new_resources_*.json`, which can resurrect rows deleted by hand, so name your files.
+- **Domain rule is skipped for entries with an external_id.** Registry rows legitimately share a website (a
+  municipality's site for its schools, an operator's site for its homes). The rule would otherwise have dropped
+  374 GIAS, 181 STIL, 697 Skolverket and 52 California DDS rows; the count is printed per file.
+- The name+city rule is bypassed only when every existing holder of the key is from the same source and also has an
+  external_id. A repeated (name, address, source) triple is skipped as "id collision" because the app derives a
+  listing id from that triple and shows one listing per id.
+- `split_by_region.py`: `NEW_SOURCE_SHARDS` routes a source (lowercase substring) to a bucket and code; France is split into
+  14 regional shards (`europe/FR-<REG>.json`) by postcode, Japan will be split by region the same way (`jp_region_code`).
+  `world/all.json` stays small (it is loaded by every search). Manifest `cells` still drive nearby-shard loading
+  (checked: Manchester loads GB only, Lyon FR-ARA/FR-CVL/BE, Copenhagen DK/SE, Columbus the OH shard).
+- `tools/registry_common.py`: shared helpers (entry builder, Nominatim cache, bounding boxes, finalize/dedupe).
+  `pyproj` is now required (`pip install pyproj`) for GIAS (EPSG:27700) and FINESS (EPSG:2154 and overseas grids).
+
+Decisions / notes:
+- GIAS: EstablishmentTypeGroup "Special schools" or any "special" type, plus mainstream schools with an SEN unit or
+  resourced provision (core only if ASD is a listed need). Pupil referral units excluded. Head teacher fields never read.
+  The last two daily snapshots (20261011/12) were partial, so use a date with >= 50,000 rows (enforced).
+- FINESS foyers, MAS and FAM are staffed institutions and are pinned at their address. CLIC (elderly), addiction and
+  homeless services are not included. Names are title-cased with acronyms kept.
+- STIL: principalName never read; PPR offices named just "PPR" get their municipality appended.
+- Skolverket: headMaster/e-mail never read; mainstream units (6,298) skipped.
+- All of these are `disability_scope: "general"` except California DDS (`neurodevelopmental`).
+- Pre-existing stray coordinates (e.g. NPI rows with a wrong state, a few FR-OM/BE rows) are untouched.
+- Skipped so far in this session: nothing in the sources above beyond the counts shown.
