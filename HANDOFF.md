@@ -1199,3 +1199,32 @@ Decisions / notes:
 - All of these are `disability_scope: "general"` except California DDS (`neurodevelopmental`).
 - Pre-existing stray coordinates (e.g. NPI rows with a wrong state, a few FR-OM/BE rows) are untouched.
 - Skipped so far in this session: nothing in the sources above beyond the counts shown.
+
+## Build session 2026-10-15 -- batch 2: Poland RSPO + NIW, Finland PTV, Norway NSR + Brreg, Japan WAM, Estonia, Latvia, Sweden LSS, NY OPWDD, Ohio DODD, Australia ACNC, New Zealand
+
+Total 173,847 -> **227,691** (+53,844). Fetched -> merged (rows removed by the merge are duplicates on name+city unless noted):
+
+| Source | Fetcher | Fetched | Merged | Notes |
+|---|---|---|---|---|
+| Poland RSPO schools / special-needs institutions | `rspo_fetch.py` | 5,040 | 5,040 | director / leadAuthorities persons never read |
+| Poland NIW-CRSO public-benefit organisations (core) | `niw_opp_fetch.py` | 878 | 878 | town-level location (no street in the list); key KRS. Broad 114 (rehabilitation / therapy / "integracyjn" names) not merged |
+| Finland PTV service register (core) | `ptv_fetch.py` | 947 | 947 | group homes / supported housing shown at municipality level (regex `HOME_RE`, widened after the first run pinned "ryhmäkoti" / "tukiasunnot"). Broad 1,512 not merged |
+| Norway NSR (Udir special-ed units) | `nsr_fetch.py` | 85 | 85 | |
+| Norway Brreg Enhetsregisteret bulk | `norway_brreg_bulk_fetch.py` | 2,183 | 2,149 | 34 skipped (name+city). Housing (87.104, 87.202) = one entry per operator and municipality, never a street pin. Dropped: ENK sole traders and their sub-units, c/o and v/ addresses, purpose-text-only hits, rows without a Kartverket geocode (1,818 core rows in total). Broad codes (~11k) not built |
+| Japan WAM Net child-welfare / disability services | `wam_fetch.py` | 38,356 | 38,356 | child-related core only; non-child set (~92.5k) deferred. Japan is split into 8 regional shards (`world/JP-*.json`) |
+| Estonia e-business register + Maa-amet ADS | `estonia_bulk_fetch.py` | 164 | 164 | FIE / sole traders excluded; commercial legal forms need a service word (the first run matched "Puuekspert OÜ", "Puuenergia"). Re-merge duplicated 55 older rows; 54 old rows removed by hand because old and new address formats defeat the name+city rule. Broad 123 not merged |
+| Latvia Ministry of Welfare social-service providers | `latvia_lm_fetch.py` | 490 | 490 | PakalpojumaVaditajs (named person) never read; group apartments at town level; 62% of full addresses failed in Nominatim, so `variants()` falls back to street+town, then town. Non-disability active locations (212) not merged |
+| Sweden Socialstyrelsen LSS unit survey 2025 | `lss_fetch.py` | 984 groups from 5,848 units | 952 | 25 groups without a geocode, 7 duplicate ids. One entry per (municipality, operator), municipality centre; no unit names for housing; private operators named only with a company form. The sibling `inloggningsuppgifter` file (logins) is never opened |
+| US New York OPWDD provider agencies | `us_dd_fetch.py` | 437 | 428 | Socrata, coordinates in source |
+| US Ohio DODD certified providers | `us_dd_fetch.py` | 2,606 | 2,559 | agencies only (`sitedescription='Agency'`): independent providers are individuals; contact names / e-mails never read. ArcGIS paging bug (offset +2,000 with a 1,000 cap) fixed by advancing by the returned count |
+| Australia ACNC + AIS24 programs | `acnc_fetch.py` | 1,361 | 1,259 | 102 dropped after the spot check: 61 rows with no address (they sat on the country centroid) and grant-making trusts / ancillary funds. PO-Box charities are placed by town and the box is not shown. Housing-only charities (71) and the People-with-Disabilities flag set (16k) not merged |
+| New Zealand Charities Services (sector 5 + name hits) | `nz_charities_fetch.py` | 809 (806 geocoded) | 591 | 215 dropped: no disability wording (older-people groups, "Wheat Mission"), estates run by Perpetual Guardian / Public Trust (c/o addresses, grant-making). PO boxes not shown |
+
+Decisions / notes:
+- `registry_common.py` gained `MaaAmet` (Estonian ADS; `viitepunkt_x` = easting, `viitepunkt_y` = northing, EPSG:3301 via pyproj).
+- `split_by_region.py` `NEW_SOURCE_SHARDS` routes each new source to its country shard (PL, FI, NO, JP, EE, LV, SE, AU, NZ, US states by address). Largest shard: `europe/GB.json` ~10.6 MB; all well under 45 MB.
+- Domain rule was skipped for entries with an external_id (counts printed per merge); the name+city rule's weak spot is old vs new address formats (Estonia).
+- Spot-checks (30 random per source) led to the ACNC / NZ / Norway / Estonia / PTV fixes above.
+- Browser checks after the split: Stockholm, Oslo, Riga, Sydney, Auckland, Columbus load only their nearby shards (+ `world/all.json`, and `us/national.json` for the US). Earlier: Tokyo, Warsaw, Helsinki, Tallinn.
+- Not merged (reasons above): Japan WAM non-child ~92.5k, PTV broad 1,512, Norway Brreg broad ~11k, Estonia broad 123 and the EMTAK code tier, Latvia non-disability locations 212, NIW broad 114, ACNC housing-only and People-with-Disabilities flag, Canada programme-text-only autism mentions (~218; CRA core is batch 3).
+- Pre-existing stray coordinates (some NPI rows in us/CA, ID, MI, GU, PW; FR-OM, FR-BFC, BE) are untouched.

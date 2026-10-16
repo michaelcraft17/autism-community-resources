@@ -234,3 +234,102 @@ def spot_check(entries, n=30, seed=7, fields=("name", "address", "type", "extern
     for e in rnd.sample(entries, min(n, len(entries))):
         c = e.get("coordinates") or {}
         print("  -", " | ".join(str(e.get(f, ""))[:70] for f in fields), f"| ({c.get('lat')}, {c.get('lng')})")
+
+
+class Kartverket:
+    """Norway's official address geocoder (ws.geonorge.no), keyless; answers cached in a jsonl file.
+
+    address(street, postcode) -> (lat, lng) or None; municipality(kommunenummer) -> the municipality's
+    representative point (used where only municipality-level location may be shown)."""
+
+    def __init__(self, cache_path):
+        self.cache_path = cache_path
+        self.cache = {}
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        if os.path.exists(cache_path):
+            for line in open(cache_path, encoding="utf-8"):
+                try:
+                    d = json.loads(line)
+                    self.cache[d["q"]] = d["c"]
+                except Exception:  # noqa: BLE001
+                    pass
+
+    def _remember(self, key, val):
+        self.cache[key] = val
+        with open(self.cache_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"q": key, "c": val}, ensure_ascii=False) + "\n")
+        return tuple(val) if val else None
+
+    def address(self, street, postcode, muni_nr=None):
+        street = clean(street)
+        if not street:
+            return None
+        key = f"a|{street}|{postcode}|{muni_nr or ''}"
+        if key in self.cache:
+            c = self.cache[key]
+            return tuple(c) if c else None
+        params = {"sok": street, "treffPerSide": 1, "utkoordsys": 4258}
+        if postcode:
+            params["postnummer"] = postcode
+        if muni_nr:
+            params["kommunenummer"] = muni_nr
+        try:
+            d = json.loads(get("https://ws.geonorge.no/adresser/v1/sok?" + urllib.parse.urlencode(params), delay=0.12, timeout=30, retries=2))
+        except Exception:  # noqa: BLE001
+            return None
+        hits = d.get("adresser") or []
+        p = hits[0].get("representasjonspunkt") if hits else None
+        return self._remember(key, [p["lat"], p["lon"]] if p else None)
+
+    def municipality(self, muni_nr):
+        key = f"m|{muni_nr}"
+        if key in self.cache:
+            c = self.cache[key]
+            return tuple(c) if c else None
+        try:
+            d = json.loads(get(f"https://ws.geonorge.no/kommuneinfo/v1/kommuner/{muni_nr}", delay=0.12, timeout=30, retries=2))
+        except Exception:  # noqa: BLE001
+            return None
+        c = (d.get("punktIOmrade") or {}).get("coordinates")
+        return self._remember(key, [c[1], c[0]] if c else None)
+
+
+class MaaAmet:
+    """Estonia's official address geocoder (Maa-amet in-ADS gazetteer), keyless; answers cached in a jsonl file.
+    address(full_address) -> (lat, lng) or None. The service answers in L-EST97 (EPSG:3301)."""
+
+    def __init__(self, cache_path):
+        from pyproj import Transformer
+        self.tr = Transformer.from_crs(3301, 4326, always_xy=True)
+        self.cache_path = cache_path
+        self.cache = {}
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        if os.path.exists(cache_path):
+            for line in open(cache_path, encoding="utf-8"):
+                try:
+                    d = json.loads(line)
+                    self.cache[d["q"]] = d["c"]
+                except Exception:  # noqa: BLE001
+                    pass
+
+    def address(self, text):
+        text = clean(text)
+        if not text:
+            return None
+        if text in self.cache:
+            c = self.cache[text]
+            return tuple(c) if c else None
+        try:
+            d = json.loads(get("https://inaadress.maaamet.ee/inaadress/gazetteer?" + urllib.parse.urlencode({"address": text, "results": 1}),
+                               delay=0.1, timeout=30, retries=2))
+        except Exception:  # noqa: BLE001
+            return None
+        hits = d.get("addresses") or []
+        val = None
+        if hits and hits[0].get("viitepunkt_x"):
+            lng, lat = self.tr.transform(float(hits[0]["viitepunkt_x"]), float(hits[0]["viitepunkt_y"]))   # x = easting, y = northing
+            val = [round(lat, 6), round(lng, 6)]
+        self.cache[text] = val
+        with open(self.cache_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"q": text, "c": val}, ensure_ascii=False) + "\n")
+        return tuple(val) if val else None
