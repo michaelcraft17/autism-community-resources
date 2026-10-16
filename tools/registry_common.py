@@ -24,7 +24,18 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import socket
 
+_getaddrinfo = socket.getaddrinfo
+
+
+def _ipv4_only(host, port, family=0, type=0, proto=0, flags=0):
+    """urllib tries IPv6 first and can sit on a connect timeout for tens of seconds on networks without v6; prefer IPv4."""
+    res = _getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+    return res or _getaddrinfo(host, port, family, type, proto, flags)
+
+
+socket.getaddrinfo = _ipv4_only
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "autism-community-resources-research/1.0 (contact: michaelcraft17@gmail.com)"
 BROWSER_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
