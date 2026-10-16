@@ -1238,3 +1238,19 @@ Total 227,691 -> **228,611**.
 | Canada CRA List of charities 2024 | `cra_fetch.py` | 975 -> 973 | 941 | sub-categories 0010/0012, 0110/0014, 0140/0005 plus English and French disability names; "developmental" day-care centres excluded; PO-Box / C.P. charities placed by town and the box is not shown; 4 without a geocode. Programme-text-only autism mentions (~218) not merged |
 
 Duplicate sweep (the domain rule is skipped for entries with an external_id, so registry rows can duplicate older hand-collected rows that share a website): after the CRA, ACNC and NZ merges, `ca-bn` 32, `au-abn` 18 and `nz-cc` 3 rows whose website matches an older id-less entry with a >= 60% name-token overlap were removed. Not applied to GIAS / FINESS / STIL / Skolverket, where a school and its parent charity are different listings sharing a site. Idea for the merge script: apply the same website+name-token check to id-bearing rows against id-less rows.
+
+### Batch 4 (same day): small European registers and federation branches
+
+Total 228,611 -> **229,498** (+887).
+
+| Source | Fetcher | Fetched | Merged | Notes |
+|---|---|---|---|---|
+| Scotland OSCR charity register (active, disability-named) | `oscr_fetch.py` | 241 | 231 | 2 skipped name+city, 7 removed afterwards by `dedupe_registry_vs_manual.py` (same website + name). Postcode centroids from postcodes.io (Nominatim mislocates PO-box postcodes). Unincorporated associations, c/o and PO-box addresses are shown at outward-code level (trustees' homes). The 5,000 "disabled people" beneficiary-flag charities are not merged |
+| Moldova non-commercial organisations (dataset.gov.md) | `md_me_fetch.py` | 71 | 71 | liquidated, trade unions and religious bodies excluded; "Conducator" (a named person) never read; flats / offices at locality level |
+| Montenegro active NGOs (data.gov.me) | `md_me_fetch.py` | 106 | 106 | the authorised-person columns are never read; war- and labour-invalid associations excluded |
+| Aragon association register (gd.aragon.es) | `spain_more_fetch.py` | 152 | 152 | "027 MINUSVALIDOS" category plus disability / autism names, active only; 2 without a geocode |
+| Castilla y Leon patient associations (datosabiertos.jcyl.es) | `spain_more_fetch.py` | 74 | 73 | autism, ADHD, intellectual / physical disability, cerebral palsy, Down, epilepsy; e-mail not published |
+| Denmark federation branches (DH 97, Lev 64, Autismeforeningen 12) | `federations_fetch.py` | 170 | 170 | municipality level; board members' names, e-mail addresses and phone numbers are never read (the Lev list page contains them in link text, so only the name before the role word is used) |
+| Finland federation member associations (Autismiliitto, Kuuloliitto, Nakovammaisten liitto) | `federations_fetch.py` | 85 | 84 | place guessed from the genitive stem in the name (`fi_places`), regions pinned at their regional centre; nationwide associations (Rett, Suomen ..., HYMY, ...) skipped; 3 unresolved |
+
+Not done / skipped: Valencia (`dadesobertes.gva.es` does not resolve from this network; not worked around; the 2020 snapshot was stale anyway), Galicia (incomplete TLS chain on the server), Andalucía (blocked, per the research notes). `tools/dedupe_registry_vs_manual.py <prefix>...` is the reusable post-merge website+name duplicate check.
