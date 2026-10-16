@@ -9,7 +9,13 @@ Dedup key precedence (fixed 2026-09-25 -- see HANDOFF.md "dedup bug"):
      (CNPJ, RFC, amutot number, Japanese houjin-bangou, ABN, BN, EIN, NZ
      charity number, Florida doc number, IGJ numero_correlativo, ...).
   2. website domain, UNLESS the domain is a shared platform (facebook.com,
-     wixsite.com, ...) that many unrelated small orgs use as their only site.
+     wixsite.com, ...) that many unrelated small orgs use as their only site,
+     AND UNLESS the entry carries its own external_id. Registry rows with an ID
+     (schools listing their municipality's site, establishments sharing an
+     operator's site, federation branch pages, ...) legitimately share domains;
+     the ID is authoritative for them. The number of entries the domain rule
+     WOULD have dropped is still measured and printed per file, so the effect of
+     skipping it is visible before anything is merged (2026-10-12).
   3. (norm_name, norm_city) -- NOT name alone. Measured on Brazil's Mapa OSC
      data: name-only matching would have silently dropped 665 real disability
      orgs and 46 real autism orgs, because entire federated networks (APAE:
@@ -19,9 +25,24 @@ Dedup key precedence (fixed 2026-09-25 -- see HANDOFF.md "dedup bug"):
      and legal-form words) so the same org matches across sources without
      over-collapsing distinct ones.
 
+Usage:
+    python3 tools/merge_new_resources.py                       # every new_resources_*.json in the repo root
+    python3 tools/merge_new_resources.py new_resources_japan.json [...]   # only the named files
+
+Naming files matters: the old, already-merged new_resources_*.json files are
+gitignored scratch that stays on disk, and re-running them can resurrect rows
+that were deliberately removed from community_resources.json by hand.
+
+The app derives a listing's id from hash(name|address|source), and shows one
+listing per id. Entries whose (name, address, source) triple already exists, or
+repeats inside the file, would be invisible in the app, so they are skipped and
+reported as "id collision" -- the build scripts should merge such rows (e.g. one
+entry per site with all its services) instead.
+
 After running, rewrite the data/ shards the app loads:
     python3 tools/split_by_region.py
 """
+import sys
 import glob
 import json
 import os
@@ -129,11 +150,23 @@ def main():
         for r in main_data
         if r.get("external_id")
     }
-    seen_name_city = {(norm_name(r.get("name")), norm_city(r.get("address"))) for r in main_data}
+    # key -> sources already holding that (name, city); lets a registry's own rows (same source, own
+    # external_id) coexist when a name repeats within one city.
+    seen_name_city = {}
+    for r in main_data:
+        seen_name_city.setdefault((norm_name(r.get("name")), norm_city(r.get("address"))), set()).add(
+            (r.get("source"), bool(r.get("external_id"))))
     seen_domains = {norm_domain(r.get("website")) for r in main_data if r.get("website")}
     seen_domains.discard(None)
+    seen_ids = {
+        (r.get("name") or "", r.get("address") or "", r.get("source") or "")
+        for r in main_data if not r.get("npi_number")
+    }
 
-    files = sorted(glob.glob(os.path.join(REPO, "new_resources_*.json")))
+    if len(sys.argv) > 1:
+        files = [a if os.path.isabs(a) else os.path.join(REPO, a) for a in sys.argv[1:]]
+    else:
+        files = sorted(glob.glob(os.path.join(REPO, "new_resources_*.json")))
     added_total = 0
     for path in files:
         with open(path, encoding="utf-8") as f:
@@ -141,6 +174,8 @@ def main():
         added = 0
         skipped = 0
         skip_log = []
+        domain_would_drop = 0   # entries the domain rule would have dropped but the external_id exemption kept
+        skipped_by = {}
         for e in entries:
             eid = e.get("external_id")
             src = e.get("source")
@@ -150,15 +185,24 @@ def main():
 
             is_dup = False
             matched_on = None
+            ident = (e.get("name") or "", e.get("address") or "", e.get("source") or "")
             if eid and (src, eid) in seen_external_ids:
                 is_dup, matched_on = True, "external_id"
             elif d and d not in SHARED_PLATFORM_DOMAINS and d in seen_domains:
-                is_dup, matched_on = True, "domain"
-            elif (n, city) in seen_name_city:
-                is_dup, matched_on = True, "name+city"
+                if eid:
+                    domain_would_drop += 1   # exempt: the registry ID is authoritative
+                else:
+                    is_dup, matched_on = True, "domain"
+            if not is_dup:
+                holders = seen_name_city.get((n, city))
+                if holders and not (eid and all(s_ == src and had_id for s_, had_id in holders)):
+                    is_dup, matched_on = True, "name+city"
+            if not is_dup and not e.get("npi_number") and ident in seen_ids:
+                is_dup, matched_on = True, "id collision"
 
             if is_dup:
                 skipped += 1
+                skipped_by[matched_on] = skipped_by.get(matched_on, 0) + 1
                 flag = ""
                 if matched_on == "name+city" and (len(n) < 6 or not city):
                     flag = "  [REVIEW: short/placeless key]"
@@ -168,7 +212,9 @@ def main():
             main_data.append(e)
             if eid:
                 seen_external_ids.add((src, eid))
-            seen_name_city.add((n, city))
+            seen_name_city.setdefault((n, city), set()).add((src, bool(eid)))
+            if not e.get("npi_number"):
+                seen_ids.add(ident)
             if d:
                 seen_domains.add(d)
             added += 1
@@ -177,7 +223,10 @@ def main():
             f"{path}: added({added}) + skipped({skipped}) != input({len(entries)})"
         )
         added_total += added
-        print(f"{os.path.basename(path)}: {added} added, {skipped} skipped as duplicates")
+        print(f"{os.path.basename(path)}: {added} added, {skipped} skipped as duplicates"
+              + (f" {skipped_by}" if skipped_by else ""))
+        if domain_would_drop:
+            print(f"    (domain rule would also have dropped {domain_would_drop} entries that carry an external_id; kept)")
         if skip_log:
             log_path = os.path.join(REPO, "tools", "logs", "merge_skips.log")
             os.makedirs(os.path.dirname(log_path), exist_ok=True)
