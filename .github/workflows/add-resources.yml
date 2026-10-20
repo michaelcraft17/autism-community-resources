@@ -132,7 +132,7 @@ jobs:
           python tools/refresh_source.py "${args[@]}"
 
       - name: Save geocode caches and rotation state
-        if: always()
+        if: always() && hashFiles('tools/*_scratch/*cache*.jsonl', 'tools/refresh_scratch/state.json') != ''
         uses: actions/cache/save@v4
         with:
           path: ${{ env.CACHE_PATHS }}

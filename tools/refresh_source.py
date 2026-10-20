@@ -829,6 +829,9 @@ class Refresh:
         if self.warnings:
             line += " · ⚠ " + "; ".join(self.warnings)
         step_summary(line)
+        if os.environ.get("GITHUB_ACTIONS"):   # an annotation on the run page (also readable through the API)
+            kind = "notice" if code == 0 else "error"
+            print(f"::{kind} title=Registry refresh {o['source']}{tag}::" + line.replace("**", "").replace("\n", " "), flush=True)
         gh_output(status=st, dry_run=str(o["dry_run"]).lower(), count_bump=str(bool(o.get("count_copy"))).lower())
         log(f"{st}: {detail}")
         if self.warnings:
