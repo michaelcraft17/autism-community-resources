@@ -15,6 +15,7 @@ tools/france_rna_scratch/
 
 # Generic catch-all so future tools/<name>_scratch/ dirs don't need a new line here.
 tools/*_scratch/
+# (also covers tools/refresh_scratch/: the scheduled refresh's rotation state, split output and backups)
 
 # Local-only debug map for eyeballing newly-merged pins before/after a merge -- not part
 # of the site, regenerate with: see conversation history for the diff-and-copy steps.

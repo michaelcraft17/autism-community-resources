@@ -6,7 +6,10 @@ Sweden: special schools from Skolverket's Skolenhetsregistret (school-unit regis
     https://api.skolverket.se/skolenhetsregistret/v2/school-units/<code>     detail incl. WGS84 coordinates
 
 (Header `Accept: application/json`; the v4 vendor media type returns 406.) Detail is fetched for every
-AKTIV unit (~7,500 calls, 6 threads, cached per unit in tools/skolverket_scratch/detail.jsonl).
+AKTIV unit (~7,500 calls, 3 threads each pausing 0.1 s before a call, cached per unit in
+tools/skolverket_scratch/detail.jsonl). Failed calls are retried in a second, sequential pass 1 s apart; a unit
+whose call still fails is dropped and counted with rc.note_failure. A refusal (401/403/451), or 20 failed calls
+in a row (400/404 not counted), stops the calls and the run exits without writing output.
 
 Core = unit with schoolType GRAN (grundsärskola), GYAN (gymnasiesärskola), SP (specialskola), or flagged
 specialSupportSchool, or a hospital school. These serve pupils with intellectual disability, autism, hearing
@@ -18,6 +21,7 @@ Writes new_resources_skolverket.json.
 import json
 import os
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -30,6 +34,8 @@ HDR = {"Accept": "application/json"}
 CORE_TYPES = {"GRAN": "grundsärskola (compulsory school for pupils with intellectual disability)",
               "GYAN": "gymnasiesärskola (upper-secondary school for pupils with intellectual disability)",
               "SP": "specialskola (special school for pupils with hearing/vision impairment or deaf-blindness)"}
+THREADS, PAUSE, RETRY_PAUSE = 3, 0.1, 1.0   # detail calls: workers, seconds before each call, before each retry
+MAX_FAILS_IN_A_ROW = 20                      # the host is down or blocking us: stop calling
 
 
 def load_cache(path):
@@ -53,19 +59,54 @@ def main():
     todo = [c for c in active if c not in cache]
     print(f"{len(units)} units, {len(active)} active, {len(todo)} detail calls to make")
 
-    def one(code):
-        try:
-            return code, rc.get_json(f"{BASE}/{code}", headers=HDR, timeout=60)["data"]["attributes"]
-        except Exception as e:  # noqa: BLE001
-            return code, {"_error": str(e)}
+    stop = {"why": None, "run": 0}   # why calls stopped; failed calls in a row
 
-    with open(cpath, "a", encoding="utf-8") as f, ThreadPoolExecutor(6) as ex:
-        for i, (code, d) in enumerate(ex.map(one, todo), 1):
-            if "_error" not in d:
-                cache[code] = d
-                f.write(json.dumps({"code": code, "d": d}, ensure_ascii=False) + "\n")
-            if i % 500 == 0:
-                print(f"  {i}/{len(todo)}", flush=True)
+    def one(code, pause=PAUSE):
+        if stop["why"]:
+            return code, {"_error": "not called: " + stop["why"]}
+        time.sleep(pause)
+        try:
+            d = rc.get_json(f"{BASE}/{code}", headers=HDR, timeout=60)["data"]["attributes"]
+        except Exception as e:  # noqa: BLE001
+            http = getattr(e, "code", None)
+            if http in rc.REFUSAL_CODES:   # rc.get has recorded the refusal
+                stop["why"] = f"HTTP {http} refusal at {code}"
+            elif http not in (400, 404, 410):
+                stop["run"] += 1
+                if stop["run"] >= MAX_FAILS_IN_A_ROW:
+                    stop["why"] = f"{stop['run']} failed calls in a row, last {code}: {e!r}"
+                    rc.note_failure("skolverket-detail", stop["why"])
+            return code, {"_error": repr(e)}
+        stop["run"] = 0
+        return code, d
+
+    failed, lost = [], []
+    with open(cpath, "a", encoding="utf-8") as f:
+        def store(code, d):
+            if "_error" in d:
+                return False
+            cache[code] = d
+            f.write(json.dumps({"code": code, "d": d}, ensure_ascii=False) + "\n")
+            return True
+
+        with ThreadPoolExecutor(THREADS) as ex:
+            for i, (code, d) in enumerate(ex.map(one, todo), 1):
+                if not store(code, d):
+                    failed.append(code)
+                if i % 500 == 0:
+                    print(f"  {i}/{len(todo)}", flush=True)
+        if failed and not stop["why"]:
+            print(f"  retrying {len(failed)} failed detail calls one at a time", flush=True)
+        for code in failed:
+            code, d = one(code, RETRY_PAUSE)
+            if not store(code, d):
+                lost.append((code, d["_error"]))
+    if stop["why"]:
+        sys.exit(f"Skolverket: detail calls stopped ({stop['why']}) -- nothing written")
+    for code, err in lost:
+        rc.note_failure("skolverket-detail", f"{code}: {err}")
+    if lost:
+        print(f"  WARNING: {len(lost)} active units dropped, their detail call failed twice (rc.note_failure)")
 
     entries, nocoord, noncore = [], 0, 0
     for code in active:

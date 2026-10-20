@@ -48,6 +48,30 @@ never written by an AI guessing at what might exist. Sources used so far include
 Every source is documented in the data-collection scripts in [`tools/`](tools/), so anyone can
 see exactly where a batch of listings came from.
 
+## How the data stays fresh
+
+A GitHub Action ("Registry refresh", [`.github/workflows/add-resources.yml`](.github/workflows/add-resources.yml))
+runs once a day. Each run re-downloads **one** official registry from the list in
+[`tools/refresh_sources.json`](tools/refresh_sources.json) (England's school register weekly,
+France's FINESS and the Ohio/New York disability-provider lists every two weeks, the others
+every four weeks). It replaces that registry's listings with the fresh copy, removes duplicates
+with the same rules as every other merge, and commits only the data files in `data/`.
+
+The run checks the result before anything is saved and stops instead of committing when
+something looks wrong. Examples: far fewer listings than last time, listings placed outside
+the country, a host that blocks the download, or a data file that grew too large. Listings from
+hand-checked sources are never touched by it.
+
+- **Add a source:** write a fetcher in `tools/` whose rows carry a stable `"<prefix>:<registry id>"`
+  `external_id`, add a shard rule for it in `tools/split_by_region.py`, add an entry to
+  `tools/refresh_sources.json`, then run `python3 tools/refresh_source.py --check`.
+  HANDOFF.md ("Scheduled registry refresh") has the details.
+- **Run it locally:** `pip install -r tools/requirements-refresh.txt`, then
+  `python3 tools/refresh_source.py --source stil --dry-run` (fetches and checks everything,
+  changes nothing). Drop `--dry-run` to update `data/`. `--list` shows the rotation.
+- **Run it on GitHub:** Actions → Registry refresh → Run workflow, with a source name and
+  optionally "dry run".
+
 ## How to use it
 
 1. Enter your city, ZIP code, or address — or click "Use my current location"

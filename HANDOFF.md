@@ -308,7 +308,10 @@ government/encyclopedic structured sources were ~95%+ clean):
   ~3.2GB bulk download, and Bulgaria's API-key-gated one unless `COMPANYBOOK_API_KEY` is set),
   then `merge_new_resources.py` and `node gen_community_data.js`, and logs to
   `tools/logs/refresh_<timestamp>.log`. **Never commits or pushes** — leaves the working-tree
-  diff for a human/Claude to review and commit by hand, per this repo's standing rule. Zero
+  diff for a human/Claude to review and commit by hand. (Since 2026-10-20 the id-carrying
+  official registries are refreshed by the "Registry refresh" GitHub Action instead, which is
+  the one scoped exception to the no-automatic-push rule; this script covers the older
+  name-search fetchers.) Zero
   LLM/token cost per run (plain HTTP + JSON parsing). Not yet wired to any actual scheduler
   (cron/launchd) — that's a deliberate choice left to the site owner, since it would create
   uncommitted local changes unattended if run on a timer without someone reviewing the diff.
@@ -759,6 +762,12 @@ persistence guardrail, so cron was used instead.
 
 - **Never push to `main` without an explicit, separate "push" instruction** — "commit" alone
   does not imply push.
+  - *Scoped exception (2026-10-20):* the "Registry refresh" GitHub Action
+    (`.github/workflows/add-resources.yml`) commits and pushes to `main` as github-actions[bot],
+    unattended. It may only commit `data/` (plus the README.md / index.html "N+" count copy when
+    the rounded figure changes), only for the sources in `tools/refresh_sources.json`, and only
+    after every guard in `tools/refresh_source.py` passes. Everything else still needs an
+    explicit instruction. See "Scheduled registry refresh" below.
 - **Never commit international/non-US data files without being asked specifically** to
   include them (this has since been done for the batch that's live now, but don't assume
   future harvests should auto-merge).
@@ -769,7 +778,9 @@ persistence guardrail, so cron was used instead.
   — it often already is from a prior session.
 - After pushing, verify the GitHub Pages build actually finished before declaring done:
   `gh api repos/michaelcraft17/autism-community-resources/pages/builds/latest --jq '.status+" "+(.commit[0:7])'`,
-  then spot-check the live file with `curl -sk`.
+  then spot-check the live file with `curl -sk`. (Claude cloud sessions can't reach the `/pages`
+  API path through their proxy; there, check the `pages-build-deployment` run for the commit:
+  `gh api "repos/michaelcraft17/autism-community-resources/actions/runs?head_sha=<sha>" --jq '.workflow_runs[]|select(.name=="pages-build-deployment")|.status+" "+.conclusion'`.)
 - `new_resources_*.json` files in the repo root are gitignored scratch/output from the
   fetch tools — present on disk for reference, safe to regenerate or delete, never committed
   directly (their content goes into `community_resources.json` via `merge_new_resources.py`
@@ -1272,3 +1283,170 @@ Infrastructure notes:
 - New shards: `world/IL`, `world/MX`, `world/CO`, `world/AR` (routes in `NEW_SOURCE_SHARDS`).
 
 Not done in this session (reasons): Japan NTA corporate-number file (needs a token-POST download of ~1 GB, and Nominatim cannot geocode Japanese street addresses well; would need the GSI address-search API), Valencia (host did not resolve), Galicia (incomplete TLS chain), Autismo España / EDA / ADHD Europe federation lists, Germany ZER larger layer, IRS full NTEE set, CCEW Disability class, NY Medicaid behaviour analysts, California AG charity API, other US state charity registries (dedupe trial not run), Mexico / Colombia generic disability layers.
+
+## Scheduled registry refresh (2026-10-20)
+
+The old "Daily Resource Adder" workflow (`add_resources.py`) failed every day: it staged the
+gitignored `community_resources.json`, its sources were dead (SAMHSA returned HTML, HRSA 404,
+Overpass 406 without a User-Agent), and the app never reads that file anyway. It was deleted and
+`.github/workflows/add-resources.yml` was replaced by **"Registry refresh"**: one official registry
+per day, refreshed in place, committed only when every guard passes.
+
+### How a run works
+
+1. `refresh_source.py --check` validates `tools/refresh_sources.json` against `data/`. Every row
+   with a registered `external_id` prefix must belong to one of that source's groups; otherwise a
+   refresh would delete it.
+2. `--pick` chooses today's source. A manual `source` input wins; otherwise the **most overdue**
+   source runs (its `last_success` plus `every_days` is in the past). Ties go in registry order.
+   - A source with no recorded success counts as most overdue. So after a cache loss, or on the
+     first days after the merge, every source runs once in registry order. That is harmless
+     because refreshes are idempotent.
+   - Days with nothing due exit in seconds.
+3. `--source NAME`:
+   - **Join:** `join_regions.py --force`. It refuses first if `community_resources.json` holds
+     rows that are not in `data/`, since that means unsplit local work.
+   - **Fetch:** the raw downloads listed under `raw` are deleted first. Each fetcher runs with:
+     - `NOMINATIM_MAX_NEW` (1,200 per run);
+     - `RC_PRIOR_ROWS`, the source's current rows, so `rc.prior_coords()` reuses coordinates
+       when the id and address text are unchanged and only new or changed addresses are geocoded;
+     - `RC_STATUS_FILE`, where `registry_common` reports new Nominatim lookups, skipped lookups,
+       refusals and transient failures.
+   - **Pre-merge guards:** see the next section.
+   - **Merge:** the source's old rows (by `external_id` prefix) are removed, then
+     `merge_new_resources.py <outputs>` runs, plus `dedupe_registry_vs_manual.py <prefixes>` for
+     OSCR, ACNC and NZ. An identity check proves no other row changed.
+   - **Reorder:** fresh rows go back into their old slots by `external_id`, and new ids go at the
+     end. An unchanged source therefore gives a zero diff (verified: 0/0/0 for all 14 sources).
+   - **Split:** `split_by_region.py` runs in `tools/refresh_scratch/split/` (as cwd), and the shard
+     guards run on that output.
+   - **Copy:** changed shards are copied into `data/`, manifest last, with a backup that is
+     restored on any error. The README/index.html count copy is updated only when the figure,
+     rounded down to 10,000, changes, in either direction. The flat file is rejoined.
+   - **Report:** `tools/refresh_scratch/outcome.json` (copied to `tools/logs/refresh_summary.json`),
+     a commit message, one line in the job summary, and `status=` in `$GITHUB_OUTPUT`.
+4. `tools/refresh_commit.sh` commits only `data/` (plus README.md/index.html when bumped) as
+   github-actions[bot] and pushes. If the push is rejected, it fetches the branch, resets, re-runs
+   the refresh with `--skip-fetch` (every guard again) and pushes once more.
+5. The Pages step waits for a `pages-build-deployment` run for the pushed SHA and requests a build
+   through the API if none starts within 3 minutes.
+6. `--record` updates the rotation state:
+   - success → `last_success`;
+   - failure → `fails` plus a cooldown of `min(2^(fails-1), every_days)` days, after which the
+     source is retried and the run goes red again;
+   - warming → `warm_attempts`; at 8 attempts it counts as a failure.
+
+   The state and the geocode caches live in one Actions cache entry, restored and saved on every
+   run so it is never evicted. Losing it only re-bootstraps the rotation.
+
+### Guards (exit 2, or 1 for errors and refusals; nothing is merged or committed)
+
+Guards run per group, i.e. per (`external_id` prefix, `source`, `breadth`); there are 20 groups.
+Entry-level guards alone can't see a 14% sub-source such as NY OPWDD vanish.
+
+- **Row counts:**
+  - each group keeps at least `min_rows` (about 75% of its count when added);
+  - each group keeps at least `old − max(⌈old × max_drop_pct⌉, 3)` (`max_drop_pct` is 10 for GIAS
+    and FINESS, 20 for the rest);
+  - each group grows by no more than 30%;
+  - survivors after the merge pass the same floors;
+  - the dataset total drops by no more than 1%.
+- **Row validity:**
+  - schema valid;
+  - no duplicate ids;
+  - coordinates on every row and inside the country (`rc.plausible`); placeless rows only where an
+    entry sets `allow_placeless`, which none does.
+- **Content changes:**
+  - the fill rate of address, phone and website doesn't fall by more than 10 points;
+  - mojibake (U+FFFD, `Ã`, `â€`) doesn't increase;
+  - no more than 25% of a group changes its name, address, location, contact or category.
+    Description-only changes (pupil counts, unit counts) don't count.
+- **Shards:**
+  - each shard ≤ 45 MB;
+  - only shards that hold the source's rows may change;
+  - none of the source's rows may newly land in `world/all`, `us/national` or `europe/other`.
+- **Fetch status:**
+  - any refusal (401/403/451, or Nominatim 403/429) fails the run with "not worked around";
+  - transient failures (5xx, timeouts, detail calls that still fail after a second pass) above
+    max(3, 0.5% of rows) fail the run, and the source is retried after the cooldown;
+  - a used-up Nominatim budget makes the run "warming": nothing is merged, and the source stays
+    due so it continues the next day with the cache kept.
+
+`--allow-drop` relaxes only the row-count floors. `--allow-change` relaxes only the growth,
+fill-rate, mojibake and changed-rows guards. The 1% total and the shard guards have no workflow
+switch; locally, `--max-total-drop-pct` and `--max-shard-mb` override them.
+
+### Fetcher fixes made for unattended runs
+
+- **GIAS:** `latest` takes yesterday back 14 days and accepts a snapshot only when it is complete
+  (row count close to an older snapshot, last record intact).
+- **FINESS:** finds the newest file through the data.gouv.fr API, and fails rather than using a
+  stale one.
+- **CCD:** falls back a year only on 404 or empty.
+- **Ohio ArcGIS:** an error body or a count mismatch fails the run; NY gets `$order=:id`.
+- **Brreg:** the bulk files are downloaded and their columns checked; NSR must have run first.
+- **OSCR:** a failed outward-code lookup never falls back to the full postcode for trustee homes.
+- **Skolverket, RSPO:** 3 threads, a delay, and a second sequential pass for failed detail calls.
+- **ACNC, NZ:** filter before geocoding.
+- **`registry_common`:**
+  - IPv4 is preferred only for unspecified address families, falls back on `gaierror`, and
+    `RC_FORCE_IPV4=0` turns it off;
+  - `Retry-After` is honoured;
+  - the User-Agent names the repo.
+- **Shard routing:** Ohio DODD and NY OPWDD got `NEW_SOURCE_SHARDS` rules, with a zero diff.
+
+### Sources left out of the rotation, and why
+
+- **Japan WAM** (38k rows): updated twice a year and Japan-sized.
+- **Sweden LSS:** a yearly survey with a per-year URL and source string.
+- **Poland NIW OPP:** a yearly list fetched with a browser User-Agent, which is not run in CI.
+- **Canada CRA:** fixed 2024 files.
+- **Latvia:** about 620 cold Nominatim lookups, so it would fit, but it needs the
+  `prior_coords` hook and its own test first.
+- **Israel:** small; a candidate for later.
+- **Moldova, Aragon/CyL:** their fetchers run two sources in one `main()`; they need a per-source
+  switch first, and Moldova needs openpyxl.
+- **Montenegro:** a fixed January-2025 snapshot.
+- **Mexico:** needs a hand-downloaded xlsx; Colombia could be split out of the same fetcher.
+- **Argentina:** a 160 MB zip downloaded by hand.
+- **DK/FI federation lists:** HTML pages, not registries.
+- **Russia:** a ~1.5 h rebuild, and some hosts are geo-blocked.
+- **Brazil, Florida Sunbiz:** Brazil-sized geocoding, and ids not in `prefix:id` form.
+- **Every source without `external_id`s** (NPI, France RNA, CQC, Head Start, Ukraine, ...): it
+  needs an id backfill before it can be refreshed by prefix.
+
+Known pinned input: ACNC selects charities with the AIS **2024** programs file (`AIS_URL` in
+`acnc_fetch.py`). Bump it by hand when data.gov.au publishes a newer statement year.
+
+### Adding a source
+
+1. Write a fetcher in `tools/`:
+   - it imports `registry_common` and builds rows with `rc.entry`, each carrying an
+     `external_id` of the form `"<prefix>:<registry id>"`;
+   - it writes `new_resources_<x>.json` with `rc.finalize`;
+   - it calls `rc.prior_coords()` before any Nominatim lookup;
+   - it uses `rc.note_failure()` for any per-row error it swallows;
+   - raw downloads go in `tools/<x>_scratch/`.
+2. Add a `NEW_SOURCE_SHARDS` rule for its `source` string in `split_by_region.py`.
+3. Add an entry to `tools/refresh_sources.json` with: `name`, `label`, `country`, `every_days`,
+   `commands`, `outputs` (merge order), `groups` (prefix, source, breadth, `min_rows`), `raw`
+   globs, `caches` (must match `tools/*_scratch/*cache*.jsonl`), and optionally `post_dedupe`,
+   `max_drop_pct`, `timeout_minutes`.
+4. Run `python3 tools/refresh_source.py --check`.
+5. Merge it once by hand: run the fetcher, then `merge_new_resources.py` and `split_by_region.py`,
+   as before, so `data/` holds its rows.
+6. Run one `dry_run` dispatch of the workflow with `source=<name>`.
+
+### Running it locally
+
+```
+pip install -r tools/requirements-refresh.txt
+python3 tools/refresh_source.py --check
+python3 tools/refresh_source.py --list                      # rotation + next 28 days
+python3 tools/refresh_source.py --source stil --dry-run     # fetch + every guard, data/ untouched
+python3 tools/refresh_source.py --source stil               # update data/ (commit it yourself)
+python3 tools/refresh_source.py --source stil --skip-fetch  # re-merge the new_resources_*.json on disk
+```
+
+Locally, nothing is committed and the rotation state is not touched. `community_resources.json`
+is left equal to `join(data/)` after every run.

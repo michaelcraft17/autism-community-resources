@@ -10,12 +10,20 @@ so each fetcher only holds what is specific to its source:
   finalize()          dedupes on external_id, refuses duplicate (name, address, source) triples (the
                       app derives a listing's id from them and shows one listing per id), writes the file
   spot_check()        prints N random rows for the by-eye check the build rules ask for
+  note_failure()      counts a transient failure (5xx, timeout, ...) that made a fetcher skip or degrade a row
+  prior_coords()      coordinates the dataset already holds for an unchanged (external_id, address)
+
+Run status: when RC_STATUS_FILE is set (tools/refresh_source.py sets it), the counters below are written there
+as JSON at exit -- new Nominatim lookups, lookups skipped because the NOMINATIM_MAX_NEW budget ran out, hosts that
+refused us (401/403/451, or 403/429 from Nominatim) and transient failures per kind. The refresh job reads it
+to decide whether a fetch is complete enough to merge; nothing here works around a refusal.
 
 Schema: name, address, phone, website, type (advocacy/therapy/education/medical/social/general_support),
 source, services, description, coordinates {lat,lng}, external_id ("<prefix>:<registry id>"), breadth
 ("core"/"broad"), disability_scope ("general"/"neurodevelopmental"; absent for autism-specific sources).
 placeless is set only when a row genuinely has no location.
 """
+import atexit
 import json
 import os
 import random
@@ -29,18 +37,86 @@ import socket
 _getaddrinfo = socket.getaddrinfo
 
 
-def _ipv4_only(host, port, family=0, type=0, proto=0, flags=0):
-    """urllib tries IPv6 first and can sit on a connect timeout for tens of seconds on networks without v6; prefer IPv4."""
-    res = _getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
-    return res or _getaddrinfo(host, port, family, type, proto, flags)
+def _ipv4_first(host, port, family=0, type=0, proto=0, flags=0):
+    """urllib tries IPv6 first and can sit on a connect timeout for tens of seconds on networks without v6
+    (GitHub's Ubuntu runners included), so ask for IPv4 first. A host with no A record raises gaierror for
+    AF_INET; fall back to the caller's own family then. An explicit family is left alone, and
+    RC_FORCE_IPV4=0 turns the preference off."""
+    if family == socket.AF_UNSPEC and os.environ.get("RC_FORCE_IPV4", "1") != "0":
+        try:
+            res = _getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+            if res:
+                return res
+        except socket.gaierror:
+            pass
+    return _getaddrinfo(host, port, family, type, proto, flags)
 
 
-socket.getaddrinfo = _ipv4_only
+socket.getaddrinfo = _ipv4_first
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-UA = "autism-community-resources-research/1.0 (contact: michaelcraft17@gmail.com)"
+UA = "autism-community-resources-research/1.0 (+https://github.com/michaelcraft17/autism-community-resources; contact: michaelcraft17@gmail.com)"
 BROWSER_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 NOMINATIM = "https://nominatim.openstreetmap.org/search"
 VALID_TYPES = {"advocacy", "therapy", "education", "medical", "social", "general_support"}
+REFUSAL_CODES = (401, 403, 451)
+
+STATUS = {"nominatim_new": 0, "nominatim_budget": None, "budget_skipped": 0, "prior_reused": 0,
+          "refused": [], "transient": {}, "transient_examples": []}
+
+
+def note_failure(kind, detail=""):
+    """Count a transient failure (5xx, timeout, connection error, bad body) that made a fetcher drop or degrade a row."""
+    STATUS["transient"][kind] = STATUS["transient"].get(kind, 0) + 1
+    if len(STATUS["transient_examples"]) < 20:
+        STATUS["transient_examples"].append(f"{kind}: {str(detail)[:200]}")
+
+
+def note_refusal(host, code, detail=""):
+    """Record a host that refused us (geo-block, WAF, auth, rate-limit ban). The refresh job fails on any refusal."""
+    item = {"host": host, "code": code, "detail": str(detail)[:200]}
+    if item not in STATUS["refused"] and len(STATUS["refused"]) < 20:
+        STATUS["refused"].append(item)
+
+
+def _write_status():
+    path = os.environ.get("RC_STATUS_FILE")
+    if path:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(STATUS, f, ensure_ascii=False, indent=1)
+
+
+atexit.register(_write_status)
+
+
+def _http_kind(e):
+    """'miss' for a deterministic not-found/bad-query answer, 'refused' for a block, else 'transient'."""
+    code = getattr(e, "code", None)
+    if code in (400, 404, 410):
+        return "miss"
+    if code in REFUSAL_CODES:
+        return "refused"
+    return "transient"
+
+
+_PRIOR = None
+
+
+def prior_coords(external_id, address):
+    """(lat, lng) the dataset already holds for this row when its address text is unchanged, else None.
+    tools/refresh_source.py writes the refreshed source's current rows to RC_PRIOR_ROWS, so a refresh only
+    geocodes new or changed addresses instead of re-running every lookup on a cold cache."""
+    global _PRIOR
+    if _PRIOR is None:
+        _PRIOR = {}
+        path = os.environ.get("RC_PRIOR_ROWS")
+        if path and os.path.exists(path):
+            with open(path, encoding="utf-8") as f:
+                _PRIOR = json.load(f)
+    p = _PRIOR.get(external_id) if external_id else None
+    if not p or not p.get("coordinates") or p.get("address", "") != clean(address or ""):
+        return None
+    STATUS["prior_reused"] += 1
+    return (p["coordinates"]["lat"], p["coordinates"]["lng"])
 
 # (south, north, west, east) boxes; a list means "any of these".
 BBOX = {
@@ -88,8 +164,10 @@ def plausible(cc, lat, lng):
 _last_request = {}
 
 
-def get(url, *, data=None, headers=None, timeout=90, retries=3, delay=0.0, method=None, browser=False):
-    """Bytes of the response; retries with backoff. `delay` = minimum seconds between requests to a host."""
+def get(url, *, data=None, headers=None, timeout=90, retries=3, delay=0.0, method=None, browser=False, probe=False):
+    """Bytes of the response; retries with backoff. `delay` = minimum seconds between requests to a host.
+    400/401/403/404 raise at once; 401/403/451 are also recorded as a refusal unless `probe` is set (a caller
+    that expects a 403/404 for "not published yet"). 429/503 honour Retry-After, capped at 120 s."""
     hdr = {"User-Agent": BROWSER_UA if browser else UA}
     hdr.update(headers or {})
     host = urllib.parse.urlsplit(url).netloc
@@ -106,12 +184,22 @@ def get(url, *, data=None, headers=None, timeout=90, retries=3, delay=0.0, metho
                 return r.read()
         except urllib.error.HTTPError as e:
             err = e
-            if e.code in (400, 401, 403, 404):
+            if e.code in REFUSAL_CODES and not probe:
+                note_refusal(host, e.code, url)
+            if e.code in (400, 401, 403, 404, 451):
                 raise
-            time.sleep(3 * (attempt + 1))
+            pause = 3 * (attempt + 1)
+            if e.code in (429, 503):
+                try:
+                    pause = max(pause, min(120, int(e.headers.get("Retry-After", "0"))))
+                except (TypeError, ValueError):
+                    pass
+            if attempt + 1 < retries:
+                time.sleep(pause)
         except Exception as e:  # noqa: BLE001
             err = e
-            time.sleep(3 * (attempt + 1))
+            if attempt + 1 < retries:
+                time.sleep(3 * (attempt + 1))
     raise err
 
 
@@ -131,13 +219,24 @@ def download(url, path, **kw):
 
 
 class Geocoder:
-    """Nominatim, 1 request/second, results (including misses) cached in a jsonl file next to the fetcher."""
+    """Nominatim, 1 request/second, results (including misses) cached in a jsonl file next to the fetcher.
+
+    NOMINATIM_MAX_NEW (env) caps the new lookups per process; once it is spent, geocode() returns None without
+    caching and counts the skip, so the refresh job can stop and continue on a later run with the cache kept.
+    A 403 or 429 from Nominatim stops every further call for this process and is recorded as a refusal: the
+    usage policy says to back off, so the run fails instead of retrying around it."""
+
+    refused = False
+    _consecutive_failures = 0
 
     def __init__(self, cache_path, countrycodes=None):
         self.cache_path = cache_path
         self.countrycodes = countrycodes
         self.cache = {}
         self.fresh = 0
+        budget = os.environ.get("NOMINATIM_MAX_NEW")
+        self.budget = int(budget) if budget not in (None, "") else None
+        STATUS["nominatim_budget"] = self.budget
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)
         if os.path.exists(cache_path):
             for line in open(cache_path, encoding="utf-8"):
@@ -150,26 +249,48 @@ class Geocoder:
     def geocode(self, q, countrycodes=None):
         if not q:
             return None
-        key = q if not (countrycodes or self.countrycodes) else q
+        key = q
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
+        if Geocoder.refused:
+            return None
+        if self.budget is not None and STATUS["nominatim_new"] >= self.budget:
+            STATUS["budget_skipped"] += 1
+            return None
+        if Geocoder._consecutive_failures >= 10:   # Nominatim is down: stop waiting 40 s per row
+            note_failure("nominatim", f"circuit open, skipped {q!r}")
+            return None
         params = {"q": q, "format": "json", "limit": 1}
         cc = countrycodes or self.countrycodes
         if cc:
             params["countrycodes"] = cc
-        res = None
-        ok = False
+        res, ok, last = None, False, None
         for attempt in range(3):
             try:
-                data = json.loads(get(NOMINATIM + "?" + urllib.parse.urlencode(params), delay=1.05, timeout=30, retries=1))
+                data = json.loads(get(NOMINATIM + "?" + urllib.parse.urlencode(params), delay=1.05, timeout=30, retries=1, probe=True))
                 res = [float(data[0]["lat"]), float(data[0]["lon"])] if data else None
                 ok = True
                 break
-            except Exception:  # noqa: BLE001
+            except urllib.error.HTTPError as e:
+                last = e
+                if e.code in (403, 429) or e.code in REFUSAL_CODES:
+                    Geocoder.refused = True
+                    note_refusal("nominatim.openstreetmap.org", e.code, "usage policy: stopped all further lookups")
+                    return None
+                if _http_kind(e) == "miss":
+                    ok = True   # a deterministic bad-query answer: cache it as a miss
+                    break
                 time.sleep(5 * (attempt + 1))
+            except Exception as e:  # noqa: BLE001
+                last = e
+                time.sleep(5 * (attempt + 1))
+        STATUS["nominatim_new"] += 1
         if not ok:
+            Geocoder._consecutive_failures += 1
+            note_failure("nominatim", f"{q!r}: {last!r}")
             return None   # transient failure: don't cache a miss
+        Geocoder._consecutive_failures = 0
         self.cache[key] = res
         self.fresh += 1
         with open(self.cache_path, "a", encoding="utf-8") as f:
@@ -265,6 +386,13 @@ class Kartverket:
                 except Exception:  # noqa: BLE001
                     pass
 
+    def _failed(self, key, e):
+        """A deterministic 400/404 is cached as a miss; anything else is counted as transient and not cached."""
+        if _http_kind(e) == "miss":
+            return self._remember(key, None)
+        note_failure("kartverket", f"{key}: {e!r}")
+        return None
+
     def _remember(self, key, val):
         self.cache[key] = val
         with open(self.cache_path, "a", encoding="utf-8") as f:
@@ -286,8 +414,8 @@ class Kartverket:
             params["kommunenummer"] = muni_nr
         try:
             d = json.loads(get("https://ws.geonorge.no/adresser/v1/sok?" + urllib.parse.urlencode(params), delay=0.12, timeout=30, retries=2))
-        except Exception:  # noqa: BLE001
-            return None
+        except Exception as e:  # noqa: BLE001
+            return self._failed(key, e)
         hits = d.get("adresser") or []
         p = hits[0].get("representasjonspunkt") if hits else None
         return self._remember(key, [p["lat"], p["lon"]] if p else None)
@@ -299,8 +427,8 @@ class Kartverket:
             return tuple(c) if c else None
         try:
             d = json.loads(get(f"https://ws.geonorge.no/kommuneinfo/v1/kommuner/{muni_nr}", delay=0.12, timeout=30, retries=2))
-        except Exception:  # noqa: BLE001
-            return None
+        except Exception as e:  # noqa: BLE001
+            return self._failed(key, e)
         c = (d.get("punktIOmrade") or {}).get("coordinates")
         return self._remember(key, [c[1], c[0]] if c else None)
 
@@ -333,8 +461,11 @@ class MaaAmet:
         try:
             d = json.loads(get("https://inaadress.maaamet.ee/inaadress/gazetteer?" + urllib.parse.urlencode({"address": text, "results": 1}),
                                delay=0.1, timeout=30, retries=2))
-        except Exception:  # noqa: BLE001
-            return None
+        except Exception as e:  # noqa: BLE001
+            if _http_kind(e) != "miss":
+                note_failure("maaamet", f"{text}: {e!r}")
+                return None
+            d = {}
         hits = d.get("addresses") or []
         val = None
         if hits and hits[0].get("viitepunkt_x"):

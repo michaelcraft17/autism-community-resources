@@ -3,14 +3,19 @@
 US -- state developmental-disability provider registers with coordinates (no geocoding needed).
 
 1. New York OPWDD provider agencies   https://data.ny.gov/resource/ieqx-cqyk.json   (Socrata, keyless, 455 rows,
-   Y/N flag per service, location_1 lat/lon). One entry per row.
+   Y/N flag per service, location_1 lat/lon). One entry per row, in :id order ($order=:id keeps the order, and which
+   duplicate rc.finalize keeps, stable between runs). The run fails if a column the entries are built from is absent
+   from every row (Socrata leaves null cells out, so a missing column means it was renamed), if the answer reaches
+   $limit, or if no row has usable coordinates.
 2. Ohio DODD certified providers      https://maps.ohio.gov/arcgis/rest/services/Hosted/AllProviderDataProd23_view/FeatureServer/0
    (keyless ArcGIS feature service; 83,744 provider x service x site rows, max 1,000 per page). Only sitedescription =
    'Agency' is used: 'Independent' providers are individual people and are not published. One entry per site
    (sitekey), the certified services listed in the description. Site contact names / e-mail addresses are never read.
+   The expected row count is asked first (returnCountOnly); the run fails on an ArcGIS "error" body (often sent with
+   HTTP 200) or when the pages do not add up to that count, and only a complete list is cached in dd_scratch/.
 
 Both are general (not autism-specific) disability layers: disability_scope "general".
-Output: new_resources_ny_opwdd.json, new_resources_ohio_dodd.json
+Output: new_resources_ny_opwdd.json, new_resources_ohio_dodd.json -- both written only after both sources were fetched
 """
 import json
 import os
@@ -25,7 +30,8 @@ import registry_common as rc  # noqa: E402
 SCRATCH = os.path.join(rc.REPO, "tools", "dd_scratch")
 NY_SOURCE = "New York OPWDD provider agencies (data.ny.gov)"
 OH_SOURCE = "Ohio Department of Developmental Disabilities certified providers (DODD)"
-NY_URL = "https://data.ny.gov/resource/ieqx-cqyk.json?$limit=5000"
+NY_LIMIT = 5000
+NY_URL = f"https://data.ny.gov/resource/ieqx-cqyk.json?$limit={NY_LIMIT}&$order=:id"
 OH_URL = "https://maps.ohio.gov/arcgis/rest/services/Hosted/AllProviderDataProd23_view/FeatureServer/0/query"
 OH_FIELDS = ("objectid,sitekey,providername,agencylocationname,sitedescription,servicename,addressline1,addressline2,city,state,zipcode,"
              "county,latitude,longitude,sitephonenumber,siteurladdress,agesserved")
@@ -43,6 +49,9 @@ NY_SERVICES = {
     "family_support_services": ("Family support services", "Respite Care"),
     "developmental_centers_and_special_population_services": ("Developmental center / special population services", "Residential & Social Care"),
 }
+# columns every NY entry is built from ("state" has a default and is not required)
+NY_COLUMNS = ("service_provider", "street_address", "city", "zip_code", "phone", "url", "location_1",
+              "developmental_disability_services_office") + tuple(NY_SERVICES)
 
 
 def title(s):
@@ -56,12 +65,21 @@ def phone10(s):
 
 def ny():
     rows = rc.get_json(NY_URL)
-    out = []
+    if not isinstance(rows, list) or not rows:
+        raise RuntimeError(f"NY OPWDD: expected a non-empty JSON list, got {str(rows)[:200]}")
+    if len(rows) >= NY_LIMIT:
+        raise RuntimeError(f"NY OPWDD: {len(rows)} rows reached $limit={NY_LIMIT}; raise the limit")
+    present = set().union(*(r.keys() for r in rows))   # a null cell is left out of its row, so check the whole answer
+    missing = [c for c in NY_COLUMNS if c not in present]
+    if missing:
+        raise RuntimeError(f"NY OPWDD: column(s) {missing} absent from all {len(rows)} rows -- renamed upstream?")
+    out, nocoords = [], 0
     for r in rows:
         loc = r.get("location_1") or {}
         try:
             lat, lng = float(loc["latitude"]), float(loc["longitude"])
         except Exception:  # noqa: BLE001
+            nocoords += 1
             continue
         if not rc.plausible("US", lat, lng):
             continue
@@ -82,25 +100,51 @@ def ny():
                             phone=phone10(r.get("phone")) or rc.clean(r.get("phone")) or None, website=rc.clean_url(web), lat=lat, lng=lng,
                             external_id=f"ny-opwdd:{rc.clean(r['service_provider'])}:{rc.clean(r.get('street_address'))}:{rc.clean(r.get('zip_code'))}",
                             scope="general"))
+    print(f"NY OPWDD: {len(rows)} rows, {nocoords} without location_1 coordinates")
+    if nocoords == len(rows):
+        raise RuntimeError("NY OPWDD: no row has location_1 latitude/longitude -- column format changed?")
     return out
+
+
+def oh_query(params):
+    """One ArcGIS query. ArcGIS often reports an error as HTTP 200 with an "error" object, so that raises too."""
+    q = urllib.parse.urlencode(params)
+    d = json.loads(rc.get(OH_URL + "?" + q, delay=0.3, timeout=120))
+    if not isinstance(d, dict) or "error" in d:
+        raise RuntimeError(f"Ohio DODD ArcGIS error for {q}: {str(d)[:300]}")
+    return d
 
 
 def oh_rows():
     path = os.path.join(SCRATCH, "ohio_rows.json")
     if os.path.exists(path):
         return json.load(open(path))
+    where = "sitedescription='Agency'"
+    expected = oh_query({"where": where, "returnCountOnly": "true", "f": "json"}).get("count")
+    if not isinstance(expected, int) or expected <= 0:
+        raise RuntimeError(f"Ohio DODD: bad returnCountOnly answer: count={expected!r}")
     rows, off = [], 0
     while True:
-        q = urllib.parse.urlencode({"where": "sitedescription='Agency'", "outFields": OH_FIELDS, "resultOffset": off, "resultRecordCount": 1000,
-                                    "orderByFields": "objectid", "f": "json"})
-        d = json.loads(rc.get(OH_URL + "?" + q, delay=0.3, timeout=120))
-        f = d.get("features", [])
+        d = oh_query({"where": where, "outFields": OH_FIELDS, "resultOffset": off, "resultRecordCount": 1000,
+                      "orderByFields": "objectid", "f": "json"})
+        f = d.get("features")
+        if not isinstance(f, list):
+            raise RuntimeError(f"Ohio DODD: no features list at offset {off}: {str(d)[:300]}")
         if not f:
             break
         rows += [x["attributes"] for x in f]
         off += len(f)
+        if len(rows) > expected:   # data changed mid-run, or the offset was ignored
+            raise RuntimeError(f"Ohio DODD: {len(rows)} rows paged, more than the {expected} counted")
+    if len(rows) != expected:
+        raise RuntimeError(f"Ohio DODD: {len(rows)} rows paged, {expected} counted -- incomplete, not cached")
+    ids = [r.get("objectid") for r in rows]
+    if None not in ids and len(set(ids)) != len(ids):
+        raise RuntimeError("Ohio DODD: pages overlap (repeated objectid) -- not cached")
     os.makedirs(SCRATCH, exist_ok=True)
-    json.dump(rows, open(path, "w"))
+    with open(path + ".part", "w") as fh:
+        json.dump(rows, fh)
+    os.replace(path + ".part", path)
     return rows
 
 
@@ -144,8 +188,9 @@ def ohio():
 
 
 def main():
-    a = rc.finalize(os.path.join(rc.REPO, "new_resources_ny_opwdd.json"), ny())
-    b = rc.finalize(os.path.join(rc.REPO, "new_resources_ohio_dodd.json"), ohio())
+    ny_entries, oh_entries = ny(), ohio()   # both fetched before either file is written: a failure writes neither
+    a = rc.finalize(os.path.join(rc.REPO, "new_resources_ny_opwdd.json"), ny_entries)
+    b = rc.finalize(os.path.join(rc.REPO, "new_resources_ohio_dodd.json"), oh_entries)
     rc.spot_check(a, 10, fields=("name", "address", "description"))
     rc.spot_check(b, 20, fields=("name", "address", "description"))
 

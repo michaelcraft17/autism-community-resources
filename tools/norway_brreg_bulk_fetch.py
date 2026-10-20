@@ -7,6 +7,11 @@ Norway: disability organisations and services from the Bronnoysund Register Cent
     https://data.brreg.no/enhetsregisteret/api/enheter/lastned/csv          legal units
   (send  Accept: application/vnd.brreg.enhetsregisteret.<underenhet|enhet>.v2+gzip;charset=UTF-8 )
 
+They are downloaded to tools/norway_brreg2_scratch/underenheter.csv.gz and enheter.csv.gz when missing (the refresh
+job deletes both before each fetch). The run stops before reading any row if a file is not gzip CSV or lacks a column
+this script reads (COLUMNS), and if a legal-unit status column (konkurs, underAvvikling, ...) holds a value other
+than true/false or is never true. The row counts are recorded as rc.STATUS["input"].
+
 Supersedes the name-search-only tools/norway_brreg_fetch.py. Core selection (see HANDOFF.md for the rationale):
   * SN2025 code (naeringskode 1-3) 85.202 special schools, 85.691 PPT, 85.692 special-education competence centres,
     87.104 respite homes, 87.202 housing for people with intellectual disability, 88.104 BPA, 88.105 respite,
@@ -19,7 +24,9 @@ No daglig leder / role data is read. The broad codes (87.300, 88.101, 86.950, 86
 
 Locations: street addresses are geocoded with Kartverket (cached). Housing (87.104, 87.202) is people's homes, so it is
 NOT pinned: one entry per operator and municipality at the municipality's representative point. Rows whose organisation
-number is in new_resources_nsr.json are skipped (NSR has better coordinates).
+number is in new_resources_nsr.json are skipped (NSR has better coordinates), so tools/nsr_fetch.py must run first: the
+run stops if that file is missing or empty. A row whose Kartverket lookup fails is dropped (rc counts transient
+failures in rc.STATUS; a cached miss is a plain drop).
 
 Writes new_resources_norway_brreg.json; the 106 earlier name-search rows have no ids, so the merge's name+city rule
 removes the overlap.
@@ -36,6 +43,21 @@ import registry_common as rc  # noqa: E402
 
 csv.field_size_limit(10 ** 9)
 SCRATCH = os.path.join(rc.REPO, "tools", "norway_brreg2_scratch")
+API = "https://data.brreg.no/enhetsregisteret/api"
+FILES = (   # kind, file, address prefix, download url, Accept
+    ("sub", "underenheter.csv.gz", "beliggenhetsadresse", f"{API}/underenheter/lastned/csv",
+     "application/vnd.brreg.enhetsregisteret.underenhet.v2+gzip;charset=UTF-8"),
+    ("legal", "enheter.csv.gz", "forretningsadresse", f"{API}/enheter/lastned/csv",
+     "application/vnd.brreg.enhetsregisteret.enhet.v2+gzip;charset=UTF-8"),
+)
+STATUS_COLS = ("konkurs", "underAvvikling", "underTvangsavviklingEllerTvangsopplosning")
+COLUMNS = {   # every column read below, per file
+    kind: ["organisasjonsnummer", "navn", "organisasjonsform.kode", "organisasjonsform.beskrivelse", "naeringskode1.kode",
+           "naeringskode2.kode", "naeringskode3.kode", "telefon", "mobil", "hjemmeside"]
+          + [f"{pre}.{c}" for c in ("adresse", "postnummer", "poststed", "kommune", "kommunenummer")]
+          + (["nedleggelsesdato", "overordnetEnhet"] if kind == "sub" else list(STATUS_COLS))
+    for kind, _, pre, _, _ in FILES
+}
 SOURCE = "Norway Bronnoysund Register Centre (Enhetsregisteret) - official national entity registry"
 CODE_INFO = {   # code -> (type, services, description)
     "85.202": ("education", ["Special Education"], "Special school (spesialskole)"),
@@ -65,6 +87,20 @@ def rows(path):
         yield from csv.DictReader(f)
 
 
+def fetch_and_check(kind, fn, url, accept):
+    """Download `fn` if missing, then stop unless it is gzip CSV with every column in COLUMNS[kind]."""
+    path = rc.download(url, os.path.join(SCRATCH, fn), headers={"Accept": accept}, timeout=900)
+    try:
+        with gzip.open(path, "rt", encoding="utf-8", newline="") as f:
+            header = next(csv.reader(f), [])
+    except (OSError, EOFError, UnicodeDecodeError) as e:
+        sys.exit(f"Brreg {fn}: not a gzip CSV ({e!r}) -- nothing written")
+    missing = [c for c in COLUMNS[kind] if c not in header]
+    if missing:
+        sys.exit(f"Brreg {fn}: missing column(s) {missing} -- the file layout changed, nothing written")
+    return path
+
+
 def codes(r):
     return [c for c in (r.get("naeringskode1.kode"), r.get("naeringskode2.kode"), r.get("naeringskode3.kode")) if c]
 
@@ -75,18 +111,26 @@ def title(s):
 
 
 def main():
-    nsr = {e["external_id"] for e in json.load(open(os.path.join(rc.REPO, "new_resources_nsr.json")))} \
-        if os.path.exists(os.path.join(rc.REPO, "new_resources_nsr.json")) else set()
+    nsr_path = os.path.join(rc.REPO, "new_resources_nsr.json")
+    if not os.path.exists(nsr_path):
+        sys.exit("new_resources_nsr.json is missing: run tools/nsr_fetch.py first (its schools are skipped here)")
+    nsr = {e["external_id"] for e in json.load(open(nsr_path, encoding="utf-8"))}
+    if not nsr:
+        sys.exit("new_resources_nsr.json is empty: re-run tools/nsr_fetch.py first (its schools are skipped here)")
+    paths = {kind: fetch_and_check(kind, fn, url, accept) for kind, fn, _, url, accept in FILES}
     hits, parents, parent_form = {}, {}, {}   # orgnr -> (row, kind, why)
+    flag_values, scanned = {c: set() for c in STATUS_COLS}, []
 
-    for kind, fn, pre in (("sub", "underenheter.csv.gz", "beliggenhetsadresse"), ("legal", "enheter.csv.gz", "forretningsadresse")):
+    for kind, fn, pre, _, _ in FILES:
         n = 0
-        for r in rows(os.path.join(SCRATCH, fn)):
+        for r in rows(paths[kind]):
             n += 1
             org, form = r["organisasjonsnummer"], r["organisasjonsform.kode"]
             if kind == "legal":
                 parents[org] = r["navn"]
                 parent_form[org] = form
+                for c in STATUS_COLS:
+                    flag_values[c].add(r.get(c))
                 if r.get("konkurs") == "true" or r.get("underAvvikling") == "true" or r.get("underTvangsavviklingEllerTvangsopplosning") == "true":
                     continue
             elif r.get("nedleggelsesdato"):
@@ -104,6 +148,13 @@ def main():
             if why:
                 hits[org] = (r, kind, why, code, pre)
         print(f"{fn}: {n} rows scanned, {len(hits)} hits so far")
+        scanned.append(f"{n} {fn.split('.')[0]}")
+    # a renamed value would let bankrupt / dissolving units through unnoticed
+    bad = {c: sorted(str(v) for v in vals - {"true", "false", "", None})[:5] for c, vals in flag_values.items()}
+    bad = {c: v for c, v in bad.items() if v or "true" not in flag_values[c]}
+    if bad:
+        sys.exit(f"Brreg enheter.csv.gz: unexpected status values {bad} (expected true/false, some true) -- nothing written")
+    rc.STATUS["input"] = "Brreg bulk " + ", ".join(scanned) + " rows"
 
     # sub-units of sole proprietorships are people's businesses (names like "Tegnspråktolk <Person>"): drop them
     for org in [o for o, h in hits.items() if h[1] == "sub" and parent_form.get(h[0].get("overordnetEnhet")) in SKIP_FORMS]:

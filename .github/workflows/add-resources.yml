@@ -1,39 +1,136 @@
-name: Daily Resource Adder
+# Refreshes ONE official registry source per run (tools/refresh_sources.json), most overdue first, and commits
+# only data/ (plus the README/index.html "N+" count copy when the rounded figure changes). Every guard lives in
+# tools/refresh_source.py: a short, partial, misrouted or oversized result fails the run and nothing is committed.
+# How it works, how to add a source and how to run it locally: HANDOFF.md "Scheduled registry refresh".
+name: Registry refresh
+run-name: Registry refresh · ${{ inputs.source || 'scheduled' }}${{ (inputs.dry_run == true || inputs.dry_run == 'true') && ' (dry run)' || '' }}
 
 on:
   schedule:
-    - cron: '0 9 * * *'   # every day at 9:00 AM UTC
-  workflow_dispatch:        # also lets you trigger it manually from the Actions tab
+    - cron: '17 9 * * *'   # daily; GitHub often starts scheduled runs hours late, the rotation catches up
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source name from tools/refresh_sources.json, or "scheduled" for the rotation'
+        type: string
+        default: scheduled
+      dry_run:
+        description: 'Fetch, merge and check everything, but leave data/ untouched and commit nothing'
+        type: boolean
+        default: false
+      allow_drop:
+        description: 'Accept a large row drop (relaxes min_rows, the max-drop and the survivor floors only)'
+        type: boolean
+        default: false
+      allow_change:
+        description: 'Accept many changed rows (relaxes the growth, fill-rate, mojibake and changed-rows guards)'
+        type: boolean
+        default: false
 
 permissions:
-  contents: write           # needed so the built-in GITHUB_TOKEN can push commits
+  contents: write   # push the data commit
+  pages: write      # request a Pages build if the push did not start one
+  actions: read     # look up the Pages build run
+
+concurrency:
+  group: registry-refresh
+  cancel-in-progress: false
 
 jobs:
-  add-resources:
-    runs-on: ubuntu-latest
-
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      # Scheduled runs get no inputs at all, so every input needs a default here.
+      SOURCE: ${{ inputs.source || 'scheduled' }}
+      DRY_RUN: ${{ inputs.dry_run == true || inputs.dry_run == 'true' }}
+      ALLOW_DROP: ${{ inputs.allow_drop == true || inputs.allow_drop == 'true' }}
+      ALLOW_CHANGE: ${{ inputs.allow_change == true || inputs.allow_change == 'true' }}
+      PYTHONUNBUFFERED: '1'
+      # Geocode caches (speed only; refreshes reuse the coordinates already in data/) and the rotation state.
+      CACHE_PATHS: |
+        tools/*_scratch/*cache*.jsonl
+        tools/refresh_scratch/state.json
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests
+        run: python -m pip install --disable-pip-version-check -r tools/requirements-refresh.txt
 
-      - name: Run resource adder
-        run: python add_resources.py
+      - name: Check the source registry
+        run: python tools/refresh_source.py --check
 
-      - name: Commit and push if anything changed
+      - name: Restore geocode caches and rotation state
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CACHE_PATHS }}
+          key: refresh-cache-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: refresh-cache-
+
+      - name: Note a cache miss
+        if: steps.cache.outputs.cache-matched-key == ''
+        run: echo "⚠ No cache restored on this branch: every source counts as due and geocode caches start empty." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Pick the source
+        id: pick
+        run: python tools/refresh_source.py --pick "$SOURCE"
+
+      - name: Refresh
+        id: refresh
+        if: steps.pick.outputs.source != 'none'
+        timeout-minutes: 60
+        env:
+          PICKED: ${{ steps.pick.outputs.source }}
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add community_resources.json
-          # Only commit if the file actually changed
-          git diff --cached --quiet || git commit -m "chore: add 50 new autism resources [$(date -u +%Y-%m-%d)]"
-          git push
+          args=(--source "$PICKED")
+          if [ "$DRY_RUN" = true ]; then args+=(--dry-run); fi
+          if [ "$ALLOW_DROP" = true ]; then args+=(--allow-drop); fi
+          if [ "$ALLOW_CHANGE" = true ]; then args+=(--allow-change); fi
+          python tools/refresh_source.py "${args[@]}"
+
+      - name: Commit and push
+        id: commit
+        if: steps.refresh.outputs.status == 'changed' && env.DRY_RUN != 'true'
+        env:
+          PICKED: ${{ steps.pick.outputs.source }}
+        run: bash tools/refresh_commit.sh
+
+      - name: Make sure GitHub Pages rebuilds
+        if: steps.commit.outcome == 'success' && github.ref_name == github.event.repository.default_branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sha=$(git rev-parse HEAD)
+          for i in $(seq 1 18); do
+            n=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$sha&per_page=20" \
+                  --jq '[.workflow_runs[] | select(.name == "pages-build-deployment")] | length' || echo 0)
+            if [ "${n:-0}" -gt 0 ]; then echo "Pages build started for $sha"; exit 0; fi
+            sleep 10
+          done
+          echo "No Pages build for $sha after 3 minutes; requesting one."
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds"
+          echo "⚠ Pages did not start a build for the bot push; one was requested through the API." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record the outcome in the rotation state
+        if: always() && steps.pick.outputs.source != '' && steps.pick.outputs.source != 'none'
+        env:
+          PICKED: ${{ steps.pick.outputs.source }}
+          PUSH_RESULT: ${{ steps.commit.outcome }}
+        run: |
+          args=(--record --picked "$PICKED" --push-result "${PUSH_RESULT:-skipped}")
+          if [ "$DRY_RUN" = true ]; then args+=(--dry-run); fi
+          python tools/refresh_source.py "${args[@]}"
+
+      - name: Save geocode caches and rotation state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CACHE_PATHS }}
+          key: refresh-cache-${{ github.run_id }}-${{ github.run_attempt }}

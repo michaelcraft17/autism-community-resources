@@ -14,8 +14,11 @@
 #                              if that env var is set, skipped silently otherwise)
 #
 # This script NEVER commits or pushes. It only refreshes the working tree and
-# leaves the diff for a human (or a Claude session) to review before `git commit`,
-# per this repo's standing rule that commits/pushes are never automatic.
+# leaves the diff for a human (or a Claude session) to review before `git commit`.
+# It covers the older name-search fetchers whose rows carry no external_id. The
+# official registries with external_ids are refreshed by the "Registry refresh"
+# GitHub Action instead (tools/refresh_source.py), the one automatic commit path
+# the standing rules allow -- see HANDOFF.md "Scheduled registry refresh".
 
 set -uo pipefail
 export PATH="/opt/homebrew/bin:/opt/anaconda3/bin:/usr/local/bin:$PATH"
