@@ -435,6 +435,8 @@ class Refresh:
                               "around. Nothing was merged.", status="refused")
             if r.returncode:
                 raise Fail(1, f"{cmd[0]} exited with code {r.returncode}")
+        for ex in agg["transient_examples"][:10]:   # the log is the only place a CI failure can be read
+            print(f"[refresh] transient failure: {ex}", flush=True)
         self.o.update(fetch_s=round(time.monotonic() - t0), nominatim_new=agg["nominatim_new"],
                       official_new=agg["official_new"],
                       prior_reused=agg["prior_reused"], transient=dict(agg["transient"]),

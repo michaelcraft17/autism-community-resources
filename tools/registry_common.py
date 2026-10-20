@@ -408,6 +408,7 @@ class Kartverket:
                     pass
 
     refused = False
+    _consecutive_failures = 0
 
     def _failed(self, key, e):
         """A 400/404 is a miss for this run only (never persisted, so an endpoint-wide error can't poison the
@@ -418,8 +419,17 @@ class Kartverket:
         elif kind == "miss":
             self.cache[key] = None
         else:
+            Kartverket._consecutive_failures += 1
             note_failure("kartverket", f"{key}: {e!r}")
         return None
+
+    @staticmethod
+    def _circuit_open(key):
+        """After 10 failed calls in a row the service is down or struggling: stop waiting a minute per row."""
+        if Kartverket._consecutive_failures >= 10:
+            note_failure("kartverket", f"circuit open, skipped {key}")
+            return True
+        return False
 
     def _remember(self, key, val):
         self.cache[key] = val
@@ -435,7 +445,7 @@ class Kartverket:
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
-        if Kartverket.refused or not official_lookup_allowed():
+        if Kartverket.refused or Kartverket._circuit_open(key) or not official_lookup_allowed():
             return None
         params = {"sok": street, "treffPerSide": 1, "utkoordsys": 4258}
         if postcode:
@@ -446,6 +456,7 @@ class Kartverket:
             d = json.loads(get("https://ws.geonorge.no/adresser/v1/sok?" + urllib.parse.urlencode(params), delay=0.12, timeout=30, retries=2))
         except Exception as e:  # noqa: BLE001
             return self._failed(key, e)
+        Kartverket._consecutive_failures = 0
         hits = d.get("adresser") or []
         p = hits[0].get("representasjonspunkt") if hits else None
         return self._remember(key, [p["lat"], p["lon"]] if p else None)
@@ -455,12 +466,13 @@ class Kartverket:
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
-        if Kartverket.refused or not official_lookup_allowed():
+        if Kartverket.refused or Kartverket._circuit_open(key) or not official_lookup_allowed():
             return None
         try:
             d = json.loads(get(f"https://ws.geonorge.no/kommuneinfo/v1/kommuner/{muni_nr}", delay=0.12, timeout=30, retries=2))
         except Exception as e:  # noqa: BLE001
             return self._failed(key, e)
+        Kartverket._consecutive_failures = 0
         c = (d.get("punktIOmrade") or {}).get("coordinates")
         return self._remember(key, [c[1], c[0]] if c else None)
 
