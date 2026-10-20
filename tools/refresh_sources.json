@@ -57,7 +57,7 @@
         {"prefix": "ny-opwdd", "source": "New York OPWDD provider agencies (data.ny.gov)", "breadth": "core", "min_rows": 320},
         {"prefix": "oh-dodd", "source": "Ohio Department of Developmental Disabilities certified providers (DODD)", "breadth": "core", "min_rows": 1900}
       ],
-      "raw": ["tools/dd_scratch/ohio_rows.json"],
+      "raw": ["tools/dd_scratch/ohio_rows.json", "tools/dd_scratch/ohio_rows.json.part"],
       "caches": []
     },
     {
@@ -71,7 +71,7 @@
       "groups": [
         {"prefix": "nces", "source": "US NCES Common Core of Data (Urban Institute Education Data API) - public special-education schools", "breadth": "core", "min_rows": 1400}
       ],
-      "raw": ["tools/us_ccd_scratch/ccd_*.json"],
+      "raw": ["tools/us_ccd_scratch/ccd_*.json", "tools/us_ccd_scratch/ccd_*.json.part"],
       "caches": []
     },
     {

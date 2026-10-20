@@ -758,6 +758,10 @@ class Refresh:
                 if os.path.exists(first) and read_json(first).get("source") == self.src["name"]:
                     self.o["input"] = read_json(first).get("input", []) + ["re-applied after a push race"]
             self.load_outputs()
+            prev = state.get("last_input")
+            if agg and prev and agg["input"] and agg["input"] != prev:
+                self.warnings.append(f"input changed since the last successful refresh: {'; '.join(prev)} -> "
+                                     f"{'; '.join(agg['input'])} (an older year or file would mean a fallback)")
             if agg:
                 if agg["budget_skipped"]:
                     tries = state.get("warm_attempts", 0) + 1
@@ -967,6 +971,8 @@ def cmd_record(push_result, dry_run, picked=None):
     s.update(last_attempt=day.isoformat(), last_status=status)
     if status in ("changed", "unchanged"):
         s.update(last_success=day.isoformat(), fails=0, warm_attempts=0)
+        if o.get("input") and "outputs reused (--skip-fetch)" not in o["input"]:
+            s["last_input"] = o["input"]
         s.pop("cooldown_until", None)
     elif status == "warming":
         s["warm_attempts"] = s.get("warm_attempts", 0) + 1

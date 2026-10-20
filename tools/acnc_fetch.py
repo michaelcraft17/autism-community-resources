@@ -11,8 +11,9 @@ syndrome or Disability sports. Charities whose only disability program is "Housi
 merged (a charity's business address is sometimes a person's home; see HANDOFF). The 16k charities that merely tick the
 "People with Disabilities" beneficiary box are the large noisy set and are not merged.
 Program operating locations in the file are region-level ("Western Australia"), so the register's business address is
-geocoded instead (Nominatim, cached; street, then suburb + postcode, then postcode). A row whose address text is unchanged
-keeps the coordinates the dataset already holds (rc.prior_coords), so a refresh only geocodes new or changed addresses.
+geocoded instead (Nominatim, cached; street, then suburb + postcode, then postcode; a lookup that fails rather than
+misses drops the row instead of falling back). A row whose address text is unchanged keeps the coordinates the dataset
+already holds (rc.prior_coords), so a refresh only geocodes new or changed addresses.
 Grant-making trusts and rows without an address are dropped before any lookup.
 
 Output: new_resources_acnc.json
@@ -86,12 +87,17 @@ def main():
         addr = ", ".join(x for x in (street if not po else "", f"{town} {state} {pc}".strip(), "Australia") if x)
         eid = f"au-abn:{abn}"
         # coordinates already in the dataset for this unchanged address, else Nominatim (the address text does not
-        # depend on which lookup hits)
-        hit = rc.prior_coords(eid, addr)
+        # depend on which lookup hits). A lookup that could not be made (network error, budget) drops the row for a
+        # later run instead of falling back to the town, whose centroid prior_coords would then keep.
+        hit, failed = rc.prior_coords(eid, addr), False
         if not hit and street and not po:
             hit = geoc.geocode(f"{street}, {town}, {STATE_NAME.get(state, state)} {pc}, Australia")
-        if not hit:
-            hit = geoc.geocode(f"{town}, {STATE_NAME.get(state, state)} {pc}, Australia") or geoc.geocode(f"{pc}, Australia")
+            failed = geoc.last_failed
+        if not hit and not failed:
+            hit = geoc.geocode(f"{town}, {STATE_NAME.get(state, state)} {pc}, Australia")
+            failed = geoc.last_failed
+        if not hit and not failed:
+            hit = geoc.geocode(f"{pc}, Australia")
         if not hit or not rc.plausible("AU", hit[0], hit[1]):
             nogeo += 1
             continue

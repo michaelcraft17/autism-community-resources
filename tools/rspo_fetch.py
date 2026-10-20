@@ -195,7 +195,9 @@ def main():
             # coordinates already in the dataset for this unchanged address when they pass the check, else Nominatim
             hit = rc.prior_coords(eid, addr)
             if not (hit and rc.plausible("PL", *hit) and (not m or km(m, hit) <= 100)):
-                hit = geoc.geocode(q) or geoc.geocode(f"{r['zip']} {r['city']}, Poland")
+                hit = geoc.geocode(q)
+                if not hit and not geoc.last_failed:   # a lookup that could not be made: drop, retry next run
+                    hit = geoc.geocode(f"{r['zip']} {r['city']}, Poland")
             if hit and rc.plausible("PL", *hit) and (not m or km(m, hit) <= 100):
                 lat, lng = hit
                 regeo += 1

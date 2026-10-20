@@ -5,6 +5,7 @@ New Zealand -- Charities Services register, OData v2 (keyless, plain HTTP): http
 Selection: RegistrationStatus 'Registered' and MainSectorId eq 5 ("People with disabilities"), plus any registered charity
 whose name matches an autism / neurodevelopmental term. Officers are never read. Street address, suburb, city and
 postcode are geocoded with Nominatim (cached): street first, then suburb/city; PO-Box-only charities are placed by city.
+A lookup that fails rather than misses (network error, budget) drops the row instead of falling back to a coarser one.
 Rows the name / purpose / address filters drop are dropped before any lookup, and a row whose address text is unchanged
 keeps the coordinates the dataset already holds (rc.prior_coords), so a refresh only geocodes new or changed addresses.
 Output: new_resources_nz_charities.json
@@ -71,12 +72,17 @@ def main():
         addr = ", ".join(x for x in ((st if not po else ""), (st2 if not po else ""), sub, city, pc, "New Zealand") if x)
         eid = f"nz-cc:{r.get('CharityRegistrationNumber')}"
         # coordinates already in the dataset for this unchanged address, else Nominatim (the address text does not
-        # depend on which lookup hits)
-        hit = rc.prior_coords(eid, addr)
+        # depend on which lookup hits). A lookup that could not be made (network error, budget) drops the row for a
+        # later run instead of falling back to the suburb/city, whose centroid prior_coords would then keep.
+        hit, failed = rc.prior_coords(eid, addr), False
         if not hit and st and not po:
             hit = geoc.geocode(", ".join(x for x in (st, sub, city, pc, "New Zealand") if x))
-        if not hit:
-            hit = geoc.geocode(", ".join(x for x in (sub, city, "New Zealand") if x)) or geoc.geocode(f"{city}, New Zealand")
+            failed = geoc.last_failed
+        if not hit and not failed:
+            hit = geoc.geocode(", ".join(x for x in (sub, city, "New Zealand") if x))
+            failed = geoc.last_failed
+        if not hit and not failed:
+            hit = geoc.geocode(f"{city}, New Zealand")
         if not hit or not rc.plausible("NZ", hit[0], hit[1]):
             nogeo += 1
             continue
