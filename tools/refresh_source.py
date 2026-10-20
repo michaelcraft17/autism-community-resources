@@ -825,6 +825,8 @@ class Refresh:
                       + (f" · count copy {o['count_copy']['from']}+ → {o['count_copy']['to']}+" if o.get("count_copy") else ""))
         else:
             detail = o["message"]
+        if o.get("input"):
+            detail += " · input: " + "; ".join(o["input"])
         line = f"**Registry refresh** · `{o['source']}`{tag} · **{st}** · {detail} · {fmt_dur(o['duration_s'])}"
         if self.warnings:
             line += " · ⚠ " + "; ".join(self.warnings)
