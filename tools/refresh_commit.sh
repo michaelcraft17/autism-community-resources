@@ -9,6 +9,7 @@
 set -euo pipefail
 : "${PICKED:?PICKED (source name) is required}"
 BRANCH="${GITHUB_REF_NAME:?GITHUB_REF_NAME (branch) is required}"
+[[ "${GITHUB_REF:-refs/heads/$BRANCH}" == refs/heads/* ]] || { echo "::error::not a branch ref: $GITHUB_REF"; exit 1; }
 OUTCOME=tools/refresh_scratch/outcome.json
 MSG=tools/refresh_scratch/commit_message.txt
 
@@ -43,8 +44,10 @@ if git push origin "HEAD:refs/heads/$BRANCH"; then
 fi
 
 echo "Push rejected: $BRANCH moved. Re-applying the refresh on top of it and trying once more."
+cp "$OUTCOME" tools/refresh_scratch/outcome_first.json   # keeps the fetched input (file/date/year) for the message
 git fetch --depth=1 origin "$BRANCH"
 git reset -q --hard FETCH_HEAD
+rm -f community_resources.json   # gitignored, so the reset kept the pre-reset join; rebuilt from the new head
 args=(--source "$PICKED" --skip-fetch)
 if [ "${ALLOW_DROP:-false}" = true ]; then args+=(--allow-drop); fi
 if [ "${ALLOW_CHANGE:-false}" = true ]; then args+=(--allow-change); fi
@@ -57,3 +60,4 @@ fi
 [ "$status" = changed ] || { echo "::error::re-applied refresh ended with status $status"; exit 1; }
 stage_and_commit
 git push origin "HEAD:refs/heads/$BRANCH"
+rm -f tools/refresh_scratch/outcome_first.json

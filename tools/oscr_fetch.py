@@ -15,8 +15,8 @@ counted with rc.note_failure, or just printed when postcodes.io does not know th
 lookups are made once per code per run. A failed bulk postcode request stops the run (nothing is written).
 
 Raw files (tools/oscr_scratch/, gitignored): oscr.zip (the download) and the CharityExport*.csv unzipped from it; an
-existing CSV is used as is (tools/refresh_source.py deletes both before each fetch). The CSV name is printed and
-recorded as rc.STATUS["input"].
+existing CSV is used as is (tools/refresh_source.py deletes both before each fetch), and the run stops if there is none
+after unzipping. The CSV name is printed and recorded as rc.STATUS["input"].
 Output: new_resources_oscr.json
 """
 import csv
@@ -27,6 +27,7 @@ import re
 import subprocess
 import sys
 import urllib.error
+import urllib.parse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import registry_common as rc  # noqa: E402
@@ -50,21 +51,21 @@ _OUTCODES = {}   # outward code -> (lat, lng), None when postcodes.io does not k
 
 
 def outcode_lookup(oc):
-    """Outward-code centroid, looked up once per code per run. None for an unknown outward code (404, printed);
-    raises LookupFailed for any other failure, on every call for that code, so each affected row is counted.
+    """Outward-code centroid, looked up once per code per run. None for an unknown outward code (404, or 400/410,
+    printed); raises LookupFailed for any other failure, on every call for that code, so each affected row is counted.
     A refusal (401/403/451) is recorded by rc.get and stops the run."""
     if oc not in _OUTCODES:
-        try:
-            r = json.loads(rc.get(f"https://api.postcodes.io/outcodes/{oc}", delay=0.3))["result"]
+        try:   # quoted: a stray non-ASCII or control character in a free-text postcode is a 404, not a client error
+            r = json.loads(rc.get(f"https://api.postcodes.io/outcodes/{urllib.parse.quote(oc, safe='')}", delay=0.3))["result"]
             _OUTCODES[oc] = (r["latitude"], r["longitude"])
         except urllib.error.HTTPError as e:
             if e.code in rc.REFUSAL_CODES:
                 raise
-            _OUTCODES[oc] = None if e.code == 404 else repr(e)
+            _OUTCODES[oc] = None if e.code in (400, 404, 410) else repr(e)
         except Exception as e:  # noqa: BLE001
             _OUTCODES[oc] = repr(e)
         if _OUTCODES[oc] is None:
-            print(f"  unknown outward code {oc} (404)")
+            print(f"  unknown outward code {oc} (not found)")
     c = _OUTCODES[oc]
     if isinstance(c, str):
         raise LookupFailed(f"outcode {oc}: {c}")
@@ -110,7 +111,10 @@ def main():
         rc.download(URL, os.path.join(SCRATCH, "oscr.zip"))
         subprocess.run(["unzip", "-o", "-q", os.path.join(SCRATCH, "oscr.zip"), "-d", SCRATCH], check=True)
     csv.field_size_limit(10**8)
-    path = sorted(glob.glob(os.path.join(SCRATCH, "CharityExport*.csv")))[-1]
+    found = sorted(glob.glob(os.path.join(SCRATCH, "CharityExport*.csv")))
+    if not found:
+        sys.exit("OSCR: no CharityExport*.csv in tools/oscr_scratch/ after unzipping oscr.zip -- nothing written")
+    path = found[-1]
     print(f"OSCR: using {os.path.basename(path)}")
     rc.STATUS["input"] = f"OSCR {os.path.basename(path)}"
     rows = [r for r in csv.DictReader(open(path, encoding="utf-8-sig", errors="replace"))]

@@ -67,6 +67,8 @@ def main():
         time.sleep(pause)
         try:
             d = rc.get_json(f"{BASE}/{code}", headers=HDR, timeout=60)["data"]["attributes"]
+            if not isinstance(d, dict):
+                raise ValueError(f"attributes is {type(d).__name__}, not an object")
         except Exception as e:  # noqa: BLE001
             http = getattr(e, "code", None)
             if http in rc.REFUSAL_CODES:   # rc.get has recorded the refusal

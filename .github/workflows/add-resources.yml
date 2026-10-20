@@ -32,8 +32,9 @@ permissions:
   pages: write      # request a Pages build if the push did not start one
   actions: read     # look up the Pages build run
 
+# One run per branch at a time. A newly queued run replaces a pending one, so start manual runs one at a time.
 concurrency:
-  group: registry-refresh
+  group: registry-refresh-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -76,7 +77,8 @@ jobs:
 
       - name: Note a cache miss
         if: steps.cache.outputs.cache-matched-key == ''
-        run: echo "⚠ No cache restored on this branch: every source counts as due and geocode caches start empty." >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo "⚠ No cache restored on this branch, so every source counts as due and geocode caches start empty." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Pick the source
         id: pick
@@ -97,20 +99,21 @@ jobs:
 
       - name: Commit and push
         id: commit
-        if: steps.refresh.outputs.status == 'changed' && env.DRY_RUN != 'true'
+        if: steps.refresh.outputs.status == 'changed' && env.DRY_RUN != 'true' && github.ref_type == 'branch'
         env:
           PICKED: ${{ steps.pick.outputs.source }}
         run: bash tools/refresh_commit.sh
 
       - name: Make sure GitHub Pages rebuilds
-        if: steps.commit.outcome == 'success' && github.ref_name == github.event.repository.default_branch
+        # Scheduled runs only fire on the default branch, and their event payload has no repository object.
+        if: steps.commit.outcome == 'success' && (github.event_name == 'schedule' || github.ref_name == github.event.repository.default_branch)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           sha=$(git rev-parse HEAD)
           for i in $(seq 1 18); do
             n=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$sha&per_page=20" \
-                  --jq '[.workflow_runs[] | select(.name == "pages-build-deployment")] | length' || echo 0)
+                  --jq '[.workflow_runs[] | select(.path == "dynamic/pages/pages-build-deployment")] | length' || echo 0)
             if [ "${n:-0}" -gt 0 ]; then echo "Pages build started for $sha"; exit 0; fi
             sleep 10
           done

@@ -372,6 +372,13 @@ class Refresh:
         self.o["total_before"] = len(self.d0)
         log(f"{self.src['name']}: {len(self.old)} current rows in {len(self.old_groups)} group(s); dataset {len(self.d0):,}")
 
+    def drop_outputs(self):
+        """A fetch that can't be merged (refused, crashed, partial) must not leave outputs for a later --skip-fetch."""
+        for out in self.src["outputs"]:
+            path = os.path.join(REPO, out)
+            if os.path.exists(path):
+                os.remove(path)
+
     # 2 ─ fetch
     def fetch(self):
         src = self.src
@@ -403,6 +410,7 @@ class Refresh:
                 r = run([sys.executable, *[os.path.join(REPO, c) if j == 0 else c for j, c in enumerate(cmd)]],
                         cwd=REPO, env=env, timeout=left)
             except subprocess.TimeoutExpired:
+                self.drop_outputs()
                 raise Fail(1, f"{cmd[0]} hit the {src['timeout_minutes']}-minute fetch limit") from None
             st = None
             if os.path.exists(sf):
@@ -414,8 +422,11 @@ class Refresh:
                 agg["transient_examples"] += st.get("transient_examples", [])
                 if st.get("input"):
                     agg["input"].append(st["input"])
+                self.warnings.extend(f"{os.path.basename(cmd[0])}: {w}" for w in st.get("warnings", []))
             else:
                 self.warnings.append(f"{cmd[0]} wrote no status file")
+            if agg["refused"] or r.returncode:
+                self.drop_outputs()
             if agg["refused"]:
                 hosts = ", ".join(sorted({f"{x['host']} ({x['code']})" for x in agg["refused"]}))
                 raise Fail(1, f"refused by {hosts}: a block, WAF, CAPTCHA or rate-limit ban is reported, not worked "
@@ -563,6 +574,10 @@ class Refresh:
             if not a.allow_change and old_n >= 20 and subst[k] * 100 / old_n > src["max_changed_pct"]:
                 problems.append(f"{g['label']}: {subst[k]} of {old_n} rows changed name/address/location/contact/category "
                                 f"(> {src['max_changed_pct']}%) -- a parser change? (--allow-change to accept)")
+            gone = sum(1 for e in self.old_groups.get(k, []) if e["external_id"] not in S)
+            if not a.allow_change and old_n >= 20 and gone * 100 / old_n > src["max_changed_pct"]:
+                problems.append(f"{g['label']}: {gone} of {old_n} current ids are gone (> {src['max_changed_pct']}%) -- "
+                                "re-keyed ids or a broken filter? (--allow-change to accept)")
         if problems:
             raise Fail(2, "change guard: " + " | ".join(problems))
         for row in self.o.get("groups", []):
@@ -677,6 +692,8 @@ class Refresh:
         for f in sorted(changed | removed) + ["manifest.json"]:
             os.makedirs(os.path.dirname(os.path.join(backup, f)), exist_ok=True)
             shutil.copy2(os.path.join(DATA, f), os.path.join(backup, f))
+        for path in edits:
+            shutil.copy2(path, os.path.join(backup, "_copy_" + os.path.basename(path)))
         try:
             for f in sorted(changed | added):
                 os.makedirs(os.path.dirname(os.path.join(DATA, f)), exist_ok=True)
@@ -689,16 +706,21 @@ class Refresh:
                     raise OSError(f"data/{f} does not match the checked split output")
             if any(os.path.exists(os.path.join(DATA, f)) for f in removed):
                 raise OSError("a removed shard is still in data/")
-        except Exception as e:  # noqa: BLE001 -- restore, then report
+            for path, text in edits.items():
+                with open(path + ".tmp", "w", encoding="utf-8") as f:
+                    f.write(text)
+                os.replace(path + ".tmp", path)
+        except BaseException as e:  # noqa: BLE001 -- restore on any error or interruption, then report
             for f in added:
                 if os.path.exists(os.path.join(DATA, f)):
                     os.remove(os.path.join(DATA, f))
             for f in sorted(changed | removed) + ["manifest.json"]:
                 shutil.copyfile(os.path.join(backup, f), os.path.join(DATA, f))
+            for path in edits:
+                shutil.copyfile(os.path.join(backup, "_copy_" + os.path.basename(path)), path)
+            if not isinstance(e, Exception):
+                raise
             raise Fail(1, f"copying into data/ failed ({e}); data/ restored from the backup") from None
-        for path, text in edits.items():
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(text)
         if bump:
             log(f"static count copy: {bump['from']}+ -> {bump['to']}+ (README.md, index.html)")
         shutil.rmtree(backup, ignore_errors=True)
@@ -716,6 +738,8 @@ class Refresh:
             lines.append("Changed fields: " + ", ".join(f"{k} {v}" for k, v in sorted(o["changed_by_field"].items())))
         if o.get("count_copy"):
             lines.append(f"Static count copy: {o['count_copy']['from']}+ -> {o['count_copy']['to']}+")
+        if self.warnings:
+            lines.append("Warnings: " + "; ".join(self.warnings))
         if o.get("run_url"):
             lines.append(f"Run: {o['run_url']}")
         return "\n".join(lines) + "\n"
@@ -730,19 +754,25 @@ class Refresh:
             else:
                 agg = None
                 self.o["input"] = ["outputs reused (--skip-fetch)"]
+                first = os.path.join(SCRATCH, "outcome_first.json")   # written by refresh_commit.sh before a re-apply
+                if os.path.exists(first) and read_json(first).get("source") == self.src["name"]:
+                    self.o["input"] = read_json(first).get("input", []) + ["re-applied after a push race"]
             self.load_outputs()
             if agg:
                 if agg["budget_skipped"]:
                     tries = state.get("warm_attempts", 0) + 1
                     if tries >= self.src["max_warm_attempts"]:
+                        self.drop_outputs()
                         raise Fail(1, f"still geocoding after {tries} runs ({agg['budget_skipped']} lookups left over "
                                       f"the {self.src['nominatim_max_new']}/run budget)")
+                    self.drop_outputs()
                     self.o.update(status="warming", message=f"{agg['nominatim_new']} new Nominatim lookups, "
                                   f"{agg['budget_skipped']} left for the next run (attempt {tries}); nothing merged")
                     return 0
                 n_tr = sum(agg["transient"].values())
                 tol = max(self.src["transient_min"], math.ceil(len(self.fetched) * self.src["transient_pct"] / 100))
                 if n_tr > tol:
+                    self.drop_outputs()
                     raise Fail(1, f"{n_tr} transient fetch failures (> {tol} tolerated) {dict(agg['transient'])}: the "
                                   "output may be partial, so nothing was merged; it is retried after a cooldown",
                                status="transient")
@@ -961,7 +991,8 @@ def main():
     ap.add_argument("--skip-fetch", action="store_true", help="reuse the new_resources_*.json files already on disk")
     ap.add_argument("--dry-run", action="store_true", help="run every step and guard but leave data/ untouched")
     ap.add_argument("--allow-drop", action="store_true", help="relax the row-count floors (min_rows, max drop, survivors)")
-    ap.add_argument("--allow-change", action="store_true", help="relax the growth, fill-rate, mojibake and changed-rows guards")
+    ap.add_argument("--allow-change", action="store_true",
+                    help="relax the growth, fill-rate, mojibake, changed-rows and gone-ids guards")
     ap.add_argument("--force", action="store_true", help="overwrite a community_resources.json that differs from data/")
     ap.add_argument("--max-shard-mb", type=float)
     ap.add_argument("--max-total-drop-pct", type=float)

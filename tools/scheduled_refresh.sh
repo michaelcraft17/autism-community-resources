@@ -15,10 +15,11 @@
 #
 # This script NEVER commits or pushes. It only refreshes the working tree and
 # leaves the diff for a human (or a Claude session) to review before `git commit`.
-# It covers the older name-search fetchers whose rows carry no external_id. The
-# official registries with external_ids are refreshed by the "Registry refresh"
-# GitHub Action instead (tools/refresh_source.py), the one automatic commit path
-# the standing rules allow -- see HANDOFF.md "Scheduled registry refresh".
+# It covers the older name-search fetchers whose rows carry no external_id. The 14
+# registries in tools/refresh_sources.json are refreshed by the "Registry refresh"
+# GitHub Action (tools/refresh_source.py), the one automatic commit path the
+# standing rules allow -- see HANDOFF.md "Scheduled registry refresh". Other
+# id-carrying sources are re-run by hand.
 
 set -uo pipefail
 export PATH="/opt/homebrew/bin:/opt/anaconda3/bin:/usr/local/bin:$PATH"
@@ -45,6 +46,10 @@ FETCHERS=(
   netherlands_anbi_fetch.py
 )
 
+# Merge only the new_resources_*.json files this run's fetchers write: a bare merge would also pick up
+# other tools' outputs left in the repo root (e.g. refresh_source.py's, or never-merged *_broad files).
+MARK=$(mktemp)
+
 {
   echo "=== Scheduled refresh started $(date) ==="
   echo "Resource count before: $BEFORE_COUNT"
@@ -62,7 +67,16 @@ FETCHERS=(
   fi
 
   echo "--- merge_new_resources.py ---"
-  python3 tools/merge_new_resources.py
+  NEW_FILES=()
+  for f in new_resources_*.json; do
+    [ "$f" -nt "$MARK" ] && NEW_FILES+=("$f")
+  done
+  if [ ${#NEW_FILES[@]} -gt 0 ]; then
+    python3 tools/merge_new_resources.py "${NEW_FILES[@]}"
+  else
+    echo "  no new outputs to merge"
+  fi
+  rm -f "$MARK"
 
   echo "--- split_by_region.py ---"
   python3 tools/split_by_region.py

@@ -228,6 +228,7 @@ class Geocoder:
 
     refused = False
     _consecutive_failures = 0
+    last_failed = False
 
     def __init__(self, cache_path, countrycodes=None):
         self.cache_path = cache_path
@@ -247,12 +248,17 @@ class Geocoder:
                     pass
 
     def geocode(self, q, countrycodes=None):
+        """(lat, lng) or None. After a None, self.last_failed tells a real miss (False) from a lookup that could not
+        be made (True: transient error, refusal, budget spent); callers then skip coarser fallbacks, so a row is
+        dropped and retried on a later run instead of being pinned at a town centroid that prior_coords would keep."""
+        self.last_failed = False
         if not q:
             return None
         key = q
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
+        self.last_failed = True
         if Geocoder.refused:
             return None
         if self.budget is not None and STATUS["nominatim_new"] >= self.budget:
@@ -265,7 +271,7 @@ class Geocoder:
         cc = countrycodes or self.countrycodes
         if cc:
             params["countrycodes"] = cc
-        res, ok, last = None, False, None
+        res, ok, last, persist = None, False, None, True
         for attempt in range(3):
             try:
                 data = json.loads(get(NOMINATIM + "?" + urllib.parse.urlencode(params), delay=1.05, timeout=30, retries=1, probe=True))
@@ -279,7 +285,7 @@ class Geocoder:
                     note_refusal("nominatim.openstreetmap.org", e.code, "usage policy: stopped all further lookups")
                     return None
                 if _http_kind(e) == "miss":
-                    ok = True   # a deterministic bad-query answer: cache it as a miss
+                    ok, persist = True, False   # a bad-query answer: a miss for this run only, retried next run
                     break
                 time.sleep(5 * (attempt + 1))
             except Exception as e:  # noqa: BLE001
@@ -291,10 +297,12 @@ class Geocoder:
             note_failure("nominatim", f"{q!r}: {last!r}")
             return None   # transient failure: don't cache a miss
         Geocoder._consecutive_failures = 0
+        self.last_failed = False
         self.cache[key] = res
-        self.fresh += 1
-        with open(self.cache_path, "a", encoding="utf-8") as f:
-            f.write(json.dumps({"q": q, "c": res}, ensure_ascii=False) + "\n")
+        if persist:
+            self.fresh += 1
+            with open(self.cache_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps({"q": q, "c": res}, ensure_ascii=False) + "\n")
         return tuple(res) if res else None
 
 
@@ -386,11 +394,18 @@ class Kartverket:
                 except Exception:  # noqa: BLE001
                     pass
 
+    refused = False
+
     def _failed(self, key, e):
-        """A deterministic 400/404 is cached as a miss; anything else is counted as transient and not cached."""
-        if _http_kind(e) == "miss":
-            return self._remember(key, None)
-        note_failure("kartverket", f"{key}: {e!r}")
+        """A 400/404 is a miss for this run only (never persisted, so an endpoint-wide error can't poison the
+        cache); a refusal stops every further call; anything else is counted as transient. Nothing is cached."""
+        kind = _http_kind(e)
+        if kind == "refused":
+            Kartverket.refused = True   # rc.get already recorded the refusal
+        elif kind == "miss":
+            self.cache[key] = None
+        else:
+            note_failure("kartverket", f"{key}: {e!r}")
         return None
 
     def _remember(self, key, val):
@@ -407,6 +422,8 @@ class Kartverket:
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
+        if Kartverket.refused:
+            return None
         params = {"sok": street, "treffPerSide": 1, "utkoordsys": 4258}
         if postcode:
             params["postnummer"] = postcode
@@ -425,6 +442,8 @@ class Kartverket:
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
+        if Kartverket.refused:
+            return None
         try:
             d = json.loads(get(f"https://ws.geonorge.no/kommuneinfo/v1/kommuner/{muni_nr}", delay=0.12, timeout=30, retries=2))
         except Exception as e:  # noqa: BLE001
@@ -436,6 +455,8 @@ class Kartverket:
 class MaaAmet:
     """Estonia's official address geocoder (Maa-amet in-ADS gazetteer), keyless; answers cached in a jsonl file.
     address(full_address) -> (lat, lng) or None. The service answers in L-EST97 (EPSG:3301)."""
+
+    refused = False
 
     def __init__(self, cache_path):
         from pyproj import Transformer
@@ -458,14 +479,20 @@ class MaaAmet:
         if text in self.cache:
             c = self.cache[text]
             return tuple(c) if c else None
+        if MaaAmet.refused:
+            return None
         try:
             d = json.loads(get("https://inaadress.maaamet.ee/inaadress/gazetteer?" + urllib.parse.urlencode({"address": text, "results": 1}),
                                delay=0.1, timeout=30, retries=2))
         except Exception as e:  # noqa: BLE001
-            if _http_kind(e) != "miss":
+            kind = _http_kind(e)
+            if kind == "refused":
+                MaaAmet.refused = True   # rc.get already recorded the refusal
+            elif kind == "miss":
+                self.cache[text] = None   # this run only; not persisted
+            else:
                 note_failure("maaamet", f"{text}: {e!r}")
-                return None
-            d = {}
+            return None
         hits = d.get("addresses") or []
         val = None
         if hits and hits[0].get("viitepunkt_x"):

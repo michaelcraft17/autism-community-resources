@@ -8,8 +8,8 @@ Norway: active special schools (skolekategori 12 "Spesialskole") from Udir's NSR
 Coordinates are in the detail record; a unit without one is geocoded with Kartverket and dropped if that fails too
 (rc counts transient Kartverket failures in rc.STATUS). external_id "no-org:<orgnr>" (same key the Brreg fetcher uses,
 which skips these organisation numbers, so run this first). Writes new_resources_nsr.json.
-Any failed list or detail request (after rc.get's retries) stops the run, as does an empty active list, so a partial
-file is never written. The active count is recorded as rc.STATUS["input"].
+Any failed list or detail request (after rc.get's retries) stops the run, as do a detail answer without Navn and an
+empty active list, so a partial file is never written. The active count is recorded as rc.STATUS["input"].
 """
 import json
 import os
@@ -32,6 +32,8 @@ def main():
     kv = rc.Kartverket(os.path.join(rc.REPO, "tools", "nsr_scratch", "kartverket_cache.jsonl"))
     for org in active:
         d = rc.get_json(f"https://data-nsr.udir.no/v4/enhet/{org}", timeout=60, delay=0.2)
+        if not isinstance(d, dict) or "Navn" not in d:   # an error body, not a unit record
+            sys.exit(f"NSR {org}: detail answer is not a unit record ({str(d)[:200]!r}) -- nothing written")
         k = d.get("Koordinat") or {}
         a = d.get("Beliggenhetsadresse") or {}
         lat, lng = k.get("Breddegrad"), k.get("Lengdegrad")

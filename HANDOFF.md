@@ -308,10 +308,10 @@ government/encyclopedic structured sources were ~95%+ clean):
   ~3.2GB bulk download, and Bulgaria's API-key-gated one unless `COMPANYBOOK_API_KEY` is set),
   then `merge_new_resources.py` and `node gen_community_data.js`, and logs to
   `tools/logs/refresh_<timestamp>.log`. **Never commits or pushes** — leaves the working-tree
-  diff for a human/Claude to review and commit by hand. (Since 2026-10-20 the id-carrying
-  official registries are refreshed by the "Registry refresh" GitHub Action instead, which is
-  the one scoped exception to the no-automatic-push rule; this script covers the older
-  name-search fetchers.) Zero
+  diff for a human/Claude to review and commit by hand. (Since 2026-10-20 the 14 registries
+  in `tools/refresh_sources.json` are refreshed by the "Registry refresh" GitHub Action, the one
+  scoped exception to the no-automatic-push rule. This script covers the older name-search
+  fetchers; the other id-carrying sources are re-run by hand.) Zero
   LLM/token cost per run (plain HTTP + JSON parsing). Not yet wired to any actual scheduler
   (cron/launchd) — that's a deliberate choice left to the site owner, since it would create
   uncommitted local changes unattended if run on a timer without someone reviewing the diff.
@@ -770,7 +770,8 @@ persistence guardrail, so cron was used instead.
     explicit instruction. See "Scheduled registry refresh" below.
 - **Never commit international/non-US data files without being asked specifically** to
   include them (this has since been done for the batch that's live now, but don't assume
-  future harvests should auto-merge).
+  future harvests should auto-merge). Exception: the Registry refresh Action's `data/` commits
+  described above, for the sources in `tools/refresh_sources.json` only.
 - Git identity isn't configured in this repo — every commit needs
   `git -c user.name="michaelcraft17" -c user.email="michaelcraft17@gmail.com" commit ...`.
 - Test locally before committing: `python3 -m http.server 8765` from the repo root, then
@@ -780,7 +781,7 @@ persistence guardrail, so cron was used instead.
   `gh api repos/michaelcraft17/autism-community-resources/pages/builds/latest --jq '.status+" "+(.commit[0:7])'`,
   then spot-check the live file with `curl -sk`. (Claude cloud sessions can't reach the `/pages`
   API path through their proxy; there, check the `pages-build-deployment` run for the commit:
-  `gh api "repos/michaelcraft17/autism-community-resources/actions/runs?head_sha=<sha>" --jq '.workflow_runs[]|select(.name=="pages-build-deployment")|.status+" "+.conclusion'`.)
+  `gh api "repos/michaelcraft17/autism-community-resources/actions/runs?head_sha=<sha>" --jq '.workflow_runs[]|select(.path=="dynamic/pages/pages-build-deployment")|.status+" "+.conclusion'`.)
 - `new_resources_*.json` files in the repo root are gitignored scratch/output from the
   fetch tools — present on disk for reference, safe to regenerate or delete, never committed
   directly (their content goes into `community_resources.json` via `merge_new_resources.py`
@@ -1360,7 +1361,9 @@ Entry-level guards alone can't see a 14% sub-source such as NY OPWDD vanish.
   - the fill rate of address, phone and website doesn't fall by more than 10 points;
   - mojibake (U+FFFD, `Ã`, `â€`) doesn't increase;
   - no more than 25% of a group changes its name, address, location, contact or category.
-    Description-only changes (pupil counts, unit counts) don't count.
+    Description-only changes (pupil counts, unit counts) don't count;
+  - no more than 25% of a group's current ids disappear, which catches a whole layer being
+    re-keyed or a broken filter that keeps the row count.
 - **Shards:**
   - each shard ≤ 45 MB;
   - only shards that hold the source's rows may change;
@@ -1373,7 +1376,7 @@ Entry-level guards alone can't see a 14% sub-source such as NY OPWDD vanish.
     due so it continues the next day with the cache kept.
 
 `--allow-drop` relaxes only the row-count floors. `--allow-change` relaxes only the growth,
-fill-rate, mojibake and changed-rows guards. The 1% total and the shard guards have no workflow
+fill-rate, mojibake, changed-rows and gone-ids guards. The 1% total and the shard guards have no workflow
 switch; locally, `--max-total-drop-pct` and `--max-shard-mb` override them.
 
 ### Fetcher fixes made for unattended runs
@@ -1449,4 +1452,22 @@ python3 tools/refresh_source.py --source stil --skip-fetch  # re-merge the new_r
 ```
 
 Locally, nothing is committed and the rotation state is not touched. `community_resources.json`
-is left equal to `join(data/)` after every run.
+is left equal to `join(data/)` after every run. Needs Python 3.11 or newer (pyproj 3.7.2).
+
+### Operating notes
+
+- **Retry a failed source now:** dispatch the workflow with `source=<name>`; a manual source
+  ignores the cooldown. "Re-run jobs" on a failed scheduled run picks again from the saved state,
+  so it skips the source that just failed.
+- **Start manual runs one at a time:** each branch has one concurrency group, and a newly queued
+  run replaces a pending one, including the day's scheduled run on `main`.
+- **Branch caches:** caches saved by runs on a feature branch are not visible to `main`. The
+  first runs on `main` start with empty geocode caches and an empty rotation state (every source
+  due). That is fine, because refreshes reuse the coordinates already in `data/`.
+- **Clear a bad geocode cache:** delete the `refresh-cache-*` entries (Actions → Caches, or
+  `gh cache delete --all`). HTTP-error misses are never written to the caches; only real "no
+  result" answers are.
+- **A fetch that can't be merged** (refused, crashed, partial or warming) deletes its
+  `new_resources_*.json` outputs, so a later `--skip-fetch` can't merge a partial file by
+  mistake. After a guard trip the outputs stay, so you can inspect them and re-run with
+  `--skip-fetch --allow-drop` or `--allow-change` if the change is real.

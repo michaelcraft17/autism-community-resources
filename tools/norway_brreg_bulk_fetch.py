@@ -9,8 +9,8 @@ Norway: disability organisations and services from the Bronnoysund Register Cent
 
 They are downloaded to tools/norway_brreg2_scratch/underenheter.csv.gz and enheter.csv.gz when missing (the refresh
 job deletes both before each fetch). The run stops before reading any row if a file is not gzip CSV or lacks a column
-this script reads (COLUMNS), and if a legal-unit status column (konkurs, underAvvikling, ...) holds a value other
-than true/false or is never true. The row counts are recorded as rc.STATUS["input"].
+this script reads (COLUMNS), and before writing anything if a legal-unit status column (konkurs, underAvvikling, ...)
+holds a value other than true/false or is never true. The row counts are recorded as rc.STATUS["input"].
 
 Supersedes the name-search-only tools/norway_brreg_fetch.py. Core selection (see HANDOFF.md for the rationale):
   * SN2025 code (naeringskode 1-3) 85.202 special schools, 85.691 PPT, 85.692 special-education competence centres,

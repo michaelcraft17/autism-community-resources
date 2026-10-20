@@ -23,7 +23,7 @@ The register's geotags are not always right (a Katowice street that shares a nam
 with Zielona Gora was tagged near Zielona Gora), so rows whose geotag is > 100 km from the median of the other
 rows with the same postcode area are re-geocoded ("street nr, zip city, Poland", cached) and dropped if that does
 not land back in the postcode area. The re-geocode first takes the coordinates the dataset already holds for the
-row when its address is unchanged (rc.prior_coords), and only asks Nominatim otherwise.
+row when its address is unchanged (rc.prior_coords) and they pass the same check, and only asks Nominatim otherwise.
 
 Writes new_resources_rspo.json.
 """
@@ -192,8 +192,10 @@ def main():
         ok = rc.plausible("PL", lat, lng) and (not m or km(m, (lat, lng)) <= 100)
         if not ok:
             q = f"{r['street']} {r['nr']}, {r['zip']} {r['city']}, Poland".replace("ul. ", "")
-            # coordinates already in the dataset for this unchanged address, else Nominatim
-            hit = rc.prior_coords(eid, addr) or geoc.geocode(q) or geoc.geocode(f"{r['zip']} {r['city']}, Poland")
+            # coordinates already in the dataset for this unchanged address when they pass the check, else Nominatim
+            hit = rc.prior_coords(eid, addr)
+            if not (hit and rc.plausible("PL", *hit) and (not m or km(m, hit) <= 100)):
+                hit = geoc.geocode(q) or geoc.geocode(f"{r['zip']} {r['city']}, Poland")
             if hit and rc.plausible("PL", *hit) and (not m or km(m, hit) <= 100):
                 lat, lng = hit
                 regeo += 1
