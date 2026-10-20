@@ -22,7 +22,8 @@ Excluded: sole proprietorships (ENK; names are people), bankrupt / dissolving / 
 counties as legal units (their sub-units are the sites), construction/property/trade codes on name hits.
 No daglig leder / role data is read. The broad codes (87.300, 88.101, 86.950, 86.930; ~11k rows) are NOT built here.
 
-Locations: street addresses are geocoded with Kartverket (cached). Housing (87.104, 87.202) is people's homes, so it is
+Locations: a row keeps the coordinates the dataset already holds when its address is unchanged (rc.prior_coords);
+other street addresses are geocoded with Kartverket (cached, capped per run by OFFICIAL_GEOCODER_MAX_NEW). Housing (87.104, 87.202) is people's homes, so it is
 NOT pinned: one entry per operator and municipality at the municipality's representative point. Rows whose organisation
 number is in new_resources_nsr.json are skipped (NSR has better coordinates), so tools/nsr_fetch.py must run first: the
 run stops if that file is missing or empty. A row whose Kartverket lookup fails is dropped (rc counts transient
@@ -37,6 +38,7 @@ import json
 import os
 import re
 import sys
+import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import registry_common as rc  # noqa: E402
@@ -166,7 +168,8 @@ def main():
             sub_addr.setdefault(r["overordnetEnhet"], set()).add((r["beliggenhetsadresse.adresse"].lower(), r["beliggenhetsadresse.postnummer"]))
     kv = rc.Kartverket(os.path.join(SCRATCH, "kartverket_cache.jsonl"))
     entries, housing = [], {}
-    dropped_parent = nogeo = 0
+    dropped_parent = nogeo = looked = 0
+    t_geo = time.monotonic()
     for org, (r, kind, why, code, pre) in hits.items():
         addr1, post, poststed, kommune, knr = (r[f"{pre}.adresse"], r[f"{pre}.postnummer"], r[f"{pre}.poststed"],
                                                r[f"{pre}.kommune"], r[f"{pre}.kommunenummer"])
@@ -181,7 +184,13 @@ def main():
         if re.match(r"\s*(c/o|v/)\s", addr1, re.I):   # care-of a named person: a private address, never published
             nogeo += 1
             continue
-        hit = kv.address(addr1, post, knr)
+        address = ", ".join(x for x in (rc.clean(addr1), f"{post} {title(poststed)}".strip(), "Norway") if x)
+        looked += 1
+        if looked % 500 == 0:
+            print(f"  {looked} addresses located ({rc.STATUS['prior_reused']} from the dataset, {rc.STATUS['official_new']} "
+                  f"Kartverket calls, {time.monotonic() - t_geo:.0f} s)", flush=True)
+        # coordinates the dataset already holds for this unchanged address, else Kartverket
+        hit = rc.prior_coords(f"no-org:{org}", address) or kv.address(addr1, post, knr)
         if not hit or not rc.plausible("NO", *hit):
             nogeo += 1
             continue
@@ -194,14 +203,13 @@ def main():
             services = ["Advocacy", "Information & Support"] if typ == "advocacy" else ["Information & Support"]
             what = "Local unit" if kind == "sub" else {"FLI": "Association", "STI": "Foundation", "AS": "Company", "ASA": "Company", "KS": "Company", "ANS": "Company", "DA": "Company", "SA": "Cooperative", "NUF": "Company"}.get(r["organisasjonsform.kode"], rc.clean(r["organisasjonsform.beskrivelse"]))
             desc = f"{what} in {title(kommune)} with a disability-related name."
-        address = ", ".join(x for x in (rc.clean(addr1), f"{post} {title(poststed)}".strip(), "Norway") if x)
         phone = rc.clean(r.get("telefon")) or rc.clean(r.get("mobil"))
         entries.append(rc.entry(title(r["navn"]), SOURCE, typ, services, desc, address=address, phone=phone or None,
                                 website=rc.clean_url(r.get("hjemmeside")), lat=hit[0], lng=hit[1], external_id=f"no-org:{org}",
                                 scope=None if re.search(r"(?<![a-zæøå])autis|asperger", r["navn"], re.I) else "general"))
     nohome = 0
     for (op, knr), h in housing.items():
-        hit = kv.municipality(knr)
+        hit = rc.prior_coords(f"no-housing:{op}:{knr}", f"{h['muni']}, Norway") or kv.municipality(knr)
         if not hit:
             nohome += 1
             continue

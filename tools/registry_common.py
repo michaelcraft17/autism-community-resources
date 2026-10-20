@@ -60,7 +60,7 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 VALID_TYPES = {"advocacy", "therapy", "education", "medical", "social", "general_support"}
 REFUSAL_CODES = (401, 403, 451)
 
-STATUS = {"nominatim_new": 0, "nominatim_budget": None, "budget_skipped": 0, "prior_reused": 0,
+STATUS = {"nominatim_new": 0, "nominatim_budget": None, "official_new": 0, "budget_skipped": 0, "prior_reused": 0,
           "refused": [], "transient": {}, "transient_examples": []}
 
 
@@ -69,6 +69,19 @@ def note_failure(kind, detail=""):
     STATUS["transient"][kind] = STATUS["transient"].get(kind, 0) + 1
     if len(STATUS["transient_examples"]) < 20:
         STATUS["transient_examples"].append(f"{kind}: {str(detail)[:200]}")
+
+
+def official_lookup_allowed():
+    """True when one more network lookup at an official geocoder (Kartverket, Maa-amet) fits the per-process budget
+    OFFICIAL_GEOCODER_MAX_NEW (env, unset = no cap), and counts it. Otherwise counts a budget skip: the caller returns
+    None without caching, and the refresh job reports the run as warming and continues on a later run with the cache
+    kept (a cold cache for a big source takes longer than one job may run)."""
+    budget = os.environ.get("OFFICIAL_GEOCODER_MAX_NEW")
+    if budget not in (None, "") and STATUS["official_new"] >= int(budget):
+        STATUS["budget_skipped"] += 1
+        return False
+    STATUS["official_new"] += 1
+    return True
 
 
 def note_refusal(host, code, detail=""):
@@ -422,7 +435,7 @@ class Kartverket:
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
-        if Kartverket.refused:
+        if Kartverket.refused or not official_lookup_allowed():
             return None
         params = {"sok": street, "treffPerSide": 1, "utkoordsys": 4258}
         if postcode:
@@ -442,7 +455,7 @@ class Kartverket:
         if key in self.cache:
             c = self.cache[key]
             return tuple(c) if c else None
-        if Kartverket.refused:
+        if Kartverket.refused or not official_lookup_allowed():
             return None
         try:
             d = json.loads(get(f"https://ws.geonorge.no/kommuneinfo/v1/kommuner/{muni_nr}", delay=0.12, timeout=30, retries=2))
@@ -479,7 +492,7 @@ class MaaAmet:
         if text in self.cache:
             c = self.cache[text]
             return tuple(c) if c else None
-        if MaaAmet.refused:
+        if MaaAmet.refused or not official_lookup_allowed():
             return None
         try:
             d = json.loads(get("https://inaadress.maaamet.ee/inaadress/gazetteer?" + urllib.parse.urlencode({"address": text, "results": 1}),

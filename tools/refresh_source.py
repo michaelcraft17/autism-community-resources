@@ -394,14 +394,16 @@ class Refresh:
                            for e in self.old})
         deadline = time.monotonic() + src["timeout_minutes"] * 60
         budget = int(src["nominatim_max_new"])
-        agg = {"nominatim_new": 0, "budget_skipped": 0, "prior_reused": 0, "refused": [], "transient": Counter(),
+        official = int(src["official_geocoder_max_new"])
+        agg = {"nominatim_new": 0, "official_new": 0, "budget_skipped": 0, "prior_reused": 0, "refused": [], "transient": Counter(),
                "transient_examples": [], "input": []}
         t0 = time.monotonic()
         for i, cmd in enumerate(src["commands"]):
             sf = os.path.join(SCRATCH, f"status_{i}.json")
             if os.path.exists(sf):
                 os.remove(sf)
-            env = dict(os.environ, NOMINATIM_MAX_NEW=str(max(0, budget - agg["nominatim_new"])), RC_PRIOR_ROWS=prior,
+            env = dict(os.environ, NOMINATIM_MAX_NEW=str(max(0, budget - agg["nominatim_new"])),
+                       OFFICIAL_GEOCODER_MAX_NEW=str(max(0, official - agg["official_new"])), RC_PRIOR_ROWS=prior,
                        RC_STATUS_FILE=sf, PYTHONUNBUFFERED="1")
             left = deadline - time.monotonic()
             if left <= 0:
@@ -415,7 +417,7 @@ class Refresh:
             st = None
             if os.path.exists(sf):
                 st = read_json(sf)
-                for k in ("nominatim_new", "budget_skipped", "prior_reused"):
+                for k in ("nominatim_new", "official_new", "budget_skipped", "prior_reused"):
                     agg[k] += st.get(k, 0)
                 agg["refused"] += st.get("refused", [])
                 agg["transient"].update(st.get("transient", {}))
@@ -434,6 +436,7 @@ class Refresh:
             if r.returncode:
                 raise Fail(1, f"{cmd[0]} exited with code {r.returncode}")
         self.o.update(fetch_s=round(time.monotonic() - t0), nominatim_new=agg["nominatim_new"],
+                      official_new=agg["official_new"],
                       prior_reused=agg["prior_reused"], transient=dict(agg["transient"]),
                       transient_examples=agg["transient_examples"][:10], input=agg["input"])
         return agg
@@ -772,9 +775,11 @@ class Refresh:
                     if tries >= self.src["max_warm_attempts"]:
                         self.drop_outputs()
                         raise Fail(1, f"still geocoding after {tries} runs ({agg['budget_skipped']} lookups left over "
-                                      f"the {self.src['nominatim_max_new']}/run budget)")
+                                      f"the per-run budgets: {self.src['nominatim_max_new']} Nominatim, "
+                                      f"{self.src['official_geocoder_max_new']} Kartverket/Maa-amet)")
                     self.drop_outputs()
-                    self.o.update(status="warming", message=f"{agg['nominatim_new']} new Nominatim lookups, "
+                    self.o.update(status="warming", message=f"{agg['nominatim_new']} new Nominatim and "
+                                  f"{agg['official_new']} Kartverket/Maa-amet lookups, "
                                   f"{agg['budget_skipped']} left for the next run (attempt {tries}); nothing merged")
                     return 0
                 n_tr = sum(agg["transient"].values())

@@ -1308,7 +1308,9 @@ per day, refreshed in place, committed only when every guard passes.
    - **Join:** `join_regions.py --force`. It refuses first if `community_resources.json` holds
      rows that are not in `data/`, since that means unsplit local work.
    - **Fetch:** the raw downloads listed under `raw` are deleted first. Each fetcher runs with:
-     - `NOMINATIM_MAX_NEW` (1,200 per run);
+     - `NOMINATIM_MAX_NEW` (1,200 per run) and `OFFICIAL_GEOCODER_MAX_NEW` (1,500 Kartverket or
+       Maa-amet calls per run; added after a cold-cache Norway dry run spent 33 minutes on
+       Kartverket and hit the 40-minute limit);
      - `RC_PRIOR_ROWS`, the source's current rows, so `rc.prior_coords()` reuses coordinates
        when the id and address text are unchanged and only new or changed addresses are geocoded;
      - `RC_STATUS_FILE`, where `registry_common` reports new Nominatim lookups, skipped lookups,
@@ -1373,7 +1375,7 @@ Entry-level guards alone can't see a 14% sub-source such as NY OPWDD vanish.
   - any refusal (401/403/451, or Nominatim 403/429) fails the run with "not worked around";
   - transient failures (5xx, timeouts, detail calls that still fail after a second pass) above
     max(3, 0.5% of rows) fail the run, and the source is retried after the cooldown;
-  - a used-up Nominatim budget makes the run "warming": nothing is merged, and the source stays
+  - a used-up Nominatim or Kartverket/Maa-amet budget makes the run "warming": nothing is merged, and the source stays
     due so it continues the next day with the cache kept.
 
 `--allow-drop` relaxes only the row-count floors. `--allow-change` relaxes only the growth,
