@@ -1362,8 +1362,9 @@ Entry-level guards alone can't see a 14% sub-source such as NY OPWDD vanish.
   - mojibake (U+FFFD, `Ã`, `â€`) doesn't increase;
   - no more than 25% of a group changes its name, address, location, contact or category.
     Description-only changes (pupil counts, unit counts) don't count;
-  - no more than 25% of a group's current ids disappear, which catches a whole layer being
-    re-keyed or a broken filter that keeps the row count.
+  - no more than 25% of a group's ids are replaced by new ids (min(gone, new)). That catches a
+    whole layer being re-keyed, or a different row set of about the same size; pure drops are the
+    row-count floors' job.
 - **Shards:**
   - each shard ≤ 45 MB;
   - only shards that hold the source's rows may change;
@@ -1376,7 +1377,7 @@ Entry-level guards alone can't see a 14% sub-source such as NY OPWDD vanish.
     due so it continues the next day with the cache kept.
 
 `--allow-drop` relaxes only the row-count floors. `--allow-change` relaxes only the growth,
-fill-rate, mojibake, changed-rows and gone-ids guards. The 1% total and the shard guards have no workflow
+fill-rate, mojibake, changed-rows and replaced-ids guards. The 1% total and the shard guards have no workflow
 switch; locally, `--max-total-drop-pct` and `--max-shard-mb` override them.
 
 ### Fetcher fixes made for unattended runs

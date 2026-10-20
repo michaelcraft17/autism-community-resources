@@ -574,10 +574,14 @@ class Refresh:
             if not a.allow_change and old_n >= 20 and subst[k] * 100 / old_n > src["max_changed_pct"]:
                 problems.append(f"{g['label']}: {subst[k]} of {old_n} rows changed name/address/location/contact/category "
                                 f"(> {src['max_changed_pct']}%) -- a parser change? (--allow-change to accept)")
-            gone = sum(1 for e in self.old_groups.get(k, []) if e["external_id"] not in S)
-            if not a.allow_change and old_n >= 20 and gone * 100 / old_n > src["max_changed_pct"]:
-                problems.append(f"{g['label']}: {gone} of {old_n} current ids are gone (> {src['max_changed_pct']}%) -- "
-                                "re-keyed ids or a broken filter? (--allow-change to accept)")
+            # ids replaced by new ids (a re-keyed layer, or another set of rows of about the same size); a pure drop
+            # is the row-count floors' job
+            old_ids = {e["external_id"] for e in self.old_groups.get(k, [])}
+            new_ids = {e["external_id"] for e in fresh_groups.get(k, [])}
+            replaced = min(len(old_ids - new_ids), len(new_ids - old_ids))
+            if not a.allow_change and old_n >= 20 and replaced * 100 / old_n > src["max_changed_pct"]:
+                problems.append(f"{g['label']}: {replaced} of {old_n} ids replaced by new ids (> {src['max_changed_pct']}%) -- "
+                                "re-keyed ids or a different row set? (--allow-change to accept)")
         if problems:
             raise Fail(2, "change guard: " + " | ".join(problems))
         for row in self.o.get("groups", []):
@@ -998,7 +1002,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="run every step and guard but leave data/ untouched")
     ap.add_argument("--allow-drop", action="store_true", help="relax the row-count floors (min_rows, max drop, survivors)")
     ap.add_argument("--allow-change", action="store_true",
-                    help="relax the growth, fill-rate, mojibake, changed-rows and gone-ids guards")
+                    help="relax the growth, fill-rate, mojibake, changed-rows and replaced-ids guards")
     ap.add_argument("--force", action="store_true", help="overwrite a community_resources.json that differs from data/")
     ap.add_argument("--max-shard-mb", type=float)
     ap.add_argument("--max-total-drop-pct", type=float)
