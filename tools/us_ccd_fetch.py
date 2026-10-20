@@ -15,9 +15,10 @@ Rows are marked disability_scope "general": special-education schools serve ever
 Closed (status 2), future (6) and inactive (8) schools are skipped.
 
 Year: the current year back 3 years, newest first. An older year is used only when the newer one is not
-published (HTTP 404, or a first page with zero results). Any other error -- timeout, 5xx after rc.get's
-retries, a bad body, a failure on a later page, fewer rows than the API's "count" -- ends the run non-zero,
-so a partial year is never used and never cached. The year used is printed and recorded as rc.STATUS["input"].
+published (HTTP 404, or a first page with zero results and no next page). Any other error -- timeout, 5xx
+after rc.get's retries, a bad body, a failure on a later page, fewer rows than the API's "count" -- ends the
+run non-zero, so a partial year is never used and never cached. The year used is printed and recorded as
+rc.STATUS["input"].
 
 Usage:
     python3 tools/us_ccd_fetch.py
@@ -64,8 +65,8 @@ def fetch(year):
         raise
     rows, expected, seen = results(page, url), page.get("count"), {url}
     if not rows:
-        if expected:
-            raise ValueError(f"CCD {year}: empty first page but count={expected}")
+        if expected or page.get("next"):
+            raise ValueError(f"CCD {year}: empty first page but count={expected!r}, next={page.get('next')!r}")
         return None
     while page.get("next"):
         url = page["next"]

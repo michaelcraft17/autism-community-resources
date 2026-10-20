@@ -9,7 +9,8 @@ social establishments (Etalab open licence), one keyless CSV with addresses AND 
 The newest such file is looked up in the dataset's resources through the data.gouv.fr API (greatest date in its
 title or URL). If the lookup fails or finds no such file the run stops -- it never falls back to an older file.
 `python3 tools/finess_fetch.py --url <csv url>` uses that file instead (manual runs). The file name is recorded as
-rc.STATUS["input"]; fewer than MIN_KEPT selected rows also stops the run (a wrong or cut file).
+rc.STATUS["input"]. Fewer than MIN_KEPT rows kept, or more than 1% of the selected rows without coordinates, also
+stops the run (a wrong or cut file: the geolocalisation rows come last).
 
 Selected by aggregate category (categagretab): 4101-4107 (education speciale / IME / ITEP / SESSAD / CMPP / CAMSP ...),
 4301-4305 (adult disability: foyers, MAS, FAM, ESAT, SAVS/SAMSAH ...), 4609 (UEROS), plus MDPH (categetab 609)
@@ -38,7 +39,7 @@ import registry_common as rc  # noqa: E402
 SCRATCH = os.path.join(rc.REPO, "tools", "finess_scratch")
 API = "https://www.data.gouv.fr/api/1/datasets/finess-extraction-du-fichier-des-etablissements/"
 FILE_RE = re.compile(r"(?<![\w.-])etalab-cs1100507-stock-(\d{8})-[\w.-]*\.csv(?![\w.-])")
-MIN_KEPT = 10000   # 14,561 kept from the 2026-05-12 file
+MIN_KEPT = 10000   # 14,561 kept from the 2026-05-12 file (5 selected rows had no coordinates)
 SOURCE = "France FINESS (national register of health and social establishments) - Etalab open data"
 AGG = {"4101", "4102", "4103", "4104", "4105", "4106", "4107", "4301", "4302", "4303", "4304", "4305", "4609"}
 EXTRA_CAT = {"609": ("general_support", ["Information & Support"]),     # MDPH
@@ -119,8 +120,8 @@ def newest_stock(dataset):
     for res in resources if isinstance(resources, list) else []:
         if not isinstance(res, dict):
             continue
-        url = res.get("url") or ""
-        if not re.match(r"https?://", url):
+        url = res.get("url")
+        if not isinstance(url, str) or not re.match(r"https?://", url):
             continue
         m = FILE_RE.search(file_name(url)) or FILE_RE.search(str(res.get("title") or ""))
         if not m:
@@ -204,6 +205,8 @@ def main():
     print(f"kept {len(entries)}; {nogeo} without coordinates, {bad} implausible/failed projection")
     if len(entries) < MIN_KEPT:
         sys.exit(f"FINESS {name}: only {len(entries)} rows kept (expected >= {MIN_KEPT}) -- wrong or cut file, nothing written")
+    if nogeo * 100 > len(entries) + nogeo + bad:   # geolocalisation rows come last: a cut file loses them
+        sys.exit(f"FINESS {name}: {nogeo} selected rows have no coordinates (5 in the 2026-05-12 file) -- probably a cut file, nothing written")
     out = rc.finalize(os.path.join(rc.REPO, "new_resources_finess.json"), entries)
     rc.spot_check(out, 12, fields=("name", "address", "description"))
 

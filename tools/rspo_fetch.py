@@ -17,7 +17,8 @@ person) are never read; the operator is named only when it is a legal entity (na
 Coordinates come from the detail call (about 5,000 calls, 3 threads each pausing 0.1 s before a call, cached per
 id in tools/rspo_scratch/detail.jsonl). Failed calls are retried in a second, sequential pass 1 s apart; an
 institution whose call still fails is dropped and counted with rc.note_failure. A refusal (401/403/451), or 20
-failed calls in a row (400/404 not counted), stops the calls and the run exits without writing output.
+failed calls in a row in the first pass (400/404 not counted), stops the calls and the run exits without writing
+output.
 The register's geotags are not always right (a Katowice street that shares a name
 with Zielona Gora was tagged near Zielona Gora), so rows whose geotag is > 100 km from the median of the other
 rows with the same postcode area are re-geocoded ("street nr, zip city, Poland", cached) and dropped if that does
@@ -111,7 +112,7 @@ def main():
 
     stop = {"why": None, "run": 0}   # why calls stopped; failed calls in a row
 
-    def one(i, pause=PAUSE):
+    def one(i, pause=PAUSE, first_pass=True):
         if stop["why"]:
             return i, {"_error": "not called: " + stop["why"]}
         time.sleep(pause)
@@ -124,9 +125,9 @@ def main():
             http = getattr(e, "code", None)
             if http in rc.REFUSAL_CODES:   # rc.get has recorded the refusal
                 stop["why"] = f"HTTP {http} refusal at {i}"
-            elif http not in (400, 404, 410):
+            elif first_pass and http not in (400, 404, 410):   # retries of failed calls may well fail in a row
                 stop["run"] += 1
-                if stop["run"] >= MAX_FAILS_IN_A_ROW:
+                if stop["run"] >= MAX_FAILS_IN_A_ROW and not stop["why"]:
                     stop["why"] = f"{stop['run']} failed calls in a row, last {i}: {e!r}"
                     rc.note_failure("rspo-detail", stop["why"])
             return i, {"_error": repr(e)}
@@ -151,7 +152,7 @@ def main():
         if failed and not stop["why"]:
             print(f"  retrying {len(failed)} failed detail calls one at a time", flush=True)
         for i in failed:
-            i, d = one(i, RETRY_PAUSE)
+            i, d = one(i, RETRY_PAUSE, first_pass=False)
             if not store(i, d):
                 lost.append((i, d["_error"]))
     if stop["why"]:

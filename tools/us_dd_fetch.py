@@ -12,7 +12,8 @@ US -- state developmental-disability provider registers with coordinates (no geo
    'Agency' is used: 'Independent' providers are individual people and are not published. One entry per site
    (sitekey), the certified services listed in the description. Site contact names / e-mail addresses are never read.
    The expected row count is asked first (returnCountOnly); the run fails on an ArcGIS "error" body (often sent with
-   HTTP 200) or when the pages do not add up to that count, and only a complete list is cached in dd_scratch/.
+   HTTP 200), when the pages do not add up to that count or when no site is usable, and only a complete list is
+   cached in dd_scratch/.
 
 Both are general (not autism-specific) disability layers: disability_scope "general".
 Output: new_resources_ny_opwdd.json, new_resources_ohio_dodd.json -- both written only after both sources were fetched
@@ -101,8 +102,8 @@ def ny():
                             external_id=f"ny-opwdd:{rc.clean(r['service_provider'])}:{rc.clean(r.get('street_address'))}:{rc.clean(r.get('zip_code'))}",
                             scope="general"))
     print(f"NY OPWDD: {len(rows)} rows, {nocoords} without location_1 coordinates")
-    if nocoords == len(rows):
-        raise RuntimeError("NY OPWDD: no row has location_1 latitude/longitude -- column format changed?")
+    if not out:
+        raise RuntimeError("NY OPWDD: no row has usable location_1 latitude/longitude -- column format changed?")
     return out
 
 
@@ -184,6 +185,8 @@ def ohio():
         out.append(rc.entry(name.title() if name.isupper() else name, OH_SOURCE, "social", services, desc, address=addr,
                             phone=phone10(r.get("sitephonenumber")), website=rc.clean_url(web) if web else None, lat=lat, lng=lng,
                             external_id=f"oh-dodd:{key}", scope="general"))
+    if not out:
+        raise RuntimeError(f"Ohio DODD: none of {len(sites)} sites has usable coordinates and address -- field format changed?")
     return out
 
 

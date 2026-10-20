@@ -6,8 +6,17 @@ Scotland -- OSCR Scottish Charity Register (Open Government Licence), daily ZIP 
 Core: Active charities whose name / known-as matches a disability term (autism, Asperger, disab*, Down's syndrome,
 dyslexia, deaf, blind, cerebral palsy, ADHD, special needs, learning difficulties, ...).
 The 5,000 charities that merely tick the "disabled people" beneficiary box are the broad noisy set and are not merged.
-Principal-office addresses of small charities are often a trustee's home, so a c/o address is replaced by the main
-operating location and nothing is pinned finer than the postcode (Nominatim, cached; outward-code fallback).
+
+Locations: ONS postcode centroids from postcodes.io (keyless, not cached; outward-code centroid when the full postcode
+is unknown). Principal-office addresses of small charities are often a trustee's home, so for a c/o or PO-box address
+or an unincorporated association the address shown is the main operating location plus the outward code, and the pin
+is the outward-code centroid -- never the full postcode. If that outward-code lookup fails the row is skipped:
+counted with rc.note_failure, or just printed when postcodes.io does not know the outward code (404). Outward-code
+lookups are made once per code per run. A failed bulk postcode request stops the run (nothing is written).
+
+Raw files (tools/oscr_scratch/, gitignored): oscr.zip (the download) and the CharityExport*.csv unzipped from it; an
+existing CSV is used as is (tools/refresh_source.py deletes both before each fetch). The CSV name is printed and
+recorded as rc.STATUS["input"].
 Output: new_resources_oscr.json
 """
 import csv
@@ -17,6 +26,7 @@ import os
 import re
 import subprocess
 import sys
+import urllib.error
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import registry_common as rc  # noqa: E402
@@ -32,9 +42,40 @@ NAME_RE = re.compile(
 SKIP_RE = re.compile(r"day ?care|nursery|preschool|play ?group|\bin (ethiopia|africa|india|kenya|uganda|malawi|nepal|romania|zambia|ghana)\b|\b(ethiopia|uganda|malawi|nepal|kenya)\b", re.I)
 
 
+class LookupFailed(Exception):
+    """postcodes.io gave no usable answer (5xx, timeout, connection error, bad body)."""
+
+
+_OUTCODES = {}   # outward code -> (lat, lng), None when postcodes.io does not know it (404), or the error text
+
+
+def outcode_lookup(oc):
+    """Outward-code centroid, looked up once per code per run. None for an unknown outward code (404, printed);
+    raises LookupFailed for any other failure, on every call for that code, so each affected row is counted.
+    A refusal (401/403/451) is recorded by rc.get and stops the run."""
+    if oc not in _OUTCODES:
+        try:
+            r = json.loads(rc.get(f"https://api.postcodes.io/outcodes/{oc}", delay=0.3))["result"]
+            _OUTCODES[oc] = (r["latitude"], r["longitude"])
+        except urllib.error.HTTPError as e:
+            if e.code in rc.REFUSAL_CODES:
+                raise
+            _OUTCODES[oc] = None if e.code == 404 else repr(e)
+        except Exception as e:  # noqa: BLE001
+            _OUTCODES[oc] = repr(e)
+        if _OUTCODES[oc] is None:
+            print(f"  unknown outward code {oc} (404)")
+    c = _OUTCODES[oc]
+    if isinstance(c, str):
+        raise LookupFailed(f"outcode {oc}: {c}")
+    return c
+
+
 def postcode_lookup(pcs):
-    """ONS postcode centroids via postcodes.io (open, keyless); outward-code centroid when the full postcode is unknown (e.g. PO-box postcodes)."""
-    out, pcs = {}, sorted(set(pcs))
+    """ONS postcode centroids via postcodes.io (open, keyless); outward-code centroid when the full postcode is unknown
+    (e.g. PO-box postcodes). Returns (centroids, failed): failed maps a postcode whose outward-code fallback failed to
+    the error, for the caller to count per row. A failed bulk request raises (rc.get has retried), stopping the run."""
+    out, failed, pcs = {}, {}, sorted(set(pcs))
     for i in range(0, len(pcs), 100):
         d = json.loads(rc.get("https://api.postcodes.io/postcodes", data=json.dumps({"postcodes": pcs[i:i + 100]}).encode(),
                                headers={"Content-Type": "application/json"}, method="POST", delay=0.3))
@@ -43,21 +84,14 @@ def postcode_lookup(pcs):
                 out[x["query"]] = (x["result"]["latitude"], x["result"]["longitude"])
     for pc in pcs:
         if pc not in out:
-            oc = pc.split()[0]
             try:
-                r = json.loads(rc.get(f"https://api.postcodes.io/outcodes/{oc}", delay=0.3))["result"]
-                out[pc] = (r["latitude"], r["longitude"])
-            except Exception:  # noqa: BLE001
-                pass
-    return out
-
-
-def outcode_lookup(pc):
-    try:
-        r = json.loads(rc.get(f"https://api.postcodes.io/outcodes/{pc.split()[0]}", delay=0.3))["result"]
-        return r["latitude"], r["longitude"]
-    except Exception:  # noqa: BLE001
-        return None
+                c = outcode_lookup(pc.split()[0])
+            except LookupFailed as e:
+                failed[pc] = str(e)
+                continue
+            if c:
+                out[pc] = c
+    return out, failed
 
 
 def norm_pc(s):
@@ -77,10 +111,12 @@ def main():
         subprocess.run(["unzip", "-o", "-q", os.path.join(SCRATCH, "oscr.zip"), "-d", SCRATCH], check=True)
     csv.field_size_limit(10**8)
     path = sorted(glob.glob(os.path.join(SCRATCH, "CharityExport*.csv")))[-1]
+    print(f"OSCR: using {os.path.basename(path)}")
+    rc.STATUS["input"] = f"OSCR {os.path.basename(path)}"
     rows = [r for r in csv.DictReader(open(path, encoding="utf-8-sig", errors="replace"))]
     rows = [r for r in rows if r["Charity Status"] == "Active" and (NAME_RE.search(rc.clean(r["Charity Name"])) or NAME_RE.search(rc.clean(r["Known As"])))]
-    look = postcode_lookup([norm_pc(r["Postcode"]) for r in rows if rc.clean(r["Postcode"])])
-    entries, nogeo, n = [], 0, 0
+    look, failed = postcode_lookup([norm_pc(r["Postcode"]) for r in rows if rc.clean(r["Postcode"])])
+    entries, nogeo, n, nocode, nfail = [], 0, 0, 0, 0
     for r in rows:
         if r["Charity Status"] != "Active":
             continue
@@ -89,6 +125,10 @@ def main():
             continue
         n += 1
         pc = norm_pc(r["Postcode"])
+        if pc in failed:
+            nfail += 1
+            rc.note_failure("postcodes.io", f"{r['Charity Number']}: {failed[pc]}")
+            continue
         hit = look.get(pc)
         if not hit or not rc.plausible("GB", *hit):
             nogeo += 1
@@ -97,8 +137,18 @@ def main():
         # c/o addresses, PO boxes and small unincorporated associations (usually a trustee's home) are shown at outward-code level
         form_raw = rc.clean(r["Constitutional Form"]).lower()
         private = bool(re.match(r"\s*(c/o|care of)\b|p\.? ?o\.? ?box", raw, re.I)) or not raw or form_raw.startswith("unincorporated")
-        if private:
-            hit = outcode_lookup(pc) or hit
+        if private:   # outward-code centroid only; never fall back to the full postcode
+            oc = pc.split()[0]
+            try:
+                hit = outcode_lookup(oc)
+            except LookupFailed as e:
+                nfail += 1
+                rc.note_failure("postcodes.io", f"{r['Charity Number']}: {e}")
+                continue
+            if not hit or not rc.plausible("GB", *hit):
+                nocode += 1
+                print(f"  {r['Charity Number']}: private address and no centroid for outward code {oc}, skipped")
+                continue
         loc = rc.clean(r["Main Operating Location"]).split(",")[0]
         address = ", ".join(x for x in ((smart(loc) if private else raw), pc.split()[0] if private else "") if x)
         site = rc.clean(r["Website"])
@@ -111,7 +161,8 @@ def main():
         entries.append(rc.entry(smart(name), SOURCE, typ, services, desc, address=address, website=rc.clean_url(site) if site else None,
                                 lat=hit[0], lng=hit[1], external_id=f"oscr:{r['Charity Number']}",
                                 scope=None if re.search(r"autis|asperger", name + known, re.I) else "general"))
-    print(f"{n} active charities matched; {nogeo} without a geocode")
+    print(f"{n} active charities matched; {nogeo} without a geocode, {nocode} private rows without an outward-code centroid, "
+          f"{nfail} skipped after a failed postcodes.io lookup (counted)")
     out = rc.finalize(os.path.join(rc.REPO, "new_resources_oscr.json"), entries)
     rc.spot_check(out, 30, fields=("name", "address", "description"))
 

@@ -9,7 +9,7 @@ Sweden: special schools from Skolverket's Skolenhetsregistret (school-unit regis
 AKTIV unit (~7,500 calls, 3 threads each pausing 0.1 s before a call, cached per unit in
 tools/skolverket_scratch/detail.jsonl). Failed calls are retried in a second, sequential pass 1 s apart; a unit
 whose call still fails is dropped and counted with rc.note_failure. A refusal (401/403/451), or 20 failed calls
-in a row (400/404 not counted), stops the calls and the run exits without writing output.
+in a row in the first pass (400/404 not counted), stops the calls and the run exits without writing output.
 
 Core = unit with schoolType GRAN (grundsärskola), GYAN (gymnasiesärskola), SP (specialskola), or flagged
 specialSupportSchool, or a hospital school. These serve pupils with intellectual disability, autism, hearing
@@ -61,7 +61,7 @@ def main():
 
     stop = {"why": None, "run": 0}   # why calls stopped; failed calls in a row
 
-    def one(code, pause=PAUSE):
+    def one(code, pause=PAUSE, first_pass=True):
         if stop["why"]:
             return code, {"_error": "not called: " + stop["why"]}
         time.sleep(pause)
@@ -71,9 +71,9 @@ def main():
             http = getattr(e, "code", None)
             if http in rc.REFUSAL_CODES:   # rc.get has recorded the refusal
                 stop["why"] = f"HTTP {http} refusal at {code}"
-            elif http not in (400, 404, 410):
+            elif first_pass and http not in (400, 404, 410):   # retries of failed calls may well fail in a row
                 stop["run"] += 1
-                if stop["run"] >= MAX_FAILS_IN_A_ROW:
+                if stop["run"] >= MAX_FAILS_IN_A_ROW and not stop["why"]:
                     stop["why"] = f"{stop['run']} failed calls in a row, last {code}: {e!r}"
                     rc.note_failure("skolverket-detail", stop["why"])
             return code, {"_error": repr(e)}
@@ -98,7 +98,7 @@ def main():
         if failed and not stop["why"]:
             print(f"  retrying {len(failed)} failed detail calls one at a time", flush=True)
         for code in failed:
-            code, d = one(code, RETRY_PAUSE)
+            code, d = one(code, RETRY_PAUSE, first_pass=False)
             if not store(code, d):
                 lost.append((code, d["_error"]))
     if stop["why"]:

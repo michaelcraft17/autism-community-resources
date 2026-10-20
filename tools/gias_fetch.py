@@ -14,10 +14,10 @@ the 20261011/20261012 files were 39-48 MB against a full 64.7 MB), so a snapshot
 A snapshot is accepted only if (a) it has >= 50,000 data rows, (b) its last record has as many columns as the
 header, and (c, latest only) it has >= 99.5% of the rows of a complete snapshot at least 3 days older (also
 downloaded; if none in the window can be read, a and b decide and a warning is printed). Rejected files are
-deleted so the next run downloads them again. Dates that are not published yet answer 403/404 and are skipped;
-a 401/451, or a 403 from every date in the window, is recorded as a refusal. A failed download (after rc.get's retries)
-is counted with rc.note_failure and the next older date is tried; the third one ends the run. The date used is
-printed and recorded as rc.STATUS["input"].
+deleted so the next run downloads them again. Dates that are not published yet (or removed) answer 403/404/410 and
+are skipped; a 401/451, or a 403 from every date in the window that answered, is recorded as a refusal. A failed
+download (after rc.get's retries) is counted with rc.note_failure and the next older date is tried; the third one
+ends the run. The date used is printed and recorded as rc.STATUS["input"].
 
 Sets (open establishments only; cp1252 CSV):
   core   all special schools / special post-16 institutions (EstablishmentTypeGroup "Special schools" or a
@@ -131,7 +131,7 @@ class Finder:
 
     def __init__(self):
         self.rows = {}        # date -> rows of a snapshot that passed a and b, or None
-        self.answers = {}     # date -> "403" / "404" / "failed" / "partial" / "ok"
+        self.answers = {}     # date -> "403" / "404" / "410" / "failed" / "partial" / "ok"
         self.failures = 0
 
     def complete(self, date):
@@ -143,7 +143,7 @@ class Finder:
         try:
             path = rc.download(URL.format(date), snapshot_path(date), probe=True)
         except urllib.error.HTTPError as e:
-            if e.code in (403, 404):   # not published (yet)
+            if e.code in (403, 404, 410):   # not published (yet), or removed
                 self.answers[date] = str(e.code)
                 return None
             if e.code in (401, 451):
@@ -198,8 +198,8 @@ def latest(today=None):
         print(f"  {date}: {n} rows, {fd.rows[ref]} in {ref}")
         return date
     seen = set(fd.answers.values())
-    if seen == {"403"}:
-        rc.note_refusal(urllib.parse.urlsplit(URL).netloc, 403, f"every snapshot {window[-1]}-{window[0]} answered 403")
+    if "403" in seen and seen <= {"403", "failed"}:   # every date that answered said 403
+        rc.note_refusal(urllib.parse.urlsplit(URL).netloc, 403, f"every snapshot {window[-1]}-{window[0]} that answered said 403")
     sys.exit(f"GIAS: no complete snapshot from {window[0]} back to {window[-1]} "
              f"({', '.join(f'{d} {a}' for d, a in fd.answers.items())})")
 
