@@ -1457,6 +1457,34 @@ python3 tools/refresh_source.py --source stil --skip-fetch  # re-merge the new_r
 Locally, nothing is committed and the rotation state is not touched. `community_resources.json`
 is left equal to `join(data/)` after every run. Needs Python 3.11 or newer (pyproj 3.7.2).
 
+### Measured run times (CI dry runs, 2026-10-21 to 2026-10-23)
+
+Refresh-step time on `ubuntu-24.04`, with the result each dry run would have committed. The whole
+job adds about 30 s for setup. The job limit is 75 minutes, so the rotation has plenty of room.
+
+| source | refresh step | result |
+|---|---|---|
+| ca_dds | 33 s | unchanged |
+| stil | 42 s | −4 |
+| finess | 55 s | unchanged |
+| us_dd | 58 s | unchanged |
+| gias | about 1 min | +9 ~14 (a real run on 2026-10-23: +19 ~22) |
+| nz | 1 min 05 s | +1 ~2 |
+| oscr | 1 min 18 s | unchanged |
+| acnc | 1 min 24 s | −1 ~210 (206 description updates) |
+| nces | 1 min 45 s | unchanged |
+| estonia | 2 min 37 s | unchanged |
+| norway | 7 min 02 s (geocode cache warm) | +4 −1 ~1 |
+| rspo | 16 min 47 s | +5 −3 ~349 (mostly description: pupil counts) |
+| skolverket | 17 min 04 s | +1 −1 ~1 |
+| ptv | 19 min 44 s | +4 −4 ~40 |
+
+Norway with a cold cache took 33 minutes of Kartverket lookups and hit the fetch limit. That is
+why the per-run `OFFICIAL_GEOCODER_MAX_NEW` budget and the Kartverket circuit breaker exist. The
+first Norway run on `main` starts with a cold cache, but most addresses reuse coordinates
+already in `data/`; if the budget still runs out, the run reports "warming" and finishes on a
+later day.
+
 ### Operating notes
 
 - **Retry a failed source now:** dispatch the workflow with `source=<name>`; a manual source
