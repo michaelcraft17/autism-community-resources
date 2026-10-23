@@ -3,8 +3,14 @@
 France: disability establishments and services from FINESS, the national register of health and
 social establishments (Etalab open licence), one keyless CSV with addresses AND coordinates:
 
-    https://static.data.gouv.fr/resources/finess-extraction-du-fichier-des-etablissements/20260512-091152/etalab-cs1100507-stock-20260512-0339.csv
-    (dataset: data.gouv.fr "finess-extraction-du-fichier-des-etablissements"; 'structureet' rows + 'geolocalisation' rows)
+    etalab-cs1100507-stock-<YYYYMMDD>-<hhmm>.csv  ('structureet' rows + 'geolocalisation' rows)
+    from the data.gouv.fr dataset "finess-extraction-du-fichier-des-etablissements"
+
+The newest such file is looked up in the dataset's resources through the data.gouv.fr API (greatest date in its
+title or URL). If the lookup fails or finds no such file the run stops -- it never falls back to an older file.
+`python3 tools/finess_fetch.py --url <csv url>` uses that file instead (manual runs). The file name is recorded as
+rc.STATUS["input"]. Fewer than MIN_KEPT rows kept, or more than 1% of the selected rows without coordinates, also
+stops the run (a wrong or cut file: the geolocalisation rows come last).
 
 Selected by aggregate category (categagretab): 4101-4107 (education speciale / IME / ITEP / SESSAD / CMPP / CAMSP ...),
 4301-4305 (adult disability: foyers, MAS, FAM, ESAT, SAVS/SAMSAH ...), 4609 (UEROS), plus MDPH (categetab 609)
@@ -15,12 +21,15 @@ UTM/RGAF/RGR/RGFG/RGM grids -- converted with pyproj (the EPSG code is on each g
 Residential structures (foyers, MAS, FAM) are staffed institutions, so they are pinned at their address.
 Rows are disability_scope "general". No person data in FINESS structureet rows is read.
 
-Writes new_resources_finess.json (tools/finess_scratch/ holds the raw CSV, gitignored).
+Writes new_resources_finess.json (tools/finess_scratch/<file name> holds the raw CSV, gitignored).
 """
+import argparse
 import csv
+import hashlib
 import os
 import re
 import sys
+import urllib.parse
 
 from pyproj import Transformer
 
@@ -28,7 +37,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import registry_common as rc  # noqa: E402
 
 SCRATCH = os.path.join(rc.REPO, "tools", "finess_scratch")
-URL = "https://static.data.gouv.fr/resources/finess-extraction-du-fichier-des-etablissements/20260512-091152/etalab-cs1100507-stock-20260512-0339.csv"
+API = "https://www.data.gouv.fr/api/1/datasets/finess-extraction-du-fichier-des-etablissements/"
+FILE_RE = re.compile(r"(?<![\w.-])etalab-cs1100507-stock-(\d{8})-[\w.-]*\.csv(?![\w.-])")
+MIN_KEPT = 10000   # 14,561 kept from the 2026-05-12 file (5 selected rows had no coordinates)
 SOURCE = "France FINESS (national register of health and social establishments) - Etalab open data"
 AGG = {"4101", "4102", "4103", "4104", "4105", "4106", "4107", "4301", "4302", "4303", "4304", "4305", "4609"}
 EXTRA_CAT = {"609": ("general_support", ["Information & Support"]),     # MDPH
@@ -97,8 +108,61 @@ def to_wgs(epsg, x, y):
     return _tr[epsg].transform(x, y)
 
 
+def file_name(url):
+    return urllib.parse.unquote(os.path.basename(urllib.parse.urlsplit(url).path))
+
+
+def newest_stock(dataset):
+    """(file name, url) of the etalab-cs1100507-stock-YYYYMMDD-*.csv resource with the greatest date in a
+    data.gouv.fr dataset JSON (name taken from the URL, else the title), or None."""
+    best = None
+    resources = dataset.get("resources") if isinstance(dataset, dict) else None
+    for res in resources if isinstance(resources, list) else []:
+        if not isinstance(res, dict):
+            continue
+        url = res.get("url")
+        if not isinstance(url, str) or not re.match(r"https?://", url):
+            continue
+        m = FILE_RE.search(file_name(url)) or FILE_RE.search(str(res.get("title") or ""))
+        if not m:
+            continue
+        key = (m.group(1), str(res.get("last_modified") or ""), m.group(0))
+        if best is None or key > best[0]:
+            best = (key, m.group(0), url)
+    return best[1:] if best else None
+
+
+def discover():
+    try:
+        dataset = rc.get_json(API, timeout=60)
+    except Exception as e:  # noqa: BLE001
+        sys.exit(f"FINESS: could not read the data.gouv.fr dataset {API} ({e!r}) -- not falling back to an older file")
+    found = newest_stock(dataset)
+    if not found:
+        sys.exit(f"FINESS: no etalab-cs1100507-stock-YYYYMMDD-*.csv resource in {API} -- not falling back to an older file")
+    return found
+
+
+def cache_path(name, url):
+    """Scratch copy named after the registry file, so a newer file never reuses an older download."""
+    if FILE_RE.fullmatch(name):
+        return os.path.join(SCRATCH, name)
+    return os.path.join(SCRATCH, "url-" + hashlib.sha1(url.encode()).hexdigest()[:16] + ".csv")
+
+
 def main():
-    path = rc.download(URL, os.path.join(SCRATCH, "geo.csv"))
+    ap = argparse.ArgumentParser(description="France FINESS disability establishments -> new_resources_finess.json")
+    ap.add_argument("--url", help="use this stock CSV instead of the newest one listed on data.gouv.fr")
+    args = ap.parse_args()
+    if args.url:
+        url = args.url
+        m = FILE_RE.search(file_name(url))
+        name = m.group(0) if m else (file_name(url) or url)
+    else:
+        name, url = discover()
+    print(f"FINESS: using {name} ({url})")
+    rc.STATUS["input"] = f"FINESS {name}"
+    path = rc.download(url, cache_path(name, url))
     structs, geo = {}, {}
     with open(path, encoding="utf-8", newline="") as f:
         for r in csv.reader(f, delimiter=";"):
@@ -139,6 +203,10 @@ def main():
         entries.append(rc.entry(titled(r[3]) or titled(r[4]), SOURCE, typ, services, desc, address=addr, phone=fmt_phone(r[16]),
                                 lat=lat, lng=lng, external_id=f"finess:{fid}", scope="general"))
     print(f"kept {len(entries)}; {nogeo} without coordinates, {bad} implausible/failed projection")
+    if len(entries) < MIN_KEPT:
+        sys.exit(f"FINESS {name}: only {len(entries)} rows kept (expected >= {MIN_KEPT}) -- wrong or cut file, nothing written")
+    if nogeo * 100 > len(entries) + nogeo + bad:   # geolocalisation rows come last: a cut file loses them
+        sys.exit(f"FINESS {name}: {nogeo} selected rows have no coordinates (5 in the 2026-05-12 file) -- probably a cut file, nothing written")
     out = rc.finalize(os.path.join(rc.REPO, "new_resources_finess.json"), entries)
     rc.spot_check(out, 12, fields=("name", "address", "description"))
 

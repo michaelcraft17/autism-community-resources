@@ -1,0 +1,4 @@
+# Python packages the scheduled registry refresh needs (.github/workflows/add-resources.yml).
+# pyproj converts national grid coordinates (GIAS BNG, FINESS Lambert-93, PTV ETRS-TM35FIN, Maa-amet L-EST97).
+# Pinned so CI and local runs use the same PROJ build. pyproj 3.7.2 needs Python 3.11 or newer.
+pyproj==3.7.2

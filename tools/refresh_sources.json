@@ -1,0 +1,227 @@
+{
+  "_doc": "Sources the daily 'Registry refresh' workflow re-fetches, one per run (tools/refresh_source.py; see HANDOFF.md 'Scheduled registry refresh'). Each source's rows are identified by (external_id prefix, source string, breadth) groups; min_rows is an absolute floor (about 75% of the count when the source was added). Commands run from the repo root with the job's Python. raw = download/detail files deleted before a fetch (never geocode caches); caches = geocode caches persisted between runs (must match tools/*_scratch/*cache*.jsonl).",
+  "defaults": {
+    "max_drop_pct": 20,
+    "max_growth_pct": 30,
+    "max_changed_pct": 25,
+    "max_fill_drop_pts": 10,
+    "max_total_drop_pct": 1.0,
+    "max_shard_mb": 45,
+    "nominatim_max_new": 1200,
+    "official_geocoder_max_new": 1500,
+    "transient_min": 3,
+    "transient_pct": 0.5,
+    "max_warm_attempts": 8,
+    "timeout_minutes": 30
+  },
+  "sources": [
+    {
+      "name": "gias",
+      "label": "England GIAS",
+      "country": "GB",
+      "every_days": 7,
+      "max_drop_pct": 10,
+      "timeout_minutes": 25,
+      "commands": [["tools/gias_fetch.py", "latest"]],
+      "outputs": ["new_resources_gias.json", "new_resources_gias_broad.json"],
+      "groups": [
+        {"prefix": "gias", "source": "England GIAS (DfE Get Information About Schools) - official register of schools, Open Government Licence", "breadth": "core", "min_rows": 2620},
+        {"prefix": "gias", "source": "England GIAS (DfE Get Information About Schools) - official register of schools, Open Government Licence", "breadth": "broad", "min_rows": 840}
+      ],
+      "raw": ["tools/gias_scratch/edubase_*.csv"],
+      "caches": []
+    },
+    {
+      "name": "finess",
+      "label": "France FINESS",
+      "country": "FR",
+      "every_days": 14,
+      "max_drop_pct": 10,
+      "timeout_minutes": 20,
+      "commands": [["tools/finess_fetch.py"]],
+      "outputs": ["new_resources_finess.json"],
+      "groups": [
+        {"prefix": "finess", "source": "France FINESS (national register of health and social establishments) - Etalab open data", "breadth": "core", "min_rows": 10900}
+      ],
+      "raw": ["tools/finess_scratch/*.csv"],
+      "caches": []
+    },
+    {
+      "name": "us_dd",
+      "label": "Ohio DODD + New York OPWDD",
+      "country": "US",
+      "every_days": 14,
+      "timeout_minutes": 20,
+      "commands": [["tools/us_dd_fetch.py"]],
+      "outputs": ["new_resources_ny_opwdd.json", "new_resources_ohio_dodd.json"],
+      "groups": [
+        {"prefix": "ny-opwdd", "source": "New York OPWDD provider agencies (data.ny.gov)", "breadth": "core", "min_rows": 320},
+        {"prefix": "oh-dodd", "source": "Ohio Department of Developmental Disabilities certified providers (DODD)", "breadth": "core", "min_rows": 1900}
+      ],
+      "raw": ["tools/dd_scratch/ohio_rows.json", "tools/dd_scratch/ohio_rows.json.part"],
+      "caches": []
+    },
+    {
+      "name": "nces",
+      "label": "US NCES Common Core of Data",
+      "country": "US",
+      "every_days": 28,
+      "timeout_minutes": 20,
+      "commands": [["tools/us_ccd_fetch.py"]],
+      "outputs": ["new_resources_us_ccd.json"],
+      "groups": [
+        {"prefix": "nces", "source": "US NCES Common Core of Data (Urban Institute Education Data API) - public special-education schools", "breadth": "core", "min_rows": 1400}
+      ],
+      "raw": ["tools/us_ccd_scratch/ccd_*.json", "tools/us_ccd_scratch/ccd_*.json.part"],
+      "caches": []
+    },
+    {
+      "name": "stil",
+      "label": "Denmark STIL",
+      "country": "DK",
+      "every_days": 28,
+      "timeout_minutes": 10,
+      "commands": [["tools/stil_fetch.py"]],
+      "outputs": ["new_resources_stil.json"],
+      "groups": [
+        {"prefix": "stil", "source": "Denmark STIL Institutionsregisteret (Ministry of Children and Education) - official institution register", "breadth": "core", "min_rows": 640}
+      ],
+      "raw": ["tools/stil_scratch/institutions.json"],
+      "caches": []
+    },
+    {
+      "name": "skolverket",
+      "label": "Sweden Skolverket",
+      "country": "SE",
+      "every_days": 28,
+      "timeout_minutes": 50,
+      "commands": [["tools/skolverket_fetch.py"]],
+      "outputs": ["new_resources_skolverket.json"],
+      "groups": [
+        {"prefix": "skolverket", "source": "Sweden Skolverket Skolenhetsregistret - official school-unit register", "breadth": "core", "min_rows": 870}
+      ],
+      "raw": ["tools/skolverket_scratch/detail.jsonl"],
+      "caches": []
+    },
+    {
+      "name": "ca_dds",
+      "label": "California DDS",
+      "country": "US",
+      "every_days": 28,
+      "timeout_minutes": 10,
+      "commands": [["tools/ca_dds_fetch.py"]],
+      "outputs": ["new_resources_ca_dds.json"],
+      "groups": [
+        {"prefix": "ca-dds", "source": "California Department of Developmental Services (DDS) - official regional centre and family resource centre layers", "breadth": "core", "min_rows": 97}
+      ],
+      "raw": [],
+      "caches": []
+    },
+    {
+      "name": "rspo",
+      "label": "Poland RSPO",
+      "country": "PL",
+      "every_days": 28,
+      "timeout_minutes": 45,
+      "commands": [["tools/rspo_fetch.py"]],
+      "outputs": ["new_resources_rspo.json"],
+      "groups": [
+        {"prefix": "rspo", "source": "Poland RSPO (Rejestr Szkol i Placowek Oswiatowych) - official education institution register", "breadth": "core", "min_rows": 3650},
+        {"prefix": "rspo", "source": "Poland RSPO (Rejestr Szkol i Placowek Oswiatowych) - official education institution register", "breadth": "broad", "min_rows": 129}
+      ],
+      "raw": ["tools/rspo_scratch/detail.jsonl"],
+      "caches": ["tools/rspo_scratch/geocode_cache.jsonl"]
+    },
+    {
+      "name": "norway",
+      "label": "Norway NSR + Brreg",
+      "country": "NO",
+      "every_days": 28,
+      "timeout_minutes": 40,
+      "commands": [["tools/nsr_fetch.py"], ["tools/norway_brreg_bulk_fetch.py"]],
+      "outputs": ["new_resources_nsr.json", "new_resources_norway_brreg.json"],
+      "groups": [
+        {"label": "no-org NSR", "prefix": "no-org", "source": "Norway Udir NSR (Nasjonalt skoleregister) - official school register", "breadth": "core", "min_rows": 64},
+        {"label": "no-org Brreg", "prefix": "no-org", "source": "Norway Bronnoysund Register Centre (Enhetsregisteret) - official national entity registry", "breadth": "core", "min_rows": 1370},
+        {"prefix": "no-housing", "source": "Norway Bronnoysund Register Centre (Enhetsregisteret) - official national entity registry", "breadth": "core", "min_rows": 230}
+      ],
+      "raw": ["tools/norway_brreg2_scratch/enheter.csv.gz", "tools/norway_brreg2_scratch/underenheter.csv.gz"],
+      "caches": ["tools/nsr_scratch/kartverket_cache.jsonl", "tools/norway_brreg2_scratch/kartverket_cache.jsonl"]
+    },
+    {
+      "name": "ptv",
+      "label": "Finland PTV",
+      "country": "FI",
+      "every_days": 28,
+      "timeout_minutes": 30,
+      "commands": [["tools/ptv_fetch.py"]],
+      "outputs": ["new_resources_ptv.json"],
+      "groups": [
+        {"prefix": "ptv", "source": "Finland PTV Suomi.fi service catalogue (Digital and Population Data Services Agency) - open data", "breadth": "core", "min_rows": 550},
+        {"prefix": "ptv-housing", "source": "Finland PTV Suomi.fi service catalogue (Digital and Population Data Services Agency) - open data", "breadth": "core", "min_rows": 150}
+      ],
+      "raw": ["tools/ptv_scratch/*.json"],
+      "caches": ["tools/ptv_scratch/geocode_cache.jsonl"]
+    },
+    {
+      "name": "oscr",
+      "label": "Scotland OSCR",
+      "country": "GB",
+      "every_days": 28,
+      "timeout_minutes": 15,
+      "post_dedupe": true,
+      "commands": [["tools/oscr_fetch.py"]],
+      "outputs": ["new_resources_oscr.json"],
+      "groups": [
+        {"prefix": "oscr", "source": "Scotland OSCR Scottish Charity Register (Office of the Scottish Charity Regulator)", "breadth": "core", "min_rows": 170}
+      ],
+      "raw": ["tools/oscr_scratch/oscr.zip", "tools/oscr_scratch/CharityExport*.csv"],
+      "caches": []
+    },
+    {
+      "name": "estonia",
+      "label": "Estonia e-Business Register",
+      "country": "EE",
+      "every_days": 28,
+      "timeout_minutes": 20,
+      "commands": [["tools/estonia_bulk_fetch.py"]],
+      "outputs": ["new_resources_estonia_bulk.json"],
+      "groups": [
+        {"prefix": "ee", "source": "Estonia e-Business Register (Ariregister, RIK) - official national entity registry", "breadth": "core", "min_rows": 120}
+      ],
+      "raw": ["tools/estonia_scratch/lihtandmed.csv.zip"],
+      "caches": ["tools/estonia_scratch/maaamet_cache.jsonl"]
+    },
+    {
+      "name": "acnc",
+      "label": "Australia ACNC",
+      "country": "AU",
+      "every_days": 28,
+      "timeout_minutes": 40,
+      "post_dedupe": true,
+      "commands": [["tools/acnc_fetch.py"]],
+      "outputs": ["new_resources_acnc.json"],
+      "groups": [
+        {"prefix": "au-abn", "source": "Australia ACNC charity register and Annual Information Statement programs (data.gov.au)", "breadth": "core", "min_rows": 930}
+      ],
+      "raw": ["tools/acnc_scratch/main.csv", "tools/acnc_scratch/ais24_programs.csv"],
+      "caches": ["tools/acnc_scratch/geocode_cache.jsonl"],
+      "notes": "The AIS programs file that selects the charities is pinned to the 2024 statement year (AIS_URL in acnc_fetch.py); bump it by hand when data.gov.au publishes a newer one."
+    },
+    {
+      "name": "nz",
+      "label": "New Zealand Charities Services",
+      "country": "NZ",
+      "every_days": 28,
+      "timeout_minutes": 30,
+      "post_dedupe": true,
+      "commands": [["tools/nz_charities_fetch.py"]],
+      "outputs": ["new_resources_nz_charities.json"],
+      "groups": [
+        {"prefix": "nz-cc", "source": "New Zealand Charities Services register (OData) - official charity register", "breadth": "core", "min_rows": 440}
+      ],
+      "raw": ["tools/nz_scratch/*.json"],
+      "caches": ["tools/nz_scratch/geocode_cache.jsonl"]
+    }
+  ]
+}

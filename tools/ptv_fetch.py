@@ -16,7 +16,9 @@ points (Kela, suomi-piste, library, health centre, town hall ...) are dropped.
 
 Privacy: group homes / housing units (ryhmakoti, asumisyksikko, asumispalvelu, palveluasuminen ...) are people's
 homes. They are NOT pinned at their address: one entry per operator and municipality, located at the municipality
-centre (Nominatim, cached) and named after the operator. Day-activity centres, offices and similar stay pinned.
+centre (the coordinates the dataset already holds for that entry, rc.prior_coords, else Nominatim, cached) and named
+after the operator. Day-activity centres, offices and similar stay pinned at PTV's own coordinates; a location without
+them is dropped, never geocoded.
 Contact-person names inside descriptions are never copied (descriptions are not copied at all).
 
 Writes new_resources_ptv.json and new_resources_ptv_broad.json.
@@ -165,14 +167,16 @@ def main():
     # housing units: one entry per operator and municipality, at the municipality centre
     nohome = 0
     for (tier, oid, muni), h in homes.items():
-        hit = geoc.geocode(f"{muni}, Finland")
+        addr, eid = f"{muni}, Finland", f"ptv-housing:{oid}:{muni}"
+        # coordinates already in the dataset for this entry, else Nominatim
+        hit = rc.prior_coords(eid, addr) or geoc.geocode(addr)
         if not hit or not rc.plausible("FI", *hit):
             nohome += 1
             continue
         n = f"{h['n']} housing units" if h["n"] > 1 else "housing unit"
         out[tier].append(rc.entry(f"{h['org']} - supported housing, {muni}", SOURCE, "social", ["Residential & Social Care"],
                                   f"{h['svc']}. {n.capitalize()} for people with disabilities in {muni} (location shown at municipality level; housing addresses are not published here).",
-                                  address=f"{muni}, Finland", lat=hit[0], lng=hit[1], external_id=f"ptv-housing:{oid}:{muni}",
+                                  address=addr, lat=hit[0], lng=hit[1], external_id=eid,
                                   breadth=tier, scope="general"))
     print(f"dropped: {generic} generic service points, {nocoord} without coordinates, {nohome} housing groups without a geocode; "
           f"{sum(h['n'] for h in homes.values())} housing locations collapsed into {len(homes)} municipality entries")

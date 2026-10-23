@@ -11,7 +11,10 @@ syndrome or Disability sports. Charities whose only disability program is "Housi
 merged (a charity's business address is sometimes a person's home; see HANDOFF). The 16k charities that merely tick the
 "People with Disabilities" beneficiary box are the large noisy set and are not merged.
 Program operating locations in the file are region-level ("Western Australia"), so the register's business address is
-geocoded instead (Nominatim, cached; street, then suburb + postcode).
+geocoded instead (Nominatim, cached; street, then suburb + postcode, then postcode; a lookup that fails rather than
+misses drops the row instead of falling back). A row whose address text is unchanged keeps the coordinates the dataset
+already holds (rc.prior_coords), so a refresh only geocodes new or changed addresses.
+Grant-making trusts and rows without an address are dropped before any lookup.
 
 Output: new_resources_acnc.json
 """
@@ -76,11 +79,25 @@ def main():
         lines = [rc.clean(m[k]) for k in ("Address_Line_1", "Address_Line_2", "Address_Line_3") if rc.clean(m[k])]
         street = ", ".join(lines)
         po = bool(re.search(r"\bp\.?\s?o\.?\s*box|locked bag|GPO box", street, re.I))
-        hit = None
-        if street and not po:
+        name = rc.clean(m["Charity_Legal_Name"])
+        # grant-making trusts / private ancillary funds are not services; entries with no address would sit on the country centroid
+        if re.search(r"^the trustees? (for|of)\b|ancillary fund|\bpaf\b", name, re.I) or not (street or town):
+            skipped += 1
+            continue
+        addr = ", ".join(x for x in (street if not po else "", f"{town} {state} {pc}".strip(), "Australia") if x)
+        eid = f"au-abn:{abn}"
+        # coordinates already in the dataset for this unchanged address, else Nominatim (the address text does not
+        # depend on which lookup hits). A lookup that could not be made (network error, budget) drops the row for a
+        # later run instead of falling back to the town, whose centroid prior_coords would then keep.
+        hit, failed = rc.prior_coords(eid, addr), False
+        if not hit and street and not po:
             hit = geoc.geocode(f"{street}, {town}, {STATE_NAME.get(state, state)} {pc}, Australia")
-        if not hit:
-            hit = geoc.geocode(f"{town}, {STATE_NAME.get(state, state)} {pc}, Australia") or geoc.geocode(f"{pc}, Australia")
+            failed = geoc.last_failed
+        if not hit and not failed:
+            hit = geoc.geocode(f"{town}, {STATE_NAME.get(state, state)} {pc}, Australia")
+            failed = geoc.last_failed
+        if not hit and not failed:
+            hit = geoc.geocode(f"{pc}, Australia")
         if not hit or not rc.plausible("AU", hit[0], hit[1]):
             nogeo += 1
             continue
@@ -94,16 +111,10 @@ def main():
         for _, pn in plist:
             if pn and pn.lower() not in [n.lower() for n in names]:
                 names.append(pn)
-        name = rc.clean(m["Charity_Legal_Name"])
-        # grant-making trusts / private ancillary funds are not services; entries with no address would sit on the country centroid
-        if re.search(r"^the trustees? (for|of)\b|ancillary fund|\bpaf\b", name, re.I) or not (street or town):
-            skipped += 1
-            continue
         desc = f"Registered charity (ACNC) running disability programs: {'; '.join(names[:5])}{'...' if len(names) > 5 else ''}."
-        addr = ", ".join(x for x in (street if not po else "", f"{town} {state} {pc}".strip(), "Australia") if x)
         scope = None if (best == "Autism spectrum disorder" or re.search(r"autis|asperger", name, re.I)) else "general"
         entries.append(rc.entry(name.title() if name.isupper() else name, SOURCE, typ, services, desc, address=addr,
-                                website=rc.clean_url(m["Charity_Website"]), lat=hit[0], lng=hit[1], external_id=f"au-abn:{abn}",
+                                website=rc.clean_url(m["Charity_Website"]), lat=hit[0], lng=hit[1], external_id=eid,
                                 scope=scope))
     print(f"{len(progs)} charities with disability programs; {nomain} not in main register, {nogeo} without a geocode; "
           f"{len(housing_only)} housing-only charities not merged; {skipped} grant-making trusts / no-address rows dropped")

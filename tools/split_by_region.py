@@ -187,6 +187,8 @@ NEW_SOURCE_SHARDS = [
     ("brazil ipea", "world", "BR"),
     ("nces common core", "us", None),
     ("california department of developmental services", "us", None),
+    ("ohio department of developmental disabilities certified providers", "us", None),
+    ("new york opwdd provider agencies", "us", None),
     ("england gias", "europe", "GB"),
     ("denmark stil", "europe", "DK"),
     ("sweden skolverket", "europe", "SE"),
