@@ -1603,3 +1603,8 @@ Dataset total 236,236 -> 240,682 over the session (Austria, Bosnia, DUO, RPSS).
 - Phones: mobiles dropped; numbers missing the leading 0 in the sheet are repaired for this sheet only.
 - `refresh_sources.json`: `wales_schools` now has four labelled groups (floors 29 / 19 PRU / 13 / 4). The allowlist is not refreshed from the web: new or closed independent schools need a manual review (the fetcher flags a failure if a listed number leaves the sheet).
 - Not pushed.
+
+### 2026-10-25 (cont. 4): Argentina street-level upgrade
+- `tools/argentina_padron_fetch.py` now tries the official keyless georef API (`apis.datos.gob.ar/georef/api/direcciones`, cache `georef_cache.jsonl`) when Nominatim cannot find the street, before falling back to the locality centre. A georef match is accepted only if its locality or department equals the padron's own and it lies within 25 km of the locality centre. `prior_coords` is no longer used here (it would have kept the old locality pins).
+- Result: 207 rows moved from locality level to street level (locality-level rows 1,090 -> 892), 198 coordinate changes in place (median move 1.4 km, 7 over 10 km, max 22.6 km), same `ar-padron:<Cueanexo>` ids, +8 rows that earlier failed lookups now place. Dataset 240,730 -> 240,738.
+- ~892 rows remain at locality level (no street, S/N, or no georef match). Cold-cache runs make about 2,000 Nominatim calls, so the refresh timeout is now 90 min; `min_rows` unchanged.

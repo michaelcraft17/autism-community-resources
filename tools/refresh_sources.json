@@ -228,15 +228,15 @@
       "label": "Argentina Padron (special education)",
       "country": "AR",
       "every_days": 28,
-      "timeout_minutes": 40,
+      "timeout_minutes": 90,
       "commands": [["tools/argentina_padron_fetch.py"]],
       "outputs": ["new_resources_argentina_padron.json"],
       "groups": [
         {"prefix": "ar-padron", "source": "Argentina Padron Oficial de Establecimientos Educativos (special education)", "breadth": "core", "min_rows": 1480}
       ],
       "raw": ["tools/argentina_padron_scratch/padron.xlsx"],
-      "caches": ["tools/argentina_padron_scratch/geocode_cache.jsonl"],
-      "notes": "About 1,090 rows are pinned at locality level because Nominatim cannot find the street; the cache keeps those results."
+      "caches": ["tools/argentina_padron_scratch/geocode_cache.jsonl", "tools/argentina_padron_scratch/georef_cache.jsonl"],
+      "notes": "About 890 rows are still pinned at locality level (neither Nominatim nor georef finds the street); the caches keep those results. min_rows unchanged."
     },
     {
       "name": "voi",
