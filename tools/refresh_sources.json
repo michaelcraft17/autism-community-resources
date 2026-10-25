@@ -382,21 +382,24 @@
     },
     {
       "name": "bosnia_inst",
-      "label": "Bosnia FBiH institutions + Sarajevo special schools",
+      "label": "Bosnia FBiH institutions, Sarajevo special schools + social-work centres",
       "country": "BA",
       "every_days": 28,
-      "timeout_minutes": 10,
+      "timeout_minutes": 30,
       "commands": [["tools/bosnia_inst_fetch.py"]],
       "outputs": ["new_resources_bosnia_inst.json"],
       "groups": [
         {"prefix": "ba-fbih", "source": "Bosnia and Herzegovina FBiH Ministry of Labour and Social Policy social-protection institutions (fmrsp.gov.ba)", "breadth": "core", "min_rows": 16},
-        {"prefix": "ba-ks", "source": "Bosnia and Herzegovina Sarajevo Canton Ministry of Education institutions list (mo.ks.gov.ba)", "breadth": "core", "min_rows": 6}
+        {"prefix": "ba-ks", "source": "Bosnia and Herzegovina Sarajevo Canton Ministry of Education institutions list (mo.ks.gov.ba)", "breadth": "core", "min_rows": 6},
+        {"prefix": "ba-csr", "source": "Bosnia and Herzegovina FBiH social-work centres directory (fmrsp.gov.ba)", "breadth": "broad", "min_rows": 60}
       ],
-      "raw": ["tools/bosnia_inst_scratch/ju.html", "tools/bosnia_inst_scratch/ks.html"],
+      "raw": ["tools/bosnia_inst_scratch/ju.html", "tools/bosnia_inst_scratch/ks.html", "tools/bosnia_inst_scratch/csr.html"],
       "caches": ["tools/bosnia_inst_scratch/geocode_cache.jsonl"],
       "notes": "Selection is by placement type and name (never the women's safe houses); if the Ministry reshuffles its types the row floors fail the run rather than deleting rows."
     },
     {"name": "netherlands_duo", "label": "Netherlands DUO special education schools", "country": "NL", "every_days": 28, "timeout_minutes": 20, "commands": [["tools/netherlands_duo_fetch.py"]], "outputs": ["new_resources_netherlands_duo.json"], "groups": [{"prefix": "nl-duo", "source": "Netherlands DUO special education sites (onderwijsdata.duo.nl, CC-BY)", "breadth": "core", "min_rows": 500}, {"prefix": "nl-duo", "source": "Netherlands DUO special education sites (onderwijsdata.duo.nl, CC-BY)", "breadth": "broad", "min_rows": 200}], "raw": ["tools/netherlands_duo_scratch/vestigingenso.csv"], "caches": ["tools/netherlands_duo_scratch/pdok_cache.jsonl"], "notes": "CKAN package adressen_so; PDOK Locatieserver geocoding by postcode+house number. SBAO sites are the broad tier (owner-approved)."},
-    {"name": "czech_rpss", "label": "Czechia MPSV RPSS social services (core)", "country": "CZ", "every_days": 28, "timeout_minutes": 90, "commands": [["tools/czech_rpss_fetch.py"]], "outputs": ["new_resources_czech_rpss.json"], "groups": [{"prefix": "cz-rpss", "source": "Czech Republic RPSS register of social service providers (MPSV, data.mpsv.cz)", "breadth": "core", "min_rows": 2500}], "raw": ["tools/czech_rpss_scratch/rpss.json", "tools/czech_rpss_scratch/cilove-skupiny-osoby.json", "tools/czech_rpss_scratch/druhy-socialni-sluzby.json"], "caches": ["tools/czech_rpss_scratch/ruian_cache.jsonl", "tools/czech_rpss_scratch/geocode_cache.jsonl"], "notes": "99 MB rpss.json; RUIAN address points by code, residential services at town level via Nominatim (cache persisted). Core only; no broad tier built."}
+    {"name": "czech_rpss", "label": "Czechia MPSV RPSS social services (core)", "country": "CZ", "every_days": 28, "timeout_minutes": 90, "commands": [["tools/czech_rpss_fetch.py"]], "outputs": ["new_resources_czech_rpss.json"], "groups": [{"prefix": "cz-rpss", "source": "Czech Republic RPSS register of social service providers (MPSV, data.mpsv.cz)", "breadth": "core", "min_rows": 2500}], "raw": ["tools/czech_rpss_scratch/rpss.json", "tools/czech_rpss_scratch/cilove-skupiny-osoby.json", "tools/czech_rpss_scratch/druhy-socialni-sluzby.json"], "caches": ["tools/czech_rpss_scratch/ruian_cache.jsonl", "tools/czech_rpss_scratch/geocode_cache.jsonl"], "notes": "99 MB rpss.json; RUIAN address points by code, residential services at town level via Nominatim (cache persisted). Core only; no broad tier built."},
+    {"name": "ny_medicaid", "label": "New York Medicaid disability-specific provider types", "country": "US", "every_days": 28, "timeout_minutes": 120, "commands": [["tools/ny_medicaid_fetch.py"]], "outputs": ["new_resources_ny_medicaid.json"], "groups": [{"prefix": "ny-medicaid", "source": "New York Medicaid enrolled provider listing (health.data.ny.gov), disability-specific provider types", "breadth": "core", "min_rows": 2450}], "raw": ["tools/ny_medicaid_scratch/rows.json"], "caches": ["tools/ny_medicaid_scratch/npi_type_cache.jsonl", "tools/ny_medicaid_scratch/geocode_cache.jsonl"], "notes": "Socrata keti-qx5t; only five OPWDD/early-intervention provider types. Individuals (NPI-1) dropped via a cached NPI-registry lookup; ICF/residential-treatment sites at town level. Behavior analysts are never built. A cold cache needs ~2,900 NPI lookups plus ~250 Nominatim town lookups."},
+    {"name": "autismo_espana", "label": "Autismo Espa\u00f1a member and linked entities", "country": "ES", "every_days": 28, "timeout_minutes": 90, "commands": [["tools/autismo_espana_fetch.py"]], "outputs": ["new_resources_autismo_espana.json"], "groups": [{"prefix": "autismo-es", "source": "Autismo Espa\u00f1a member and linked entities directory (autismo.org.es)", "breadth": "core", "min_rows": 120}], "raw": ["tools/autismo_espana_scratch/entidades.html"], "post_dedupe": true, "prefixes": ["autismo-es"], "caches": ["tools/autismo_espana_scratch/geocode_cache.jsonl"], "notes": "One static HTML page (~508 blocks, 194 distinct entities); e-mails and mobile numbers never read."}
   ]
 }

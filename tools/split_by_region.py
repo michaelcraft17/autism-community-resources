@@ -189,6 +189,8 @@ NEW_SOURCE_SHARDS = [
     ("california department of developmental services", "us", None),
     ("ohio department of developmental disabilities certified providers", "us", None),
     ("new york opwdd provider agencies", "us", None),
+    ("new york medicaid enrolled provider", "us", None),
+    ("autismo españa member and linked", "europe", "ES"),
     ("england gias", "europe", "GB"),
     ("denmark stil", "europe", "DK"),
     ("sweden skolverket", "europe", "SE"),

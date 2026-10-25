@@ -10,6 +10,9 @@ Bosnia and Herzegovina, two small HTML sources (shard BA, joined to the e-regist
        Community-living and out-of-family-care residences (SUMERO, Kuca nade, Put u zivot, Emmaus Duje) are shown at town level.
   BA4  Sarajevo Canton Ministry of Education, https://mo.ks.gov.ba/ustanove/lista (275 institutions). Core = the special
        schools and their preschool units (Mjedenica, Vladimir Nazor, the blind/low-vision centre, the hearing/speech centre).
+  BA3  FBiH social-work centres, https://fmrsp.gov.ba/adresar-centara-i-lokalnih-sluzbi-za-socijalni-rad-u-federaciji-bih
+       (80 rows, one table). BROAD: they are the access points for disability benefits and status assessment, not
+       disability-specific. The contact-person and e-mail columns are never read. Id ba-csr:<canton>-<town>-<body>.
 Privacy: only the institution's landline is kept (mobile numbers and e-mails dropped); no contact person is on either page.
 Output: new_resources_bosnia_inst.json   Raw: tools/bosnia_inst_scratch/*.html   Nominatim, 1 req/s.
 """
@@ -26,6 +29,8 @@ SCRATCH = os.path.join(rc.REPO, "tools", "bosnia_inst_scratch")
 URL_FBIH = "https://fmrsp.gov.ba/ju-socijalne-zastite"
 URL_KS = "https://mo.ks.gov.ba/ustanove/lista"
 SRC_FBIH = "Bosnia and Herzegovina FBiH Ministry of Labour and Social Policy social-protection institutions (fmrsp.gov.ba)"
+URL_CSR = "https://fmrsp.gov.ba/adresar-centara-i-lokalnih-sluzbi-za-socijalni-rad-u-federaciji-bih"
+SRC_CSR = "Bosnia and Herzegovina FBiH social-work centres directory (fmrsp.gov.ba)"
 SRC_KS = "Bosnia and Herzegovina Sarajevo Canton Ministry of Education institutions list (mo.ks.gov.ba)"
 SAFE_HOUSE = re.compile(r"sigurne ku", re.I)
 CORE_TYPE = re.compile(r"invalid|stanovanje u zajednici|skrb izvan vlastite", re.I)
@@ -125,7 +130,22 @@ def main():
                             "Special education institution in Sarajevo Canton" + (" (preschool unit)" if pre else "") + ", from the Cantonal Ministry of Education list.",
                             address=f"{street}, {muni}, Sarajevo, Bosna i Hercegovina", website=web, lat=lat, lng=lng,
                             external_id=f"ba-ks:{slug(name)}-{slug(tip)}", scope="general"))
-    print(f"FBiH institutions {nf}; Sarajevo Canton special schools {len(out) - nf}; skipped (no geocode) {skipped}")
+    nk = len(out)
+    for c, _ in table(page(URL_CSR, "csr.html"))[1:]:
+        if len(c) < 7 or not re.match(r"\d+\.?$", c[0]):
+            continue
+        body, canton, town, street = c[1], c[2], c[3], (c[5] if c[5] != "-" else "")   # c[4] contact person, c[7] e-mail: not read
+        loc = locate(geoc, street, town, False)
+        if not loc:
+            skipped.append(f"{body} {town}")
+            continue
+        lat, lng, precise = loc
+        ph = landline(re.sub(r"(\d)\s+(?=\d{2,3}/)", r"\1;", c[6]))
+        out.append(rc.entry(f"{rc.clean(body)} {rc.clean(town)}", SRC_CSR, "social", ["Information & Support"],
+                            f"Social-work centre / local social-welfare service ({rc.clean(canton)}); access point for disability benefits and status assessment. Listed in the FBiH Federal Ministry directory.",
+                            address=(f"{street}, " if precise else "") + f"{town}, Bosna i Hercegovina", phone=ph, lat=lat, lng=lng,
+                            external_id=f"ba-csr:{slug(canton)}-{slug(town)}-{slug(body)}", breadth="broad", scope="general"))
+    print(f"FBiH institutions {nf}; Sarajevo Canton special schools {nk - nf}; FBiH social-work centres {len(out) - nk}; skipped (no geocode) {skipped}")
     fin = rc.finalize(os.path.join(rc.REPO, "new_resources_bosnia_inst.json"), out)
     for e in fin:
         print(f"  {e['external_id'][:60]:<60} {e['name'][:50]:<50} | {e.get('address')} | {e.get('phone')} | {e['coordinates']}")

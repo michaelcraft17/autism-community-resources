@@ -1608,3 +1608,19 @@ Dataset total 236,236 -> 240,682 over the session (Austria, Bosnia, DUO, RPSS).
 - `tools/argentina_padron_fetch.py` now tries the official keyless georef API (`apis.datos.gob.ar/georef/api/direcciones`, cache `georef_cache.jsonl`) when Nominatim cannot find the street, before falling back to the locality centre. A georef match is accepted only if its locality or department equals the padron's own and it lies within 25 km of the locality centre. `prior_coords` is no longer used here (it would have kept the old locality pins).
 - Result: 207 rows moved from locality level to street level (locality-level rows 1,090 -> 892), 198 coordinate changes in place (median move 1.4 km, 7 over 10 km, max 22.6 km), same `ar-padron:<Cueanexo>` ids, +8 rows that earlier failed lookups now place. Dataset 240,730 -> 240,738.
 - ~892 rows remain at locality level (no street, S/N, or no georef match). Cold-cache runs make about 2,000 Nominatim calls, so the refresh timeout is now 90 min; `min_rows` unchanged.
+
+### 2026-10-25 (cont. 5): Batch 1 of the remaining sources -- NY Medicaid, FBiH social-work centres, Autismo España
+Dataset 240,738 -> 244,254 (+3,516). Nothing pushed.
+
+| Source | Fetcher | Rows | Id prefix |
+|---|---|---|---|
+| NY Medicaid enrolled providers, five disability provider types (health.data.ny.gov `keti-qx5t`) | `ny_medicaid_fetch.py` | 3,278 core | `ny-medicaid:` |
+| FBiH social-work centres directory (fmrsp.gov.ba), broad (owner-approved) | `bosnia_inst_fetch.py` (BA3 section) | 80 broad | `ba-csr:` |
+| Autismo España member + linked entities (autismo.org.es) | `autismo_espana_fetch.py` | 158 core (181 built, 18 + 5 duplicates dropped) | `autismo-es:` |
+
+- **NY Medicaid.** Types: Community Support (OPWDD), ICF (OPWDD), Residential Treatment Facility, OPWDD State-Operated Clinic, Early Intervention or School Supportive. The 6,404 Licensed Behavior Analysts are never built (individuals under personal names). Every row with an NPI is checked against the NPI registry (cache `npi_type_cache.jsonl`, enumeration type only): 1,125 NPI-1 individuals dropped, 60 already in the dataset by NPI. 534 Community Support rows have no address in the listing and are skipped. ICF and residential-treatment sites are shown at town level (Nominatim town centre, address "City, NY", no phone). **Early Intervention / School Supportive (about 1,780 rows) includes general hospitals and school districts; the owner chose to keep them core.** Nominatim town lookups were slow (~250 towns, ~1 hour cold).
+- **FBiH centres.** Contact-person and e-mail columns never read. Broad. Added to the existing Bosnia institutions fetcher; refresh group `ba-csr` (floor 60).
+- **Autismo España.** The page has 508 blocks but only 194 distinct entities (one block per province covered; 210 blocks have an empty address). Town is the last address line (an earlier parse put Noblejas in Málaga). E-mails and mobile numbers never read.
+- Routing: `NEW_SOURCE_SHARDS` gained `new york medicaid enrolled provider` (us) and `autismo españa member and linked` (europe/ES); without them rows fell into `us/national` and `world/all`.
+- Refresh: 29 sources, 46 groups (`--check` OK). `ny_medicaid` (floor 2,450, 120 min), `autismo_espana` (floor 120, `post_dedupe` on `autismo-es`), `bosnia_inst` timeout 30 min. Dry-runs all `+0 -0`.
+- Still open: IRS NTEE disability layer, Germany ZER larger layer, Brreg broad (each needs the owner's approval), Ohio DODD ArcGIS was down on 2026-10-25 (not worked around), Scotland school lists WAF-blocked, HIQA on hold.
