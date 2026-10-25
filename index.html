@@ -3247,14 +3247,17 @@ const TRUST_STEPS = [
   {label:'Reviewed', Icon:SearchCheckIcon},
   {label:'Listed', Icon:MapPinLineIcon},
 ];
+// The 'official' target is tenths of a percent from `python3 tools/official_share.py` (rerun after big additions).
 // The first stat's target comes from data/manifest.json's total (see Landing), not a hard-coded number.
 const TRUST_STATS = [
   {key:'resources', Icon:ShieldCheckIcon, target:0, suffix:'+', format:v=>v.toLocaleString(), label:'verified resources'},
   {key:'countries', Icon:GlobeIcon, target:30, suffix:'+', format:v=>String(v), label:'countries covered'},
-  {key:'official', Icon:BadgeCheckIcon, target:965, suffix:'%', format:v=>(v/10).toFixed(1), label:'from official registries*'},
+  {key:'official', Icon:BadgeCheckIcon, target:964, suffix:'%', format:v=>(v/10).toFixed(1), label:'from official registries*'},
 ];
 // Rounds the directory size down to a whole thousand for "230,000+"-style copy.
 const roundedTotal = total => total ? Math.floor(total / 1000) * 1000 : 0;
+
+const OFFICIAL_SHARE = TRUST_STATS.find(s => s.key === 'official').target;
 
 const StatBlock = ({Icon, target, suffix, format, label, start, reduceMotion}) => {
   const value = useCountUp(target, start && target > 0, reduceMotion);
@@ -3429,8 +3432,8 @@ const Landing = ({onSearch, onSelectSuggestion, onLocate, busy, error, reduceMot
           {TRUST_STATS.map(s => <StatBlock key={s.key} {...s} target={s.key === 'resources' ? roundedTotal(total) : s.target} start={trustInView} reduceMotion={reduceMotion}/>)}
         </div>
         <p style={{fontSize:'var(--fs-xs)',color:'var(--text-muted)',margin:'20px auto 0',maxWidth:'96ch',lineHeight:1.5,textWrap:'pretty'}}>
-          *96.5% of listings come from official registries, including the US NPI Registry, the UK Care
-          Quality Commission, and France&rsquo;s national association registry. The other 3.5% come from the
+          *{(OFFICIAL_SHARE/10).toFixed(1)}% of listings come from official registries, including the US NPI Registry, the UK Care
+          Quality Commission, and France&rsquo;s national association registry. The other {((1000 - OFFICIAL_SHARE)/10).toFixed(1)}% come from the
           published directories of national nonprofits such as Best Buddies, The Arc, and Special Olympics.
         </p>
       </section>
