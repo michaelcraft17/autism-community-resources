@@ -1638,3 +1638,17 @@ Dataset 244,254 -> 247,045 (+2,791). Nothing pushed. Owner-approved after a live
 - **Germany ZER skipped** (owner): 8,801 disability-purpose orgs but postcode+city only (3,417 places), only 2,512 with a disability word in the name, 296 with person prefixes. The 177 autism-name rows stay.
 - Routing: `NEW_SOURCE_SHARDS` gained the IRS disability source (us). Refresh: 30 sources, `irs_ntee_disability` (floor 2,000, 60 min, ~340 MB download per run) and two new broad groups on `norway` (`no-org Brreg broad` 280, `no-care` 70). `--check` OK; dry-runs `+0 -0` (norway drifts by a few upstream changes).
 - Preview check on port 8123: shards load, only the known Google Maps referer and `#near=` IntersectionObserver console errors.
+
+### 2026-10-25 (cont. 7): CCEW Disability class and ACNC disability flag (both broad, owner asked for the >10k layers)
+Dataset 247,045 -> 250,272 (+3,227). Nothing pushed. Both layers were filtered hard, so they land well under the raw 42,667 (CCEW) and 16,237 (ACNC) counts: the unfiltered layers are mostly mosques, churches, village halls and charities that tick every box.
+
+| Source | Fetcher | Rows | Id prefix |
+|---|---|---|---|
+| England & Wales Charity Commission, "What: Disability" | `ccew_disability_fetch.py` (new) | 2,592 broad | `ccew:<number>` |
+| ACNC "People with Disabilities" beneficiary flag | `acnc_disability_fetch.py` (new) | 635 broad | `au-acnc-dis:<ABN>` |
+
+- **CCEW.** 27,048 registered main charities carry the Disability class. Kept: postcode present, a disability word in the name or the activities text, income >= GBP 25,000 (smaller ones are mostly run from a volunteer's home), not c/o, not grant-making; at most 5 "What" classes unless the name has a disability word. 2,873 built, 34 name+city and 247 website duplicates against existing rows removed (`post_dedupe`, prefix `ccew`). postcodes.io full-postcode pins; phones and e-mails never read; activities text cut to 220 characters. The 473 older autism-matched CCEW rows have no ids.
+- **ACNC.** Kept: flag Y and (at most 2 of 26 beneficiary boxes ticked, or a disability word in the name), church/RSL/men's-shed/aged-care names dropped. 8,600 of the 16,237 tick every box. Suburb-level pins only (Nominatim "town, state postcode", cache shared with `acnc_fetch.py`); no street. First attempt (<= 6 boxes) gave 2,920 rows full of churches and sheds and was replaced before commit. 1,015 built, 366 name+city duplicates dropped on merge. Own id prefix because the refresh registry forbids two jobs on `au-abn`.
+- Refresh: 32 sources, 51 groups, `--check` OK, dry-runs unchanged. `acnc_disability` has `max_growth_pct` 80 and floor 500 because the merge always drops the 366 name duplicates the fetch returns. `NEW_SOURCE_SHARDS` gained the CCEW source (europe/GB).
+- Not built: Ohio DODD independent providers (individuals, and the ArcGIS service was down), Japan WAM non-child (~92k, geocoding), Mexico / Colombia broad.
+- Preview on port 8123 loads; only the known console errors.
