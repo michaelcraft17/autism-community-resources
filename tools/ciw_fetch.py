@@ -6,8 +6,9 @@ Usage: python3 tools/ciw_fetch.py [--children-homes]
 
 Core: adult care homes / special-school residential units / adult placement (Shared Lives) schemes whose "Care and
 support for" tag says learning disability, physical disability or neurodiverse needs, plus domiciliary services with
-autism / learning disability in the name. Children's homes (263) are left out unless --children-homes is given
-(England's Ofsted does not publish children's home addresses). Dementia-only, mental-health-only, childcare and child
+autism / learning disability in the name. Children's homes (263) are left out unless --children-homes is given (owner
+chose to include them at town level, 2026-10-25); CIW gives them no postcode, so they are placed by town + local authority
+(Nominatim) and shown as town, local authority. Dementia-only, mental-health-only, childcare and child
 minders are never included.
 The Responsible Individual / Registered Person columns (and the Standard conditions text, which repeats the name) are
 personal data and never read. E-mail addresses and mobile numbers are not kept; homes are small residences, so the pin is
@@ -31,6 +32,15 @@ NAME = re.compile(r"autis|asperger|learning disab", re.I)
 TYPES = ("Care Home Service", "Special School Residential Service", "Adult Placement Service", "Domiciliary Support Service")
 
 
+_G = []
+
+
+def geoc():
+    if not _G:
+        _G.append(rc.Geocoder(os.path.join(SCRATCH, "geocode_cache.jsonl"), countrycodes="gb"))
+    return _G[0]
+
+
 def main():
     children = "--children-homes" in sys.argv
     path = rc.download(URL, os.path.join(SCRATCH, "ciw.csv")) if not os.path.exists(os.path.join(SCRATCH, "ciw.csv")) else os.path.join(SCRATCH, "ciw.csv")
@@ -52,19 +62,21 @@ def main():
             continue
         pc = re.sub(r"\s+", "", rc.clean(r["Service postcode"]).upper())
         oc = pc[:-3] if len(pc) > 4 else pc
-        if not oc:
-            nogeo += 1
-            continue
-        try:
-            hit = outcode_lookup(oc)
-        except LookupFailed as e:
-            rc.note_failure("postcodes.io", f"{r['Service URN']}: {e}")
-            continue
+        if not oc:   # CIW publishes no postcode for children's homes: town + local authority, Nominatim
+            tw, la = rc.clean(r["Service town/city"]), rc.clean(r["Local authority"])
+            hit = geoc().geocode(f"{tw}, {la}, Wales, United Kingdom") if tw else None
+            hit = hit or (geoc().geocode(f"{la}, Wales, United Kingdom") if la else None)
+        else:
+            try:
+                hit = outcode_lookup(oc)
+            except LookupFailed as e:
+                rc.note_failure("postcodes.io", f"{r['Service URN']}: {e}")
+                continue
         if not hit or not rc.plausible("GB", *hit):
             nogeo += 1
             continue
         town = smart(rc.clean(r["Service town/city"]))
-        address = ", ".join(x for x in (town, oc) if x)
+        address = ", ".join(x for x in (town, oc or rc.clean(r["Local authority"])) if x)
         if t == "Care Home Service":
             services, typ = ["Residential homes", "Residential & Social Care"], "social"
         elif t == "Special School Residential Service":

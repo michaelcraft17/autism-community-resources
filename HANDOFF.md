@@ -1544,9 +1544,9 @@ Skipped / not built: HIQA disability register (on hold: licence unclear, county-
 Grants portal, Chile, Peru, NDIS, CILs, Germany WfbM, Quebec, DENUE (unmeasured), Japan WAM non-child (~92.5k, broad), sfri.ru, Andalucia.
 Germany has 179 entries (166 placeless) and Austria has none; neither has been probed.
 
-## Build session 2026-10-25 -- Wales CIW + schools, Austria, Bosnia (+2,094; total 235,973)
+## Build session 2026-10-25 -- Wales CIW + schools, Austria, Bosnia (+3,102; total 236,981)
 
-- `tools/ciw_fetch.py` (745): Care Inspectorate Wales nightly CSV export. Adult care homes, special-school residential, Shared Lives and autism/LD domiciliary only. **The 263 children's homes are left out pending the owner's decision** (`--children-homes` adds them). Pins are outward-code centroids, address = town + outward code; staff-name columns, email and mobile numbers never kept.
+- `tools/ciw_fetch.py` (1,008): Care Inspectorate Wales nightly CSV export. Adult care homes, special-school residential, Shared Lives and autism/LD domiciliary only. **The 263 children's homes are included at the owner's request** (`--children-homes`; CIW publishes no postcode for them, so they are placed by town + local authority via Nominatim, shown as "Town, Local authority"). Pins are outward-code centroids, address = town + outward code; staff-name columns, email and mobile numbers never kept.
 - `tools/wales_schools_fetch.py` (39): gov.wales address-list ODS, maintained Special-sector schools (parsed from content.xml, no ODF lib). PRUs (broad) and independent schools (need manual SEN check) not built.
 - `tools/austria_fetch.py` (654, new shard europe/AT): Statistik Austria special schools (227; 2 inclusive schools skipped as broad), Vienna hospital developmental clinics (14), Upper Austria ChG services (Wohnen at municipality level; rows with blank ENR keyed on PLZ+name, same-name apartments in one town collapse), Burgenland 2017 list (37). NEBA (421, HTML) and Behindertenrat members (~85) are NOT built yet.
 - `tools/bosnia_fetch.py` (656, new shard europe/BA): zbirniregistri.gov.ba associations, no cookie needed. Veterans/work-injury groups (315) skipped as broad; `AuthorizedPersonsList` dropped. FBiH social-protection institutions (22) and Sarajevo special schools (5) not built.
