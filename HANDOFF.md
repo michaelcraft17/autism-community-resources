@@ -1168,7 +1168,7 @@ not fetched; geo-blocked sources (nco.minjust.gov.ru, obrnadzor, bus.gov.ru) and
 (needs a Russian CA) were deliberately not touched. Two Arctic mis-geocodes (lat > 75) were
 removed by hand; if you rebuild, filter `lat > 75` in `russia_build.py`.
 
-Part S: England GIAS, US CCD and France FINESS were built in the 2026-10-15 build session (below); Japan WAM NET is still to do.
+Part S: England GIAS, US CCD and France FINESS were built in the 2026-10-15 build session (below); Japan WAM NET was built later in the same session (batch 2).
 
 ## Build session 2026-10-15 -- batch 1: cross-cutting changes + GIAS, CCD, FINESS, STIL, Skolverket, California DDS
 
@@ -1502,3 +1502,44 @@ later day.
   `new_resources_*.json` outputs, so a later `--skip-fetch` can't merge a partial file by
   mistake. After a guard trip the outputs stay, so you can inspect them and re-run with
   `--skip-fetch --allow-drop` or `--allow-change` if the change is real.
+
+
+## Build session 2026-10-24 -- Argentina padron, Russia VOI, Scotland Care Inspectorate, NI RQIA, Japan MEXT
+
+Five sources chosen from the round-5 note's remaining candidates after a read-only probe. +3,642 entries, all `core`, no broad tier
+(dataset 230,237 -> 233,879). Not committed or pushed when written. Fetchers (all write `new_resources_<x>.json`, scratch in `tools/<x>_scratch/`):
+
+| Source | Fetcher | Entries | id prefix | Shard |
+|---|---|---|---|---|
+| Argentina Padron Oficial de Establecimientos Educativos, "Especial" modality (CC BY 4.0) | `argentina_padron_fetch.py` | 1,984 | `ar-padron:<Cueanexo>` | world/AR |
+| Russia VOI regional organisations (voi.ru) | `voi_fetch.py` | 80 | `voi:<slug>` | europe/RU |
+| Scotland Care Inspectorate datastore (OGL) | `scotland_ci_fetch.py` | 220 | `scci:<CSNumber>` | europe/GB |
+| Northern Ireland RQIA register, learning-disability categories (OGL) | `rqia_fetch.py` | 159 | `rqia:<reg id>` | europe/GB |
+| Japan MEXT school codes, special-support schools (type E1) | `mext_fetch.py` | 1,199 | `mext:<school code>` | world/JP-* |
+
+Split rules added to `NEW_SOURCE_SHARDS` (`russia voi`, `scotland care inspectorate`, `northern ireland rqia`, `argentina padron`, `japan mext`);
+`registry_common.BBOX` gained `RU`. The new fetchers are NOT in `tools/refresh_sources.json` (not scheduled).
+
+Decisions and things to know
+- **Argentina:** 2,019 special-education rows; 1,984 after geocoding and name|address|source dedupe. About 1,090 are pinned at locality level
+  (Nominatim could not find the street), so many schools share their town's centre point. Improving that needs a better geocoder.
+  The Mail column is not read. Names are title-cased when mostly upper case.
+- **VOI:** 86 branch pages. Skipped: the Crimea, Sevastopol, Donetsk, Luhansk and Zaporizhzhia branches (Nominatim placed them in the wrong
+  region, and they are occupied/annexed territory), plus Kamchatka (page has no address). Chair and audit-committee names are never read. Nominatim
+  matched same-named streets in other towns, so the city is geocoded first and a street hit is kept only within ~5 km of it (~30 km for Moscow / St Petersburg).
+- **Scotland CI:** Active + `PublicList == Yes` services with a learning-disability or physical/sensory subtype, a matching care-home area of care, or
+  autism in the name; nurseries (Day Care of Children) dropped. Manager name and e-mail never read. Full postcode used (premises, not trustee homes).
+  3 same-name-same-address services collapse into one listing each (app shows one listing per name|address|source).
+- **RQIA:** services with an LD category (`-LD`, `LD(E)`, `LD`). Current Manager never read. Id comes from the "(id)" suffix of the service name.
+- **MEXT:** E1 rows with no abolition date from files _2-1, _2-2 and _4 of the index page (links discovered from the page), one per school code.
+  Geocoded with GSI address search (keyless); a hit is accepted only if its title starts with the same prefecture + municipality. 1,204 active
+  -> 1,199 placed (5 no match; 6 at town/municipality level). Island schools (Amami, Ishigaki) are real outliers, not errors.
+- **Gotcha hit during the build:** the flat `community_resources.json` was stale against the shards (the daily refresh Action only pushes `data/`),
+  and running `split_by_region.py` from it reverted ~50 refreshed GB/DK/RU rows. Fixed by `git checkout -- data`, `tools/join_regions.py --force`,
+  then merge and split. Always run `join_regions.py --force` first after pulling.
+- Checks: shard placement counted per prefix; preview searches for Edinburgh, Belfast, Buenos Aires, Moscow, Tokyo return the new entries and
+  nearby shard loading works.
+
+Skipped / not built: HIQA disability register (on hold: licence unclear, county-level locations only), Wales CIW, US PSS, dobro.ru, Presidential
+Grants portal, Chile, Peru, NDIS, CILs, Germany WfbM, Quebec, DENUE (unmeasured), Japan WAM non-child (~92.5k, broad), sfri.ru, Andalucia.
+Germany has 179 entries (166 placeless) and Austria has none; neither has been probed.

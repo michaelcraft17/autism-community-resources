@@ -219,6 +219,11 @@ NEW_SOURCE_SHARDS = [
     ("australia acnc", "world", "AU"),
     ("new zealand charities services", "world", "NZ"),
     ("canada revenue agency list of charities", "world", "CA"),
+    ("russia voi", "europe", "RU"),
+    ("scotland care inspectorate", "europe", "GB"),
+    ("northern ireland rqia", "europe", "GB"),
+    ("argentina padron", "world", "AR"),
+    ("japan mext", "world", "JP"),
 ]
 
 # France: 5-digit postcode -> département -> région, so the 40k+ French rows split into shards of a few MB.
