@@ -1518,7 +1518,7 @@ Five sources chosen from the round-5 note's remaining candidates after a read-on
 | Japan MEXT school codes, special-support schools (type E1) | `mext_fetch.py` | 1,199 | `mext:<school code>` | world/JP-* |
 
 Split rules added to `NEW_SOURCE_SHARDS` (`russia voi`, `scotland care inspectorate`, `northern ireland rqia`, `argentina padron`, `japan mext`);
-`registry_common.BBOX` gained `RU`. The new fetchers are NOT in `tools/refresh_sources.json` (not scheduled).
+`registry_common.BBOX` gained `RU`. The new fetchers were NOT in `tools/refresh_sources.json` when written (added in the 2026-10-26 session below).
 
 Decisions and things to know
 - **Argentina:** 2,019 special-education rows; 1,984 after geocoding and name|address|source dedupe. About 1,090 are pinned at locality level
@@ -1551,4 +1551,17 @@ Germany has 179 entries (166 placeless) and Austria has none; neither has been p
 - `tools/austria_fetch.py` (654, new shard europe/AT): Statistik Austria special schools (227; 2 inclusive schools skipped as broad), Vienna hospital developmental clinics (14), Upper Austria ChG services (Wohnen at municipality level; rows with blank ENR keyed on PLZ+name, same-name apartments in one town collapse), Burgenland 2017 list (37). NEBA (421, HTML) and Behindertenrat members (~85) are NOT built yet.
 - `tools/bosnia_fetch.py` (656, new shard europe/BA): zbirniregistri.gov.ba associations, no cookie needed. Veterans/work-injury groups (315) skipped as broad; `AuthorizedPersonsList` dropped. FBiH social-protection institutions (22) and Sarajevo special schools (5) not built.
 - **Scotland schools (gov.scot contact list and independent register) BLOCKED**: CloudFront WAF challenge (`x-amzn-waf-action: challenge`). Not worked around; owner TODO.
-- Added AT and BA to `BBOX`, and Wales/Austria/Bosnia routes to `NEW_SOURCE_SHARDS`. None of these fetchers is in `tools/refresh_sources.json` yet.
+- Added AT and BA to `BBOX`, and Wales/Austria/Bosnia routes to `NEW_SOURCE_SHARDS`. (Wired into `tools/refresh_sources.json` in the 2026-10-26 session below.)
+
+## Build session 2026-10-26 -- Austria NEBA + Behindertenrat, refresh wiring (+431; total 236,667)
+
+- `tools/austria_neba_fetch.py` -> `new_resources_austria_neba.json` (431, shard europe/AT; routes `austria neba`, `austria behindertenrat` in `NEW_SOURCE_SHARDS`).
+  - **NEBA (343, id `at-neba:cdoNNN`)**: HTML list pages `neba.at/anbieterinnen/liste/<service>?start=N`. Core 171 (Arbeitsassistenz 94, Jobcoaching 35, Berufsausbildungsassistenz 43); **broad 172, approved by the owner** (Jugendcoaching 82, AusbildungsFit 91). The site lists 352 unique providers, not ~421; 9 would not geocode. Name is "Org - programme" so one organisation's programmes stay separate. Detail pages are never fetched: phone and e-mail exist only in the per-person "Kontaktperson" block, so no NEBA phone is kept. Betriebsservice (employer service) not built.
+  - **Behindertenrat (88, id `at-br:<slug>`)**: member page, HQ address (1 member has none and is placeless). E-mails and mobile (06xx) numbers dropped, 61 rows keep an organisation landline. Page headings that are not members (Ehrenmitglieder, Foerdernde Mitglieder, FAQ questions) are filtered.
+  - **Gotcha**: neba.at returns the last page again for any out-of-range `start`, so the pager stops on "no new ids" or a short page (the first run looped to start=13120).
+  - Address parser (`split_address`) handles "1020, Wien, Am Tabor 21/3", "A-7411 ...", multi-site rows (first site wins).
+- **Refresh wiring**: 10 sources added to `tools/refresh_sources.json` (now 24; `refresh_source.py --check` passes, 35 groups): `argentina_padron`, `voi`, `scotland_ci`, `rqia`, `mext`, `ciw` (command carries `--children-homes`, else a refresh deletes the 263 children's homes), `wales_schools`, `austria` (at-skz, at-wien-amb, at-ooe, at-bgld), `austria_neba` (`allow_placeless`), `bosnia`. All every_days 28 except ciw 14; `min_rows` about 75% of today's counts. Bosnia/CIW/Wales reuse their raw download if present, so each has a `raw` glob.
+  - **Pinned inputs (notes in the JSON, same as ACNC)**: `scotland_ci_fetch.py` defaults to datastore file `260831`, and `wales_schools_fetch.py` pins the 2026-04 gov.wales ODS; both refresh to "unchanged" until bumped by hand.
+  - Timeouts are estimates, not measured. Only `austria_neba --dry-run` was run live (reproduced the merged data exactly: +0 -0 ~0). The others have not been run through `refresh_source.py` yet; do one `--dry-run` each before trusting the rotation.
+- Checks: merge 236,236 -> 236,667; dedupe_registry_vs_manual found nothing; preview searches for Graz return NEBA/Behindertenrat rows (only console error is the Google Maps key not authorising localhost).
+- Still not done (see the priority list): Bosnia FBiH institutions + Sarajevo special schools, Czechia RPSS, Netherlands DUO, Wales PRUs/independent schools, Argentina street-level geocoding, Scotland school lists (WAF-blocked, owner TODO), HIQA on hold.

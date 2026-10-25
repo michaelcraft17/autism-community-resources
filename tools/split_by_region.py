@@ -230,6 +230,8 @@ NEW_SOURCE_SHARDS = [
     ("austria vienna open data", "europe", "AT"),
     ("austria upper austria", "europe", "AT"),
     ("austria burgenland", "europe", "AT"),
+    ("austria neba", "europe", "AT"),
+    ("austria behindertenrat", "europe", "AT"),
     ("bosnia and herzegovina e-register", "europe", "BA"),
 ]
 

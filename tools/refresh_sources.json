@@ -222,6 +222,160 @@
       ],
       "raw": ["tools/nz_scratch/*.json"],
       "caches": ["tools/nz_scratch/geocode_cache.jsonl"]
+    },
+    {
+      "name": "argentina_padron",
+      "label": "Argentina Padron (special education)",
+      "country": "AR",
+      "every_days": 28,
+      "timeout_minutes": 40,
+      "commands": [["tools/argentina_padron_fetch.py"]],
+      "outputs": ["new_resources_argentina_padron.json"],
+      "groups": [
+        {"prefix": "ar-padron", "source": "Argentina Padron Oficial de Establecimientos Educativos (special education)", "breadth": "core", "min_rows": 1480}
+      ],
+      "raw": ["tools/argentina_padron_scratch/padron.xlsx"],
+      "caches": ["tools/argentina_padron_scratch/geocode_cache.jsonl"],
+      "notes": "About 1,090 rows are pinned at locality level because Nominatim cannot find the street; the cache keeps those results."
+    },
+    {
+      "name": "voi",
+      "label": "Russia VOI",
+      "country": "RU",
+      "every_days": 28,
+      "timeout_minutes": 20,
+      "commands": [["tools/voi_fetch.py"]],
+      "outputs": ["new_resources_voi.json"],
+      "groups": [
+        {"prefix": "voi", "source": "Russia VOI (All-Russian Society of Disabled People) regional organisations directory", "breadth": "core", "min_rows": 60}
+      ],
+      "raw": [],
+      "caches": ["tools/voi_scratch/geocode_cache.jsonl"]
+    },
+    {
+      "name": "scotland_ci",
+      "label": "Scotland Care Inspectorate",
+      "country": "GB",
+      "every_days": 28,
+      "timeout_minutes": 10,
+      "commands": [["tools/scotland_ci_fetch.py"]],
+      "outputs": ["new_resources_scotland_ci.json"],
+      "groups": [
+        {"prefix": "scci", "source": "Scotland Care Inspectorate datastore (registered care services)", "breadth": "core", "min_rows": 165}
+      ],
+      "raw": ["tools/scotland_ci_scratch/*datastoreexternal.csv"],
+      "caches": [],
+      "notes": "scotland_ci_fetch.py defaults to the 31 Aug 2026 datastore file (ymd '260831'), so a refresh re-reads that same file and reports unchanged until the default date is bumped by hand to the newest file on the Care Inspectorate datastore page."
+    },
+    {
+      "name": "rqia",
+      "label": "Northern Ireland RQIA",
+      "country": "GB",
+      "every_days": 28,
+      "timeout_minutes": 10,
+      "commands": [["tools/rqia_fetch.py"]],
+      "outputs": ["new_resources_rqia.json"],
+      "groups": [
+        {"prefix": "rqia", "source": "Northern Ireland RQIA register of regulated services (open data)", "breadth": "core", "min_rows": 120}
+      ],
+      "raw": ["tools/rqia_scratch/opendata.xlsx"],
+      "caches": []
+    },
+    {
+      "name": "mext",
+      "label": "Japan MEXT special-support schools",
+      "country": "JP",
+      "every_days": 28,
+      "timeout_minutes": 30,
+      "commands": [["tools/mext_fetch.py"]],
+      "outputs": ["new_resources_mext.json"],
+      "groups": [
+        {"prefix": "mext", "source": "Japan MEXT school code list (special-support schools)", "breadth": "core", "min_rows": 900}
+      ],
+      "raw": ["tools/mext_scratch/*mxt_chousa01*.csv"],
+      "caches": ["tools/mext_scratch/geocode_cache.jsonl"]
+    },
+    {
+      "name": "ciw",
+      "label": "Wales Care Inspectorate Wales",
+      "country": "GB",
+      "every_days": 14,
+      "timeout_minutes": 30,
+      "commands": [["tools/ciw_fetch.py", "--children-homes"]],
+      "outputs": ["new_resources_ciw.json"],
+      "groups": [
+        {"prefix": "ciw", "source": "Wales Care Inspectorate Wales (CIW) registered services", "breadth": "core", "min_rows": 750}
+      ],
+      "raw": ["tools/ciw_scratch/ciw.csv"],
+      "caches": ["tools/ciw_scratch/geocode_cache.jsonl"],
+      "notes": "--children-homes keeps the 263 children's homes (shown at town level), which the owner approved; without the flag a refresh would delete them."
+    },
+    {
+      "name": "wales_schools",
+      "label": "Wales special schools",
+      "country": "GB",
+      "every_days": 28,
+      "timeout_minutes": 10,
+      "commands": [["tools/wales_schools_fetch.py"]],
+      "outputs": ["new_resources_wales_schools.json"],
+      "groups": [
+        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (special schools)", "breadth": "core", "min_rows": 29}
+      ],
+      "raw": ["tools/uk_schools_scratch/wales.ods"],
+      "caches": [],
+      "notes": "The gov.wales workbook URL is pinned in wales_schools_fetch.py (the 2026-04 file); bump it by hand when a newer address list is published."
+    },
+    {
+      "name": "austria",
+      "label": "Austria schools, clinics, ChG and Burgenland",
+      "country": "AT",
+      "every_days": 28,
+      "timeout_minutes": 40,
+      "commands": [["tools/austria_fetch.py"]],
+      "outputs": ["new_resources_austria.json"],
+      "groups": [
+        {"prefix": "at-skz", "source": "Austria Statistik Austria schools layer (special schools)", "breadth": "core", "min_rows": 170},
+        {"prefix": "at-wien-amb", "source": "Austria Vienna open data hospital outpatient clinics", "breadth": "core", "min_rows": 10},
+        {"prefix": "at-ooe", "source": "Austria Upper Austria Chancengleichheitsgesetz services", "breadth": "core", "min_rows": 280},
+        {"prefix": "at-bgld", "source": "Austria Burgenland disability facilities list", "breadth": "core", "min_rows": 28}
+      ],
+      "raw": ["tools/austria_scratch/schulen.json", "tools/austria_scratch/wien_schulen.json", "tools/austria_scratch/wien_amb.json",
+              "tools/austria_scratch/noe.csv", "tools/austria_scratch/ooe_Arbeit.csv", "tools/austria_scratch/ooe_Wohnen.csv",
+              "tools/austria_scratch/ooe_PSB.csv", "tools/austria_scratch/bgld.csv"],
+      "caches": ["tools/austria_scratch/geocode_cache.jsonl"],
+      "notes": "The Burgenland list is a March 2017 file and the NOe school list is from 2013 (street addresses only), so those two inputs never change."
+    },
+    {
+      "name": "austria_neba",
+      "label": "Austria NEBA + Behindertenrat",
+      "country": "AT",
+      "every_days": 28,
+      "timeout_minutes": 30,
+      "allow_placeless": true,
+      "commands": [["tools/austria_neba_fetch.py"]],
+      "outputs": ["new_resources_austria_neba.json"],
+      "groups": [
+        {"prefix": "at-neba", "source": "Austria NEBA Netzwerk Berufliche Assistenz provider lists", "breadth": "core", "min_rows": 128},
+        {"prefix": "at-neba", "source": "Austria NEBA Netzwerk Berufliche Assistenz provider lists", "breadth": "broad", "min_rows": 129},
+        {"prefix": "at-br", "source": "Austria Behindertenrat member organisations", "breadth": "core", "min_rows": 66}
+      ],
+      "raw": ["tools/neba_scratch/*.html"],
+      "caches": ["tools/neba_scratch/geocode_cache.jsonl"],
+      "notes": "HTML scrapes of neba.at and behindertenrat.at; if either site changes its markup the row-count floors fail the run rather than deleting rows."
+    },
+    {
+      "name": "bosnia",
+      "label": "Bosnia e-register of associations",
+      "country": "BA",
+      "every_days": 28,
+      "timeout_minutes": 30,
+      "commands": [["tools/bosnia_fetch.py"]],
+      "outputs": ["new_resources_bosnia.json"],
+      "groups": [
+        {"prefix": "ba-ngo", "source": "Bosnia and Herzegovina e-register of associations and foundations (zbirniregistri.gov.ba)", "breadth": "core", "min_rows": 490}
+      ],
+      "raw": ["tools/bosnia_scratch/ngos.json"],
+      "caches": ["tools/bosnia_scratch/geocode_cache.jsonl"]
     }
   ]
 }
