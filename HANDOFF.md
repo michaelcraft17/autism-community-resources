@@ -1544,7 +1544,7 @@ Skipped / not built: HIQA disability register (on hold: licence unclear, county-
 Grants portal, Chile, Peru, NDIS, CILs, Germany WfbM, Quebec, DENUE (unmeasured), Japan WAM non-child (~92.5k, broad), sfri.ru, Andalucia.
 Germany has 179 entries (166 placeless) and Austria has none; neither has been probed.
 
-## Build session 2026-10-25 -- Wales CIW + schools, Austria, Bosnia (+3,102; total 236,981)
+## Build session 2026-10-25 -- Wales CIW + schools, Austria, Bosnia (+2,357; total 236,236)
 
 - `tools/ciw_fetch.py` (1,008): Care Inspectorate Wales nightly CSV export. Adult care homes, special-school residential, Shared Lives and autism/LD domiciliary only. **The 263 children's homes are included at the owner's request** (`--children-homes`; CIW publishes no postcode for them, so they are placed by town + local authority via Nominatim, shown as "Town, Local authority"). Pins are outward-code centroids, address = town + outward code; staff-name columns, email and mobile numbers never kept.
 - `tools/wales_schools_fetch.py` (39): gov.wales address-list ODS, maintained Special-sector schools (parsed from content.xml, no ODF lib). PRUs (broad) and independent schools (need manual SEN check) not built.
