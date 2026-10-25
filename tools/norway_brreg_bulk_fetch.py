@@ -20,7 +20,8 @@ Supersedes the name-search-only tools/norway_brreg_fetch.py. Core selection (see
     avlastning, BPA, NFU, Statped, ...) on both files; purpose text only for associations (FLI) and foundations (STI)
 Excluded: sole proprietorships (ENK; names are people), bankrupt / dissolving / closed units, municipalities and
 counties as legal units (their sub-units are the sites), construction/property/trade codes on name hits.
-No daglig leder / role data is read. The broad codes (87.300, 88.101, 86.950, 86.930; ~11k rows) are NOT built here.
+No daglig leder / role data is read. Broad tier: 88.101 day care (pinned) and 87.300 care homes (municipality level), only when no core code or name hit applies.
+86.930 / 86.950 (private psychology / physiotherapy practices) are NOT built.
 
 Locations: a row keeps the coordinates the dataset already holds when its address is unchanged (rc.prior_coords);
 other street addresses are geocoded with Kartverket (cached, capped per run by OFFICIAL_GEOCODER_MAX_NEW). Housing (87.104, 87.202) is people's homes, so it is
@@ -73,6 +74,11 @@ CODE_INFO = {   # code -> (type, services, description)
     "88.993": ("social", ["Employment Support"], "Sheltered work (VTA) for people with disabilities"),
 }
 HOUSING = {"87.104", "87.202"}
+BROAD_INFO = {   # broad tier: not disability-specific (elderly and disabled together), picked only when no core code or name hit
+    "88.101": ("social", ["Day Activities"], "Day care for elderly and disabled people"),
+    "87.300": ("social", ["Residential & Social Care"], "Care and nursing home services for elderly and disabled people"),
+}
+BROAD_HOUSING = {"87.300"}   # care homes: shown at municipality level, like the housing codes
 NAME_RE = re.compile(
     r"(?<![a-zæøå])autis|asperger|funksjonshem|funksjonsnedsett|utviklingshem|handikap|\bdøv(e|blind|eforbund|es|eskole)|tunghør|hørselshem|"
     r"svaksynt|synshem|\bblinde(s|forbund|forbundet)?\b|cerebral\s*parese|down\s*syndrom|\badhd\b|tourette|epilepsi|ryggmargsbrokk|muskelsyk|"
@@ -145,6 +151,10 @@ def main():
             if not why and NAME_RE.search(r["navn"]):
                 if not any(c.startswith(BAD_CODE_PREFIX) for c in cs):
                     why = "name"
+            if not why:
+                code = next((c for c in cs if c in BROAD_INFO), None)
+                if code:
+                    why = f"broad {code}"
             # purpose-text hits (foundations / associations whose statutes merely mention a disability word) are not
             # used: they brought in sports clubs, legacy foundations and gaming groups.
             if why:
@@ -176,9 +186,9 @@ def main():
         if kind == "legal" and (addr1.lower(), post) in sub_addr.get(org, set()):
             dropped_parent += 1
             continue
-        if code in HOUSING:
+        if code in HOUSING or code in BROAD_HOUSING:
             op_org = r["overordnetEnhet"] if kind == "sub" and r.get("overordnetEnhet") else org
-            h = housing.setdefault((op_org, knr), {"op": title(parents.get(op_org) or r["navn"]), "muni": title(kommune), "n": 0, "code": code})
+            h = housing.setdefault((op_org, knr, code in BROAD_HOUSING), {"op": title(parents.get(op_org) or r["navn"]), "muni": title(kommune), "n": 0, "code": code})
             h["n"] += 1
             continue
         if re.match(r"\s*(c/o|v/)\s", addr1, re.I):   # care-of a named person: a private address, never published
@@ -194,8 +204,9 @@ def main():
         if not hit or not rc.plausible("NO", *hit):
             nogeo += 1
             continue
+        broad = code in BROAD_INFO
         if code:
-            typ, services, kind_txt = CODE_INFO[code]
+            typ, services, kind_txt = (BROAD_INFO if broad else CODE_INFO)[code]
             desc = f"{kind_txt}, {title(kommune)}."
         else:
             form = r["organisasjonsform.kode"]
@@ -206,19 +217,22 @@ def main():
         phone = rc.clean(r.get("telefon")) or rc.clean(r.get("mobil"))
         entries.append(rc.entry(title(r["navn"]), SOURCE, typ, services, desc, address=address, phone=phone or None,
                                 website=rc.clean_url(r.get("hjemmeside")), lat=hit[0], lng=hit[1], external_id=f"no-org:{org}",
-                                scope=None if re.search(r"(?<![a-zæøå])autis|asperger", r["navn"], re.I) else "general"))
+                                breadth="broad" if broad else "core", scope=None if re.search(r"(?<![a-zæøå])autis|asperger", r["navn"], re.I) else "general"))
     nohome = 0
-    for (op, knr), h in housing.items():
-        hit = rc.prior_coords(f"no-housing:{op}:{knr}", f"{h['muni']}, Norway") or kv.municipality(knr)
+    for (op, knr, broad), h in housing.items():
+        eid = f"no-care:{op}:{knr}" if broad else f"no-housing:{op}:{knr}"
+        hit = rc.prior_coords(eid, f"{h['muni']}, Norway") or kv.municipality(knr)
         if not hit:
             nohome += 1
             continue
-        what = "Respite homes" if h["code"] == "87.104" else "Housing"
+        what = {"87.104": "Respite homes", "87.300": "Care homes"}.get(h["code"], "Housing")
         n = f"{h['n']} units" if h["n"] > 1 else "1 unit"
-        entries.append(rc.entry(f"{h['op']} - {what.lower()} for people with disabilities, {h['muni']}", SOURCE, "social",
+        who = "elderly and disabled people" if broad else "people with disabilities"
+        entries.append(rc.entry(f"{h['op']} - {what.lower()} for {who}, {h['muni']}", SOURCE, "social",
                                 ["Residential & Social Care"] + (["Respite Care"] if h["code"] == "87.104" else []),
-                                f"{what} for people with disabilities ({n}) run by {h['op']} in {h['muni']}. Shown at municipality level; individual homes are not published here.",
-                                address=f"{h['muni']}, Norway", lat=hit[0], lng=hit[1], external_id=f"no-housing:{op}:{knr}", scope="general"))
+                                f"{what} for {who} ({n}) run by {h['op']} in {h['muni']}. Shown at municipality level; individual homes are not published here.",
+                                address=f"{h['muni']}, Norway", lat=hit[0], lng=hit[1], external_id=eid,
+                                breadth="broad" if broad else "core", scope="general"))
     print(f"{len(hits)} hits: {dropped_parent} legal units dropped (same address as their sub-unit), {nogeo} without a geocode, "
           f"{sum(h['n'] for h in housing.values())} housing units collapsed into {len(housing)} municipality entries ({nohome} without a geocode)")
     out = rc.finalize(os.path.join(rc.REPO, "new_resources_norway_brreg.json"), entries)

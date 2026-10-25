@@ -1624,3 +1624,17 @@ Dataset 240,738 -> 244,254 (+3,516). Nothing pushed.
 - Routing: `NEW_SOURCE_SHARDS` gained `new york medicaid enrolled provider` (us) and `autismo españa member and linked` (europe/ES); without them rows fell into `us/national` and `world/all`.
 - Refresh: 29 sources, 46 groups (`--check` OK). `ny_medicaid` (floor 2,450, 120 min), `autismo_espana` (floor 120, `post_dedupe` on `autismo-es`), `bosnia_inst` timeout 30 min. Dry-runs all `+0 -0`.
 - Still open: IRS NTEE disability layer, Germany ZER larger layer, Brreg broad (each needs the owner's approval), Ohio DODD ArcGIS was down on 2026-10-25 (not worked around), Scotland school lists WAF-blocked, HIQA on hold.
+
+### 2026-10-25 (cont. 6): IRS NTEE disability layer (core) and Brreg broad
+Dataset 244,254 -> 247,045 (+2,791). Nothing pushed. Owner-approved after a live probe (IRS 8,497 active in the six codes + E50; ZER 8,801 disability-purpose; Brreg 87.300/88.101/86.93x/86.95x counted from the 15 Oct bulk files).
+
+| Source | Fetcher | Rows | Id prefix |
+|---|---|---|---|
+| IRS Exempt Organizations BMF, NTEE P82, B28, R23, P86, P87, G25 | `irs_ntee_disability_fetch.py` (new) | 2,378 core, scope general | `irs-ntee:<EIN>` |
+| Brreg NACE 88.101 day care (pinned) and 87.300 care homes (municipality level) | `norway_brreg_bulk_fetch.py` (BROAD_INFO) | 314 + 99 broad | `no-org:`, `no-care:` |
+
+- **IRS.** Active orgs only. Dropped before geocoding: PO box / PMB / c/o streets (875), apartment/unit/no-street-number (272), orgs reporting no assets and no income (2,644: dormant, usually a volunteer's home address -- a privacy call beyond the brief), EINs already in the dataset (34). US Census batch geocoder (`geocoding.geo.census.gov/geocoder/locations/addressbatch`, 2,000 rows per request, cache `census_cache.jsonl`); **Exact matches only**, 566 unmatched rows dropped (never moved to a ZIP centroid). 142 more skipped by the merge (name+city already present). E50 and P80 not built (decision of the owner); the 768 G84/H84 rows stay with `irs_bmf_ntee_fetch.py`. The known-EIN skip ignores `irs-ntee:` rows so refreshes re-fetch their own rows.
+- **Brreg.** Broad codes apply only when no core code or disability-name hit does. 87.300 is shown at municipality level (care homes can be small residences). 86.930 / 86.950 (private psychology / physiotherapy practices, many named after the practitioner) are not built. The cached bulk files were from 15 Oct.
+- **Germany ZER skipped** (owner): 8,801 disability-purpose orgs but postcode+city only (3,417 places), only 2,512 with a disability word in the name, 296 with person prefixes. The 177 autism-name rows stay.
+- Routing: `NEW_SOURCE_SHARDS` gained the IRS disability source (us). Refresh: 30 sources, `irs_ntee_disability` (floor 2,000, 60 min, ~340 MB download per run) and two new broad groups on `norway` (`no-org Brreg broad` 280, `no-care` 70). `--check` OK; dry-runs `+0 -0` (norway drifts by a few upstream changes).
+- Preview check on port 8123: shards load, only the known Google Maps referer and `#near=` IntersectionObserver console errors.
