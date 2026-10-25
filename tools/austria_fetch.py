@@ -146,6 +146,8 @@ def main():
                 name, op, plz, ort, st = r["Leistungserbringer"], r["Rechtstraeger"], r["PLZ"], r["Ort"], r["Straße"]
                 eid, art = tidy(r["ENR"]) or f"{plz.strip()}-{rc.clean(name)}", r["Leistungsart"]
             plz, ort, st = tidy(plz), tidy(ort), tidy(st)
+            if not tidy(name):  # the Wohnen file ends with a blank row (ENR "-", no name or address)
+                continue
             home = kind == "Wohnen"
             q = f"{plz} {ort}, Österreich" if home else f"{st}, {plz} {ort}, Österreich"
             hit = geoc.geocode(q) or geoc.geocode(f"{plz} {ort}, Österreich")
