@@ -1577,3 +1577,14 @@ Germany has 179 entries (166 placeless) and Austria has none; neither has been p
   - One known overlap: "Koraci nade" (Tuzla) is in both the e-register (`ba-ngo`) and the Ministry directory, same pin, names differ by a typo. Left as two listings.
 - Preview: Fojnica search returns Drin and Bakovici with the ministry source. A hash deep-link reload logs `IntersectionObserver.observe ... not of type Element` (also on Graz, which has no new data), so it predates this change; the Google Maps key not authorising localhost is also logged.
 - Still not done: Czechia RPSS, Netherlands DUO, Wales PRUs/independent schools, Argentina street-level geocoding, FBiH social-work centres (80, broad, listed in BA3 of the round-7 notes), Scotland school lists (WAF-blocked, owner TODO), HIQA on hold.
+
+## 2026-10-26 (cont.): Netherlands DUO special schools + Czechia MPSV RPSS
+
+Dataset total 236,236 -> 240,682 over the session (Austria, Bosnia, DUO, RPSS).
+
+- **Netherlands DUO** (`tools/netherlands_duo_fetch.py`, ids `nl-duo:<VESTIGINGSCODE>`): +885 = 628 core (V)SO/SO + 257 broad SBAO (owner-approved). Located by PDOK (postcode + house number). 13 same-name-same-address sites collapse into one listing each; 2 sites could not be located.
+- **Czechia RPSS** (`tools/czech_rpss_fetch.py`, ids `cz-rpss:<identifikator>-<RUIAN code>`): +3,102 core only (no broad tier built). 5,797 active services, 2,028 core, 3,649 service+facility rows; skipped: 2,856 facilities with an end date, 234 with no RUIAN point, 117 secret addresses, 15 with no town centre. Then 65 duplicate ids and 482 duplicate name|address rows were dropped by finalize. Residential forms (`pob`) are shown at town level (address "PSC Town"). Dropped: facility managers, statutory persons, emails, mobile numbers.
+- `refresh_sources.json`: `netherlands_duo` (floors 500 core / 200 broad) and `czech_rpss` (floor 2,500, 90 min timeout, 99 MB download) added; 27 sources. `--check` passes and both `--dry-run`s end "unchanged".
+- Routes `NL`/`CZ` in `split_by_region.py`, BBOX `NL`/`CZ` in `registry_common.py`.
+- Preview: manifest total 240,682, CZ shard loads; console shows only the known Google Maps localhost referer error and the `#near=` IntersectionObserver error (both predate this).
+- Not pushed.
