@@ -1652,3 +1652,21 @@ Dataset 247,045 -> 250,272 (+3,227). Nothing pushed. Both layers were filtered h
 - Refresh: 32 sources, 51 groups, `--check` OK, dry-runs unchanged. `acnc_disability` has `max_growth_pct` 80 and floor 500 because the merge always drops the 366 name duplicates the fetch returns. `NEW_SOURCE_SHARDS` gained the CCEW source (europe/GB).
 - Not built: Ohio DODD independent providers (individuals, and the ArcGIS service was down), Japan WAM non-child (~92k, geocoding), Mexico / Colombia broad.
 - Preview on port 8123 loads; only the known console errors.
+
+### 2026-10-25 (cont. 8): Austria / Bosnia gap re-probe; Tirol Sonderschule + Vienna Behindertenhilfe (core, +2)
+Dataset 250,272 -> 250,274 (AT 1,084 -> 1,086). Nothing pushed. Probe first, then the owner approved only the two open-data rows below.
+
+| Source | Fetcher | Rows | Id prefix |
+|---|---|---|---|
+| Land Tirol Daseinsvorsorge WFS, OBJEKT = DPSCH3 (Sonderschule) | `austria_extra_fetch.py` (new) | 1 core | `at-tirol-ds:<OBJECTID>` |
+| Vienna open data WFS `BERATUNGSZENTROGD`, Fonds Soziales Wien Beratungszentrum Behindertenhilfe | `austria_extra_fetch.py` | 1 core | `at-wien-bz:<OBJECTID>` |
+
+- **Tirol.** 20 special schools in the layer; 19 lie within 1 km of an `at-skz` Statistik Austria special school and are skipped; the Imst building (Statistik files it as a Volksschule) is added. Generic name "Allgemeine Sonderschule" gets the municipality appended. If Statistik ever reclassifies the Imst school the group falls to 0, hence `min_rows` 0.
+- **Vienna.** 1 of 6 centres in the layer is disability-specific (the rest are care, homelessness, residential-home counselling). E-mail and fax dropped.
+- Routing: `NEW_SOURCE_SHARDS` gained `austria tirol` (europe/AT). Refresh: 33 sources, 53 groups, `austria_extra` (28 days, groups `at-tirol-ds` floor 0, `at-wien-bz` floor 1). `--check` OK, dry-run unchanged.
+- **Not built, owner TODOs (nothing bypassed):**
+  - Vienna Sozialinfo: `www.wien.gv.at/robots.txt` disallows `/sozialinfo/` for all agents and `sozialinfo.wien.gv.at` times out at TCP connect from this IP. Ask FSW / Stadt Wien for a licensed export.
+  - Carinthia (`ktn.gv.at`, `gis.ktn.gv.at`, `kagis.ktn.gv.at`, `data.ktn.gv.at`) and Brcko (`bdcentral.net`): connect timeouts while other Austrian / Bosnian hosts answer, probably a geo-filter. Re-probe from an AT/EU IP or contact the Land / district.
+  - Republika Srpska: no machine-readable register of social-protection institutions found on vladars.rs; ask MZSZ RS for the list.
+  - Bosnia open-data portals (`odp.ba`, `opendata.ba`) do not resolve; `zbirniregistri.gov.ba` is a form-only registry.
+  - data.gv.at catalogue (Piveau search, keyword sweep over ~20 disability/social terms) holds no further geocoded disability registers beyond those already built; its `catalog=` filter is ignored by the API.

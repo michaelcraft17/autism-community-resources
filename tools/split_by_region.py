@@ -234,6 +234,7 @@ NEW_SOURCE_SHARDS = [
     ("austria vienna open data", "europe", "AT"),
     ("austria upper austria", "europe", "AT"),
     ("austria burgenland", "europe", "AT"),
+    ("austria tirol", "europe", "AT"),
     ("netherlands duo", "europe", "NL"),
     ("czech republic rpss", "europe", "CZ"),
     ("austria neba", "europe", "AT"),
