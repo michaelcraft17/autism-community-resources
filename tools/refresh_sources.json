@@ -312,15 +312,17 @@
     },
     {
       "name": "wales_schools",
-      "label": "Wales special schools + PRUs",
+      "label": "Wales special schools, PRUs + checked independent schools",
       "country": "GB",
       "every_days": 28,
       "timeout_minutes": 10,
       "commands": [["tools/wales_schools_fetch.py"]],
       "outputs": ["new_resources_wales_schools.json"],
       "groups": [
-        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (special schools)", "breadth": "core", "min_rows": 29},
-        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (pupil referral units)", "breadth": "broad", "min_rows": 19}
+        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (special schools)", "label": "special schools", "breadth": "core", "min_rows": 29},
+        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (pupil referral units)", "label": "PRUs", "breadth": "broad", "min_rows": 19},
+        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (independent schools, SEN-checked)", "label": "independent core", "breadth": "core", "min_rows": 13},
+        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (independent schools, SEN-checked)", "label": "independent broad", "breadth": "broad", "min_rows": 4}
       ],
       "raw": ["tools/uk_schools_scratch/wales.ods"],
       "caches": [],

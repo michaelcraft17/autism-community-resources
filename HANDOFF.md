@@ -1595,3 +1595,11 @@ Dataset total 236,236 -> 240,682 over the session (Austria, Bosnia, DUO, RPSS).
 - `refresh_sources.json`: `wales_schools` gained a broad group (floor 19). `--check` passes; the live refresh applied cleanly (it also bumped the "240,000+" count copy in README.md and index.html).
 - **Independent schools NOT built**: the `Independent` sheet has 80 rows (not 78) with no SEN flag, so each needs a manual check. Shortlist of likely SEN/therapeutic schools is in the 2026-10-26 chat; awaiting owner decision.
 - Not pushed.
+
+## 2026-10-26 (cont. 3): Wales independent schools (SEN-checked)
+
+- `wales_schools_fetch.py` reads the `Independent` sheet (80 rows) but builds only the 23 schools in its `INDEP` allowlist (school number -> breadth + who the school is for), each hand-checked against Estyn reports or the operator's page on 2026-10-25: 17 core (autism a named main need), 6 broad (other additional learning needs). Total 240,707 -> 240,730. Ids `wales-school:<number>`, source "...(independent schools, SEN-checked)".
+- Skipped: 17 SEMH-only / looked-after children's-home schools (Carla House, Teresa House, Grace House, Brynmorgan Villa, Caban Aur, Ysgol Y Rhos, Ysgol Tan y Gaer, Branas, Genus, Landsker, Inspired Learners, Ynys Hywel, Greenfields, Oakmont, Sporting Chance, Catch22 Include Wales, Ysgol Antur Cwm), Amberleigh, and the unverified ACT Schools, Bettws Lifehouse, The Potteries. The remaining names look mainstream/fee-paying but were judged by name only. The full evidence table is in the untracked `output/wales_independent_shortlist.md`.
+- Phones: mobiles dropped; numbers missing the leading 0 in the sheet are repaired for this sheet only.
+- `refresh_sources.json`: `wales_schools` now has four labelled groups (floors 29 / 19 PRU / 13 / 4). The allowlist is not refreshed from the web: new or closed independent schools need a manual review (the fetcher flags a failure if a listed number leaves the sheet).
+- Not pushed.
