@@ -224,6 +224,13 @@ NEW_SOURCE_SHARDS = [
     ("northern ireland rqia", "europe", "GB"),
     ("argentina padron", "world", "AR"),
     ("japan mext", "world", "JP"),
+    ("wales care inspectorate wales", "europe", "GB"),
+    ("wales welsh government address list", "europe", "GB"),
+    ("austria statistik austria", "europe", "AT"),
+    ("austria vienna open data", "europe", "AT"),
+    ("austria upper austria", "europe", "AT"),
+    ("austria burgenland", "europe", "AT"),
+    ("bosnia and herzegovina e-register", "europe", "BA"),
 ]
 
 # France: 5-digit postcode -> département -> région, so the 40k+ French rows split into shards of a few MB.
