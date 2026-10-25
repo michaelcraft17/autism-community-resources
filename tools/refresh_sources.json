@@ -312,14 +312,15 @@
     },
     {
       "name": "wales_schools",
-      "label": "Wales special schools",
+      "label": "Wales special schools + PRUs",
       "country": "GB",
       "every_days": 28,
       "timeout_minutes": 10,
       "commands": [["tools/wales_schools_fetch.py"]],
       "outputs": ["new_resources_wales_schools.json"],
       "groups": [
-        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (special schools)", "breadth": "core", "min_rows": 29}
+        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (special schools)", "breadth": "core", "min_rows": 29},
+        {"prefix": "wales-school", "source": "Wales Welsh Government address list of schools (pupil referral units)", "breadth": "broad", "min_rows": 19}
       ],
       "raw": ["tools/uk_schools_scratch/wales.ods"],
       "caches": [],

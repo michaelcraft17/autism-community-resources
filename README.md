@@ -1,6 +1,6 @@
 # Accessibility Mapper — Autism & Special Needs Community Resources
 
-A free, interactive directory of autism and special needs resources — over 230,000 of them,
+A free, interactive directory of autism and special needs resources — over 240,000 of them,
 across 30+ countries.
 
 ## Live site
@@ -21,7 +21,7 @@ That means:
 
 ## What's in it
 
-- **230,000+ resources**: advocacy groups, therapy providers, schools, medical clinics, and
+- **240,000+ resources**: advocacy groups, therapy providers, schools, medical clinics, and
   support organizations
 - **30+ countries**: built out from the US and UK to cover most of Europe, plus Canada,
   Australia, New Zealand, and Ireland

@@ -1588,3 +1588,10 @@ Dataset total 236,236 -> 240,682 over the session (Austria, Bosnia, DUO, RPSS).
 - Routes `NL`/`CZ` in `split_by_region.py`, BBOX `NL`/`CZ` in `registry_common.py`.
 - Preview: manifest total 240,682, CZ shard loads; console shows only the known Google Maps localhost referer error and the `#near=` IntersectionObserver error (both predate this).
 - Not pushed.
+
+## 2026-10-26 (cont. 2): Wales PRUs
+
+- `wales_schools_fetch.py` now also reads the ODS `PRU` sheet: +25 broad rows (`wales-school:<number>`, source "...(pupil referral units)"), total 240,707. The sheet lists 25 units, not 26. Mobile numbers and the literal "NULL" are dropped from phones (this also cleared 2 existing special-school rows).
+- `refresh_sources.json`: `wales_schools` gained a broad group (floor 19). `--check` passes; the live refresh applied cleanly (it also bumped the "240,000+" count copy in README.md and index.html).
+- **Independent schools NOT built**: the `Independent` sheet has 80 rows (not 78) with no SEN flag, so each needs a manual check. Shortlist of likely SEN/therapeutic schools is in the 2026-10-26 chat; awaiting owner decision.
+- Not pushed.
