@@ -376,6 +376,22 @@
       ],
       "raw": ["tools/bosnia_scratch/ngos.json"],
       "caches": ["tools/bosnia_scratch/geocode_cache.jsonl"]
+    },
+    {
+      "name": "bosnia_inst",
+      "label": "Bosnia FBiH institutions + Sarajevo special schools",
+      "country": "BA",
+      "every_days": 28,
+      "timeout_minutes": 10,
+      "commands": [["tools/bosnia_inst_fetch.py"]],
+      "outputs": ["new_resources_bosnia_inst.json"],
+      "groups": [
+        {"prefix": "ba-fbih", "source": "Bosnia and Herzegovina FBiH Ministry of Labour and Social Policy social-protection institutions (fmrsp.gov.ba)", "breadth": "core", "min_rows": 16},
+        {"prefix": "ba-ks", "source": "Bosnia and Herzegovina Sarajevo Canton Ministry of Education institutions list (mo.ks.gov.ba)", "breadth": "core", "min_rows": 6}
+      ],
+      "raw": ["tools/bosnia_inst_scratch/ju.html", "tools/bosnia_inst_scratch/ks.html"],
+      "caches": ["tools/bosnia_inst_scratch/geocode_cache.jsonl"],
+      "notes": "Selection is by placement type and name (never the women's safe houses); if the Ministry reshuffles its types the row floors fail the run rather than deleting rows."
     }
   ]
 }

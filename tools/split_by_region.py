@@ -233,6 +233,8 @@ NEW_SOURCE_SHARDS = [
     ("austria neba", "europe", "AT"),
     ("austria behindertenrat", "europe", "AT"),
     ("bosnia and herzegovina e-register", "europe", "BA"),
+    ("bosnia and herzegovina fbih", "europe", "BA"),
+    ("bosnia and herzegovina sarajevo canton", "europe", "BA"),
 ]
 
 # France: 5-digit postcode -> département -> région, so the 40k+ French rows split into shards of a few MB.
