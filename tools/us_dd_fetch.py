@@ -64,6 +64,12 @@ def phone10(s):
     return f"({d[:3]}) {d[3:6]}-{d[6:]}" if len(d) == 10 else None
 
 
+def ohio_zip(value):
+    """Restore leading zeros lost when ArcGIS returns a ZIP as an integer."""
+    zip_code = rc.clean(str(value) if value is not None else "")
+    return zip_code.zfill(5) if zip_code.isascii() and zip_code.isdigit() and len(zip_code) <= 5 else zip_code
+
+
 def ny():
     rows = rc.get_json(NY_URL)
     if not isinstance(rows, list) or not rows:
@@ -167,7 +173,7 @@ def ohio():
         a1 = rc.clean(r.get("addressline1"))
         if not a1:
             continue
-        addr = ", ".join(x for x in (title(a1), title(r.get("city")), f"{rc.clean(r.get('state')) or 'OH'} {rc.clean(r.get('zipcode'))}") if x.strip())
+        addr = ", ".join(x for x in (title(a1), title(r.get("city")), f"{rc.clean(r.get('state')) or 'OH'} {ohio_zip(r.get('zipcode'))}") if x.strip())
         name = rc.clean(r.get("providername"))
         svc = s["svc"]
         has = lambda *w: any(re.search(p, x, re.I) for x in svc for p in w)  # noqa: E731
