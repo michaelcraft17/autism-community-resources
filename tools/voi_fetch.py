@@ -6,7 +6,8 @@ the public list on https://www.voi.ru/o_nas/regionalnye_organizaci (one page per
 Each page gives address, phone, e-mail, website. The chairperson / audit-committee names on the page are personal
 names and are never read. Entries are the organisation itself ("<Region> ... организация ВОИ"), type advocacy, core,
 disability_scope general. The postal address is geocoded with Nominatim: the city first, then the street, kept only if it falls within ~5 km of the city centre
-(Nominatim otherwise matches same-named streets in other towns); a PO-box address is pinned at the city. Branches in Crimea,
+(Nominatim otherwise matches same-named streets in other towns); a PO-box address is pinned at the city. A row whose
+address is unchanged keeps the coordinates already in the dataset (rc.prior_coords) and is not geocoded again. Branches in Crimea,
 Sevastopol and the annexed Donetsk / Luhansk / Zaporizhzhia / Kherson regions are skipped. voi.ru answers a browser User-Agent only.
 Output: new_resources_voi.json
 """
@@ -77,26 +78,37 @@ def main():
         m = re.search(r"\bг(?:ор)?\s*\.?\s*([А-ЯЁ][А-Яа-яё\-]+(?: [А-ЯЁ][а-яё\-]+)?)", a)
         city = m.group(1) if m else ""
         city = re.sub(r"\s+(ул|пр|пер|наб|ш)$", "", city)
-        qcity = ", ".join(x for x in (city, region if region and region != city else "", "Россия") if x)
-        center = geoc.geocode(qcity) if (city or region) else None
-        if not center and not geoc.last_failed and region:
-            center = geoc.geocode(f"{region}, Россия")
-        hit = center
-        pobox = bool(re.search(r"\bа/я\b|п/я", a, re.I))
-        if center and not pobox and city:
-            street = [x.strip() for x in a.split(",") if x.strip() and not re.fullmatch(r"\d{6}", x.strip())]
-            street = [x for x in street if re.search(r"\d", x) or re.search(r"\b(ул|улица|пр|просп|пер|наб|ш|бульвар)\b", x, re.I)]
-            big = city in ("Москва", "Санкт-Петербург")   # Nominatim's city point is a boundary centroid, up to ~15 km off
-            qs = [", ".join(street + [x for x in (city, region, "Россия") if x])]
-            m2 = re.search(r"(?:ул\.?|улица|пр-?т?\.?|проспект|пер\.?|переулок|наб\.?|ш\.?|бульвар)\s*([А-ЯЁа-яё0-9\-\. ]+?)[,\s]+(?:д\.?\s*|дом\s*)?(\d+[а-яА-Я]?)", a)
-            if m2:
-                qs.append(f"{m2.group(1).strip()} {m2.group(2)}, {city}")
-            tol = (0.3, 0.5) if big else (0.05, 0.08)
-            for q in qs:
-                s_hit = geoc.geocode(q) if street else None
-                if s_hit and abs(s_hit[0] - center[0]) < tol[0] and abs(s_hit[1] - center[1]) < tol[1]:
-                    hit = s_hit
-                    break
+        # An unchanged address keeps the pin the dataset already holds. Nominatim's answer to the same query moves by
+        # tens to hundreds of metres between runs, so a cold cache would otherwise report a third of the rows as changed.
+        hit = rc.prior_coords(f"voi:{slug}", a)
+        if hit and not rc.plausible("RU", *hit):
+            hit = None
+        if not hit:
+            qcity = ", ".join(x for x in (city, region if region and region != city else "", "Россия") if x)
+            center = geoc.geocode(qcity) if (city or region) else None
+            if not center and not geoc.last_failed and region:
+                center = geoc.geocode(f"{region}, Россия")
+            hit = center
+            pobox = bool(re.search(r"\bа/я\b|п/я", a, re.I))
+            if center and not pobox and city:
+                street = [x.strip() for x in a.split(",") if x.strip() and not re.fullmatch(r"\d{6}", x.strip())]
+                street = [x for x in street if re.search(r"\d", x) or re.search(r"\b(ул|улица|пр|просп|пер|наб|ш|бульвар)\b", x, re.I)]
+                big = city in ("Москва", "Санкт-Петербург")   # Nominatim's city point is a boundary centroid, up to ~15 km off
+                qs = [", ".join(street + [x for x in (city, region, "Россия") if x])]
+                m2 = re.search(r"(?:ул\.?|улица|пр-?т?\.?|проспект|пер\.?|переулок|наб\.?|ш\.?|бульвар)\s*([А-ЯЁа-яё0-9\-\. ]+?)[,\s]+(?:д\.?\s*|дом\s*)?(\d+[а-яА-Я]?)", a)
+                if m2:
+                    qs.append(f"{m2.group(1).strip()} {m2.group(2)}, {city}")
+                tol = (0.3, 0.5) if big else (0.05, 0.08)
+                unmade = False
+                for q in qs:
+                    s_hit = geoc.geocode(q) if street else None
+                    unmade = unmade or (street and not s_hit and geoc.last_failed)
+                    if s_hit and abs(s_hit[0] - center[0]) < tol[0] and abs(s_hit[1] - center[1]) < tol[1]:
+                        hit = s_hit
+                        break
+                else:
+                    if unmade:   # a street lookup that could not be made: drop the row and retry on a later run,
+                        hit = None   # because prior_coords would keep a city-centre pin for as long as the address stands
         if not hit or not rc.plausible("RU", *hit):
             nogeo += 1
             print(f"  {slug}: no geocode for {a!r}")
