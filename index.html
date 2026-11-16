@@ -729,14 +729,45 @@ function haversine(a, b){
 // country per the note below.
 const US_ZIP_RE = /^\d{5}(-\d{4})?$/;
 
+/* Nominatim only matches exact spellings, so a typo like "vieanna" found nothing at all
+   (reported 2026-11-15). Photon (komoot, same OpenStreetMap data) is typo-tolerant and
+   resolves it to Vienna, Austria. It's only asked when Nominatim comes back empty, so
+   correctly spelled searches behave exactly as before. Results are reshaped to look like
+   Nominatim's, so formatSuggestion() and selectSuggestion() work on them unchanged. */
+async function photonSearch(q, limit){
+  const url = 'https://photon.komoot.io/api/?lang=en&limit=' + limit + '&q=' + encodeURIComponent(q);
+  const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
+  const data = await res.json();
+  return ((data && data.features) || []).filter(f => f.geometry && f.geometry.coordinates).map(f => {
+    const p = f.properties || {};
+    const [lon, lat] = f.geometry.coordinates;
+    const parts = [];
+    for (const v of [p.name, p.city, p.county, p.state, p.country]) if (v && !parts.includes(v)) parts.push(v);
+    return { place_id: 'photon-' + p.osm_type + p.osm_id, lat, lon, display_name: parts.join(', '), address: {} };
+  });
+}
+
 async function geocode(q){
   // No countrycodes filter -- the directory now covers many countries, and hard-locking
   // this to "us" used to silently resolve e.g. "London" to a US town of the same name.
-  const countryHint = US_ZIP_RE.test(q.trim()) ? '&countrycodes=us' : '';
+  const isZip = US_ZIP_RE.test(q.trim());
+  const countryHint = isZip ? '&countrycodes=us' : '';
   const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q) + countryHint;
-  const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
-  const data = await res.json();
+  // Nominatim also rate-limits (HTTP 429, which the browser reports as a failed fetch);
+  // Photon covers that case too instead of showing "Search failed".
+  let data = null, failed = null;
+  try {
+    const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
+    data = await res.json();
+  } catch (e) { failed = e; }
   if (data && data.length) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+  if (!isZip) {
+    try {
+      const fuzzy = await photonSearch(q, 1);
+      if (fuzzy.length) return { lat: fuzzy[0].lat, lng: fuzzy[0].lon, label: fuzzy[0].display_name };
+    } catch (e) { if (failed) throw failed; }
+  }
+  if (failed) throw failed;
   return null;
 }
 
@@ -788,8 +819,10 @@ function useLocationSuggestions(query) {
     const t = setTimeout(async () => {
       try {
         const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&q=' + encodeURIComponent(q) + (US_ZIP_RE.test(q) ? '&countrycodes=us' : '');
-        const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
-        const data = await res.json();
+        let data = null;
+        try { const res = await fetch(url, { headers:{ 'Accept':'application/json' } }); data = await res.json(); } catch (e) {}
+        // Misspelled place ("vieanna") or Nominatim rate-limited: ask Photon instead of showing nothing.
+        if (!cancelled && (!data || !data.length) && q.length >= 3 && !/^\d/.test(q)) data = await photonSearch(q, 6);
         if (!cancelled) setSuggestions(data || []);
       } catch (e) {
         if (!cancelled) setSuggestions([]);
@@ -4350,8 +4383,10 @@ function App() {
     try {
       const c = await geocode(text);
       if (!c) { setError('Couldn’t find that location. Try a city, ZIP code, or full address.'); setBusy(false); return; }
-      saveLastLoc(text);
-      startSearch({ lat: round4(c.lat), lng: round4(c.lng) }, text, kw, false);
+      // A typo-corrected match shows the corrected name ("Vienna, Austria"), not the typo.
+      const label = c.label || text;
+      saveLastLoc(label);
+      startSearch({ lat: round4(c.lat), lng: round4(c.lng) }, label, kw, false);
     } catch (e) { setError('Search failed — please try again.'); }
     setBusy(false);
   };
