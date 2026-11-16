@@ -42,6 +42,8 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<!-- Location autocomplete: open the connection before the first keystroke. -->
+<link rel="preconnect" href="https://photon.komoot.io" crossorigin/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"/>
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/opendyslexic"/>
 <style>
@@ -734,16 +736,16 @@ const US_ZIP_RE = /^\d{5}(-\d{4})?$/;
    resolves it to Vienna, Austria. It's only asked when Nominatim comes back empty, so
    correctly spelled searches behave exactly as before. Results are reshaped to look like
    Nominatim's, so formatSuggestion() and selectSuggestion() work on them unchanged. */
-async function photonSearch(q, limit){
+async function photonSearch(q, limit, signal){
   const url = 'https://photon.komoot.io/api/?lang=en&limit=' + limit + '&q=' + encodeURIComponent(q);
-  const res = await fetch(url, { headers:{ 'Accept':'application/json' } });
+  const res = await fetch(url, { headers:{ 'Accept':'application/json' }, signal });
   const data = await res.json();
   return ((data && data.features) || []).filter(f => f.geometry && f.geometry.coordinates).map(f => {
     const p = f.properties || {};
     const [lon, lat] = f.geometry.coordinates;
     const parts = [];
     for (const v of [p.name, p.city, p.county, p.state, p.country]) if (v && !parts.includes(v)) parts.push(v);
-    return { place_id: 'photon-' + p.osm_type + p.osm_id, lat, lon, display_name: parts.join(', '), address: {} };
+    return { place_id: 'photon-' + p.osm_type + p.osm_id, lat, lon, display_name: parts.join(', '), address: {}, cc: p.countrycode };
   });
 }
 
@@ -810,25 +812,50 @@ const readLastLoc = () => { try { return localStorage.getItem(LAST_LOC_KEY) || '
    at most ~1 request/sec; a single typing user's keystrokes are almost never that fast, so
    this only waits 150ms of silence before firing (down from 350ms, which felt sluggish) and
    only ever keeps the latest in-flight request's result. */
+/* Speed-up (2026-11-15): the dropdown now asks Photon first instead of Nominatim. Photon is
+   built for search-as-you-type: it matches word prefixes ("Vien" -> Vienna) and tolerates
+   typos. Nominatim's usage policy forbids client-side autocomplete, and it rate-limits
+   (HTTP 429) when used that way. Nominatim is only asked when Photon finds nothing.
+   Also: answers are cached per query, so backspacing is instant. Stale requests are aborted.
+   While a request is in flight, the current list is narrowed to entries that still match. */
+const NOMINATIM_SUGGEST = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&q=';
+const SUGGEST_CACHE = new Map();
+async function fetchSuggestions(q, signal) {
+  const zip = US_ZIP_RE.test(q);
+  let data = [];
+  try {
+    // Photon has no country filter, so for a US ZIP take a wider list and keep only US matches
+    // (a bare "95112" otherwise ranks Lithuania first -- see US_ZIP_RE).
+    data = zip ? (await photonSearch(q, 15, signal)).filter(s => s.cc === 'US').slice(0, 6) : await photonSearch(q, 6, signal);
+  } catch (e) { if (signal.aborted) throw e; }
+  if (data.length) return data;
+  const res = await fetch(NOMINATIM_SUGGEST + encodeURIComponent(q) + (zip ? '&countrycodes=us' : ''), { headers:{ 'Accept':'application/json' }, signal });
+  return (await res.json()) || [];
+}
+
 function useLocationSuggestions(query) {
   const [suggestions, setSuggestions] = useState([]);
   useEffect(() => {
-    const q = query.trim();
+    const q = query.trim().toLowerCase().replace(/\s+/g, ' ');
     if (q.length < 2) { setSuggestions([]); return; }
-    let cancelled = false;
+    const cached = SUGGEST_CACHE.get(q);
+    if (cached) { setSuggestions(cached); return; }
+    setSuggestions(prev => {
+      const keep = prev.filter(s => (s.display_name || '').toLowerCase().includes(q));
+      return keep.length ? keep : prev;
+    });
+    const ctrl = new AbortController();
     const t = setTimeout(async () => {
       try {
-        const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&q=' + encodeURIComponent(q) + (US_ZIP_RE.test(q) ? '&countrycodes=us' : '');
-        let data = null;
-        try { const res = await fetch(url, { headers:{ 'Accept':'application/json' } }); data = await res.json(); } catch (e) {}
-        // Misspelled place ("vieanna") or Nominatim rate-limited: ask Photon instead of showing nothing.
-        if (!cancelled && (!data || !data.length) && q.length >= 3 && !/^\d/.test(q)) data = await photonSearch(q, 6);
-        if (!cancelled) setSuggestions(data || []);
+        const data = await fetchSuggestions(q, ctrl.signal);
+        if (SUGGEST_CACHE.size >= 100) SUGGEST_CACHE.delete(SUGGEST_CACHE.keys().next().value);
+        SUGGEST_CACHE.set(q, data);
+        if (!ctrl.signal.aborted) setSuggestions(data);
       } catch (e) {
-        if (!cancelled) setSuggestions([]);
+        if (!ctrl.signal.aborted) setSuggestions([]);
       }
-    }, 150);
-    return () => { cancelled = true; clearTimeout(t); };
+    }, 100);
+    return () => { ctrl.abort(); clearTimeout(t); };
   }, [query]);
   return suggestions;
 }
